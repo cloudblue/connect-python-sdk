@@ -10,7 +10,7 @@ from connectsdk.logger import function_log
 
 class FulfillmentResource(BaseResource):
     resource = 'requests'
-    limit = 5
+    limit = 1000
     scheme = FulfillmentScheme()
 
     def build_filter(self):
@@ -18,7 +18,7 @@ class FulfillmentResource(BaseResource):
         if Config.products:
             filters['product_id'] = Config.products
 
-        # filters['status'] = 'pending'
+        filters['status'] = 'pending'
         return filters
 
     @function_log
