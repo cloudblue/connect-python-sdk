@@ -27,21 +27,16 @@ $ pip install connect-sdk
 ```
 ### Example
 ```python
-from config import Config
-from resource.fulfillment import FulfillmentAutomation
-from models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connectsdk.config import Config
+from connectsdk.logger import logger
+from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
+from connectsdk.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connectsdk.resource import FulfillmentAutomation
 
-# You can set your credential or use a config file
-
-# Example use the config file (recommend):
 Config(file='config.json')
 
-# Example set credential:
-Config(
-    api_url='https://api.connect.cloud.im/public/v1',
-    api_key='ApiKey SU-520-000-000:57780e4760d2abbaa55d0a97354f6fb530000000',
-    products='CN-631-322-000'
-)
+# set logger level / default level ERROR
+logger.setLevel("DEBUG")
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
@@ -61,7 +56,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
             # approve by ActivationTile
             return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, '
-                                        'you decided to have an account in our amazing service!\n\n')
+                                               'you decided to have an account in our amazing service!')
             # or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
