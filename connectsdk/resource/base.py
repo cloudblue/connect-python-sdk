@@ -1,9 +1,10 @@
-from config import Config
-from logger import log
 import requests
-from resource.utils import joinurl
-from models import BaseScheme, ServerErrorSheme
-from models.exception import ServerErrorException
+
+from connectsdk.config import Config
+from connectsdk.logger import function_log, logger
+from connectsdk.models import BaseScheme, ServerErrorScheme
+from connectsdk.models.exception import ServerErrorException
+from .utils import joinurl
 
 config = Config()
 
@@ -19,7 +20,8 @@ class ApiClient(object):
             "Content-Type": "application/json",
         }
 
-    def check_response(self, response):
+    @staticmethod
+    def check_response(response):
         if not hasattr(response, 'content'):
             raise AttributeError(
                 'Response not attribute content. Check your request params'
@@ -27,25 +29,25 @@ class ApiClient(object):
             )
 
         if not hasattr(response, 'ok') or not response.ok:
-            data, error = ServerErrorSheme().loads(response.content)
+            data, error = ServerErrorScheme().loads(response.content)
             if data:
                 raise ServerErrorException(data)
 
         return response.content
 
-    @log
+    @function_log
     def get(self, url, params=None, **kwargs):
         kwargs['headers'] = self.headers
         response = requests.get(url, params, **kwargs)
         return self.check_response(response)
 
-    @log
+    @function_log
     def post(self, url, data=None, json=None, **kwargs):
         kwargs['headers'] = self.headers
         response = requests.post(url, data, json, **kwargs)
         return self.check_response(response)
 
-    @log
+    @function_log
     def put(self, url, data=None, **kwargs):
         kwargs['headers'] = self.headers
         response = requests.put(url, data, **kwargs)
@@ -78,7 +80,7 @@ class BaseResource(object):
     def _obj_url(self, pk):
         return joinurl(self._list_url, pk)
 
-    def __loads_sheme(self, response):
+    def __loads_scheme(self, response):
         objects, error = self.scheme.loads(response, many=True)
         if error:
             raise TypeError(
@@ -88,14 +90,14 @@ class BaseResource(object):
 
         return objects
 
-    @log
     def get(self, pk):
         response = self.api.get(url=self._obj_url(pk))
-        objects = self.__loads_sheme(response)
+        objects = self.__loads_scheme(response)
         if isinstance(objects, list) and len(objects) > 0:
-            return objects.data[0]
+            return objects[0]
 
-    @log
     def list(self):
-        response = self.api.get(url=self._list_url, params=self.build_filter())
-        return self.__loads_sheme(response)
+        filters = self.build_filter()
+        logger.info('Get list request by filter - {}'.format(filters))
+        response = self.api.get(url=self._list_url, params=filters)
+        return self.__loads_scheme(response)

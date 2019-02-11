@@ -1,0 +1,25 @@
+{
+  "logging": {
+    "version": 1,
+    "disable_existing_loggers": true,
+    "formatters": {
+      "single-line": {
+        "class": "logging.Formatter",
+        "datefmt": "%I:%M:%S",
+        "format": "%(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
+      }
+    },
+    "handlers": {
+      "console": {
+        "level": "DEBUG",
+        "class": "logging.StreamHandler",
+        "formatter": "single-line",
+        "stream": "ext://sys.stdout"
+      }
+    },
+    "root": {
+      "handlers": ["console"],
+      "level": "ERROR"
+    }
+  }
+}

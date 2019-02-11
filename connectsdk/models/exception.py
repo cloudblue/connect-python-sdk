@@ -10,13 +10,15 @@ class Message(Exception):
 
 class FulfillmentFail(Message):
     def __init__(self, *args, **kwargs):
-        self.message = 'Request failed'
+        super(FulfillmentFail, self).__init__(*args, **kwargs)
         self.code = 'fail'
+        self.message = self.message or 'Request failed'
 
 
 class FulfillmentInquire(Message):
     def __init__(self, *args, **kwargs):
-        self.message = kwargs.get('message') or 'Correct user input required'
+        super(FulfillmentInquire, self).__init__(*args, **kwargs)
+        self.message = self.message or 'Correct user input required'
         self.params = kwargs.get('params', [])
         self.code = 'inquire'
 
@@ -27,12 +29,15 @@ class Skip(Message):
 
 
 class ServerErrorException(Exception):
-    def __init__(self, error=None, *args, **kwargs):
-        super(ServerErrorException, self).__init__(*args, **kwargs)
+    message = 'Server error'
 
+    def __init__(self, error=None, *args, **kwargs):
         if error and isinstance(error, ServerError):
             self.message = str({
                 "error_code": error.error_code,
-                "params": error.params,
+                "params": kwargs.get('params', []),
                 "errors": error.errors,
             })
+
+        super(ServerErrorException, self).__init__(
+            self.message, *args, **kwargs)
