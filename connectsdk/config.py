@@ -75,7 +75,7 @@ class Config(object):
                 Set Config.api_url/.api_key/.products
         """
         if not os.path.exists(file):
-            raise NotADirectoryError('Not file `{}` on directory'.format(file))
+            raise IOError('Not file `{}` on directory'.format(file))
 
         with open(file) as config_file:
             configs = config_file.read()
