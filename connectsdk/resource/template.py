@@ -1,6 +1,6 @@
-from resource.base import BaseResource
-from models import ActivationTileResponse, ActivationTemplateResponse
-from resource.utils import joinurl
+from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
+from .base import BaseResource
+from .utils import joinurl
 
 
 class TemplateResource(BaseResource):
@@ -22,5 +22,5 @@ class TemplateResource(BaseResource):
     def get(self, pk):
         return ActivationTemplateResponse(template_id=pk)
 
-    def list():
+    def list(self):
         raise AttributeError('This resource do not have method `list`')

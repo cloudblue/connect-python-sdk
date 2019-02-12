@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 
 class Config(object):
@@ -71,7 +71,7 @@ class Config(object):
             "products" (optional):
         }
         :param file (str): Path to the file
-        :return: Init configuration parametrs.
+        :return: Init configuration parameters.
                 Set Config.api_url/.api_key/.products
         """
         if not os.path.exists(file):
@@ -86,8 +86,8 @@ class Config(object):
             raise TypeError('Invalid config file `{}`\n'
                             'ERROR: {}'.format(file, str(ex)))
 
-        (api_url, api_key, products) = (configs.get('api_url'),
-                                        configs.get('api_key'),
+        (api_url, api_key, products) = (configs.get('apiEndpoint'),
+                                        configs.get('apiKey'),
                                         configs.get('products'))
 
         self.check_credentials(api_url, api_key, products)

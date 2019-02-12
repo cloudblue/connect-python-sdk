@@ -1,7 +1,7 @@
+from connectsdk.logger import logger
+from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
+from connectsdk.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from .fulfillment import FulfillmentResource
-
-from models import ActivationTemplateResponse, ActivationTileResponse
-from models.exception import Skip, FulfillmentFail, FulfillmentInquire
 
 
 class FulfillmentAutomation(FulfillmentResource):
@@ -12,10 +12,11 @@ class FulfillmentAutomation(FulfillmentResource):
 
     def dispatch(self, request):
         try:
+            logger.info('Start request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
-                # TODO write log info
+                logger.info('Method `process_request` did not return result')
                 return
 
             params = {}
@@ -24,23 +25,16 @@ class FulfillmentAutomation(FulfillmentResource):
             elif isinstance(result, ActivationTemplateResponse):
                 params = {'template_id': result.template_id}
 
-            if not params:
-                # TODO write log info
-                return
-
             self.approve(request.id, params)
 
         except FulfillmentInquire as inquire:
-            # TODO write log info
             self.update_parameters(request.id, inquire.params)
             return self.inquire(request.id)
 
         except FulfillmentFail as fail:
-            # TODO write log info
             return self.fail(request.id, reason=fail.message)
 
         except Skip as skip:
-            # TODO write log info
             return skip.code
         return
 

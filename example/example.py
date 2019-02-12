@@ -1,10 +1,13 @@
-from config import Config
-from resource import FulfillmentAutomation, TemplateResource
-from models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from models import ActivationTileResponse, ActivationTemplateResponse
-
+from connectsdk.config import Config
+from connectsdk.logger import logger
+from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
+from connectsdk.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connectsdk.resource import FulfillmentAutomation
 
 Config(file='config.json')
+
+# set logger level / default level ERROR
+logger.setLevel("DEBUG")
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
@@ -24,7 +27,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
             # approve by ActivationTile
             return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, '
-                                          'you decided to have an account in our amazing service!')
+                                               'you decided to have an account in our amazing service!')
             # or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 

@@ -251,7 +251,7 @@ class ServerError(BaseObject):
     pass
 
 
-class ServerErrorSheme(Schema):
+class ServerErrorScheme(Schema):
     error_code = fields.Str()
     params = fields.Dict()
     errors = fields.List(fields.Str())
