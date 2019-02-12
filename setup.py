@@ -2,7 +2,6 @@
 
 import os
 from os.path import abspath, dirname, join
-
 from setuptools import setup
 
 try:  # for pip >= 10
@@ -11,7 +10,7 @@ except ImportError:  # for pip <= 9.0.3
     from pip.req import parse_requirements
 
 install_reqs = parse_requirements(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                               'requirements.txt'), session=None)
+                                               'requirements.txt'), session='None')
 
 here = abspath(dirname(__file__))
 
@@ -22,9 +21,11 @@ setup(
     name='connectsdk',
     author='Ingram Micro',
     version=VERSION,
+    keywords='sdk connectsdk connect automation',
     packages=['connectsdk'],
     description='Connect Python SDK',
-    long_description=open('README.md').read(),
+    long_description='Documentation is described on '
+                     '`GitHub <https://github.com/ingrammicro/connect-python-sdk>`_',
     url='https://github.com/ingrammicro/connect-python-sdk',
     license='Apache Software License',
     include_package_data=True,
