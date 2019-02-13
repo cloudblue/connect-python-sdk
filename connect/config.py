@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 import os
 
@@ -86,9 +88,13 @@ class Config(object):
             raise TypeError('Invalid config file `{}`\n'
                             'ERROR: {}'.format(file, str(ex)))
 
-        (api_url, api_key, products) = (configs.get('apiEndpoint'),
-                                        configs.get('apiKey'),
-                                        configs.get('products'))
+        (api_url, api_key, products) = (configs.get('apiEndpoint', ''),
+                                        configs.get('apiKey', ''),
+                                        configs.get('products', ''))
+
+        products = products.encode('utf-8') if not isinstance(products, (str, list)) else products
+        api_url = api_url.encode('utf-8') if not isinstance(api_url, str) else api_url
+        api_key = api_key.encode('utf-8') if not isinstance(api_key, str) else api_key
 
         self.check_credentials(api_url, api_key, products)
         self._set_attr(api_url, api_key, products)

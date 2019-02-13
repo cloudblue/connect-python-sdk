@@ -1,6 +1,6 @@
-from connectsdk.logger import logger
-from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
-from connectsdk.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connect.logger import logger
+from connect.models import ActivationTemplateResponse, ActivationTileResponse
+from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from .fulfillment import FulfillmentResource
 
 

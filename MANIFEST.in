@@ -1,0 +1,3 @@
+include requirements/sdk.txt
+include connect/logger/config.json
+include VERSION
