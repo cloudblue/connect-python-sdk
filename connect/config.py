@@ -92,7 +92,7 @@ class Config(object):
                                         configs.get('apiKey', '').encode('utf-8'),
                                         configs.get('products'))
 
-        products = products.encode('utf-8') if not isinstance(products, list) else products
+        products = products.encode('utf-8') if not isinstance(products, (str, list)) else products
 
         self.check_credentials(api_url, api_key, products)
         self._set_attr(api_url, api_key, products)
