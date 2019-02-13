@@ -1,6 +1,8 @@
 import json
 import os
 
+from six import string_types
+
 
 class Config(object):
     api_url = None
@@ -44,7 +46,7 @@ class Config(object):
         Config.api_url = api_url
         if products:
             Config.products = [products] if isinstance(
-                products, str) else products
+                products, string_types) else products
 
     @staticmethod
     def check_credentials(api_url, api_key, products):
@@ -58,8 +60,8 @@ class Config(object):
             raise ValueError('Please provide your credentials.'
                              'Not set value for `api_key` or `api_url`')
 
-        if products and not isinstance(products, (str, list)):
-            raise TypeError('Products can be string or string list')
+        if products and not isinstance(products, (string_types, list)):
+            raise TypeError('Products can be string or string list. Found type ' + type(products).__name__)
 
         return
 

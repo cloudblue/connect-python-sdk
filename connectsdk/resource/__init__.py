@@ -1,4 +1,4 @@
-from .fulfilment_automation import FulfillmentAutomation
+from .fulfillment_automation import FulfillmentAutomation
 from .fulfillment import FulfillmentResource
 from .template import TemplateResource
 

@@ -127,7 +127,7 @@ class Param(BaseObject):
     pass
 
 
-class ParamsScheme(BaseScheme):
+class ParamScheme(BaseScheme):
     name = fields.Str()
     type = fields.Str()
     value = fields.Str()
@@ -152,7 +152,7 @@ class AssetScheme(BaseScheme):
         ConnectionScheme, only=('id', 'type', 'provider', 'vendor'),
     )
     items = fields.List(fields.Nested(ItemScheme))
-    params = fields.List(fields.Nested(ParamsScheme))
+    params = fields.List(fields.Nested(ParamScheme))
     tiers = fields.Nested(TiersSchemeMixin)
 
     @post_load

@@ -1,5 +1,5 @@
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
-from .schema import BaseScheme, FulfillmentScheme, Param, ParamsScheme, ServerErrorScheme
+from .schema import BaseScheme, FulfillmentScheme, Param, ParamScheme, ServerErrorScheme
 
 __all__ = [
     'ActivationTemplateResponse',
@@ -8,5 +8,5 @@ __all__ = [
     'FulfillmentScheme',
     'ServerErrorScheme',
     'Param',
-    'ParamsScheme',
+    'ParamScheme',
 ]
