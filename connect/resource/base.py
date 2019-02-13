@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import requests
 
-from connectsdk.config import Config
-from connectsdk.logger import function_log, logger
-from connectsdk.models import BaseScheme, ServerErrorScheme
-from connectsdk.models.exception import ServerErrorException
+from connect.config import Config
+from connect.logger import function_log, logger
+from connect.models import BaseScheme, ServerErrorScheme
+from connect.models.exception import ServerErrorException
 from .utils import joinurl
 
 config = Config()

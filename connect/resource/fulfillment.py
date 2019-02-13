@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import json
 
-from connectsdk.config import Config
-from connectsdk.models import FulfillmentScheme, Param
+from connect.config import Config
+from connect.logger import function_log
+from connect.models import FulfillmentScheme, Param
 from .base import BaseResource
 from .template import TemplateResource
 from .utils import joinurl
-from connectsdk.logger import function_log
 
 
 class FulfillmentResource(BaseResource):

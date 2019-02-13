@@ -1,5 +1,5 @@
 # Connect Python  SDK
-
+[![Build Status](https://travis-ci.org/ingrammicro/connect-python-sdk.svg?branch=master)](https://travis-ci.org/ingrammicro/connect-python-sdk)
 ### Getting Started
 ---
 ### Class Features

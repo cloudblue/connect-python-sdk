@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import json
 import logging
 import os
 from logging.config import dictConfig
 
-with open(os.path.join(os.path.dirname(__file__), 'config.json'), encoding="utf-8") as config_file:
+with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
     config = json.load(config_file)
 
 dictConfig(config['logging'])
@@ -20,4 +22,5 @@ def function_log(func):
         logger.debug(
             'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
         return result
+
     return decorator
