@@ -79,7 +79,7 @@ class Config(object):
         if not os.path.exists(file):
             raise IOError('Not file `{}` on directory'.format(file))
 
-        with open(file, 'r') as config_file:
+        with open(file) as config_file:
             configs = config_file.read()
 
         try:
@@ -88,11 +88,11 @@ class Config(object):
             raise TypeError('Invalid config file `{}`\n'
                             'ERROR: {}'.format(file, str(ex)))
 
-        (api_url, api_key, products) = (str(configs.get('apiEndpoint', '')),
-                                        str(configs.get('apiKey', '')),
+        (api_url, api_key, products) = (configs.get('apiEndpoint', '').encode('utf-8'),
+                                        configs.get('apiKey', '').encode('utf-8'),
                                         configs.get('products'))
 
-        products = str(products) if not isinstance(products, list) else products
+        products = products.encode('utf-8') if not isinstance(products, list) else products
 
         self.check_credentials(api_url, api_key, products)
         self._set_attr(api_url, api_key, products)
