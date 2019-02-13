@@ -88,12 +88,11 @@ class Config(object):
             raise TypeError('Invalid config file `{}`\n'
                             'ERROR: {}'.format(file, str(ex)))
 
-        (api_url, api_key, products) = (configs.get('apiEndpoint', '').encode('utf-8'),
-                                        configs.get('apiKey', '').encode('utf-8'),
+        (api_url, api_key, products) = (str(configs.get('apiEndpoint', '')),
+                                        str(configs.get('apiKey', '')),
                                         configs.get('products'))
 
-        if products and isinstance(products, unicode):
-            products = products.encode('utf-8')
+        products = str(products) if not isinstance(products, list) else products
 
         self.check_credentials(api_url, api_key, products)
         self._set_attr(api_url, api_key, products)
