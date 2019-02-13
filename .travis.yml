@@ -3,6 +3,7 @@ matrix:
   include:
   - os: linux
     python: 2.7
+    env: BUILD=PYPI
   - os: linux
     python: 3.5
   - os: linux
@@ -24,3 +25,4 @@ deploy:
     tags: true
     all_branches: true
     distributions: sdist
+    condition: "$BUILD = PYPI"
