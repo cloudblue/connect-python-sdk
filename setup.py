@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from os.path import abspath, dirname, exists, join
-
+from os import environ
 from setuptools import find_packages, setup
 
 try:  # for pip >= 10
@@ -16,24 +16,24 @@ install_reqs = parse_requirements(
         'sdk.txt',
     ), session='None')
 
-here = dirname(abspath(__file__))
-with open(join(here, 'VERSION')) as f:
-    VERSION = f.read()
+VERSION = environ.get('TRAVIS_TAG')
+if not VERSION:
+    raise EnvironmentError('Not found `TRAVIS_TAG`')
 
-packages = find_packages(exclude=['tests*'])
+PACKAGES = find_packages(exclude=['tests*'])
 
-doc = ''
+DOC = ''
 if exists('README.md'):
-    doc = open('README.md', 'r').read()
+    DOC = open('README.md', 'r').read()
 
 setup(
     name='connect-sdk',
     author='Ingram Micro',
     version=VERSION,
     keywords='sdk connect connect automation',
-    packages=packages,
+    packages=PACKAGES,
     description='Connect Python SDK',
-    long_description=doc,
+    long_description=DOC,
     long_description_content_type='text/markdown',
     url='https://github.com/ingrammicro/connect-python-sdk',
     license='Apache Software License',
