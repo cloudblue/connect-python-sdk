@@ -1,5 +1,4 @@
-import resource
-from resource import FulfillmentAutomation
+from .resource import FulfillmentAutomation
 
 name = 'connect'
 
