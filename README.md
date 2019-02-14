@@ -1,5 +1,6 @@
 # Connect Python  SDK
-[![Build Status](https://travis-ci.org/ingrammicro/connect-python-sdk.svg?branch=master)](https://travis-ci.org/ingrammicro/connect-python-sdk)
+
+[![Build Status](https://travis-ci.org/ingrammicro/connect-python-sdk.svg?branch=master)](https://travis-ci.org/ingrammicro/connect-python-sdk) ![pyversions](https://img.shields.io/pypi/pyversions/connect-sdk.svg)  [![PyPi Status](https://img.shields.io/pypi/v/apsconnectcli.svg)](https://pypi.org/project/connect-sdk/)
 ### Getting Started
 ---
 ### Class Features

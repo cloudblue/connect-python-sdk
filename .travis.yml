@@ -11,10 +11,11 @@ matrix:
 install:
 - pip install -r requirements/test.txt
 - pip install -r requirements/sdk.txt
+- pip install pytest-cov
 
 script:
 - flake8 connect
-- pytest
+- pytest --cov=./
 
 deploy:
   provider: pypi
