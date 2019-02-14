@@ -17,6 +17,9 @@ script:
 - flake8 connect
 - pytest --cov-report=xml --cov=./
 
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+
 deploy:
   provider: pypi
   user: apslite
