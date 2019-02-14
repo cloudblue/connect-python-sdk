@@ -1,6 +1,6 @@
 # Connect Python  SDK
 
-[![Build Status](https://travis-ci.org/ingrammicro/connect-python-sdk.svg?branch=master)](https://travis-ci.org/ingrammicro/connect-python-sdk) ![pyversions](https://img.shields.io/pypi/pyversions/connect-sdk.svg)  [![PyPi Status](https://img.shields.io/pypi/v/connect-sdk.svg)](https://pypi.org/project/connect-sdk/)
+![pyversions](https://img.shields.io/pypi/pyversions/connect-sdk.svg)  [![PyPi Status](https://img.shields.io/pypi/v/connect-sdk.svg)](https://pypi.org/project/connect-sdk/) [![codecov](https://codecov.io/gh/ingrammicro/connect-python-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/ingrammicro/connect-python-sdk) [![Build Status](https://travis-ci.org/ingrammicro/connect-python-sdk.svg?branch=master)](https://travis-ci.org/ingrammicro/connect-python-sdk) 
 ### Getting Started
 ---
 ### Class Features
