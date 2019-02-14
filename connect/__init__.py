@@ -1,4 +1,5 @@
 import resource
+from resource import FulfillmentAutomation
 
 name = 'connect'
 
@@ -7,4 +8,5 @@ __all__ = [
     'resource',
     'models',
     'logger',
+    'FulfillmentAutomation'
 ]
