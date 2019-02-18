@@ -17,9 +17,6 @@ install_reqs = parse_requirements(
     ), session='None')
 
 VERSION = environ.get('TRAVIS_TAG')
-if not VERSION:
-    raise EnvironmentError('Not found `TRAVIS_TAG`')
-
 PACKAGES = find_packages(exclude=['tests*'])
 
 DOC = ''
