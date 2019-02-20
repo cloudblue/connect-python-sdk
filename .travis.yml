@@ -22,7 +22,7 @@ install:
 
 script:
 - flake8 connect
-- pytest --cov-report=xml --cov=./
+- pytest --cov-report=xml --cov=./connect
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
