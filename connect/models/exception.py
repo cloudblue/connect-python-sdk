@@ -1,4 +1,4 @@
-from .schema import ServerError
+from .server_error import ServerError
 
 
 class Message(Exception):

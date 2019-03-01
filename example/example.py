@@ -1,8 +1,8 @@
-from connectsdk.config import Config
-from connectsdk.logger import logger
-from connectsdk.models import ActivationTemplateResponse, ActivationTileResponse
-from connectsdk.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from connectsdk.resource import FulfillmentAutomation
+from connect import FulfillmentAutomation
+from connect.config import Config
+from connect.logger import logger
+from connect.models import ActivationTemplateResponse, ActivationTileResponse
+from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
 Config(file='config.json')
 

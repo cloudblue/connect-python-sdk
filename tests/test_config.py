@@ -1,8 +1,17 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 import pytest
 
-from connectsdk.config import Config
+from connect.config import Config
+
+
+conf_dict = {
+    'apiEndpoint': 'http://localhost:8080/api/public/v1/',
+    'apiKey': 'ApiKey XXXX:YYYYY',
+    'products': 'CN-631-322-000'
+}
 
 
 def setup_module(module):
@@ -14,15 +23,38 @@ def teardown_module(module):
     os.chdir(module.prev_dir)
 
 
-def test_create_with_non_existing_file():
+def teardown_function():
+    Config.api_url, Config.api_key, Config.products = None, None, None
+
+
+def test_init_config_with_non_existing_file():
     with pytest.raises(IOError):
         Config(file='non_existing_config.json')
 
 
-def test_create_with_file():
+def test_init_config_with_file():
     config = Config(file='config.json')
-    assert config.api_url == 'http://localhost:8080/api/public/v1/'
-    assert config.api_key == 'ApiKey XXXX:YYYYY'
-    assert isinstance(config.products, list)
-    assert len(config.products) == 1
-    assert config.products[0] == 'CN-631-322-000'
+    _assert_config(config)
+
+
+def test_set_config():
+    config = Config(
+        api_key=conf_dict.get('apiKey'),
+        api_url=conf_dict.get('apiEndpoint'),
+        products=conf_dict.get('products'),
+    )
+    _assert_config(config)
+
+
+def _assert_config(config=None):
+    assert Config.api_key == conf_dict.get('apiKey')
+    assert Config.api_url == conf_dict.get('apiEndpoint')
+    assert isinstance(Config.products, list)
+    assert len(Config.products) == 1
+    assert Config.products == [conf_dict.get('products')]
+    if config:
+        assert config.api_key == conf_dict.get('apiKey')
+        assert config.api_url == conf_dict.get('apiEndpoint')
+        assert isinstance(config.products, list)
+        assert len(config.products) == 1
+        assert config.products == [conf_dict.get('products')]
