@@ -4,7 +4,7 @@ import json
 
 from connect.config import Config
 from connect.logger import function_log
-from connect.models import FulfillmentScheme, Param
+from connect.models import FulfillmentSchema, Param
 from .base import BaseResource
 from .template import TemplateResource
 from .utils import joinurl
@@ -13,7 +13,7 @@ from .utils import joinurl
 class FulfillmentResource(BaseResource):
     resource = 'requests'
     limit = 1000
-    scheme = FulfillmentScheme()
+    schema = FulfillmentSchema()
 
     def build_filter(self):
         filters = super(FulfillmentResource, self).build_filter()

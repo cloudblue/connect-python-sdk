@@ -1,13 +1,13 @@
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject
+from .base import BaseModel
 
 
-class ServerError(BaseObject):
+class ServerError(BaseModel):
     pass
 
 
-class ServerErrorScheme(Schema):
+class ServerErrorSchema(Schema):
     error_code = fields.Str()
     params = fields.Dict()
     errors = fields.List(fields.Str())

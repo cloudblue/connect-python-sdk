@@ -1,25 +1,25 @@
 from marshmallow import fields, post_load
 
-from .asset import AssetScheme
-from .base import BaseObject, BaseScheme
-from .marketplace import ContractScheme, MarketplaceScheme
+from .asset import AssetSchema
+from .base import BaseModel, BaseSchema
+from .marketplace import ContractSchema, MarketplaceSchema
 
 
-class Fulfillment(BaseObject):
+class Fulfillment(BaseModel):
     pass
 
 
-class FulfillmentScheme(BaseScheme):
+class FulfillmentSchema(BaseSchema):
     activation_key = fields.Str()
-    asset = fields.Nested(AssetScheme)
+    asset = fields.Nested(AssetSchema)
     status = fields.Str()
     type = fields.Str()
     updated = fields.DateTime()
     created = fields.DateTime()
     reason = fields.Str()
     params_form_url = fields.Str()
-    contract = fields.Nested(ContractScheme, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceScheme, only=('id', 'name'))
+    contract = fields.Nested(ContractSchema, only=('id', 'name'))
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
 
     @post_load
     def make_object(self, data):

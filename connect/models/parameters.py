@@ -1,13 +1,13 @@
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class ValueChoice(BaseObject):
+class ValueChoice(BaseModel):
     pass
 
 
-class ValueChoiceScheme(Schema):
+class ValueChoiceSchema(Schema):
     value = fields.Str()
     label = fields.Str()
 
@@ -16,15 +16,15 @@ class ValueChoiceScheme(Schema):
         return ValueChoice(**data)
 
 
-class Param(BaseObject):
+class Param(BaseModel):
     pass
 
 
-class ParamScheme(BaseScheme):
+class ParamSchema(BaseSchema):
     name = fields.Str()
     type = fields.Str()
     value = fields.Str()
-    value_choices = fields.List(fields.Nested(ValueChoiceScheme))
+    value_choices = fields.List(fields.Nested(ValueChoiceSchema))
     value_error = fields.Str()
 
     @post_load

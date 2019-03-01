@@ -1,39 +1,39 @@
 from marshmallow import fields, post_load
 
-from .base import BaseObject, BaseScheme
-from .company import CompanyScheme
-from .hub import HubsSchemeMixin
+from .base import BaseModel, BaseSchema
+from .company import CompanySchema
+from .hub import HubsSchemaMixin
 
 
-class Marketplace(BaseObject):
+class Marketplace(BaseModel):
     pass
 
 
-class MarketplaceScheme(BaseScheme):
+class MarketplaceSchema(BaseSchema):
     name = fields.Str()
     zone = fields.Str()
     description = fields.Str()
     active_contract = fields.Int()
     icon = fields.Str()
-    owner = fields.Nested(CompanyScheme, only=('id', 'name'))
-    hubs = fields.List(fields.Nested(HubsSchemeMixin, only=('id', 'name')))
+    owner = fields.Nested(CompanySchema, only=('id', 'name'))
+    hubs = fields.List(fields.Nested(HubsSchemaMixin, only=('id', 'name')))
 
     @post_load
     def make_object(self, data):
         return Marketplace(**data)
 
 
-class Agreement(BaseObject):
+class Agreement(BaseModel):
     pass
 
 
-class AgreementScheme(BaseScheme):
+class AgreementSchema(BaseSchema):
     type = fields.Str()
     title = fields.Str()
     description = fields.Str()
     created = fields.DateTime()
     updated = fields.DateTime()
-    owner = fields.Nested(CompanyScheme, only=('id', 'name'))
+    owner = fields.Nested(CompanySchema, only=('id', 'name'))
     stats = fields.Dict()
     active = fields.Bool()
     version = fields.Int()
@@ -46,25 +46,25 @@ class AgreementScheme(BaseScheme):
         return Agreement(**data)
 
 
-class Contract(BaseObject):
+class Contract(BaseModel):
     pass
 
 
-class ContractScheme(BaseScheme):
+class ContractSchema(BaseSchema):
     name = fields.Str()
     status = fields.Str()
     version = fields.Int()
     type = fields.Str()
-    agreement = fields.Nested(AgreementScheme, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceScheme, only=('id', 'name'))
-    owner = fields.Nested(CompanyScheme, only=('id', 'name'))
-    creater = fields.Nested(CompanyScheme, only=('id', 'name'))
+    agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    owner = fields.Nested(CompanySchema, only=('id', 'name'))
+    creater = fields.Nested(CompanySchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.Str()
     version_created = fields.DateTime()
     activation = fields.Dict()
-    signee = fields.Nested(CompanyScheme, only=('id', 'name'))
+    signee = fields.Nested(CompanySchema, only=('id', 'name'))
 
     @post_load
     def make_object(self, data):

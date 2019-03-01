@@ -1,13 +1,13 @@
 from marshmallow import fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class Company(BaseObject):
+class Company(BaseModel):
     pass
 
 
-class CompanyScheme(BaseScheme):
+class CompanySchema(BaseSchema):
     name = fields.Str()
 
     @post_load

@@ -1,15 +1,15 @@
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
-from .base import BaseScheme
-from .fulfillment import FulfillmentScheme
-from .parameters import Param, ParamScheme
-from .server_error import ServerErrorScheme
+from .base import BaseSchema
+from .fulfillment import FulfillmentSchema
+from .parameters import Param, ParamSchema
+from .server_error import ServerErrorSchema
 
 __all__ = [
     'ActivationTemplateResponse',
     'ActivationTileResponse',
-    'BaseScheme',
-    'FulfillmentScheme',
-    'ServerErrorScheme',
+    'BaseSchema',
+    'FulfillmentSchema',
+    'ServerErrorSchema',
     'Param',
-    'ParamScheme',
+    'ParamSchema',
 ]
