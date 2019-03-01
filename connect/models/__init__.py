@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseSchema
 from .fulfillment import FulfillmentSchema

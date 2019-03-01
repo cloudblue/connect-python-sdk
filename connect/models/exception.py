@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from .server_error import ServerError
 
 

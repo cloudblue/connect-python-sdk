@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseResource
 from .utils import joinurl

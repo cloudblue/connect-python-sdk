@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from connect import FulfillmentAutomation
 from connect.config import Config
 from connect.logger import logger

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from os.path import abspath, dirname, exists, join
 from os import environ

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from marshmallow import Schema, fields, post_load
 
 

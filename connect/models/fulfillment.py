@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from marshmallow import fields, post_load
 
 from .asset import AssetSchema

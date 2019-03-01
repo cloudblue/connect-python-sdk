@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
