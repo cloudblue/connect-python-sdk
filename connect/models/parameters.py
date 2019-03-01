@@ -20,7 +20,7 @@ class Param(BaseObject):
     pass
 
 
-class ParamsScheme(BaseScheme):
+class ParamScheme(BaseScheme):
     name = fields.Str()
     type = fields.Str()
     value = fields.Str()

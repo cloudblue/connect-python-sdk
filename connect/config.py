@@ -61,7 +61,8 @@ class Config(object):
                              'Not set value for `api_key` or `api_url`')
 
         if products and not isinstance(products, (str, list)):
-            raise TypeError('Products can be string or string list')
+            raise TypeError('Products can be string or string list. Found type '
+                            + type(products).__name__)
 
         return
 

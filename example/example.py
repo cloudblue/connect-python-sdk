@@ -26,8 +26,8 @@ class ExampleRequestProcessor(FulfillmentAutomation):
                     raise FulfillmentInquire(params=[param])
 
             # approve by ActivationTile
-            return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, '
-                                               'you decided to have an account in our amazing service!')
+            return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, you decided '
+                                               'to have an account in our amazing service!')
             # or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 

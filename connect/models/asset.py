@@ -2,7 +2,7 @@ from marshmallow import fields, post_load
 
 from .base import BaseObject, BaseScheme
 from .connection import ConnectionScheme
-from .parameters import ParamsScheme
+from .parameters import ParamScheme
 from .product import ItemScheme, ProductScheme
 from .tiers import TiersSchemeMixin
 
@@ -20,7 +20,7 @@ class AssetScheme(BaseScheme):
         ConnectionScheme, only=('id', 'type', 'provider', 'vendor'),
     )
     items = fields.List(fields.Nested(ItemScheme))
-    params = fields.List(fields.Nested(ParamsScheme))
+    params = fields.List(fields.Nested(ParamScheme))
     tiers = fields.Nested(TiersSchemeMixin)
 
     @post_load
