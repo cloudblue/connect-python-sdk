@@ -11,7 +11,7 @@ from connect.config import Config
 from connect.logger import function_log, logger
 from connect.models import BaseSchema, ServerErrorSchema
 from connect.models.exception import ServerErrorException
-from .utils import joinurl
+from .utils import join_url
 
 
 class ApiClient(object):
@@ -68,7 +68,7 @@ class BaseResource(object):
     api = None
     schema = BaseSchema()
 
-    def __init__(self, config, *args, **kwargs):
+    def __init__(self, config):
         if not self.__class__.resource:
             raise AttributeError('Resource name not specified in class {}'.format(
                 self.__class__.__name__) + '. Add an attribute `resource` name of the resource')
@@ -87,10 +87,10 @@ class BaseResource(object):
 
     @property
     def _list_url(self):
-        return joinurl(self.config.api_url, self.__class__.resource)
+        return join_url(self.config.api_url, self.__class__.resource)
 
     def _obj_url(self, pk):
-        return joinurl(self._list_url, pk)
+        return join_url(self._list_url, pk)
 
     def __loads_schema(self, response):
         objects, error = self.schema.loads(response, many=True)

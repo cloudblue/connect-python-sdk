@@ -7,7 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseResource
-from .utils import joinurl
+from .utils import join_url
 
 
 class TemplateResource(BaseResource):
@@ -19,9 +19,9 @@ class TemplateResource(BaseResource):
 
     def render(self, pk, request_id):
         if not all([pk, request_id]):
-            raise ValueError('Invalid ids for render temlpate')
+            raise ValueError('Invalid ids for render template')
 
-        url = joinurl(self._obj_url(pk), 'render')
+        url = join_url(self._obj_url(pk), 'render')
         response = self.api.get(url, params={'request_id': request_id})
 
         return ActivationTileResponse(response)

@@ -30,11 +30,11 @@ def teardown_module(module):
 
 def test_init_config_with_non_existing_file():
     with pytest.raises(IOError):
-        Config(file='non_existing_config.json')
+        Config(filename='non_existing_config.json')
 
 
 def test_init_config_with_file():
-    _assert_config(Config(file='config.json'))
+    _assert_config(Config(filename='config.json'))
 
 
 def test_init_config_with_arguments():
@@ -55,13 +55,17 @@ def test_init_config_with_invalid_arguments():
 
 
 def test_config_immutable_properties():
-    config = Config(file='config.json')
+    config = Config(filename='config.json')
     with pytest.raises(AttributeError):
+        # noinspection PyPropertyAccess
         config.api_key = conf_dict.get('apiKey')
     with pytest.raises(AttributeError):
+        # noinspection PyPropertyAccess
         config.api_url = conf_dict.get('apiEndpoint')
     with pytest.raises(AttributeError):
+        # noinspection PyPropertyAccess
         config.products = [conf_dict.get('products')]
+
 
 def _assert_config(config):
     assert config.api_key == conf_dict.get('apiKey')

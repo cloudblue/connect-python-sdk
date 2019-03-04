@@ -19,8 +19,8 @@ response = namedtuple('Response', ('ok', 'content'))
 
 def _get_response_ok():
     response.ok = True
-    with open(os.path.join(os.path.dirname(__file__), 'response.json')) as file:
-        response.content = file.read()
+    with open(os.path.join(os.path.dirname(__file__), 'response.json')) as file_handle:
+        response.content = file_handle.read()
 
     return response
 

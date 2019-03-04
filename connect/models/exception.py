@@ -31,7 +31,7 @@ class FulfillmentInquire(Message):
 
 
 class Skip(Message):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.code = 'skip'
 
 
@@ -46,5 +46,4 @@ class ServerErrorException(Exception):
                 "errors": error.errors,
             })
 
-        super(ServerErrorException, self).__init__(
-            self.message, *args, **kwargs)
+        super(ServerErrorException, self).__init__(self.message, *args)

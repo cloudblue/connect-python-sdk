@@ -9,7 +9,7 @@ from marshmallow import Schema, fields, post_load
 
 
 class BaseModel:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         self.id = kwargs.get('id')
         if kwargs:
             for attr, val in kwargs.items():

@@ -11,8 +11,10 @@ from os import environ
 from setuptools import find_packages, setup
 
 try:  # for pip >= 10
+    # noinspection PyProtectedMember,PyPackageRequirements
     from pip._internal.req import parse_requirements
 except ImportError:  # for pip <= 9.0.3
+    # noinspection PyPackageRequirements,PyUnresolvedReferences
     from pip.req import parse_requirements
 
 install_reqs = parse_requirements(
@@ -20,7 +22,7 @@ install_reqs = parse_requirements(
         dirname(abspath(__file__)),
         'requirements',
         'sdk.txt',
-    ), session='None')
+    ), session=None)
 
 VERSION = environ.get('TRAVIS_TAG')
 PACKAGES = find_packages(exclude=['tests*'])
