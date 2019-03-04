@@ -9,15 +9,12 @@ import json
 
 
 class ActivationTileResponse(object):
-    tile = 'Activation succeeded'
-
-    # noinspection PyUnusedLocal
-    def __init__(self, markdown=None, **kwargs):
+    def __init__(self, markdown=None):
         if markdown:
             try:
                 self.tile = json.loads(markdown)
             except ValueError:
-                self.tile = markdown
+                self.tile = markdown or 'Activation succeeded'
 
 
 class ActivationTemplateResponse(object):
