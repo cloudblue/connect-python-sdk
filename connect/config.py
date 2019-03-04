@@ -26,7 +26,8 @@ class Config(object):
         """
         # Check arguments
         if not file and not any([api_key, api_url]):
-            raise ValueError('Filename or api_key and api_url are expected in Config initialization')
+            raise ValueError('Filename or api_key and api_url are expected'
+                             'in Config initialization')
         if products and not isinstance(products, (str, list)):
             raise TypeError('Products can be string or string list. Found type '
                             + type(products).__name__)
@@ -50,7 +51,9 @@ class Config(object):
                                             configs.get('products', ''))
             api_url = api_url.encode('utf-8') if not isinstance(api_url, str) else api_url
             api_key = api_key.encode('utf-8') if not isinstance(api_key, str) else api_key
-            products = products.encode('utf-8') if not isinstance(products, (str, list)) else products
+            products = products.encode('utf-8') \
+                if not isinstance(products, (str, list)) \
+                else products
 
         # Initialize
         self._api_key = api_key
