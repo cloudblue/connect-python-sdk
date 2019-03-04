@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class Product(BaseObject):
+class Product(BaseModel):
     pass
 
 
-class ProductScheme(BaseScheme):
+class ProductSchema(BaseSchema):
     name = fields.Str()
 
     @post_load
@@ -15,11 +22,11 @@ class ProductScheme(BaseScheme):
         return Product(**data)
 
 
-class Item(BaseObject):
+class Item(BaseModel):
     pass
 
 
-class ItemScheme(BaseScheme):
+class ItemSchema(BaseSchema):
     global_id = fields.Str()
     mpn = fields.Str()
     old_quantity = fields.Str()

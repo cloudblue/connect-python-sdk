@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class ValueChoice(BaseObject):
+class ValueChoice(BaseModel):
     pass
 
 
-class ValueChoiceScheme(Schema):
+class ValueChoiceSchema(Schema):
     value = fields.Str()
     label = fields.Str()
 
@@ -16,15 +23,15 @@ class ValueChoiceScheme(Schema):
         return ValueChoice(**data)
 
 
-class Param(BaseObject):
+class Param(BaseModel):
     pass
 
 
-class ParamScheme(BaseScheme):
+class ParamSchema(BaseSchema):
     name = fields.Str()
     type = fields.Str()
     value = fields.Str()
-    value_choices = fields.List(fields.Nested(ValueChoiceScheme))
+    value_choices = fields.List(fields.Nested(ValueChoiceSchema))
     value_error = fields.Str()
 
     @post_load

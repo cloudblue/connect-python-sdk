@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 import requests
 
 from connect.config import Config
 from connect.logger import function_log, logger
-from connect.models import BaseScheme, ServerErrorScheme
+from connect.models import BaseSchema, ServerErrorSchema
 from connect.models.exception import ServerErrorException
 from .utils import joinurl
 
@@ -31,7 +36,7 @@ class ApiClient(object):
             )
 
         if not hasattr(response, 'ok') or not response.ok:
-            data, error = ServerErrorScheme().loads(response.content)
+            data, error = ServerErrorSchema().loads(response.content)
             if data:
                 raise ServerErrorException(data)
 
@@ -60,7 +65,7 @@ class BaseResource(object):
     resource = None
     limit = 100
     api = ApiClient()
-    scheme = BaseScheme()
+    schema = BaseSchema()
 
     def __init__(self, *args, **kwargs):
 
@@ -82,8 +87,8 @@ class BaseResource(object):
     def _obj_url(self, pk):
         return joinurl(self._list_url, pk)
 
-    def __loads_scheme(self, response):
-        objects, error = self.scheme.loads(response, many=True)
+    def __loads_schema(self, response):
+        objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(
                 'Invalid structure for initialisation objects. \n'
@@ -94,7 +99,7 @@ class BaseResource(object):
 
     def get(self, pk):
         response = self.api.get(url=self._obj_url(pk))
-        objects = self.__loads_scheme(response)
+        objects = self.__loads_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
@@ -102,4 +107,4 @@ class BaseResource(object):
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url, params=filters)
-        return self.__loads_scheme(response)
+        return self.__loads_schema(response)

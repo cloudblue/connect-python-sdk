@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class Hub(BaseObject):
+class Hub(BaseModel):
     pass
 
 
-class HubScheme(BaseScheme):
+class HubSchema(BaseSchema):
     name = fields.Str()
 
     @post_load
@@ -15,6 +22,6 @@ class HubScheme(BaseScheme):
         return Hub(**data)
 
 
-class HubsSchemeMixin(Schema):
-    hub = fields.Nested(HubScheme, only=('id', 'name'))
+class HubsSchemaMixin(Schema):
+    hub = fields.Nested(HubSchema, only=('id', 'name'))
     external_id = fields.Str()

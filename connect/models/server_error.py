@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject
+from .base import BaseModel
 
 
-class ServerError(BaseObject):
+class ServerError(BaseModel):
     pass
 
 
-class ServerErrorScheme(Schema):
+class ServerErrorSchema(Schema):
     error_code = fields.Str()
     params = fields.Dict()
     errors = fields.List(fields.Str())

@@ -1,7 +1,14 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import Schema, fields, post_load
 
 
-class BaseObject:
+class BaseModel:
     def __init__(self, *args, **kwargs):
         self.id = kwargs.get('id')
         if kwargs:
@@ -9,9 +16,9 @@ class BaseObject:
                 setattr(self, attr, val)
 
 
-class BaseScheme(Schema):
+class BaseSchema(Schema):
     id = fields.Str()
 
     @post_load
     def make_object(self, data):
-        return BaseObject(**data)
+        return BaseModel(**data)

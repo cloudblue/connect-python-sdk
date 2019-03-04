@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+This file is part of the Ingram Micro Cloud Blue Connect SDK.
+Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+"""
+
 from marshmallow import Schema, fields, post_load
 
-from .base import BaseObject, BaseScheme
+from .base import BaseModel, BaseSchema
 
 
-class Tier(BaseObject):
+class Tier(BaseModel):
     pass
 
 
-class TierScheme(BaseScheme):
+class TierSchema(BaseSchema):
     name = fields.Str()
     contact_info = fields.Dict()
     external_id = fields.Str()
@@ -18,7 +25,7 @@ class TierScheme(BaseScheme):
         return Tier(**data)
 
 
-class TiersSchemeMixin(Schema):
-    customer = fields.Nested(TierScheme)
-    tier1 = fields.Nested(TierScheme)
-    tier2 = fields.Nested(TierScheme)
+class TiersSchemaMixin(Schema):
+    customer = fields.Nested(TierSchema)
+    tier1 = fields.Nested(TierSchema)
+    tier2 = fields.Nested(TierSchema)

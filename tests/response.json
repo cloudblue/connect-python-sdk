@@ -1,1 +1,110 @@
-[{"activation_key": "###tile", "asset": {"connection": {"id": "CT-9344-000", "provider": {"id": "PA-063-000", "name": "Connection name"}, "type": "production", "vendor": {"id": "VA-691-000", "name": "Vendor Name"}}, "external_id": "1001000", "external_uid": "f90e2ed2-b267-4831-93e6-a6b06874e000", "id": "AS-392-283-000-0", "items": [{"id": "string_id", "mpn": "mpn params", "old_quantity": "0", "quantity": "0"}], "params": [{"description": "Activation Code", "id": "activationCode", "name": "Activation Code", "type": "text", "value": "value param", "value_choices": [], "value_error": ""}], "product": {"id": "CN-631-322-000", "name": "ProductName"}, "tiers": {"customer": {"contact_info": {"address_line1": "street A", "address_line2": "2 2", "city": "Moscow", "contact": {"email": "test@email.com", "first_name": "First Name", "last_name": "Last Name", "phone_number": {"area_code": "", "country_code": "+7", "extension": "", "phone_number": "8901298403"}}, "country": "es", "postal_code": "08000", "state": ""}, "external_id": "1001000", "id": "TA-0-7304-8514-7000", "name": "Name"}, "tier1": {"contact_info": {"address_line1": "street B", "address_line2": "", "city": "Saint-Petersburg", "contact": {"email": "test2@mail.com", "first_name": "First Name", "last_name": "Last Name", "phone_number": {"area_code": "123", "country_code": "+34", "extension": "", "phone_number": "753000"}}, "country": "es", "postal_code": "28000", "state": ""}, "external_id": "1000000", "id": "TA-0-7042-5000-3000", "name": "Name"}}}, "contract": {"id": "CRD-00000-00000-00000", "name": "ACME Distribution Contract"}, "created": "2019-02-19T19:23:07.209244+00:00", "id": "PR-5852-1608-0000", "marketplace": {"icon": "/media/PA-063-000/marketplaces/MP-77000/icon.svg", "id": "MP-77000", "name": "MP Spain"}, "reason": "", "status": "approved", "type": "purchase", "updated": "2019-02-19T19:28:11.053922+00:00"}]
+[
+  {
+    "activation_key": "###tile",
+    "asset": {
+      "connection": {
+        "id": "CT-9344-000",
+        "provider": {
+          "id": "PA-063-000",
+          "name": "Connection name"
+        },
+        "type": "production",
+        "vendor": {
+          "id": "VA-691-000",
+          "name": "Vendor Name"
+        }
+      },
+      "external_id": "1001000",
+      "external_uid": "f90e2ed2-b267-4831-93e6-a6b06874e000",
+      "id": "AS-392-283-000-0",
+      "items": [
+        {
+          "id": "string_id",
+          "mpn": "mpn params",
+          "old_quantity": "0",
+          "quantity": "0"
+        }
+      ],
+      "params": [
+        {
+          "description": "Activation Code",
+          "id": "activationCode",
+          "name": "Activation Code",
+          "type": "text",
+          "value": "value param",
+          "value_choices": [],
+          "value_error": ""
+        }
+      ],
+      "product": {
+        "id": "CN-631-322-000",
+        "name": "ProductName"
+      },
+      "tiers": {
+        "customer": {
+          "contact_info": {
+            "address_line1": "street A",
+            "address_line2": "2 2",
+            "city": "Moscow",
+            "contact": {
+              "email": "test@email.com",
+              "first_name": "First Name",
+              "last_name": "Last Name",
+              "phone_number": {
+                "area_code": "",
+                "country_code": "+7",
+                "extension": "",
+                "phone_number": "8901298403"
+              }
+            },
+            "country": "es",
+            "postal_code": "08000",
+            "state": ""
+          },
+          "external_id": "1001000",
+          "id": "TA-0-7304-8514-7000",
+          "name": "Name"
+        },
+        "tier1": {
+          "contact_info": {
+            "address_line1": "street B",
+            "address_line2": "",
+            "city": "Saint-Petersburg",
+            "contact": {
+              "email": "test2@mail.com",
+              "first_name": "First Name",
+              "last_name": "Last Name",
+              "phone_number": {
+                "area_code": "123",
+                "country_code": "+34",
+                "extension": "",
+                "phone_number": "753000"
+              }
+            },
+            "country": "es",
+            "postal_code": "28000",
+            "state": ""
+          },
+          "external_id": "1000000",
+          "id": "TA-0-7042-5000-3000",
+          "name": "Name"
+        }
+      }
+    },
+    "contract": {
+      "id": "CRD-00000-00000-00000",
+      "name": "ACME Distribution Contract"
+    },
+    "created": "2019-02-19T19:23:07.209244+00:00",
+    "id": "PR-5852-1608-0000",
+    "marketplace": {
+      "icon": "/media/PA-063-000/marketplaces/MP-77000/icon.svg",
+      "id": "MP-77000",
+      "name": "MP Spain"
+    },
+    "reason": "",
+    "status": "approved",
+    "type": "purchase",
+    "updated": "2019-02-19T19:28:11.053922+00:00"
+  }
+]
