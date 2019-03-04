@@ -11,7 +11,10 @@ from .base import BaseModel, BaseSchema
 
 
 class Tier(BaseModel):
-    pass
+    name = None  # type: str
+    contract_info = None  # type: dict
+    external_id = None  # type: str
+    external_uid = None  # type: str
 
 
 class TierSchema(BaseSchema):
@@ -25,7 +28,17 @@ class TierSchema(BaseSchema):
         return Tier(**data)
 
 
-class TiersSchemaMixin(Schema):
+class TiersMixin(BaseModel):
+    customer = None  # type: Tier
+    tier1 = None  # type: Tier
+    tier2 = None  # type: Tier
+
+
+class TiersMixinSchema(Schema):
     customer = fields.Nested(TierSchema)
     tier1 = fields.Nested(TierSchema)
     tier2 = fields.Nested(TierSchema)
+
+    @post_load
+    def make_object(self, data):
+        return TiersMixin(**data)

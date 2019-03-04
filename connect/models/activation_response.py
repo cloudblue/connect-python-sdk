@@ -9,14 +9,19 @@ import json
 
 
 class ActivationTileResponse(object):
+    tile = None  # type: str
+
     def __init__(self, markdown=None):
-        if markdown:
-            try:
-                self.tile = json.loads(markdown)
-            except ValueError:
-                self.tile = markdown or 'Activation succeeded'
+        # type: (str) -> None
+        try:
+            self.tile = json.loads(markdown)
+        except ValueError:
+            self.tile = markdown or 'Activation succeeded'
 
 
 class ActivationTemplateResponse(object):
+    template_id = None  # type: str
+
     def __init__(self, template_id):
+        # type: (str) -> None
         self.template_id = template_id

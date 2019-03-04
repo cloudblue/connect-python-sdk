@@ -11,13 +11,16 @@ from connect.logger import logger
 # noinspection PyUnresolvedReferences
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connect.models.fulfillment import Fulfillment
 
 # Set logger level / default level ERROR
+
 logger.setLevel("DEBUG")
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, req):
+        # type: (Fulfillment) -> object
 
         # Custom logic
         if req.type == 'purchase':

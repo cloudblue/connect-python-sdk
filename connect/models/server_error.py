@@ -6,12 +6,15 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import Schema, fields, post_load
+from typing import List
 
 from .base import BaseModel
 
 
 class ServerError(BaseModel):
-    pass
+    error_code = None  # type: str
+    params = None  # type: dict
+    errors = None  # type: List[str]
 
 
 class ServerErrorSchema(Schema):

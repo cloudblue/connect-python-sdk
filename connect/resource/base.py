@@ -6,6 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
+from requests import Response
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -15,14 +16,17 @@ from .utils import join_url
 
 
 class ApiClient(object):
+    config = None  # type: Config
 
     def __init__(self, config):
+        # type: (Config) -> None
         if not isinstance(config, Config):
             raise ValueError('A valid Config object is required to create an ApiClient')
         self.config = config
 
     @property
     def headers(self):
+        # type: () -> dict
         return {
             "Authorization": self.config.api_key,
             "Content-Type": "application/json",
@@ -30,6 +34,7 @@ class ApiClient(object):
 
     @staticmethod
     def check_response(response):
+        # type: (Response) -> str
         if not hasattr(response, 'content'):
             raise AttributeError(
                 'Response not attribute content. Check your request params'

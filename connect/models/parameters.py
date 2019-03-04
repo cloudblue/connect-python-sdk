@@ -6,12 +6,14 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import Schema, fields, post_load
+from typing import List
 
 from .base import BaseModel, BaseSchema
 
 
 class ValueChoice(BaseModel):
-    pass
+    value = None  # type: str
+    label = None  # type: str
 
 
 class ValueChoiceSchema(Schema):
@@ -24,7 +26,11 @@ class ValueChoiceSchema(Schema):
 
 
 class Param(BaseModel):
-    pass
+    name = None  # type: str
+    type = None  # type: str
+    value = None  # type: str
+    value_choices = None  # type: List[ValueChoice]
+    value_error = None  # type: str
 
 
 class ParamSchema(BaseSchema):

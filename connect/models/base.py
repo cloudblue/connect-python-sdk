@@ -9,6 +9,8 @@ from marshmallow import Schema, fields, post_load
 
 
 class BaseModel:
+    id = None  # type: str
+
     def __init__(self, **kwargs):
         # Inject parsed properties in the model
         for attr, val in kwargs.items():

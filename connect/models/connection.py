@@ -8,13 +8,17 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import fields, post_load
 
 from .base import BaseModel, BaseSchema
-from .company import CompanySchema
-from .hub import HubSchema
-from .product import ProductSchema
+from .company import Company, CompanySchema
+from .hub import Hub, HubSchema
+from .product import Product, ProductSchema
 
 
 class Connection(BaseModel):
-    pass
+    type = None  # type: str
+    provider = None  # type: Company
+    vendor = None  # type: Company
+    product = None  # type: Product
+    hub = None  # type: Hub
 
 
 class ConnectionSchema(BaseSchema):
