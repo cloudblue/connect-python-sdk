@@ -28,38 +28,44 @@ def teardown_module(module):
     os.chdir(module.prev_dir)
 
 
-def teardown_function():
-    Config.api_url, Config.api_key, Config.products = None, None, None
-
-
 def test_init_config_with_non_existing_file():
     with pytest.raises(IOError):
         Config(file='non_existing_config.json')
 
 
 def test_init_config_with_file():
-    config = Config(file='config.json')
-    _assert_config(config)
+    _assert_config(Config(file='config.json'))
 
 
-def test_set_config():
-    config = Config(
+def test_init_config_with_arguments():
+    _assert_config(Config(
         api_key=conf_dict.get('apiKey'),
         api_url=conf_dict.get('apiEndpoint'),
         products=conf_dict.get('products'),
-    )
-    _assert_config(config)
+    ))
 
 
-def _assert_config(config=None):
-    assert Config.api_key == conf_dict.get('apiKey')
-    assert Config.api_url == conf_dict.get('apiEndpoint')
-    assert isinstance(Config.products, list)
-    assert len(Config.products) == 1
-    assert Config.products == [conf_dict.get('products')]
-    if config:
-        assert config.api_key == conf_dict.get('apiKey')
-        assert config.api_url == conf_dict.get('apiEndpoint')
-        assert isinstance(config.products, list)
-        assert len(config.products) == 1
-        assert config.products == [conf_dict.get('products')]
+def test_init_config_with_invalid_arguments():
+    with pytest.raises(ValueError):
+        Config(
+            api_key='',
+            api_url='',
+            products='',
+        )
+
+
+def test_config_immutable_properties():
+    config = Config(file='config.json')
+    with pytest.raises(AttributeError):
+        config.api_key = conf_dict.get('apiKey')
+    with pytest.raises(AttributeError):
+        config.api_url = conf_dict.get('apiEndpoint')
+    with pytest.raises(AttributeError):
+        config.products = [conf_dict.get('products')]
+
+def _assert_config(config):
+    assert config.api_key == conf_dict.get('apiKey')
+    assert config.api_url == conf_dict.get('apiEndpoint')
+    assert isinstance(config.products, list)
+    assert len(config.products) == 1
+    assert config.products[0] == conf_dict.get('products')

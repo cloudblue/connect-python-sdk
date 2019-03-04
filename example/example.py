@@ -11,8 +11,6 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
-Config(file='config.json')
-
 # set logger level / default level ERROR
 logger.setLevel("DEBUG")
 
@@ -52,5 +50,5 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor()
+    request = ExampleRequestProcessor(Config(file='config.json'))
     request.process()

@@ -13,17 +13,18 @@ from connect.models import BaseSchema, ServerErrorSchema
 from connect.models.exception import ServerErrorException
 from .utils import joinurl
 
-config = Config()
-
 
 class ApiClient(object):
 
+    def __init__(self, config):
+        if not isinstance(config, Config):
+            raise ValueError('A valid Config object is required to create an ApiClient')
+        self.config = config
+
     @property
     def headers(self):
-        config.check_credentials(
-            config.api_url, config.api_key, config.products)
         return {
-            "Authorization": config.api_key,
+            "Authorization": self.config.api_key,
             "Content-Type": "application/json",
         }
 
@@ -64,14 +65,18 @@ class ApiClient(object):
 class BaseResource(object):
     resource = None
     limit = 100
-    api = ApiClient()
+    api = None
     schema = BaseSchema()
 
-    def __init__(self, *args, **kwargs):
-
-        if self.__class__.resource is None:
+    def __init__(self, config, *args, **kwargs):
+        if not self.__class__.resource:
             raise AttributeError('Resource name not specified in class {}'.format(
                 self.__class__.__name__) + '. Add an attribute `resource` name of the resource')
+        if not isinstance(config, Config):
+            raise ValueError('A valid Config object is required to create a ' + type(self).__name__)
+        if not BaseResource.api:
+            BaseResource.api = ApiClient(config)
+        self.config = config
 
     def build_filter(self):
         res_filter = {}
@@ -82,7 +87,7 @@ class BaseResource(object):
 
     @property
     def _list_url(self):
-        return joinurl(config.api_url, self.__class__.resource)
+        return joinurl(self.config.api_url, self.__class__.resource)
 
     def _obj_url(self, pk):
         return joinurl(self._list_url, pk)
