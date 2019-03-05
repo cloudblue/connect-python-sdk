@@ -23,7 +23,7 @@ class Asset(BaseModel):
     connection = None  # type: Connection
     items = None  # type: List[Item]
     params = None  # type: List[Param]
-    tiers = None  # type: List[TiersMixin]
+    tiers = None  # type: TiersMixin
 
 
 class AssetSchema(BaseSchema):
