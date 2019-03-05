@@ -12,7 +12,7 @@ from .base import BaseModel, BaseSchema
 
 class Tier(BaseModel):
     name = None  # type: str
-    contract_info = None  # type: dict
+    contact_info = None  # type: dict
     external_id = None  # type: str
     external_uid = None  # type: str
 
