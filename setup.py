@@ -22,7 +22,7 @@ install_reqs = parse_requirements(
         dirname(abspath(__file__)),
         'requirements',
         'sdk.txt',
-    ), session=None)
+    ), session='None')
 
 VERSION = environ.get('TRAVIS_TAG')
 PACKAGES = find_packages(exclude=['tests*'])
