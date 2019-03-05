@@ -24,8 +24,8 @@ class FulfillmentFail(Message):
     def __init__(self, *args, **kwargs):
         # type: (*any, **any) -> None
         super(FulfillmentFail, self).__init__(*args, **kwargs)
-        self.code = 'fail'
         self.message = self.message or 'Request failed'
+        self.code = 'fail'
 
 
 class FulfillmentInquire(Message):
@@ -35,13 +35,15 @@ class FulfillmentInquire(Message):
         # type: (*any, **any) -> None
         super(FulfillmentInquire, self).__init__(*args, **kwargs)
         self.message = self.message or 'Correct user input required'
-        self.params = kwargs.get('params', [])
         self.code = 'inquire'
+        self.params = kwargs.get('params', [])
 
 
 class Skip(Message):
-    def __init__(self):
-        # type: () -> None
+    def __init__(self, *args, **kwargs):
+        # type: (*any, **any) -> None
+        super(Skip, self).__init__(*args, **kwargs)
+        self.message = self.message or 'Request skipped'
         self.code = 'skip'
 
 
