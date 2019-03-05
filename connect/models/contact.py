@@ -11,7 +11,10 @@ from .base import BaseModel, BaseSchema
 
 
 class PhoneNumber(BaseModel):
-    pass
+    country_code = None  # type: str
+    area_code = None  # type: str
+    phone_number = None  # type: str
+    extension = None  # type: str
 
 
 class PhoneNumberSchema(BaseSchema):
@@ -26,7 +29,10 @@ class PhoneNumberSchema(BaseSchema):
 
 
 class Contact(BaseModel):
-    pass
+    email = None  # type: str
+    first_name = None  # type: str
+    last_name = None  # type: str
+    phone_number = None  # type: PhoneNumber
 
 
 class ContactSchema(BaseSchema):
@@ -41,7 +47,13 @@ class ContactSchema(BaseSchema):
 
 
 class ContactInfo(BaseModel):
-    pass
+    address_line1 = None  # type: str
+    address_line2 = None  # type: str
+    city = None  # type: str
+    contact = None  # type: Contact
+    country = None  # type: str
+    postal_code = None  # type: str
+    state = None  # type: str
 
 
 class ContactInfoSchema(BaseSchema):

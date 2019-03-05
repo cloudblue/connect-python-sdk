@@ -8,12 +8,12 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import Schema, fields, post_load
 
 from .base import BaseModel, BaseSchema
-from .contact import ContactInfoSchema
+from .contact import ContactInfo, ContactInfoSchema
 
 
 class Tier(BaseModel):
     name = None  # type: str
-    contact_info = None  # type: dict
+    contact_info = None  # type: ContactInfo
     external_id = None  # type: str
     external_uid = None  # type: str
 
