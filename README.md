@@ -66,12 +66,12 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, '
                                                'you decided to have an account in our amazing service!')
             # or
-            # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
+            # return TemplateResource(self.config).render(pk='TEMPLATE_ID', request_id=request.id)
 
             # aprrove by Template
             return ActivationTemplateResponse(template_id="TL-497-535-242")
             # or
-            # return TemplateResource().get(pk='TEMPLATE_ID')
+            # return TemplateResource(self.config).get(pk='TEMPLATE_ID')
 
         elif request.type == 'change':
             # fail
