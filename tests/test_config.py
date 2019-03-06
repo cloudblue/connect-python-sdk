@@ -54,17 +54,28 @@ def test_init_config_with_invalid_arguments():
         )
 
 
+# noinspection PyPropertyAccess
 def test_config_immutable_properties():
     config = Config(filename='config.json')
     with pytest.raises(AttributeError):
-        # noinspection PyPropertyAccess
         config.api_key = conf_dict.get('apiKey')
-    with pytest.raises(AttributeError):
-        # noinspection PyPropertyAccess
         config.api_url = conf_dict.get('apiEndpoint')
-    with pytest.raises(AttributeError):
-        # noinspection PyPropertyAccess
         config.products = [conf_dict.get('products')]
+
+
+def test_global_config():
+    Config.instance = None  # Reset global config
+    Config(filename='config.json')
+    _assert_global_config()
+
+
+# noinspection PyPropertyAccess
+def test_global_config_immutable_properties():
+    Config(filename='config.json')
+    with pytest.raises(AttributeError):
+        Config.instance.api_key = conf_dict.get('apiKey')
+        Config.instance.api_url = conf_dict.get('apiEndpoint')
+        Config.instance.products = [conf_dict.get('products')]
 
 
 def _assert_config(config):
@@ -73,3 +84,11 @@ def _assert_config(config):
     assert isinstance(config.products, list)
     assert len(config.products) == 1
     assert config.products[0] == conf_dict.get('products')
+
+
+def _assert_global_config():
+    assert Config.instance.api_key == conf_dict.get('apiKey')
+    assert Config.instance.api_url == conf_dict.get('apiEndpoint')
+    assert isinstance(Config.instance.products, list)
+    assert len(Config.instance.products) == 1
+    assert Config.instance.products[0] == conf_dict.get('products')

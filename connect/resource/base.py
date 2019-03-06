@@ -6,7 +6,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
-from requests import Response
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -18,11 +17,15 @@ from .utils import join_url
 class ApiClient(object):
     config = None  # type: Config
 
-    def __init__(self, config):
+    def __init__(self, config=None):
         # type: (Config) -> None
-        if not isinstance(config, Config):
+
+        # Assign passed config or globally configured instance
+        self.config = config or Config.instance
+
+        # Assert data
+        if not isinstance(self.config, Config):
             raise ValueError('A valid Config object is required to create an ApiClient')
-        self.config = config
 
     @property
     def headers(self):
@@ -34,7 +37,7 @@ class ApiClient(object):
 
     @staticmethod
     def check_response(response):
-        # type: (Response) -> str
+        # type: (requests.Response) -> str
         if not hasattr(response, 'content'):
             raise AttributeError(
                 'Response not attribute content. Check your request params'
@@ -73,15 +76,19 @@ class BaseResource(object):
     api = None
     schema = BaseSchema()
 
-    def __init__(self, config):
+    def __init__(self, config=None):
+        # Assign passed config or globally configured instance
+        self.config = config or Config.instance
+
+        # Assert data
         if not self.__class__.resource:
             raise AttributeError('Resource name not specified in class {}'.format(
                 self.__class__.__name__) + '. Add an attribute `resource` name of the resource')
-        if not isinstance(config, Config):
-            raise ValueError('A valid Config object is required to create a ' + type(self).__name__)
+        if not isinstance(self.config, Config):
+            raise ValueError('A valid Config object must be passed or globally configured '
+                             'to create a ' + type(self).__name__)
         if not BaseResource.api:
             BaseResource.api = ApiClient(config)
-        self.config = config
 
     def build_filter(self):
         res_filter = {}

@@ -14,7 +14,6 @@ from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
 
 # Set logger level / default level ERROR
-
 logger.setLevel("DEBUG")
 
 
