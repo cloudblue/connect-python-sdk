@@ -25,14 +25,14 @@ class ProductSchema(BaseSchema):
 class Item(BaseModel):
     global_id = None  # type: str
     mpn = None  # type: str
-    old_quantity = None  # type: str
+    old_quantity = None  # type: int
     quantity = None  # type: int
 
 
 class ItemSchema(BaseSchema):
     global_id = fields.Str()
     mpn = fields.Str()
-    old_quantity = fields.Str()
+    old_quantity = fields.Integer()
     quantity = fields.Integer()
 
     @post_load

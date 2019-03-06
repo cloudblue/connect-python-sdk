@@ -24,6 +24,18 @@ class Fulfillment(BaseModel):
     contract = None  # type: Contract
     marketplace = None  # type: Marketplace
 
+    @property
+    def new_items(self):
+        return [i for i in self.asset.items if i.quantity > 0 and i.old_quantity == 0]
+
+    @property
+    def changed_items(self):
+        return [i for i in self.asset.items if i.quantity > 0 and i.old_quantity > 0]
+
+    @property
+    def removed_items(self):
+        return [i for i in self.asset.items if i.quantity == 0 and i.old_quantity > 0]
+
 
 class FulfillmentSchema(BaseSchema):
     activation_key = fields.Str()

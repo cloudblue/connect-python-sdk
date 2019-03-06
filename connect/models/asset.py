@@ -25,6 +25,18 @@ class Asset(BaseModel):
     params = None  # type: List[Param]
     tiers = None  # type: TiersMixin
 
+    def get_parameter_by_id(self, id_):
+        try:
+            return [a for a in self.params if a.id == id_][0]
+        except IndexError:
+            return None
+
+    def get_item_by_id(self, id_):
+        try:
+            return [a for a in self.items if a.id == id_][0]
+        except IndexError:
+            return None
+
 
 class AssetSchema(BaseSchema):
     status = fields.Str()
