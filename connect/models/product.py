@@ -29,7 +29,7 @@ class Item(BaseModel):
 class ItemSchema(BaseSchema):
     global_id = fields.Str()
     mpn = fields.Str()
-    old_quantity = fields.Str()
+    old_quantity = fields.Integer()
     quantity = fields.Integer()
 
     @post_load
