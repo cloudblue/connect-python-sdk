@@ -10,6 +10,8 @@ import os
 
 
 class Config(object):
+    instance = None  # Global instance
+
     def __init__(
             self,
             api_url=None,
@@ -61,6 +63,9 @@ class Config(object):
         self._products = [products] \
             if isinstance(products, str) \
             else products or []
+
+        # Store last created instance
+        Config.instance = self
 
     @property
     def api_url(self):
