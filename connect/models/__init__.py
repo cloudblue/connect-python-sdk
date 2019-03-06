@@ -9,6 +9,7 @@ from .activation_response import ActivationTemplateResponse, ActivationTileRespo
 from .base import BaseSchema
 from .fulfillment import FulfillmentSchema
 from .parameters import Param, ParamSchema
+from .product import Item, ItemSchema
 from .server_error import ServerErrorSchema
 
 __all__ = [
@@ -16,7 +17,9 @@ __all__ = [
     'ActivationTileResponse',
     'BaseSchema',
     'FulfillmentSchema',
-    'ServerErrorSchema',
+    'Item',
+    'ItemSchema',
     'Param',
     'ParamSchema',
+    'ServerErrorSchema',
 ]
