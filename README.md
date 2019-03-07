@@ -43,12 +43,6 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
-# set logger level / default level ERROR
-logger.setLevel("DEBUG")
-
-# If we remove this line, it is done implicitly
-Config(file='config.json')
-
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
