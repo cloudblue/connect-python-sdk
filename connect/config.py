@@ -10,7 +10,7 @@ import os
 
 
 class Config(object):
-    instance = None  # Global instance
+    _instance = None  # Global instance
 
     def __init__(
             self,
@@ -65,8 +65,14 @@ class Config(object):
             else products or []
 
         # Store first created instance
-        if not Config.instance:
-            Config.instance = self
+        if not Config._instance:
+            Config._instance = self
+
+    @classmethod
+    def get_instance(cls):
+        if not cls._instance:
+           cls._instance = Config(file='config.json')
+        return cls._instance
 
     @property
     def api_url(self):
