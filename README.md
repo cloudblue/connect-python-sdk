@@ -38,7 +38,6 @@ $ pip install connect-sdk
 ### Example
 ```python
 from connect import FulfillmentAutomation
-from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
