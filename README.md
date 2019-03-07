@@ -38,17 +38,10 @@ $ pip install connect-sdk
 ### Example
 ```python
 from connect import FulfillmentAutomation
-from connect.config import Config
 from connect.logger import logger
 # noinspection PyUnresolvedReferences
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-
-# Set logger level / default level ERROR
-logger.setLevel("DEBUG")
-
-# If we remove this line, it is done implicitly
-Config(filename='config.json')
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
