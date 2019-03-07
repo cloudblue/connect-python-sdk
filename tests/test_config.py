@@ -37,6 +37,7 @@ def test_global_implicit_global_config():
     assert Config.get_instance().products[0] == conf_dict.get('products')
 
 
+# noinspection PyPropertyAccess
 def test_global_config_immutable_properties():
     with pytest.raises(AttributeError):
         Config.get_instance().api_key = conf_dict.get('apiKey')
@@ -77,21 +78,6 @@ def test_config_immutable_properties():
         config.api_key = conf_dict.get('apiKey')
         config.api_url = conf_dict.get('apiEndpoint')
         config.products = [conf_dict.get('products')]
-
-
-def test_global_config():
-    Config.instance = None  # Reset global config
-    Config(filename='config.json')
-    _assert_global_config()
-
-
-# noinspection PyPropertyAccess
-def test_global_config_immutable_properties():
-    Config(filename='config.json')
-    with pytest.raises(AttributeError):
-        Config.instance.api_key = conf_dict.get('apiKey')
-        Config.instance.api_url = conf_dict.get('apiEndpoint')
-        Config.instance.products = [conf_dict.get('products')]
 
 
 def _assert_config(config):
