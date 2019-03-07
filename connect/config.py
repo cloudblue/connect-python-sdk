@@ -71,7 +71,7 @@ class Config(object):
     @classmethod
     def get_instance(cls):
         if not cls._instance:
-           cls._instance = Config(file='config.json')
+            cls._instance = Config(file='config.json')
         return cls._instance
 
     @property
