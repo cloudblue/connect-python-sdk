@@ -7,7 +7,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
-from connect.config import Config
 from connect.logger import function_log
 from connect.models import FulfillmentSchema, Param
 from .base import BaseResource
@@ -22,8 +21,8 @@ class FulfillmentResource(BaseResource):
 
     def build_filter(self):
         filters = super(FulfillmentResource, self).build_filter()
-        if Config.products:
-            filters['product_id'] = Config.products
+        if self.config.products:
+            filters['product_id'] = self.config.products
 
         filters['status'] = 'pending'
         return filters
@@ -44,7 +43,7 @@ class FulfillmentResource(BaseResource):
 
     @function_log
     def render_template(self, pk, template_id):
-        return TemplateResource().render(template_id, pk)
+        return TemplateResource(self.config).render(template_id, pk)
 
     @function_log
     def update_parameters(self, pk, params):

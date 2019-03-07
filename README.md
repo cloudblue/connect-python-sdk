@@ -43,8 +43,6 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
-Config(file='config.json')
-
 # set logger level / default level ERROR
 logger.setLevel("DEBUG")
 
@@ -68,12 +66,12 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, '
                                                'you decided to have an account in our amazing service!')
             # or
-            # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
+            # return TemplateResource(self.config).render(pk='TEMPLATE_ID', request_id=request.id)
 
             # aprrove by Template
             return ActivationTemplateResponse(template_id="TL-497-535-242")
             # or
-            # return TemplateResource().get(pk='TEMPLATE_ID')
+            # return TemplateResource(self.config).get(pk='TEMPLATE_ID')
 
         elif request.type == 'change':
             # fail
@@ -84,7 +82,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor()
+    request = ExampleRequestProcessor(Config(file='config.json'))
     request.process()
 ```
 
