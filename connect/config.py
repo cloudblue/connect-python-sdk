@@ -11,7 +11,7 @@ import os
 
 class Config(object):
     # Global instance
-    instance = None  # type: Config
+    _instance = None  # type: Config
 
     def __init__(
             self,
@@ -35,7 +35,7 @@ class Config(object):
             raise TypeError('Products can be string or string list. Found type '
                             + type(products).__name__)
 
-        # Load config from filename name
+        # Load config from filename
         if filename:
             if not os.path.exists(filename):
                 raise IOError('Not filename `{}` on directory'.format(filename))
@@ -66,8 +66,14 @@ class Config(object):
             else products or []
 
         # Store first created instance
-        if not Config.instance:
-            Config.instance = self
+        if not Config._instance:
+            Config._instance = self
+
+    @classmethod
+    def get_instance(cls):
+        if not cls._instance:
+            cls._instance = Config(filename='config.json')
+        return cls._instance
 
     @property
     def api_url(self):

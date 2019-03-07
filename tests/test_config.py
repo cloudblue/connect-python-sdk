@@ -28,6 +28,22 @@ def teardown_module(module):
     os.chdir(module.prev_dir)
 
 
+def test_global_implicit_global_config():
+    """ Global config is instantiated from config.json if not explicitly set """
+    assert Config.get_instance().api_key == conf_dict.get('apiKey')
+    assert Config.get_instance().api_url == conf_dict.get('apiEndpoint')
+    assert isinstance(Config.get_instance().products, list)
+    assert len(Config.get_instance().products) == 1
+    assert Config.get_instance().products[0] == conf_dict.get('products')
+
+
+def test_global_config_immutable_properties():
+    with pytest.raises(AttributeError):
+        Config.get_instance().api_key = conf_dict.get('apiKey')
+        Config.get_instance().api_url = conf_dict.get('apiEndpoint')
+        Config.get_instance().products = [conf_dict.get('products')]
+
+
 def test_init_config_with_non_existing_file():
     with pytest.raises(IOError):
         Config(filename='non_existing_config.json')
@@ -84,11 +100,3 @@ def _assert_config(config):
     assert isinstance(config.products, list)
     assert len(config.products) == 1
     assert config.products[0] == conf_dict.get('products')
-
-
-def _assert_global_config():
-    assert Config.instance.api_key == conf_dict.get('apiKey')
-    assert Config.instance.api_url == conf_dict.get('apiEndpoint')
-    assert isinstance(Config.instance.products, list)
-    assert len(Config.instance.products) == 1
-    assert Config.instance.products[0] == conf_dict.get('products')

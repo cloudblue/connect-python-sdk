@@ -16,6 +16,9 @@ from connect.models.fulfillment import Fulfillment
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")
 
+# If we remove this line, it is done implicitly
+Config(filename='config.json')
+
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, req):
@@ -37,12 +40,12 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
                                           'to have an account in our amazing service!')
             # Or
-            # return TemplateResource(self.config).render(pk='TEMPLATE_ID', request_id=req.id)
+            # return TemplateResource().render(pk='TEMPLATE_ID', request_id=req.id)
 
             # Approve by Template
             # return ActivationTemplateResponse('TL-497-535-242')
             # Or
-            # return TemplateResource(self.config).get(pk='TEMPLATE_ID')
+            # return TemplateResource().get(pk='TEMPLATE_ID')
 
         elif req.type == 'change':
             # fail
@@ -53,5 +56,5 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor(Config(filename='config.json'))
+    request = ExampleRequestProcessor()
     request.process()

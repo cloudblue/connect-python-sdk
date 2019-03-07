@@ -21,7 +21,7 @@ class ApiClient(object):
         # type: (Config) -> None
 
         # Assign passed config or globally configured instance
-        self.config = config or Config.instance
+        self.config = config or Config.get_instance()
 
         # Assert data
         if not isinstance(self.config, Config):
@@ -78,7 +78,7 @@ class BaseResource(object):
 
     def __init__(self, config=None):
         # Assign passed config or globally configured instance
-        self.config = config or Config.instance
+        self.config = config or Config.get_instance()
 
         # Assert data
         if not self.__class__.resource:
