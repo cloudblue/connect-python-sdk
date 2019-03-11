@@ -15,11 +15,13 @@ from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 logger.setLevel("DEBUG")
 
 # If we remove this line, it is done implicitly
-Config(file='config.json')
+Config(filename='config.json')
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
+
+        logger.info('Processing request {}'.format(request.id))
 
         # custom logic
         if request.type == 'purchase':
@@ -34,12 +36,13 @@ class ExampleRequestProcessor(FulfillmentAutomation):
                     raise FulfillmentInquire(params=[param])
 
             # approve by ActivationTile
-            return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, you decided '
-                                               'to have an account in our amazing service!')
+            return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
+                                          'to have an account in our amazing service!')
             # or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
-            # aprrove by Template
+            # approve by Template
+            # noinspection PyUnreachableCode
             return ActivationTemplateResponse(template_id="TL-497-535-242")
             # or
             # return TemplateResource().get(pk='TEMPLATE_ID')
@@ -53,5 +56,5 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor()
-    request.process()
+    request_processor = ExampleRequestProcessor()
+    request_processor.process()

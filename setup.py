@@ -11,10 +11,13 @@ from os import environ
 from setuptools import find_packages, setup
 
 try:  # for pip >= 10
+    # noinspection PyProtectedMember,PyPackageRequirements
     from pip._internal.req import parse_requirements
 except ImportError:  # for pip <= 9.0.3
+    # noinspection PyPackageRequirements,PyUnresolvedReferences
     from pip.req import parse_requirements
 
+# noinspection PyTypeChecker
 install_reqs = parse_requirements(
     join(
         dirname(abspath(__file__)),

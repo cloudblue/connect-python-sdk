@@ -11,7 +11,7 @@ import json
 class ActivationTileResponse(object):
     tile = 'Activation succeeded'
 
-    def __init__(self, markdown=None, *args, **kwargs):
+    def __init__(self, markdown=None):
         if markdown:
             try:
                 self.tile = json.loads(markdown)

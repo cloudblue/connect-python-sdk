@@ -11,7 +11,7 @@ from connect.logger import function_log
 from connect.models import FulfillmentSchema, Param
 from .base import BaseResource
 from .template import TemplateResource
-from .utils import joinurl
+from .utils import join_url
 
 
 class FulfillmentResource(BaseResource):
@@ -29,16 +29,16 @@ class FulfillmentResource(BaseResource):
 
     @function_log
     def approve(self, pk, data):
-        url = joinurl(self._obj_url(pk), 'approve/')
+        url = join_url(self._obj_url(pk), 'approve/')
         return self.api.post(url=url, data=json.dumps(data if data else {}))
 
     @function_log
     def inquire(self, pk):
-        return self.api.post(url=joinurl(self._obj_url(pk), 'inquire/'), data=json.dumps({}))
+        return self.api.post(url=join_url(self._obj_url(pk), 'inquire/'), data=json.dumps({}))
 
     @function_log
     def fail(self, pk, reason):
-        url = joinurl(self._obj_url(pk), 'fail/')
+        url = join_url(self._obj_url(pk), 'fail/')
         return self.api.post(url=url, data=json.dumps({'reason': reason}))
 
     @function_log

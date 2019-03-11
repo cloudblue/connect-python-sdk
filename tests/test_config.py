@@ -46,11 +46,11 @@ def test_global_config_immutable_properties():
 
 def test_init_config_with_non_existing_file():
     with pytest.raises(IOError):
-        Config(file='non_existing_config.json')
+        Config(filename='non_existing_config.json')
 
 
 def test_init_config_with_file():
-    _assert_config(Config(file='config.json'))
+    _assert_config(Config(filename='config.json'))
 
 
 def test_init_config_with_arguments():
@@ -70,8 +70,9 @@ def test_init_config_with_invalid_arguments():
         )
 
 
+# noinspection PyPropertyAccess
 def test_config_immutable_properties():
-    config = Config(file='config.json')
+    config = Config(filename='config.json')
     with pytest.raises(AttributeError):
         config.api_key = conf_dict.get('apiKey')
         config.api_url = conf_dict.get('apiEndpoint')

@@ -17,17 +17,17 @@ class Config(object):
             api_url=None,
             api_key=None,
             products=None,
-            file=None
+            filename=None
     ):
         """
         initialization config for public api
         :param api_url: Public api url
         :param api_key: Service user ApiKey
         :param products (optional): Id products
-        :param file: Config file path
+        :param filename: Config file path
         """
         # Check arguments
-        if not file and not any([api_key, api_url]):
+        if not filename and not any([api_key, api_url]):
             raise ValueError('Filename or api_key and api_url are expected'
                              'in Config initialization')
         if products and not isinstance(products, (str, list)):
@@ -35,18 +35,18 @@ class Config(object):
                             + type(products).__name__)
 
         # Load config from file name
-        if file:
-            if not os.path.exists(file):
-                raise IOError('Not file `{}` on directory'.format(file))
+        if filename:
+            if not os.path.exists(filename):
+                raise IOError('Not file `{}` on directory'.format(filename))
 
-            with open(file) as config_file:
+            with open(filename) as config_file:
                 configs = config_file.read()
 
             try:
                 configs = json.loads(configs)
             except Exception as ex:
                 raise TypeError('Invalid config file `{}`\n'
-                                'ERROR: {}'.format(file, str(ex)))
+                                'ERROR: {}'.format(filename, str(ex)))
 
             (api_url, api_key, products) = (configs.get('apiEndpoint', ''),
                                             configs.get('apiKey', ''),
@@ -71,7 +71,7 @@ class Config(object):
     @classmethod
     def get_instance(cls):
         if not cls._instance:
-            cls._instance = Config(file='config.json')
+            cls._instance = Config(filename='config.json')
         return cls._instance
 
     @property
