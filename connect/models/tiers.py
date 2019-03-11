@@ -8,6 +8,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import Schema, fields, post_load
 
 from .base import BaseModel, BaseSchema
+from .contact import ContactInfoSchema
 
 
 class Tier(BaseModel):
@@ -16,7 +17,7 @@ class Tier(BaseModel):
 
 class TierSchema(BaseSchema):
     name = fields.Str()
-    contact_info = fields.Dict()
+    contact_info = fields.Nested(ContactInfoSchema)
     external_id = fields.Str()
     external_uid = fields.UUID()
 
