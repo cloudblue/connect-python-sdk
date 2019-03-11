@@ -17,6 +17,7 @@ except ImportError:  # for pip <= 9.0.3
     # noinspection PyPackageRequirements,PyUnresolvedReferences
     from pip.req import parse_requirements
 
+# noinspection PyTypeChecker
 install_reqs = parse_requirements(
     join(
         dirname(abspath(__file__)),

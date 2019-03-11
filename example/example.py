@@ -8,7 +8,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from connect import FulfillmentAutomation
 from connect.config import Config
 from connect.logger import logger
-# noinspection PyUnresolvedReferences
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
@@ -21,17 +20,19 @@ Config(filename='config.json')
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
-    def process_request(self, req):
+    def process_request(self, request):
         # type: (Fulfillment) -> object
 
+        logger.info('Processing request {}'.format(request.id))
+
         # Custom logic
-        if req.type == 'purchase':
-            for item in req.asset.items:
+        if request.type == 'purchase':
+            for item in request.asset.items:
                 if item.quantity > 100000:
                     raise FulfillmentFail(
                         message='Is Not possible to purchase product')
 
-            for param in req.asset.params:
+            for param in request.asset.params:
                 if param.name == 'email' and not param.value:
                     param.value_error = 'Email address has not been provided, please provide one'
                     raise FulfillmentInquire(params=[param])
@@ -43,11 +44,12 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=req.id)
 
             # Approve by Template
-            # return ActivationTemplateResponse('TL-497-535-242')
+            # noinspection PyUnreachableCode
+            return ActivationTemplateResponse(template_id="TL-497-535-242")
             # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 
-        elif req.type == 'change':
+        elif request.type == 'change':
             # fail
             raise FulfillmentFail()
         else:
@@ -56,5 +58,5 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor()
-    request.process()
+    request_processor = ExampleRequestProcessor()
+    request_processor.process()

@@ -35,10 +35,10 @@ class Config(object):
             raise TypeError('Products can be string or string list. Found type '
                             + type(products).__name__)
 
-        # Load config from filename
+        # Load config from file name
         if filename:
             if not os.path.exists(filename):
-                raise IOError('Not filename `{}` on directory'.format(filename))
+                raise IOError('No filename `{}` on directory'.format(filename))
 
             with open(filename) as config_file:
                 configs = config_file.read()

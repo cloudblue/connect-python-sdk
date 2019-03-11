@@ -9,14 +9,14 @@ import json
 
 
 class ActivationTileResponse(object):
-    tile = None  # type: str
+    tile = 'Activation succeeded'  # type: str
 
     def __init__(self, markdown=None):
         # type: (str) -> None
         try:
             self.tile = json.loads(markdown)
         except ValueError:
-            self.tile = markdown or 'Activation succeeded'
+            self.tile = markdown or self.__class__.tile
 
 
 class ActivationTemplateResponse(object):
