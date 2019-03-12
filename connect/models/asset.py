@@ -16,9 +16,11 @@ from .tiers import TiersSchemaMixin
 
 class Asset(BaseModel):
     def get_param_by_id(self, identity):
+        # noinspection PyUnresolvedReferences
         return self._get_by_id(self.params, identity)
 
     def get_item_by_id(self, identity):
+        # noinspection PyUnresolvedReferences
         return self._get_by_id(self.items, identity)
 
 
