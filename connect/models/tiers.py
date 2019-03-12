@@ -18,7 +18,7 @@ class Tier(BaseModel):
 class TierSchema(BaseSchema):
     name = fields.Str()
     contact_info = fields.Nested(ContactInfoSchema)
-    external_id = fields.Str()
+    external_id = fields.Int()
     external_uid = fields.UUID()
 
     @post_load

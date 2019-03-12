@@ -24,4 +24,4 @@ class HubSchema(BaseSchema):
 
 class HubsSchemaMixin(Schema):
     hub = fields.Nested(HubSchema, only=('id', 'name'))
-    external_id = fields.Str()
+    external_id = fields.Int()

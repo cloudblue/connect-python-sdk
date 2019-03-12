@@ -15,7 +15,7 @@ from .tiers import TiersSchemaMixin
 
 
 class Asset(BaseModel):
-    def get_parameter_by_id(self, identity):
+    def get_param_by_id(self, identity):
         return self._get_by_id(self.params, identity)
 
     def get_item_by_id(self, identity):
@@ -24,7 +24,7 @@ class Asset(BaseModel):
 
 class AssetSchema(BaseSchema):
     status = fields.Str()
-    external_id = fields.Str()
+    external_id = fields.Int()
     external_uid = fields.UUID()
     product = fields.Nested(ProductSchema, only=('id', 'name'))
     connection = fields.Nested(
