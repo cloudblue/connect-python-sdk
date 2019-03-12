@@ -15,15 +15,15 @@ from .marketplace import ContractSchema, MarketplaceSchema
 class Fulfillment(BaseModel):
     @property
     def new_items(self):
-        return [i for i in self.asset.items if i.quantity > 0 and i.old_quantity == 0]
+        return filter(lambda item: item.quantity > 0 and item.old_quantity == 0, self.asset.items)
 
     @property
     def changed_items(self):
-        return [i for i in self.asset.items if i.quantity > 0 and i.old_quantity > 0]
+        return filter(lambda item: item.quantity > 0 and item.old_quantity > 0, self.asset.items)
 
     @property
     def removed_items(self):
-        return [i for i in self.asset.items if i.quantity == 0 and i.old_quantity > 0]
+        return filter(lambda item: item.quantity == 0 and item.old_quantity > 0, self.asset.items)
 
 
 class FulfillmentSchema(BaseSchema):
