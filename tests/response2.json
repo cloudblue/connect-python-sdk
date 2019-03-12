@@ -13,7 +13,7 @@
           "name": "Marc FSG"
         }
       },
-      "external_id": 899,
+      "external_id": "899",
       "id": "AS-893-495-635-9",
       "items": [
         {
@@ -105,7 +105,7 @@
             "postal_code": "30690",
             "state": "Nevada"
           },
-          "external_id": 889,
+          "external_id": "889",
           "id": "TA-0-5870-9239-0029",
           "name": "Kaiser LLC"
         },
@@ -129,7 +129,7 @@
             "postal_code": "12111",
             "state": "Alaska"
           },
-          "external_id": 1,
+          "external_id": "1",
           "id": "TA-0-7251-3930-7482",
           "name": "ACME Reseller"
         },

@@ -75,7 +75,12 @@ def test_create_model_from_response():
     assert request_obj.marketplace.id == content['marketplace']['id']
     assert request_obj.asset.id == content['asset']['id']
     assert request_obj.asset.product.id == content['asset']['product']['id']
-    assert isinstance(request_obj.asset.external_id, int)
+    try:
+        # Python 2
+        assert isinstance(request_obj.asset.external_id, basestring)
+    except NameError:
+        # Python 3
+        assert isinstance(request_obj.asset.external_id, str)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
