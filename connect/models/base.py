@@ -18,7 +18,7 @@ class BaseModel:
     @staticmethod
     def _get_by_id(objects, identity):
         try:
-            return filter(lambda obj: obj.id == identity, objects)[0]
+            return list(filter(lambda obj: obj.id == identity, objects))[0]
         except IndexError:
             return None
 
