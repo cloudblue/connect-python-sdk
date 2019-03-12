@@ -15,7 +15,11 @@ from .tiers import TiersSchemaMixin
 
 
 class Asset(BaseModel):
-    pass
+    def get_param_by_id(self, identity):
+        return self._get_by_id(self.params, identity)
+
+    def get_item_by_id(self, identity):
+        return self._get_by_id(self.items, identity)
 
 
 class AssetSchema(BaseSchema):

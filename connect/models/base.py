@@ -15,6 +15,13 @@ class BaseModel:
             for attr, val in kwargs.items():
                 setattr(self, attr, val)
 
+    @staticmethod
+    def _get_by_id(objects, identity):
+        try:
+            return list(filter(lambda obj: obj.id == identity, objects))[0]
+        except IndexError:
+            return None
+
 
 class BaseSchema(Schema):
     id = fields.Str()
