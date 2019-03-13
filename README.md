@@ -67,7 +67,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
             # Approve by Template
-            return ActivationTemplateResponse("TL-497-535-242")
+            return ActivationTemplateResponse('TL-497-535-242')
             # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 
