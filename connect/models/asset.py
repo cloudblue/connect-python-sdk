@@ -15,7 +15,17 @@ from .tiers import TiersSchemaMixin
 
 
 class Asset(BaseModel):
-    pass
+    def get_param_by_id(self, id_):
+        try:
+            return list(filter(lambda param: param.id == id_, self.params))[0]
+        except IndexError:
+            return None
+
+    def get_item_by_mpn(self, mpn):
+        try:
+            return list(filter(lambda item: item.mpn == mpn, self.items))[0]
+        except IndexError:
+            return None
 
 
 class AssetSchema(BaseSchema):
