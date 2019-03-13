@@ -11,7 +11,7 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
-# set logger level / default level ERROR
+# Set logger level / default level ERROR
 logger.setLevel("DEBUG")
 
 # If we remove this line, it is done implicitly
@@ -23,7 +23,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
         logger.info('Processing request {}'.format(request.id))
 
-        # custom logic
+        # Custom logic
         if request.type == 'purchase':
             for item in request.asset.items:
                 if item.quantity > 100000:
@@ -35,23 +35,23 @@ class ExampleRequestProcessor(FulfillmentAutomation):
                     param.value_error = 'Email address has not been provided, please provide one'
                     raise FulfillmentInquire(params=[param])
 
-            # approve by ActivationTile
+            # Approve by ActivationTile
             return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
                                           'to have an account in our amazing service!')
-            # or
+            # Or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
-            # approve by Template
+            # Approve by Template
             # noinspection PyUnreachableCode
             return ActivationTemplateResponse(template_id="TL-497-535-242")
-            # or
+            # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 
         elif request.type == 'change':
-            # fail
+            # Fail
             raise FulfillmentFail()
         else:
-            # skip request
+            # Skip request
             raise Skip()
 
 

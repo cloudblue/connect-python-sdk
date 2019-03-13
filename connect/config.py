@@ -37,7 +37,7 @@ class Config(object):
         # Load config from file name
         if filename:
             if not os.path.exists(filename):
-                raise IOError('Not file `{}` on directory'.format(filename))
+                raise IOError('No filename `{}` on directory'.format(filename))
 
             with open(filename) as config_file:
                 configs = config_file.read()
@@ -45,7 +45,7 @@ class Config(object):
             try:
                 configs = json.loads(configs)
             except Exception as ex:
-                raise TypeError('Invalid config file `{}`\n'
+                raise TypeError('Invalid config filename `{}`\n'
                                 'ERROR: {}'.format(filename, str(ex)))
 
             (api_url, api_key, products) = (configs.get('apiEndpoint', ''),
