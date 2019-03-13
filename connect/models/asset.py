@@ -25,17 +25,14 @@ class Asset(BaseModel):
     params = None  # type: List[Param]
     tiers = None  # type: TiersMixin
 
-    def get_parameter_by_id(self, id_):
     def get_param_by_id(self, id_):
         try:
-            # noinspection PyUnresolvedReferences
             return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
 
     def get_item_by_mpn(self, mpn):
         try:
-            # noinspection PyUnresolvedReferences
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
