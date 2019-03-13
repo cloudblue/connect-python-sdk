@@ -7,6 +7,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
+from typing import Any
+
 from connect.logger import function_log
 from connect.models import FulfillmentSchema, Param, ActivationTileResponse
 from .base import BaseResource

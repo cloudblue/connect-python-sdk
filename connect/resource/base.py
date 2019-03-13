@@ -135,7 +135,7 @@ class BaseResource(object):
             return objects[0]
 
     def list(self, resource_name=None):
-        # type: () -> Any
+        # type: (str) -> Any
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url(resource_name), params=filters)
