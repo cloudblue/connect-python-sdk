@@ -17,12 +17,14 @@ from .tiers import TiersSchemaMixin
 class Asset(BaseModel):
     def get_param_by_id(self, identity):
         try:
+            # noinspection PyUnresolvedReferences
             return list(filter(lambda param: param.id == identity, self.params))[0]
         except IndexError:
             return None
 
     def get_item_by_mpn(self, mpn):
         try:
+            # noinspection PyUnresolvedReferences
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
