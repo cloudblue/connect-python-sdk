@@ -128,6 +128,6 @@ def test_asset_methods():
     assert not asset.get_param_by_id('invalid-id')
 
     # Get item by id
-    assert isinstance(asset.get_item_by_id('TEAM_ST3L2T1Y'), Item)
-    assert asset.get_item_by_id('TEAM_ST3L2T1Y').id == 'TEAM_ST3L2T1Y'
-    assert not asset.get_item_by_id('invalid-id')
+    assert isinstance(asset.get_item_by_mpn('TEAM-ST3L2T1Y'), Item)
+    assert asset.get_item_by_mpn('TEAM-ST3L2T1Y').mpn == 'TEAM-ST3L2T1Y'
+    assert not asset.get_item_by_mpn('invalid-mpn')
