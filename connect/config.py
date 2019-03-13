@@ -20,6 +20,8 @@ class Config(object):
             products=None,
             filename=None
     ):
+        # type: (str, str, str, str) -> None
+
         """
         initialization config for public api
         :param api_url: Public api url
@@ -78,12 +80,15 @@ class Config(object):
 
     @property
     def api_url(self):
+        # type: () -> str
         return self._api_url
 
     @property
     def api_key(self):
+        # type: () -> str
         return self._api_key
 
     @property
     def products(self):
+        # type: () -> str
         return self._products

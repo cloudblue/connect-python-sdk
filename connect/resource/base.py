@@ -6,6 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
+from typing import Any, Optional
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -15,17 +16,20 @@ from .utils import join_url
 
 
 class ApiClient(object):
-    config = None  # type: Config
-
     def __init__(self, config=None):
         # type: (Config) -> None
 
         # Assign passed config or globally configured instance
-        self.config = config or Config.get_instance()
+        self._config = config or Config.get_instance()
 
         # Assert data
         if not isinstance(self.config, Config):
             raise ValueError('A valid Config object is required to create an ApiClient')
+
+    @property
+    def config(self):
+        # type: () -> Config
+        return self._config
 
     @property
     def headers(self):
@@ -78,7 +82,7 @@ class BaseResource(object):
 
     def __init__(self, config=None):
         # Assign passed config or globally configured instance
-        self.config = config or Config.get_instance()
+        self._config = config or Config.get_instance()
 
         # Assert data
         if not self.__class__.resource:
@@ -90,7 +94,13 @@ class BaseResource(object):
         if not BaseResource.api:
             BaseResource.api = ApiClient(config)
 
+    @property
+    def config(self):
+        # type: () -> Config
+        return self._config
+
     def build_filter(self):
+        # type: () -> dict
         res_filter = {}
         if self.limit:
             res_filter['limit'] = self.limit
@@ -98,13 +108,16 @@ class BaseResource(object):
         return res_filter
 
     def _list_url(self, resource_name=None):
+        # type: (Optional[str]) -> str
         resource_name = resource_name or self.__class__.resource
         return join_url(self.config.api_url, resource_name)
 
     def _obj_url(self, pk):
+        # type: (str) -> str
         return join_url(self._list_url(), pk)
 
     def __loads_schema(self, response):
+        # type: (str) -> Any
         objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(
@@ -115,12 +128,14 @@ class BaseResource(object):
         return objects
 
     def get(self, pk):
+        # type: (str) -> Any
         response = self.api.get(url=self._obj_url(pk))
         objects = self.__loads_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
     def list(self, resource_name=None):
+        # type: () -> Any
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url(resource_name), params=filters)
