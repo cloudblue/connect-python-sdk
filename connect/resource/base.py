@@ -97,12 +97,12 @@ class BaseResource(object):
 
         return res_filter
 
-    @property
-    def _list_url(self):
-        return join_url(self.config.api_url, self.__class__.resource)
+    def _list_url(self, resource_name=None):
+        resource_name = resource_name or self.__class__.resource
+        return join_url(self.config.api_url, resource_name)
 
     def _obj_url(self, pk):
-        return join_url(self._list_url, pk)
+        return join_url(self._list_url(), pk)
 
     def __loads_schema(self, response):
         objects, error = self.schema.loads(response, many=True)
@@ -120,8 +120,8 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    def list(self):
+    def list(self, resource_name=None):
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self._list_url, params=filters)
+        response = self.api.get(url=self._list_url(resource_name), params=filters)
         return self.__loads_schema(response)

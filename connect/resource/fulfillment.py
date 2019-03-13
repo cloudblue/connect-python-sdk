@@ -19,13 +19,16 @@ class FulfillmentResource(BaseResource):
     limit = 1000
     schema = FulfillmentSchema()
 
-    def build_filter(self):
+    def build_filter(self, filter_config_products=True):
         filters = super(FulfillmentResource, self).build_filter()
-        if self.config.products:
+        if self.config.products and filter_config_products:
             filters['product_id'] = self.config.products
 
         filters['status'] = 'pending'
         return filters
+
+    def list_tier_configs(self):
+        return self.list('tier/config-requests')
 
     @function_log
     def approve(self, pk, data):

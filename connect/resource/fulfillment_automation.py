@@ -14,8 +14,10 @@ from .fulfillment import FulfillmentResource
 class FulfillmentAutomation(FulfillmentResource):
 
     def process(self):
-        for _ in self.list():
-            self.dispatch(_)
+        for tier_config in self.list_tier_configs():
+            self.dispatch_tier_config(tier_config)
+        for request in self.list():
+            self.dispatch(request)
 
     def dispatch(self, request):
         try:
@@ -48,3 +50,6 @@ class FulfillmentAutomation(FulfillmentResource):
     def process_request(self, request):
         raise NotImplementedError(
             'Please implementation `process_request` logic')
+
+    def dispatch_tier_config(self, tier_config):
+        pass
