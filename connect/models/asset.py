@@ -15,10 +15,10 @@ from .tiers import TiersSchemaMixin
 
 
 class Asset(BaseModel):
-    def get_param_by_id(self, identity):
+    def get_param_by_id(self, id_):
         try:
             # noinspection PyUnresolvedReferences
-            return list(filter(lambda param: param.id == identity, self.params))[0]
+            return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
 
