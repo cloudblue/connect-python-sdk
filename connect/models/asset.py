@@ -12,7 +12,7 @@ from .base import BaseModel, BaseSchema
 from .connection import Connection, ConnectionSchema
 from .parameters import Param, ParamSchema
 from .product import Item, ItemSchema, Product, ProductSchema
-from .tiers import TiersMixin, TiersMixinSchema
+from .tiers import Tiers, TiersSchema
 
 
 class Asset(BaseModel):
@@ -23,7 +23,7 @@ class Asset(BaseModel):
     connection = None  # type: Connection
     items = None  # type: List[Item]
     params = None  # type: List[Param]
-    tiers = None  # type: TiersMixin
+    tiers = None  # type: Tiers
 
     def get_param_by_id(self, id_):
         try:
@@ -48,7 +48,7 @@ class AssetSchema(BaseSchema):
     )
     items = fields.List(fields.Nested(ItemSchema))
     params = fields.List(fields.Nested(ParamSchema))
-    tiers = fields.Nested(TiersMixinSchema)
+    tiers = fields.Nested(TiersSchema)
 
     @post_load
     def make_object(self, data):

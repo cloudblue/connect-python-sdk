@@ -29,17 +29,17 @@ class TierSchema(BaseSchema):
         return Tier(**data)
 
 
-class TiersMixin(BaseModel):
+class Tiers(BaseModel):
     customer = None  # type: Tier
     tier1 = None  # type: Tier
     tier2 = None  # type: Tier
 
 
-class TiersMixinSchema(Schema):
+class TiersSchema(Schema):
     customer = fields.Nested(TierSchema)
     tier1 = fields.Nested(TierSchema)
     tier2 = fields.Nested(TierSchema)
 
     @post_load
     def make_object(self, data):
-        return TiersMixin(**data)
+        return Tiers(**data)

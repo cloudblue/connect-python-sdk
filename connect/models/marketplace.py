@@ -9,7 +9,7 @@ from marshmallow import fields, post_load
 
 from .base import BaseModel, BaseSchema
 from .company import Company, CompanySchema
-from .hub import HubsMixin, HubsMixinSchema
+from .hub import Hubs, HubsSchema
 
 
 class Marketplace(BaseModel):
@@ -19,7 +19,7 @@ class Marketplace(BaseModel):
     active_contract = None  # type: int
     icon = None  # type: str
     owner = None  # type: Company
-    hubs = None  # type: HubsMixin
+    hubs = None  # type: Hubs
 
 
 class MarketplaceSchema(BaseSchema):
@@ -29,7 +29,7 @@ class MarketplaceSchema(BaseSchema):
     active_contract = fields.Int()
     icon = fields.Str()
     owner = fields.Nested(CompanySchema, only=('id', 'name'))
-    hubs = fields.List(fields.Nested(HubsMixinSchema, only=('id', 'name')))
+    hubs = fields.List(fields.Nested(HubsSchema, only=('id', 'name')))
 
     @post_load
     def make_object(self, data):

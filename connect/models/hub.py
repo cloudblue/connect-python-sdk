@@ -22,15 +22,15 @@ class HubSchema(BaseSchema):
         return Hub(**data)
 
 
-class HubsMixin(BaseModel):
+class Hubs(BaseModel):
     hub = None  # type: Hub
     external_id = None  # type: str
 
 
-class HubsMixinSchema(Schema):
+class HubsSchema(Schema):
     hub = fields.Nested(HubSchema, only=('id', 'name'))
     external_id = fields.Str()
 
     @post_load
     def make_object(self, data):
-        return HubsMixin(**data)
+        return Hubs(**data)
