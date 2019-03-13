@@ -43,7 +43,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
             # Approve by Template
             # noinspection PyUnreachableCode
-            return ActivationTemplateResponse(template_id="TL-497-535-242")
+            return ActivationTemplateResponse('TL-497-535-242')
             # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 
