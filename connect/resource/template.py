@@ -4,6 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+from typing import Any
 
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseResource
@@ -18,6 +19,7 @@ class TemplateResource(BaseResource):
     resource = 'templates'
 
     def render(self, pk, request_id):
+        # type: (str, str) -> ActivationTileResponse
         if not all([pk, request_id]):
             raise ValueError('Invalid ids for render template')
 
@@ -27,7 +29,9 @@ class TemplateResource(BaseResource):
         return ActivationTileResponse(response)
 
     def get(self, pk):
+        # type: (str) -> ActivationTemplateResponse
         return ActivationTemplateResponse(template_id=pk)
 
     def list(self):
+        # type: () -> Any
         raise AttributeError('This resource do not have method `list`')
