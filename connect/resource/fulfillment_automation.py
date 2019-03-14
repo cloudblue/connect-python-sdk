@@ -57,4 +57,5 @@ class FulfillmentAutomation(FulfillmentResource):
         raise NotImplementedError('Please implement `process_request` logic')
 
     def dispatch_tier_config(self, tier_config):
+        # type: (TierConfigRequest) -> Any
         pass
