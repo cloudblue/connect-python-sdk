@@ -18,9 +18,9 @@ class FulfillmentAutomation(FulfillmentResource):
 
     def process(self):
         # type: () -> Any
-        for tier_config in self.list_tier_configs():
+        for tier_config in self.tier_configs_list:
             self.dispatch_tier_config(tier_config)
-        for request in self.list():
+        for request in self.list:
             self.dispatch(request)
 
     def dispatch(self, request):
@@ -59,4 +59,17 @@ class FulfillmentAutomation(FulfillmentResource):
 
     def dispatch_tier_config(self, tier_config):
         # type: (TierConfigFulfillment) -> Any
-        pass
+        try:
+            if self.config.products and tier_config.configuration.product.id not in self.config.products:
+                pass
+        except FulfillmentInquire as inquire:
+            self.update_parameters(tier_config.id, inquire.params)
+            return self.inquire(tier_config.id)
+
+        except FulfillmentFail as fail:
+            return self.fail(tier_config.id, reason=fail.message)
+
+        except Skip as skip:
+            return skip.code
+
+        return

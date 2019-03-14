@@ -32,6 +32,6 @@ class TemplateResource(BaseResource):
         # type: (str) -> ActivationTemplateResponse
         return ActivationTemplateResponse(template_id=pk)
 
-    def list(self, resource_name=None):
+    def get_list(self, resource_name=None):
         # type: (str) -> Any
         raise AttributeError('This resource do not have method `list`')

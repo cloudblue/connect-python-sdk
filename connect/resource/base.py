@@ -99,6 +99,11 @@ class BaseResource(object):
         # type: () -> Config
         return self._config
 
+    @property
+    def list(self):
+        # type: () -> Any
+        return self.get_list()
+
     def build_filter(self):
         # type: () -> dict
         res_filter = {}
@@ -134,7 +139,7 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    def list(self, resource_name=None):
+    def get_list(self, resource_name=None):
         # type: (str) -> Any
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))

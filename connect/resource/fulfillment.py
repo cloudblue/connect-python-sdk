@@ -30,9 +30,10 @@ class FulfillmentResource(BaseResource):
         filters['status'] = 'pending'
         return filters
 
-    def list_tier_configs(self):
+    @property
+    def tier_configs_list(self):
         # type: () -> Any
-        return self.list('tier/config-requests')
+        return self.get_list('tier/config-requests')
 
     @function_log
     def approve(self, pk, data):
