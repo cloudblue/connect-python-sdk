@@ -8,6 +8,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import json
 import os
 
+from typing import List, Union
+
 
 class Config(object):
     # Global instance
@@ -20,7 +22,7 @@ class Config(object):
             products=None,
             filename=None
     ):
-        # type: (str, str, str, str) -> None
+        # type: (str, str, Union[str, List[str]], str) -> None
 
         """
         initialization config for public api
@@ -90,5 +92,5 @@ class Config(object):
 
     @property
     def products(self):
-        # type: () -> str
+        # type: () -> List[str]
         return self._products
