@@ -10,6 +10,7 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
+from connect.models.tier_config import TierConfigFulfillment
 from .fulfillment import FulfillmentResource
 
 
@@ -57,5 +58,5 @@ class FulfillmentAutomation(FulfillmentResource):
         raise NotImplementedError('Please implement `process_request` logic')
 
     def dispatch_tier_config(self, tier_config):
-        # type: (TierConfigRequest) -> Any
+        # type: (TierConfigFulfillment) -> Any
         pass

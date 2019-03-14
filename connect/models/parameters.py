@@ -16,13 +16,10 @@ class ValueChoice(BaseModel):
     label = None  # type: str
 
 
-class ValueChoiceSchema(Schema):
-    value = fields.Str()
-    label = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return ValueChoice(**data)
+class Constraints(BaseModel):
+    hidden = None  # type: bool
+    required = None  # type: bool
+    choices = None  # type: List[ValueChoice]
 
 
 class Param(BaseModel):
@@ -32,6 +29,30 @@ class Param(BaseModel):
     value_choices = None  # type: List[ValueChoice]
     value_error = None  # type: str
 
+    # Undocumented fields (they appear in PHP SDK)
+    title = None  # type: str
+    scope = None  # type: str
+    constraints = None  # type: Constraints
+
+
+class ValueChoiceSchema(Schema):
+    value = fields.Str()
+    label = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return ValueChoice(**data)
+
+
+class ConstraintsSchema(BaseSchema):
+    hidden = fields.Bool()
+    required = fields.Bool()
+    choices = fields.List(fields.Nested(ValueChoiceSchema))
+
+    @post_load
+    def make_object(self, data):
+        return Constraints(**data)
+
 
 class ParamSchema(BaseSchema):
     name = fields.Str()
@@ -39,6 +60,11 @@ class ParamSchema(BaseSchema):
     value = fields.Str()
     value_choices = fields.List(fields.Nested(ValueChoiceSchema))
     value_error = fields.Str()
+
+    # Undocumented fields (they appear in PHP SDK)
+    title = fields.Str(required=False)
+    scope = fields.Str(required=False)
+    constraints = fields.Nested(ConstraintsSchema, required=False)
 
     @post_load
     def make_object(self, data):
