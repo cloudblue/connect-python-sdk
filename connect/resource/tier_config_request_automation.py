@@ -16,6 +16,15 @@ from .fulfillment import FulfillmentResource
 class TierConfigRequestAutomation(FulfillmentResource):
     resource = 'tier/config-requests'
 
+    def build_filter(self):
+        # type: () -> dict
+
+        # Skip parent class and go directly to BaseResource.build_filter()
+        filters = super(FulfillmentResource, self).build_filter()
+
+        filters['status'] = 'pending'
+        return filters
+
     def process(self):
         # type: () -> Any
         for request in self.list:

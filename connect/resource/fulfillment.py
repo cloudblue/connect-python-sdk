@@ -19,10 +19,10 @@ class FulfillmentResource(BaseResource):
     limit = 1000
     schema = FulfillmentSchema()
 
-    def build_filter(self, filter_config_products=True):
-        # type: (bool) -> dict
+    def build_filter(self):
+        # type: () -> dict
         filters = super(FulfillmentResource, self).build_filter()
-        if self.config.products and filter_config_products:
+        if self.config.products:
             filters['product_id'] = self.config.products
 
         filters['status'] = 'pending'
