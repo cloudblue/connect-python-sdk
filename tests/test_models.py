@@ -40,7 +40,7 @@ def test_create_model_from_response():
 
     # Get requests from response
     resource = FulfillmentResource()
-    requests = resource.get_list()
+    requests = resource.list
     request_obj = resource.get(pk='PR-000-000-000')
 
     # Assert that all properties exist
@@ -86,7 +86,7 @@ def test_create_model_from_response():
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_fulfillment_items():
     # Get request
-    requests = FulfillmentResource().get_list()
+    requests = FulfillmentResource().list
     assert len(requests) == 1
     request = requests[0]
     assert isinstance(request, Fulfillment)
@@ -116,7 +116,7 @@ def test_fulfillment_items():
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_asset_methods():
     # Get asset
-    requests = FulfillmentResource().get_list()
+    requests = FulfillmentResource().list
     assert len(requests) == 1
     assert isinstance(requests[0], Fulfillment)
     asset = requests[0].asset

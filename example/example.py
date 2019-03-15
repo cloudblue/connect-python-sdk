@@ -4,13 +4,15 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+from typing import Any
 
-from connect import FulfillmentAutomation
+from connect import FulfillmentAutomation, TierConfigRequestAutomation
 from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
+from connect.models.tier_config import TierConfigRequest
 
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")
@@ -21,7 +23,7 @@ Config(filename='config.json')
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
-        # type: (Fulfillment) -> object
+        # type: (Fulfillment) -> Any
 
         logger.info('Processing request {}'.format(request.id))
 
@@ -56,7 +58,20 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # Skip request
             raise Skip()
 
+    def process_tier_config_request(self, tier_config_request):
+        # type: (TierConfigRequest) -> Any
+        pass
+
+
+class ExampleTierConfigRequestProcessor(TierConfigRequestAutomation):
+    def process_request(self, request):
+        # type: (TierConfigRequest) -> Any
+        pass
+
 
 if __name__ == '__main__':
     request_processor = ExampleRequestProcessor()
     request_processor.process()
+
+    tier_config_request_processor = ExampleTierConfigRequestProcessor()
+    tier_config_request_processor.process()

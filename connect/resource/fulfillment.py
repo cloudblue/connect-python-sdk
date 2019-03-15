@@ -7,8 +7,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
-from typing import Any
-
 from connect.logger import function_log
 from connect.models import FulfillmentSchema, Param, ActivationTileResponse
 from .base import BaseResource
@@ -30,11 +28,6 @@ class FulfillmentResource(BaseResource):
         filters['status'] = 'pending'
         return filters
 
-    @property
-    def tier_configs_list(self):
-        # type: () -> Any
-        return self.get_list('tier/config-requests')
-
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
@@ -44,7 +37,8 @@ class FulfillmentResource(BaseResource):
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        return self.api.post(url=join_url(self._obj_url(pk), 'inquire/'), data=json.dumps({}))
+        url = join_url(self._obj_url(pk), 'inquire/')
+        return self.api.post(url=url, data=json.dumps({}))
 
     @function_log
     def fail(self, pk, reason):

@@ -10,7 +10,6 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
-from connect.models.tier_config import TierConfigFulfillment
 from .fulfillment import FulfillmentResource
 
 
@@ -18,14 +17,16 @@ class FulfillmentAutomation(FulfillmentResource):
 
     def process(self):
         # type: () -> Any
-        for tier_config in self.tier_configs_list:
-            self.dispatch_tier_config(tier_config)
         for request in self.list:
             self.dispatch(request)
 
     def dispatch(self, request):
         # type: (Fulfillment) -> Any
         try:
+            if self.config.products \
+                    and request.asset.product.id not in self.config.products:
+                return 'Invalid product'
+
             logger.info('Start request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
@@ -56,20 +57,3 @@ class FulfillmentAutomation(FulfillmentResource):
     def process_request(self, request):
         # type: (Fulfillment) -> Any
         raise NotImplementedError('Please implement `process_request` logic')
-
-    def dispatch_tier_config(self, tier_config):
-        # type: (TierConfigFulfillment) -> Any
-        try:
-            if self.config.products and tier_config.configuration.product.id not in self.config.products:
-                pass
-        except FulfillmentInquire as inquire:
-            self.update_parameters(tier_config.id, inquire.params)
-            return self.inquire(tier_config.id)
-
-        except FulfillmentFail as fail:
-            return self.fail(tier_config.id, reason=fail.message)
-
-        except Skip as skip:
-            return skip.code
-
-        return

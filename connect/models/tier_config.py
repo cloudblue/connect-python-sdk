@@ -67,7 +67,7 @@ class Activation(BaseModel):
     link = None  # type: str
 
 
-class TierConfigFulfillment(BaseModel):
+class TierConfigRequest(BaseModel):
     type = None  # type: str
     status = None  # type: str
     configuration = None  # type: TierConfig
@@ -155,7 +155,7 @@ class ActivationSchema(BaseSchema):
         return Activation(**data)
 
 
-class TierConfigFulfillmentSchema(BaseSchema):
+class TierConfigRequestSchema(BaseSchema):
     type = fields.Str()
     status = fields.Str()
     configuration = fields.Nested(TierConfigSchema, only=('id', 'name'))
@@ -167,4 +167,4 @@ class TierConfigFulfillmentSchema(BaseSchema):
 
     @post_load
     def make_object(self, data):
-        return TierConfigFulfillment(**data)
+        return TierConfigRequest(**data)

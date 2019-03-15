@@ -37,7 +37,7 @@ $ pip install connect-sdk
 
 ### Example
 ```python
-from connect import FulfillmentAutomation
+from connect import FulfillmentAutomation, TierConfigRequestAutomation
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
@@ -79,8 +79,17 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             raise Skip()
 
 
+class ExampleTierConfigRequestProcessor(TierConfigRequestAutomation):
+    def process_request(self, request):
+        # type: (TierConfigRequest) -> Any
+        pass
+
+
 if __name__ == '__main__':
     request_processor = ExampleRequestProcessor()
     request_processor.process()
+
+    tier_config_request_processor = ExampleTierConfigRequestProcessor()
+    tier_config_request_processor.process()
 ```
 

@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
-from typing import Any, Optional
+from typing import Any
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -102,7 +102,10 @@ class BaseResource(object):
     @property
     def list(self):
         # type: () -> Any
-        return self.get_list()
+        filters = self.build_filter()
+        logger.info('Get list request by filter - {}'.format(filters))
+        response = self.api.get(url=self._list_url(), params=filters)
+        return self.__loads_schema(response)
 
     def build_filter(self):
         # type: () -> dict
@@ -112,10 +115,9 @@ class BaseResource(object):
 
         return res_filter
 
-    def _list_url(self, resource_name=None):
-        # type: (Optional[str]) -> str
-        resource_name = resource_name or self.__class__.resource
-        return join_url(self.config.api_url, resource_name)
+    def _list_url(self):
+        # type: () -> str
+        return join_url(self.config.api_url, self.__class__.resource)
 
     def _obj_url(self, pk):
         # type: (str) -> str
@@ -138,10 +140,3 @@ class BaseResource(object):
         objects = self.__loads_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
-
-    def get_list(self, resource_name=None):
-        # type: (str) -> Any
-        filters = self.build_filter()
-        logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self._list_url(resource_name), params=filters)
-        return self.__loads_schema(response)
