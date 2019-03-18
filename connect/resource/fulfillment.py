@@ -22,10 +22,7 @@ class FulfillmentResource(BaseResource):
     def build_filter(self):
         filters = super(FulfillmentResource, self).build_filter()
         if self.config.products:
-            if len(self.config.products) == 1:
-                filters['product_id'] = self.config.products[0]
-            else:
-                filters['asset.product.id__in'] = ','.join(self.config.products)
+            filters['asset.product.id__in'] = ','.join(self.config.products)
 
         filters['status'] = 'pending'
         return filters
