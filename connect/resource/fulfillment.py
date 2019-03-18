@@ -23,7 +23,7 @@ class FulfillmentResource(BaseResource):
         # type: () -> dict
         filters = super(FulfillmentResource, self).build_filter()
         if self.config.products:
-            filters['product_id'] = self.config.products
+            filters['asset.product.id__in'] = ','.join(self.config.products)
 
         filters['status'] = 'pending'
         return filters
