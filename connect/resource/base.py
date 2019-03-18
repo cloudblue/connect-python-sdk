@@ -125,11 +125,11 @@ class BaseResource(object):
 
     def __loads_schema(self, response):
         # type: (str) -> Any
-        objects, error = self.schema.loads(response, many=True)
+        objects, error = self.schema.loads(response)
         if error:
             raise TypeError(
-                'Invalid structure for initialisation objects. \n'
-                'Error: {}. \nServer Response: {}'.format(error, response),
+                'Invalid structure for initialization of `{}`. \n'
+                'Error: {}. \nServer Response: {}'.format(type(self).__name__, error, response),
             )
 
         return objects

@@ -9,12 +9,13 @@ from typing import Any
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from connect.models.tier_config import TierConfigRequest
+from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema
 from .fulfillment import FulfillmentResource
 
 
 class TierConfigRequestAutomation(FulfillmentResource):
     resource = 'tier/config-requests'
+    schema = TierConfigRequestSchema()
 
     def build_filter(self):
         # type: () -> dict

@@ -21,9 +21,13 @@ class Account(BaseModel):
     contact_info = None  # type: ContactInfo
 
 
+class Assignee(BaseModel):
+    name = None  # type: str
+
+
 class EventInfo(BaseModel):
     at = None  # type: str
-    by = None  # type Dict[str, str]
+    by = None  # type Assignee
 
 
 class Events(BaseModel):
@@ -59,10 +63,6 @@ class TierConfig(BaseModel):
             return None
 
 
-class Assignee(BaseModel):
-    name = None  # type: str
-
-
 class Activation(BaseModel):
     link = None  # type: str
 
@@ -92,9 +92,17 @@ class AccountSchema(BaseSchema):
     contact_info = fields.Nested(ContactInfoSchema)
 
 
+class AssigneeSchema(BaseSchema):
+    name = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return Assignee(**data)
+
+
 class EventInfoSchema(BaseSchema):
     at = fields.Str()
-    by = fields.Dict(keys=fields.Str(), values=fields.Str(), required=False)
+    by = fields.Nested(AssigneeSchema)
 
     @post_load
     def make_object(self, data):
@@ -137,14 +145,6 @@ class TierConfigSchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return TierConfig(**data)
-
-
-class AssigneeSchema(BaseSchema):
-    name = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Assignee(**data)
 
 
 class ActivationSchema(BaseSchema):

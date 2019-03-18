@@ -17,7 +17,7 @@ from .utils import join_url
 class FulfillmentResource(BaseResource):
     resource = 'requests'
     limit = 1000
-    schema = FulfillmentSchema()
+    schema = FulfillmentSchema(many=True)
 
     def build_filter(self):
         # type: () -> dict
