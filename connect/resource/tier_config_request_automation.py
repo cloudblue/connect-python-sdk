@@ -62,7 +62,7 @@ class TierConfigRequestAutomation(AutomationResource):
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
-        response = self.api.get(url=self._list_url(), params=params)
+        response = self.api.get(url=self._list_url, params=params)
         objects = self._loads_schema(response)
 
         if isinstance(objects, list) and len(objects) > 0:

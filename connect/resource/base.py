@@ -104,7 +104,7 @@ class BaseResource(object):
         # type: () -> Any
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self._list_url(), params=filters)
+        response = self.api.get(url=self._list_url, params=filters)
         return self._loads_schema(response)
 
     def build_filter(self):
@@ -121,13 +121,14 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
+    @property
     def _list_url(self):
         # type: () -> str
         return join_url(self.config.api_url, self.__class__.resource)
 
     def _obj_url(self, pk):
         # type: (str) -> str
-        return join_url(self._list_url(), pk)
+        return join_url(self._list_url, pk)
 
     def _loads_schema(self, response):
         # type: (str) -> Any
