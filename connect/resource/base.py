@@ -105,7 +105,7 @@ class BaseResource(object):
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url, params=filters)
-        return self._loads_schema(response)
+        return self._load_schema(response)
 
     def build_filter(self):
         # type: () -> dict
@@ -117,7 +117,7 @@ class BaseResource(object):
     def get(self, pk):
         # type: (str) -> Any
         response = self.api.get(url=self._obj_url(pk))
-        objects = self._loads_schema(response)
+        objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
@@ -130,7 +130,7 @@ class BaseResource(object):
         # type: (str) -> str
         return join_url(self._list_url, pk)
 
-    def _loads_schema(self, response):
+    def _load_schema(self, response):
         # type: (str) -> Any
         objects, error = self.schema.loads(response, many=True)
         if error:
