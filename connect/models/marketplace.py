@@ -78,7 +78,6 @@ class Contract(BaseModel):
     agreement = None  # type: Agreement
     marketplace = None  # type: Marketplace
     owner = None  # type: Company
-    creater = None  # type: Company
     created = None  # type: str
     updated = None  # type: str
     enrolled = None  # type: str
@@ -95,7 +94,6 @@ class ContractSchema(BaseSchema):
     agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
     owner = fields.Nested(CompanySchema, only=('id', 'name'))
-    creater = fields.Nested(CompanySchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.Str()
