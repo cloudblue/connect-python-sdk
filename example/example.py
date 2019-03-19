@@ -15,13 +15,17 @@ from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 logger.setLevel("DEBUG")
 
 # If we remove this line, it is done implicitly
-Config(filename='config.json')
+Config(file='config.json')
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
 
-        logger.info('Processing request {}'.format(request.id))
+        logger.info('Processing request {} for contract {}, product {}, marketplace {}'
+                    .format(request.id,
+                            request.contract.id,
+                            request.asset.product.name,
+                            request.marketplace.name))
 
         # Custom logic
         if request.type == 'purchase':
