@@ -15,7 +15,7 @@ from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 logger.setLevel("DEBUG")
 
 # If we remove this line, it is done implicitly
-Config(filename='config.json')
+Config(file='config.json')
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):

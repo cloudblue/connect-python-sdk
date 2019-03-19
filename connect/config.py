@@ -12,22 +12,23 @@ import os
 class Config(object):
     _instance = None  # Global instance
 
+    # noinspection PyShadowingBuiltins
     def __init__(
             self,
             api_url=None,
             api_key=None,
             products=None,
-            filename=None
+            file=None
     ):
         """
         initialization config for public api
         :param api_url: Public api url
         :param api_key: Service user ApiKey
         :param products (optional): Id products
-        :param filename: Config file path
+        :param file: Config file path
         """
         # Check arguments
-        if not filename and not any([api_key, api_url]):
+        if not file and not any([api_key, api_url]):
             raise ValueError('Filename or api_key and api_url are expected'
                              'in Config initialization')
         if products and not isinstance(products, (str, list)):
@@ -35,18 +36,18 @@ class Config(object):
                             + type(products).__name__)
 
         # Load config from file name
-        if filename:
-            if not os.path.exists(filename):
-                raise IOError('No filename `{}` on directory'.format(filename))
+        if file:
+            if not os.path.exists(file):
+                raise IOError('No file `{}` on directory'.format(file))
 
-            with open(filename) as config_file:
+            with open(file) as config_file:
                 configs = config_file.read()
 
             try:
                 configs = json.loads(configs)
             except Exception as ex:
-                raise TypeError('Invalid config filename `{}`\n'
-                                'ERROR: {}'.format(filename, str(ex)))
+                raise TypeError('Invalid config file `{}`\n'
+                                'ERROR: {}'.format(file, str(ex)))
 
             (api_url, api_key, products) = (configs.get('apiEndpoint', ''),
                                             configs.get('apiKey', ''),
@@ -71,7 +72,7 @@ class Config(object):
     @classmethod
     def get_instance(cls):
         if not cls._instance:
-            cls._instance = Config(filename='config.json')
+            cls._instance = Config(file='config.json')
         return cls._instance
 
     @property
