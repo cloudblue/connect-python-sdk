@@ -49,10 +49,10 @@ class Skip(Message):
 
 class ServerErrorException(Exception):
     message = 'Server error'  # type: str
-    
+
     def __init__(self, error=None, *args, **kwargs):
         # type: (ServerError, *any, **any) -> None
-        
+
         if error and isinstance(error, ServerError):
             self.message = str({
                 "error_code": error.error_code,
