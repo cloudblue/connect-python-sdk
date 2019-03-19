@@ -7,26 +7,36 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
+from typing import Any
+
 from connect.logger import function_log
-from connect.models import FulfillmentSchema, Param, ActivationTileResponse
+from connect.models import Param, ActivationTileResponse
 from .base import BaseResource
 from .template import TemplateResource
 from .utils import join_url
 
 
-class FulfillmentResource(BaseResource):
-    resource = 'requests'
+class AutomationResource(BaseResource):
     limit = 1000
-    schema = FulfillmentSchema(many=True)
 
     def build_filter(self):
         # type: () -> dict
-        filters = super(FulfillmentResource, self).build_filter()
-        if self.config.products:
-            filters['asset.product.id__in'] = ','.join(self.config.products)
-
+        filters = super(AutomationResource, self).build_filter()
         filters['status'] = 'pending'
         return filters
+
+    def process(self):
+        # type: () -> Any
+        for request in self.list:
+            self.dispatch(request)
+
+    def dispatch(self, request):
+        raise NotImplementedError('Please implement `{}.dispatch` method'
+                                  .format(self.__class__.__name__))
+
+    def process_request(self, request):
+        raise NotImplementedError('Please implement `{}.process_request` method'
+                                  .format(self.__class__.__name__))
 
     @function_log
     def approve(self, pk, data):

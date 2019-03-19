@@ -112,8 +112,14 @@ class BaseResource(object):
         res_filter = {}
         if self.limit:
             res_filter['limit'] = self.limit
-
         return res_filter
+
+    def get(self, pk):
+        # type: (str) -> Any
+        response = self.api.get(url=self._obj_url(pk))
+        objects = self._loads_schema(response)
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0]
 
     def _list_url(self):
         # type: () -> str
@@ -125,7 +131,7 @@ class BaseResource(object):
 
     def _loads_schema(self, response):
         # type: (str) -> Any
-        objects, error = self.schema.loads(response)
+        objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{}`. \n'
@@ -133,10 +139,3 @@ class BaseResource(object):
             )
 
         return objects
-
-    def get(self, pk):
-        # type: (str) -> Any
-        response = self.api.get(url=self._obj_url(pk))
-        objects = self._loads_schema(response)
-        if isinstance(objects, list) and len(objects) > 0:
-            return objects[0]

@@ -12,11 +12,11 @@ from collections import namedtuple
 import six
 from mock import MagicMock, patch
 
+from connect import FulfillmentAutomation
 from connect.models import Param
 from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
 from connect.models.product import Item
-from connect.resource import FulfillmentResource
 
 Response = namedtuple('Response', ('ok', 'content'))
 
@@ -40,7 +40,7 @@ def test_create_model_from_response():
         content = json.loads(file_handle.read())[0]
 
     # Get requests from response
-    resource = FulfillmentResource()
+    resource = FulfillmentAutomation()
     requests = resource.list
     request_obj = resource.get(pk='PR-000-000-000')
 
@@ -82,7 +82,7 @@ def test_create_model_from_response():
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_fulfillment_items():
     # Get request
-    requests = FulfillmentResource().list
+    requests = FulfillmentAutomation().list
     assert isinstance(requests, list)
     assert len(requests) == 1
     request = requests[0]
@@ -113,7 +113,7 @@ def test_fulfillment_items():
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_asset_methods():
     # Get asset
-    requests = FulfillmentResource().list
+    requests = FulfillmentAutomation().list
     assert len(requests) == 1
     assert isinstance(requests[0], Fulfillment)
     asset = requests[0].asset

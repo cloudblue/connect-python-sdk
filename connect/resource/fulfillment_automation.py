@@ -4,21 +4,28 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+from abc import ABCMeta
+
 from typing import Any
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from connect.models.fulfillment import Fulfillment
-from .fulfillment import FulfillmentResource
+from connect.models.fulfillment import Fulfillment, FulfillmentSchema
+from .automation import AutomationResource
 
 
-class FulfillmentAutomation(FulfillmentResource):
+class FulfillmentAutomation(AutomationResource):
+    __metaclass__ = ABCMeta
+    resource = 'requests'
+    schema = FulfillmentSchema()
 
-    def process(self):
-        # type: () -> Any
-        for request in self.list:
-            self.dispatch(request)
+    def build_filter(self):
+        # type: () -> dict
+        filters = super(FulfillmentAutomation, self).build_filter()
+        if self.config.products:
+            filters['asset.product.id__in'] = ','.join(self.config.products)
+        return filters
 
     def dispatch(self, request):
         # type: (Fulfillment) -> Any
@@ -53,7 +60,3 @@ class FulfillmentAutomation(FulfillmentResource):
             return skip.code
 
         return
-
-    def process_request(self, request):
-        # type: (Fulfillment) -> Any
-        raise NotImplementedError('Please implement `process_request` logic')
