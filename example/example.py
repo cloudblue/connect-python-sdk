@@ -23,7 +23,11 @@ class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
         # type: (Fulfillment) -> object
 
-        logger.info('Processing request {}'.format(request.id))
+        logger.info('Processing request {} for contract {}, product {}, marketplace {}'
+                    .format(request.id,
+                            request.contract.id,
+                            request.asset.product.name,
+                            request.marketplace.name))
 
         # Custom logic
         if request.type == 'purchase':
