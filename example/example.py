@@ -11,7 +11,7 @@ from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 
-# set logger level / default level ERROR
+# Set logger level / default level ERROR
 logger.setLevel("DEBUG")
 
 # If we remove this line, it is done implicitly
@@ -21,7 +21,13 @@ Config(file='config.json')
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
 
-        # custom logic
+        logger.info('Processing request {} for contract {}, product {}, marketplace {}'
+                    .format(request.id,
+                            request.contract.id,
+                            request.asset.product.name,
+                            request.marketplace.name))
+
+        # Custom logic
         if request.type == 'purchase':
             for item in request.asset.items:
                 if item.quantity > 100000:
@@ -33,25 +39,26 @@ class ExampleRequestProcessor(FulfillmentAutomation):
                     param.value_error = 'Email address has not been provided, please provide one'
                     raise FulfillmentInquire(params=[param])
 
-            # approve by ActivationTile
-            return ActivationTileResponse(tile='\n  # Welcome to Fallball!\n\nYes, you decided '
-                                               'to have an account in our amazing service!')
-            # or
+            # Approve by ActivationTile
+            return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
+                                          'to have an account in our amazing service!')
+            # Or
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
-            # aprrove by Template
-            return ActivationTemplateResponse(template_id="TL-497-535-242")
-            # or
+            # Approve by Template
+            # noinspection PyUnreachableCode
+            return ActivationTemplateResponse('TL-497-535-242')
+            # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 
         elif request.type == 'change':
-            # fail
+            # Fail
             raise FulfillmentFail()
         else:
-            # skip request
+            # Skip request
             raise Skip()
 
 
 if __name__ == '__main__':
-    request = ExampleRequestProcessor()
-    request.process()
+    request_processor = ExampleRequestProcessor()
+    request_processor.process()

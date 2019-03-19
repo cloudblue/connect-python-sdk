@@ -70,6 +70,7 @@ def test_init_config_with_invalid_arguments():
         )
 
 
+# noinspection PyPropertyAccess
 def test_config_immutable_properties():
     config = Config(file='config.json')
     with pytest.raises(AttributeError):

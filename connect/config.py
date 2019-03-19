@@ -12,6 +12,7 @@ import os
 class Config(object):
     _instance = None  # Global instance
 
+    # noinspection PyShadowingBuiltins
     def __init__(
             self,
             api_url=None,
@@ -37,7 +38,7 @@ class Config(object):
         # Load config from file name
         if file:
             if not os.path.exists(file):
-                raise IOError('Not file `{}` on directory'.format(file))
+                raise IOError('No file `{}` on directory'.format(file))
 
             with open(file) as config_file:
                 configs = config_file.read()

@@ -15,18 +15,21 @@ from .marketplace import ContractSchema, MarketplaceSchema
 class Fulfillment(BaseModel):
     @property
     def new_items(self):
+        # noinspection PyUnresolvedReferences
         return list(filter(
             lambda item: item.quantity > 0 and item.old_quantity == 0,
             self.asset.items))
 
     @property
     def changed_items(self):
+        # noinspection PyUnresolvedReferences
         return list(filter(
             lambda item: item.quantity > 0 and item.old_quantity > 0,
             self.asset.items))
 
     @property
     def removed_items(self):
+        # noinspection PyUnresolvedReferences
         return list(filter(
             lambda item: item.quantity == 0 and item.old_quantity > 0,
             self.asset.items))
