@@ -83,6 +83,7 @@ def test_create_model_from_response():
 def test_fulfillment_items():
     # Get request
     requests = FulfillmentResource().list
+    assert isinstance(requests, list)
     assert len(requests) == 1
     request = requests[0]
     assert isinstance(request, Fulfillment)

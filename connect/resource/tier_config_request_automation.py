@@ -4,18 +4,18 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-from typing import Any, List
+from typing import Any, Optional, Union
 
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema
+from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema, TierConfig
 from .fulfillment import FulfillmentResource
 
 
 class TierConfigRequestAutomation(FulfillmentResource):
     resource = 'tier/config-requests'
-    schema = TierConfigRequestSchema()
+    schema = TierConfigRequestSchema(many=True)
 
     def build_filter(self):
         # type: () -> dict
@@ -70,12 +70,30 @@ class TierConfigRequestAutomation(FulfillmentResource):
         # type: (TierConfigRequest) -> Any
         raise NotImplementedError('Please implement `process` logic')
 
-    def get_config_by_product(self, tier_id, product_id):
-        # type: (str, str) -> List[TierConfigRequest]
+    def get_tier_config(self, tier_id, product_id):
+        # type: (str, str) -> Optional[Union[TierConfig, TierConfigRequest]]
         params = {
             'status': 'approved',
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
         response = self.api.get(url=self._list_url(), params=params)
-        return self.__loads_schema(response)
+        objects = self._loads_schema(response)
+
+        if isinstance(objects, list) and len(objects) > 0:
+            # Return configuration field if defined, otherwise the TierConfigRequest itself
+            return objects[0].configuration \
+                if objects[0].configuration.id \
+                else objects[0]
+        else:
+            # Return the object or, if an empty list, None
+            return objects or None
+
+    def get_tier_config_param(self, param_id, tier_id, product_id):
+        # type: (str, str, str) -> Optional[Param]
+        tier_config = self.get_tier_config(tier_id, product_id)
+        if not tier_config:
+            return None
+
+        params = [param for param in tier_config.params if param.id == param_id]
+        return params[0] if len(params) > 0 else None

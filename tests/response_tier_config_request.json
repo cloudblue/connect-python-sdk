@@ -1,42 +1,44 @@
-{
-  "id": "TCR-000-000-000",
-  "type": "setup",
-  "status": "pending",
-  "configuration": {},
-  "events": {
-    "created": {
-      "at": "2018-11-21T11:10:29+00:00"
-    },
-    "inquired": {
-      "at": "2018-11-21T11:10:29+00:00",
-      "by": {
-        "id": "PA-000-000",
-        "name": "Username"
+[
+  {
+    "id": "TCR-000-000-000",
+    "type": "setup",
+    "status": "pending",
+    "configuration": {},
+    "events": {
+      "created": {
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "inquired": {
+        "at": "2018-11-21T11:10:29+00:00",
+        "by": {
+          "id": "PA-000-000",
+          "name": "Username"
+        }
+      },
+      "pended": {
+        "at": "2018-11-21T11:10:29+00:00",
+        "by": {
+          "id": "PA-000-001",
+          "name": "Username1"
+        }
       }
     },
-    "pended": {
-      "at": "2018-11-21T11:10:29+00:00",
-      "by": {
-        "id": "PA-000-001",
-        "name": "Username1"
+    "params": [
+      {
+        "id": "param_a",
+        "value": "param_a_value"
       }
+    ],
+    "assignee": {
+      "id": "PA-000-000",
+      "name": "Username"
+    },
+    "template": {
+      "id": "TP-000-000-000",
+      "representation": "Render text is here......"
+    },
+    "activation": {
+      "link": "http://example.com"
     }
-  },
-  "params": [
-    {
-      "id": "param_a",
-      "value": "param_a_value"
-    }
-  ],
-  "assignee": {
-    "id": "PA-000-000",
-    "name": "Username"
-  },
-  "template": {
-    "id": "TP-000-000-000",
-    "representation": "Render text is here......"
-  },
-  "activation": {
-    "link": "http://example.com"
   }
-}
+]

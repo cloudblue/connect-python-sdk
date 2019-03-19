@@ -13,7 +13,8 @@ from mock import MagicMock, patch
 
 from connect import TierConfigRequestAutomation
 from connect.models import Param
-from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Assignee, Template, Activation, EventInfo
+from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Assignee, Template, \
+    Activation, EventInfo
 
 Response = namedtuple('Response', ('ok', 'content'))
 
@@ -30,11 +31,14 @@ def test_create_model_from_response():
     # Parse JSON data from response file
     with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
             as file_handle:
-        content = json.loads(file_handle.read())
+        content = json.loads(file_handle.read())[0]
 
     # Get tier config request from response
     resource = TierConfigRequestAutomation()
-    request = resource.list
+    requests = resource.list
+    assert isinstance(requests, list)
+    assert len(requests) == 1
+    request = requests[0]
 
     # Assert that fields are deserialized with the correct type
     assert isinstance(request, TierConfigRequest)
@@ -86,3 +90,20 @@ def test_create_model_from_response():
     assert request.template.id == content['template']['id']
     assert request.template.representation == content['template']['representation']
     assert request.activation.link == content['activation']['link']
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+def test_get_tier_config():
+    config = TierConfigRequestAutomation().get_tier_config(tier_id='', product_id='')
+    assert isinstance(config, TierConfigRequest)
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+def test_get_tier_config_param():
+    param = TierConfigRequestAutomation().get_tier_config_param(
+        param_id='param_a',
+        tier_id='',
+        product_id='')
+    assert isinstance(param, Param)
+    assert param.id == 'param_a'
+    assert param.value == 'param_a_value'
