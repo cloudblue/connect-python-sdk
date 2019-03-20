@@ -7,8 +7,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from abc import ABCMeta
 
 from connect.logger import logger
-from connect.models import usage
-from connect.models.usage import FileSchema
+from connect.models.exception import UsageFileAction, Skip
+from connect.models.usage import FileSchema, File
 from connect.resource import AutomationResource
 
 
@@ -18,36 +18,34 @@ class UsageFileAutomation(AutomationResource):
     schema = FileSchema()
 
     def dispatch(self, request):
-        # type: (usage.File) -> Any
+        # type: (File) -> str
         try:
+            # Validate product
             if self.config.products \
                     and request.product.id not in self.config.products:
                 return 'Invalid product'
 
+            # Process request
             logger.info(
                 'Start usage file request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
-            if not result:
-                logger.info('Method `process_request` did not return result')
-                return
+            # Report that expected exception was not raised
+            processing_result = 'UsageFileAutomation.process_request returned {} ' \
+                                'while is expected to raise UsageFileAction or Skip exception' \
+                .format(str(result))
+            logger.warning(processing_result)
+            raise UserWarning(processing_result)
 
-            params = {}
-            if isinstance(result, ActivationTileResponse):
-                params = {'template': {'representation': result.tile}}
-            elif isinstance(result, ActivationTemplateResponse):
-                params = {'template': {'id': result.template_id}}
+        # Catch action
+        except UsageFileAction as usage:
+            self.api.post(self._obj_url(request.id, usage.code), data=usage.obj)
+            processing_result = usage.code
 
-            self.approve(request.id, params)
+        # Catch skip
+        except Skip:
+            processing_result = 'skip'
 
-        except FulfillmentInquire as inquire:
-            self.update_parameters(request.id, inquire.params)
-            return self.inquire(request.id)
-
-        except FulfillmentFail as fail:
-            return self.fail(request.id, reason=fail.message)
-
-        except Skip as skip:
-            return skip.code
-
-        return
+        logger.info('Finished processing of usage file with ID {} with result {}'
+                    .format(request.id, processing_result))
+        return processing_result

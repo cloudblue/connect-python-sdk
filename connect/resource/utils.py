@@ -12,5 +12,5 @@ def join_url(base, url, allow_fragments=True):
     # type: (str, str, bool) -> str
     """ Method for the correct formation of the URL """
     if base and isinstance(base, str):
-        base += '/' if base[-1] != '/' else ''
+        base += '' if base.endswith('/') else '/'
     return urljoin(base, url, allow_fragments=allow_fragments)

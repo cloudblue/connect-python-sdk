@@ -6,8 +6,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any
-
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
@@ -28,7 +26,7 @@ class FulfillmentAutomation(AutomationResource):
         return filters
 
     def dispatch(self, request):
-        # type: (Fulfillment) -> Any
+        # type: (Fulfillment) -> str
         try:
             if self.config.products \
                     and request.asset.product.id not in self.config.products:
@@ -39,7 +37,7 @@ class FulfillmentAutomation(AutomationResource):
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return
+                return ''
 
             params = {}
             if isinstance(result, ActivationTileResponse):
@@ -59,4 +57,4 @@ class FulfillmentAutomation(AutomationResource):
         except Skip as skip:
             return skip.code
 
-        return
+        return ''

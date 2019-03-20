@@ -4,8 +4,9 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-
+import marshmallow
 import requests
+from functools import reduce
 from typing import Any
 
 from connect.config import Config
@@ -75,10 +76,10 @@ class ApiClient(object):
 
 
 class BaseResource(object):
-    resource = None
-    limit = 100
-    api = None
-    schema = BaseSchema()
+    resource = None  # type: str
+    limit = 100  # type: int
+    api = None  # type: ApiClient
+    schema = BaseSchema()  # type: marshmallow.Schema
 
     def __init__(self, config=None):
         # Assign passed config or globally configured instance
@@ -126,9 +127,9 @@ class BaseResource(object):
         # type: () -> str
         return join_url(self.config.api_url, self.__class__.resource)
 
-    def _obj_url(self, pk):
-        # type: (str) -> str
-        return join_url(self._list_url, pk)
+    def _obj_url(self, *args):
+        # type: ([str]) -> str
+        return reduce(lambda x, y: join_url(x, y), args, self._list_url)
 
     def _load_schema(self, response):
         # type: (str) -> Any

@@ -13,6 +13,7 @@ import six
 from mock import MagicMock, patch
 
 from connect import FulfillmentAutomation
+from connect.config import Config
 from connect.models import Param
 from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
@@ -31,6 +32,12 @@ def _get_response2_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response2.json')) as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content)
+
+
+def test_resource_obj_url():
+    resource = FulfillmentAutomation()
+    assert resource._obj_url('hello', 'world') == '{}{}/hello/world' \
+        .format(Config.get_instance().api_url, resource.resource)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))

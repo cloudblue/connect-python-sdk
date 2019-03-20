@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
@@ -21,7 +21,7 @@ class TierConfigRequestAutomation(AutomationResource):
     schema = TierConfigRequestSchema()
 
     def dispatch(self, request):
-        # type: (TierConfigRequest) -> Any
+        # type: (TierConfigRequest) -> str
         try:
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
@@ -33,7 +33,7 @@ class TierConfigRequestAutomation(AutomationResource):
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return
+                return ''
 
             params = {}
             if isinstance(result, ActivationTileResponse):
@@ -53,7 +53,7 @@ class TierConfigRequestAutomation(AutomationResource):
         except Skip as skip:
             return skip.code
 
-        return
+        return ''
 
     def get_tier_config(self, tier_id, product_id):
         # type: (str, str) -> Optional[Union[TierConfig, TierConfigRequest]]
