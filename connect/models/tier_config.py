@@ -9,6 +9,7 @@ from typing import Optional, List
 
 from connect.models import Param, ParamSchema
 from connect.models.base import BaseModel, BaseSchema
+from connect.models.company import Company, CompanySchema
 from connect.models.connection import Connection, ConnectionSchema
 from connect.models.contact import ContactInfo, ContactInfoSchema
 from connect.models.product import Product, ProductSchema
@@ -21,13 +22,9 @@ class Account(BaseModel):
     contact_info = None  # type: ContactInfo
 
 
-class Assignee(BaseModel):
-    name = None  # type: str
-
-
 class EventInfo(BaseModel):
     at = None  # type: str
-    by = None  # type Assignee
+    by = None  # type: Company
 
 
 class Events(BaseModel):
@@ -73,7 +70,7 @@ class TierConfigRequest(BaseModel):
     configuration = None  # type: TierConfig
     events = None  # type: Events
     params = None  # type: List[Param]
-    assignee = None  # type: Assignee
+    assignee = None  # type: Company
     template = None  # type: Template
     activation = None  # type: Activation
 
@@ -92,17 +89,9 @@ class AccountSchema(BaseSchema):
     contact_info = fields.Nested(ContactInfoSchema)
 
 
-class AssigneeSchema(BaseSchema):
-    name = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Assignee(**data)
-
-
 class EventInfoSchema(BaseSchema):
     at = fields.Str()
-    by = fields.Nested(AssigneeSchema)
+    by = fields.Nested(CompanySchema)
 
     @post_load
     def make_object(self, data):
@@ -161,7 +150,7 @@ class TierConfigRequestSchema(BaseSchema):
     configuration = fields.Nested(TierConfigSchema, only=('id', 'name'))
     events = fields.Nested(EventsSchema)
     params = fields.List(fields.Nested(ParamSchema))
-    assignee = fields.Nested(AssigneeSchema)
+    assignee = fields.Nested(CompanySchema)
     template = fields.Nested(TemplateSchema)
     activation = fields.Nested(ActivationSchema)
 

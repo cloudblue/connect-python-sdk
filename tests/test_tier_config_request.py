@@ -13,7 +13,8 @@ from mock import MagicMock, patch
 
 from connect import TierConfigRequestAutomation
 from connect.models import Param
-from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Assignee, Template, \
+from connect.models.company import Company
+from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
     Activation, EventInfo
 
 Response = namedtuple('Response', ('ok', 'content'))
@@ -52,12 +53,12 @@ def test_create_model_from_response():
     assert not request.events.created.by
     assert isinstance(request.events.inquired, EventInfo)
     assert isinstance(request.events.inquired.at, six.string_types)
-    assert isinstance(request.events.inquired.by, Assignee)
+    assert isinstance(request.events.inquired.by, Company)
     assert isinstance(request.events.inquired.by.id, six.string_types)
     assert isinstance(request.events.inquired.by.name, six.string_types)
     assert isinstance(request.events.pended, EventInfo)
     assert isinstance(request.events.pended.at, six.string_types)
-    assert isinstance(request.events.pended.by, Assignee)
+    assert isinstance(request.events.pended.by, Company)
     assert isinstance(request.events.pended.by.id, six.string_types)
     assert isinstance(request.events.pended.by.name, six.string_types)
     assert not request.events.validated
@@ -65,7 +66,7 @@ def test_create_model_from_response():
     assert isinstance(request.params, list)
     for param in request.params:
         assert isinstance(param, Param)
-    assert isinstance(request.assignee, Assignee)
+    assert isinstance(request.assignee, Company)
     assert isinstance(request.template, Template)
     assert isinstance(request.activation, Activation)
 
