@@ -32,7 +32,7 @@ class TierConfigRequestAutomation(AutomationResource):
             result = self.process_request(request)
 
             if not result:
-                logger.info('Method `process_tier_config_request` did not return result')
+                logger.info('Method `process_request` did not return result')
                 return
 
             params = {}
