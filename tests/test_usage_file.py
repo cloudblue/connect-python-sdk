@@ -111,6 +111,7 @@ def test_process():
     with pytest.raises(UserWarning):
         resource.process()
 
+    # Test that all other actions do not raise UserWarning
     for action in actions:
         current_action = action  # This is used by _get_response_ok to define request id
         resource.process()
