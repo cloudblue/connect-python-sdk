@@ -28,10 +28,11 @@ class TemplateResource(BaseResource):
 
         return ActivationTileResponse(response)
 
+    @property
+    def list(self):
+        # type: () -> Any
+        raise AttributeError('This resource do not have method `list`')
+
     def get(self, pk):
         # type: (str) -> ActivationTemplateResponse
         return ActivationTemplateResponse(template_id=pk)
-
-    def get_list(self):
-        # type: () -> Any
-        raise AttributeError('This resource do not have method `list`')
