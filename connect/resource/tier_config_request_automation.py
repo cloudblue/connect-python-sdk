@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Optional
+from typing import Optional
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
