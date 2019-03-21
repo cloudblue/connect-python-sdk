@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Optional, Union
+from typing import Any, Optional
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
@@ -56,7 +56,7 @@ class TierConfigRequestAutomation(AutomationResource):
         return ''
 
     def get_tier_config(self, tier_id, product_id):
-        # type: (str, str) -> Optional[Union[TierConfig, TierConfigRequest]]
+        # type: (str, str) -> Optional[TierConfig]
         params = {
             'status': 'approved',
             'configuration__product__id': product_id,
@@ -66,10 +66,10 @@ class TierConfigRequestAutomation(AutomationResource):
         objects = self._load_schema(response)
 
         if isinstance(objects, list) and len(objects) > 0:
-            # Return configuration field if defined, otherwise the TierConfigRequest itself
+            # Return configuration field if defined, otherwise create TierConfig from request
             return objects[0].configuration \
                 if objects[0].configuration.id \
-                else objects[0]
+                else TierConfig(**vars(objects[0]))
         else:
             # Return the object or, if an empty list, None
             return objects or None
