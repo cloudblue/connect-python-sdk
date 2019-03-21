@@ -4,11 +4,9 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-import json
 import os
 from collections import namedtuple
 
-import six
 from mock import MagicMock, patch
 
 from connect import TierConfigRequestAutomation
@@ -28,75 +26,65 @@ def _get_response_ok():
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
-def test_create_model_from_response():
-    # Parse JSON data from response file
-    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
-            as file_handle:
-        content = json.loads(file_handle.read())[0]
-
-    # Get tier config request from response
-    resource = TierConfigRequestAutomation()
-    requests = resource.list
+def test_create_resource():
+    requests = TierConfigRequestAutomation().list
     assert isinstance(requests, list)
     assert len(requests) == 1
+
     request = requests[0]
-
-    # Assert that fields are deserialized with the correct type
     assert isinstance(request, TierConfigRequest)
-    assert isinstance(request.id, six.string_types)
-    assert isinstance(request.type, six.string_types)
-    assert isinstance(request.status, six.string_types)
-    assert isinstance(request.configuration, TierConfig)
-    assert isinstance(request.events, Events)
-    assert isinstance(request.events.created, EventInfo)
-    assert isinstance(request.events.created.at, six.string_types)
-    assert not request.events.created.by
-    assert isinstance(request.events.inquired, EventInfo)
-    assert isinstance(request.events.inquired.at, six.string_types)
-    assert isinstance(request.events.inquired.by, Company)
-    assert isinstance(request.events.inquired.by.id, six.string_types)
-    assert isinstance(request.events.inquired.by.name, six.string_types)
-    assert isinstance(request.events.pended, EventInfo)
-    assert isinstance(request.events.pended.at, six.string_types)
-    assert isinstance(request.events.pended.by, Company)
-    assert isinstance(request.events.pended.by.id, six.string_types)
-    assert isinstance(request.events.pended.by.name, six.string_types)
-    assert not request.events.validated
-    assert not request.events.updated
-    assert isinstance(request.params, list)
-    for param in request.params:
-        assert isinstance(param, Param)
-    assert isinstance(request.assignee, Company)
-    assert isinstance(request.template, Template)
-    assert isinstance(request.activation, Activation)
+    assert request.id == 'TCR-000-000-000'
+    assert request.type == 'setup'
+    assert request.status == 'pending'
 
-    # Assert that data is parsed correctly
-    assert request.id == content['id']
-    assert request.type == content['type']
-    assert request.status == content['status']
-    assert not request.configuration.id
-    assert request.events.created.at == content['events']['created']['at']
-    assert request.events.inquired.at == content['events']['inquired']['at']
-    assert request.events.inquired.by.id == content['events']['inquired']['by']['id']
-    assert request.events.inquired.by.name == content['events']['inquired']['by']['name']
-    assert request.events.pended.at == content['events']['pended']['at']
-    assert request.events.pended.by.id == content['events']['pended']['by']['id']
-    assert request.events.pended.by.name == content['events']['pended']['by']['name']
-    assert len(request.params) == len(content['params'])
-    for param_index in range(0, len(request.params)):
-        assert request.params[param_index].id == content['params'][param_index]['id']
-        assert request.params[param_index].value == content['params'][param_index]['value']
-    assert request.assignee.id == content['assignee']['id']
-    assert request.assignee.name == content['assignee']['name']
-    assert request.template.id == content['template']['id']
-    assert request.template.representation == content['template']['representation']
-    assert request.activation.link == content['activation']['link']
+    configuration = request.configuration
+    assert isinstance(configuration, TierConfig)
+    assert not configuration.id
+
+    events = request.events
+    assert isinstance(events, Events)
+    assert isinstance(events.created, EventInfo)
+    assert events.created.at == '2018-11-21T11:10:29+00:00'
+    assert not events.created.by
+    assert isinstance(events.inquired, EventInfo)
+    assert events.inquired.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.inquired.by, Company)
+    assert events.inquired.by.id == 'PA-000-000'
+    assert events.inquired.by.name == 'Username'
+    assert isinstance(events.pended, EventInfo)
+    assert events.pended.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.pended.by, Company)
+    assert events.pended.by.id == 'PA-000-001'
+    assert events.pended.by.name == 'Username1'
+    assert not events.validated
+    assert not events.updated
+
+    params = request.params
+    assert isinstance(params, list)
+    assert len(request.params) == 1
+    assert isinstance(request.params[0], Param)
+    assert request.params[0].id == 'param_a'
+    assert request.params[0].value == 'param_a_value'
+
+    assignee = request.assignee
+    assert isinstance(assignee, Company)
+    assert assignee.id == 'PA-000-000'
+    assert assignee.name == 'Username'
+
+    template = request.template
+    assert isinstance(template, Template)
+    assert template.id == 'TP-000-000-000'
+    assert template.representation == 'Render text is here......'
+
+    activation = request.activation
+    assert isinstance(activation, Activation)
+    assert activation.link == 'http://example.com'
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_get_tier_config():
     config = TierConfigRequestAutomation().get_tier_config(tier_id='', product_id='')
-    assert isinstance(config, TierConfigRequest)
+    assert isinstance(config, TierConfig)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
