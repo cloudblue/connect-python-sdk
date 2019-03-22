@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
-from typing import Any
+from typing import Any, List, Dict
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -33,7 +33,7 @@ class ApiClient(object):
 
     @property
     def headers(self):
-        # type: () -> dict
+        # type: () -> Dict[str, str]
         return {
             "Authorization": self.config.api_key,
             "Content-Type": "application/json",
@@ -101,14 +101,14 @@ class BaseResource(object):
 
     @property
     def list(self):
-        # type: () -> Any
+        # type: () -> List[Any]
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url, params=filters)
         return self._load_schema(response)
 
     def build_filter(self):
-        # type: () -> dict
+        # type: () -> Dict[str, Any]
         res_filter = {}
         if self.limit:
             res_filter['limit'] = self.limit
@@ -131,7 +131,7 @@ class BaseResource(object):
         return join_url(self._list_url, pk)
 
     def _load_schema(self, response):
-        # type: (str) -> Any
+        # type: (str) -> List[Any]
         objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(

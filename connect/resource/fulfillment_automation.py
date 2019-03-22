@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any
+from typing import Any, Dict
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
@@ -21,14 +21,14 @@ class FulfillmentAutomation(AutomationResource):
     schema = FulfillmentSchema()
 
     def build_filter(self):
-        # type: () -> dict
+        # type: () -> Dict[str, Any]
         filters = super(FulfillmentAutomation, self).build_filter()
         if self.config.products:
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
     def dispatch(self, request):
-        # type: (Fulfillment) -> Any
+        # type: (Fulfillment) -> str
         try:
             if self.config.products \
                     and request.asset.product.id not in self.config.products:
@@ -39,7 +39,7 @@ class FulfillmentAutomation(AutomationResource):
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return
+                return ''
 
             params = {}
             if isinstance(result, ActivationTileResponse):
@@ -59,4 +59,6 @@ class FulfillmentAutomation(AutomationResource):
         except Skip as skip:
             return skip.code
 
-        return
+    def process_request(self, request):
+        # type: (Fulfillment) -> str
+        raise NotImplementedError('Please implement `process_request` logic')

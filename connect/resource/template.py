@@ -4,7 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-from typing import Any
+from typing import List, Any
 
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseResource
@@ -18,6 +18,11 @@ class TemplateResource(BaseResource):
     """
     resource = 'templates'
 
+    @property
+    def list(self):
+        # type: () -> List[Any]
+        raise AttributeError('This resource do not have method `list`')
+
     def render(self, pk, request_id):
         # type: (str, str) -> ActivationTileResponse
         if not all([pk, request_id]):
@@ -27,11 +32,6 @@ class TemplateResource(BaseResource):
         response = self.api.get(url, params={'request_id': request_id})
 
         return ActivationTileResponse(response)
-
-    @property
-    def list(self):
-        # type: () -> Any
-        raise AttributeError('This resource do not have method `list`')
 
     def get(self, pk):
         # type: (str) -> ActivationTemplateResponse
