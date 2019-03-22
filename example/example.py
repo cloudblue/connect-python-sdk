@@ -4,12 +4,14 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+from typing import Union
 
 from connect import FulfillmentAutomation
 from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connect.models.fulfillment import Fulfillment
 
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")
@@ -20,6 +22,7 @@ Config(file='config.json')
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
+        # type: (Fulfillment) -> Union[ActivationTemplateResponse, ActivationTileResponse]
 
         logger.info('Processing request {} for contract {}, product {}, marketplace {}'
                     .format(request.id,

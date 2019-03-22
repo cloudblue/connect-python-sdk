@@ -6,26 +6,35 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 import requests
+from typing import Any, List, Dict
 
 from connect.config import Config
 from connect.logger import function_log, logger
 from connect.models import BaseSchema, ServerErrorSchema
+from connect.models.base import BaseModel
 from connect.models.exception import ServerErrorException
 from .utils import join_url
 
 
 class ApiClient(object):
-
     def __init__(self, config=None):
+        # type: (Config) -> None
+
         # Assign passed config or globally configured instance
-        self.config = config or Config.get_instance()
+        self._config = config or Config.get_instance()
 
         # Assert data
         if not isinstance(self.config, Config):
             raise ValueError('A valid Config object is required to create an ApiClient')
 
     @property
+    def config(self):
+        # type: () -> Config
+        return self._config
+
+    @property
     def headers(self):
+        # type: () -> Dict[str, str]
         return {
             "Authorization": self.config.api_key,
             "Content-Type": "application/json",
@@ -33,6 +42,7 @@ class ApiClient(object):
 
     @staticmethod
     def check_response(response):
+        # type: (requests.Response) -> str
         if not hasattr(response, 'content'):
             raise AttributeError(
                 'Response not attribute content. Check your request params'
@@ -73,7 +83,7 @@ class BaseResource(object):
 
     def __init__(self, config=None):
         # Assign passed config or globally configured instance
-        self.config = config or Config.get_instance()
+        self._config = config or Config.get_instance()
 
         # Assert data
         if not self.__class__.resource:
@@ -85,7 +95,28 @@ class BaseResource(object):
         if not BaseResource.api:
             BaseResource.api = ApiClient(config)
 
+    @property
+    def config(self):
+        # type: () -> Config
+        return self._config
+
+    @property
+    def list(self):
+        # type: () -> List[Any]
+        filters = self.build_filter()
+        logger.info('Get list request by filter - {}'.format(filters))
+        response = self.api.get(url=self._list_url, params=filters)
+        return self.__loads_schema(response)
+
+    def get(self, pk):
+        # type: (str) -> Any
+        response = self.api.get(url=self._obj_url(pk))
+        objects = self.__loads_schema(response)
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0]
+
     def build_filter(self):
+        # type: () -> Dict[str, Any]
         res_filter = {}
         if self.limit:
             res_filter['limit'] = self.limit
@@ -94,12 +125,15 @@ class BaseResource(object):
 
     @property
     def _list_url(self):
+        # type: () -> str
         return join_url(self.config.api_url, self.__class__.resource)
 
     def _obj_url(self, pk):
+        # type: (str) -> str
         return join_url(self._list_url, pk)
 
     def __loads_schema(self, response):
+        # type: (str) -> List[BaseModel]
         objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(
@@ -108,15 +142,3 @@ class BaseResource(object):
             )
 
         return objects
-
-    def get(self, pk):
-        response = self.api.get(url=self._obj_url(pk))
-        objects = self.__loads_schema(response)
-        if isinstance(objects, list) and len(objects) > 0:
-            return objects[0]
-
-    def list(self):
-        filters = self.build_filter()
-        logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self._list_url, params=filters)
-        return self.__loads_schema(response)

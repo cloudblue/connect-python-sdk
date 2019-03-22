@@ -7,12 +7,23 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from marshmallow import fields, post_load
 
-from .asset import AssetSchema
+from .asset import Asset, AssetSchema
 from .base import BaseModel, BaseSchema
-from .marketplace import ContractSchema, MarketplaceSchema
+from .marketplace import Contract, ContractSchema, Marketplace, MarketplaceSchema
 
 
 class Fulfillment(BaseModel):
+    activation_key = None  # type: str
+    asset = None  # type: Asset
+    status = None  # type: str
+    type = None  # type: str
+    updated = None  # type: str
+    created = None  # type: str
+    reason = None  # type: str
+    params_from_url = None  # type: str
+    contract = None  # type: Contract
+    marketplace = None  # type: Marketplace
+
     @property
     def new_items(self):
         # noinspection PyUnresolvedReferences

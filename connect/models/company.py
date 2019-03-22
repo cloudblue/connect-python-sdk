@@ -11,7 +11,7 @@ from .base import BaseModel, BaseSchema
 
 
 class Company(BaseModel):
-    pass
+    name = None  # type: str
 
 
 class CompanySchema(BaseSchema):

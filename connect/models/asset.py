@@ -6,25 +6,33 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import fields, post_load
+from typing import List
 
 from .base import BaseModel, BaseSchema
-from .connection import ConnectionSchema
-from .parameters import ParamSchema
-from .product import ItemSchema, ProductSchema
-from .tiers import TiersSchemaMixin
+from .connection import Connection, ConnectionSchema
+from .parameters import Param, ParamSchema
+from .product import Item, ItemSchema, Product, ProductSchema
+from .tiers import Tiers, TiersSchema
 
 
 class Asset(BaseModel):
+    status = None  # type: str
+    external_id = None  # type: str
+    external_uid = None  # type: str
+    product = None  # type: Product
+    connection = None  # type: Connection
+    items = None  # type: List[Item]
+    params = None  # type: List[Param]
+    tiers = None  # type: Tiers
+
     def get_param_by_id(self, id_):
         try:
-            # noinspection PyUnresolvedReferences
             return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
 
     def get_item_by_mpn(self, mpn):
         try:
-            # noinspection PyUnresolvedReferences
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
@@ -40,7 +48,7 @@ class AssetSchema(BaseSchema):
     )
     items = fields.List(fields.Nested(ItemSchema))
     params = fields.List(fields.Nested(ParamSchema))
-    tiers = fields.Nested(TiersSchemaMixin)
+    tiers = fields.Nested(TiersSchema)
 
     @post_load
     def make_object(self, data):

@@ -11,7 +11,7 @@ from .base import BaseModel, BaseSchema
 
 
 class Product(BaseModel):
-    pass
+    name = None  # type: str
 
 
 class ProductSchema(BaseSchema):
@@ -23,7 +23,10 @@ class ProductSchema(BaseSchema):
 
 
 class Item(BaseModel):
-    pass
+    global_id = None  # type: str
+    mpn = None  # type: str
+    old_quantity = None  # type: int
+    quantity = None  # type: int
 
 
 class ItemSchema(BaseSchema):

@@ -9,6 +9,7 @@ from requests.compat import urljoin
 
 
 def join_url(base, url, allow_fragments=True):
+    # type: (str, str, bool) -> str
     """ Method for the correct formation of the URL """
     if base and isinstance(base, str):
         base += '/' if base[-1] != '/' else ''
