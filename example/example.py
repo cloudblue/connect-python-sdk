@@ -4,6 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+from typing import Union
 
 from connect import FulfillmentAutomation
 from connect.config import Config
@@ -21,7 +22,7 @@ Config(file='config.json')
 
 class ExampleRequestProcessor(FulfillmentAutomation):
     def process_request(self, request):
-        # type: (Fulfillment) -> object
+        # type: (Fulfillment) -> Union[ActivationTemplateResponse, ActivationTileResponse]
 
         logger.info('Processing request {} for contract {}, product {}, marketplace {}'
                     .format(request.id,

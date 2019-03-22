@@ -4,7 +4,6 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-from typing import Any
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
@@ -16,19 +15,19 @@ from .fulfillment import FulfillmentResource
 class FulfillmentAutomation(FulfillmentResource):
 
     def process(self):
-        # type: () -> Any
-        for _ in self.list():
-            return self.dispatch(_)
+        # type: () -> None
+        for _ in self.list:
+            self.dispatch(_)
 
     def dispatch(self, request):
-        # type: (Fulfillment) -> Any
+        # type: (Fulfillment) -> str
         try:
             logger.info('Start request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return
+                return ''
 
             params = {}
             if isinstance(result, ActivationTileResponse):
@@ -48,8 +47,6 @@ class FulfillmentAutomation(FulfillmentResource):
         except Skip as skip:
             return skip.code
 
-        return
-
     def process_request(self, request):
-        # type: (Fulfillment) -> Any
+        # type: (Fulfillment) -> str
         raise NotImplementedError('Please implement `process_request` logic')

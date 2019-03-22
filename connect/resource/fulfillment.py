@@ -7,6 +7,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
+from typing import List
+
 from connect.logger import function_log
 from connect.models import FulfillmentSchema, Param, ActivationTileResponse
 from .base import BaseResource
@@ -52,7 +54,7 @@ class FulfillmentResource(BaseResource):
 
     @function_log
     def update_parameters(self, pk, params):
-        # type: (str, list) -> str
+        # type: (str, List[Param]) -> str
         list_dict = []
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)

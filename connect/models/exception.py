@@ -6,6 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from typing import List
 
+from connect.models import Param
 from .server_error import ServerError
 
 
@@ -29,7 +30,7 @@ class FulfillmentFail(Message):
 
 
 class FulfillmentInquire(Message):
-    params = None  # type: List[str]
+    params = None  # type: List[Param]
 
     def __init__(self, *args, **kwargs):
         # type: (*any, **any) -> None

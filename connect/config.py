@@ -18,20 +18,19 @@ class Config(object):
     # noinspection PyShadowingBuiltins
     def __init__(
             self,
-            api_url=None,
-            api_key=None,
-            products=None,
-            file=None
+            api_url=None,  # type: str
+            api_key=None,  # type: str
+            products=None,  # type: Union[str, List[str]]
+            file=None  # type: str
     ):
-        # type: (str, str, Union[str, List[str]], str) -> None
-
         """
-        initialization config for public api
+        Initialization config for public api
         :param api_url: Public api url
         :param api_key: Service user ApiKey
         :param products (optional): Id products
-        :param file: Config file path
+        :param file: Config file name
         """
+
         # Check arguments
         if not file and not any([api_key, api_url]):
             raise ValueError('Filename or api_key and api_url are expected'
