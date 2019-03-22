@@ -7,7 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
-from typing import Any
+from typing import Any, List, Dict
 
 from connect.logger import function_log
 from connect.models import Param, ActivationTileResponse
@@ -21,13 +21,13 @@ class AutomationResource(BaseResource):
     limit = 1000
 
     def build_filter(self):
-        # type: () -> dict
+        # type: () -> Dict[str, Any]
         filters = super(AutomationResource, self).build_filter()
         filters['status'] = 'pending'
         return filters
 
     def process(self):
-        # type: () -> Any
+        # type: () -> None
         for request in self.list:
             self.dispatch(request)
 
@@ -65,7 +65,7 @@ class AutomationResource(BaseResource):
 
     @function_log
     def update_parameters(self, pk, params):
-        # type: (str, list) -> str
+        # type: (str, List[Param]) -> str
         list_dict = []
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)

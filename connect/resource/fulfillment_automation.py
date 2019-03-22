@@ -6,6 +6,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
+from typing import Any, Dict
+
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
@@ -19,7 +21,7 @@ class FulfillmentAutomation(AutomationResource):
     schema = FulfillmentSchema()
 
     def build_filter(self):
-        # type: () -> dict
+        # type: () -> Dict[str, Any]
         filters = super(FulfillmentAutomation, self).build_filter()
         if self.config.products:
             filters['asset.product.id__in'] = ','.join(self.config.products)
