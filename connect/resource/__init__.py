@@ -9,6 +9,7 @@ from .fulfillment_automation import FulfillmentAutomation
 from .automation import AutomationResource
 from .template import TemplateResource
 from .tier_config_request_automation import TierConfigRequestAutomation
+from .usage_automation import UsageAutomation
 from .usage_file_automation import UsageFileAutomation
 
 
@@ -17,5 +18,6 @@ __all__ = [
     'AutomationResource',
     'TemplateResource',
     'TierConfigRequestAutomation',
+    'UsageAutomation',
     'UsageFileAutomation',
 ]

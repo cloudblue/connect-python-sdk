@@ -47,6 +47,17 @@ class File(BaseModel):
     closed_at = None  # type: str
 
 
+class Listing(BaseModel):
+    status = None  # type: str
+    contract = None  # type: Contract
+    product = None  # type: Product
+    created = None  # type: str
+
+    # Undocumented fields (they appear in PHP SDK)
+    vendor = None  # type: Company
+    provider = None  # type: Company
+
+
 class RecordsSchema(BaseSchema):
     valid = fields.Int()
     invalid = fields.Int()
@@ -88,3 +99,18 @@ class FileSchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return File(**data)
+
+
+class ListingSchema(BaseSchema):
+    status = fields.Str()
+    contract = fields.Nested(ContractSchema)
+    product = fields.Nested(ProductSchema)
+    created = fields.Str()
+
+    # Undocumented fields (they appear in PHP SDK)
+    vendor = fields.Nested(CompanySchema)
+    provider = fields.Nested(CompanySchema)
+
+    @post_load
+    def make_object(self, data):
+        return Listing(**data)

@@ -20,10 +20,11 @@ from .utils import join_url
 class AutomationResource(BaseResource):
     limit = 1000
 
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
+    def build_filter(self, status='pending'):
+        # type: (str) -> Dict[str, Any]
         filters = super(AutomationResource, self).build_filter()
-        filters['status'] = 'pending'
+        if status:
+            filters['status'] = status
         return filters
 
     def process(self):
