@@ -85,7 +85,6 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
 class ExampleTierConfigRequestProcessor(TierConfigRequestAutomation):
     def process_request(self, request):
-        # type: (TierConfigRequest) -> Any
         pass
 
 

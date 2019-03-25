@@ -4,7 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
-from typing import Any, Union
+from typing import Union
 
 from connect import FulfillmentAutomation, TierConfigRequestAutomation
 from connect.config import Config
@@ -62,14 +62,10 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # Skip request
             raise Skip()
 
-    def process_tier_config_request(self, tier_config_request):
-        # type: (TierConfigRequest) -> Any
-        pass
-
 
 class ExampleTierConfigRequestProcessor(TierConfigRequestAutomation):
     def process_request(self, request):
-        # type: (TierConfigRequest) -> Any
+        # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
         pass
 
 
