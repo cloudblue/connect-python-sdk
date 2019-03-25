@@ -8,7 +8,7 @@ from abc import ABCMeta
 
 from typing import Dict, Any
 
-from connect.models.usage import FileSchema, File
+from connect.models.usage import FileSchema, Listing
 from connect.resource import AutomationResource
 
 
@@ -22,5 +22,5 @@ class UsageAutomation(AutomationResource):
         return super(UsageAutomation, self).build_filter(status=status)
 
     def dispatch(self, request):
-        # type: (File) -> str
+        # type: (Listing) -> str
         pass
