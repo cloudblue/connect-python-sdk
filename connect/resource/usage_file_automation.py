@@ -15,7 +15,7 @@ from connect.resource import AutomationResource
 class UsageFileAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema()
+    schema = FileSchema(many=True)
 
     def dispatch(self, request):
         # type: (File) -> str

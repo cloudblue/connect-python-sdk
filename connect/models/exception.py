@@ -106,3 +106,9 @@ class ServerErrorException(Exception):
             self.message = self.__class__.message
 
         super(ServerErrorException, self).__init__(self.message, *args)
+
+
+class FileCreationError(Message):
+    def __init__(self, message):
+        # type: (str) -> None
+        super(FileCreationError, self).__init__(message, 'filecreation')

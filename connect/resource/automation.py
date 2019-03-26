@@ -44,19 +44,19 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        url = join_url(self._obj_url(pk), 'approve/')
+        url = self._obj_url(pk, 'approve/')
         return self.api.post(url=url, data=data if data else {})
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        url = join_url(self._obj_url(pk), 'inquire/')
+        url = self._obj_url(pk, 'inquire/')
         return self.api.post(url=url, data={})
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        url = join_url(self._obj_url(pk), 'fail/')
+        url = self._obj_url(pk, 'fail/')
         return self.api.post(url=url, data={'reason': reason})
 
     @function_log

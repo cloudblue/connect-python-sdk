@@ -7,7 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import marshmallow
 import requests
 from functools import reduce
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Union
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -36,8 +36,10 @@ class ApiClient(object):
     def headers(self):
         # type: () -> Dict[str, str]
         return {
-            "Authorization": self.config.api_key,
-            "Content-Type": "application/json",
+            'Authorization': (self.config.api_key
+                              if self.config.api_key.startswith('ApiKey ')
+                              else 'ApiKey ' + self.config.api_key),
+            'Content-Type': 'application/json',
         }
 
     @staticmethod
@@ -45,8 +47,8 @@ class ApiClient(object):
         # type: (requests.Response) -> str
         if not hasattr(response, 'content'):
             raise AttributeError(
-                'Response not attribute content. Check your request params'
-                'Response status - {}'.format(getattr(response, 'code')),
+                'Response does not have attribute content. Check your request params. '
+                'Response status - {}'.format(response.status_code),
             )
 
         if not hasattr(response, 'ok') or not response.ok:
@@ -58,19 +60,22 @@ class ApiClient(object):
 
     @function_log
     def get(self, url, params=None, **kwargs):
-        kwargs['headers'] = self.headers
+        if 'headers' not in kwargs:
+            kwargs['headers'] = self.headers
         response = requests.get(url, params, **kwargs)
         return self.check_response(response)
 
     @function_log
     def post(self, url, data=None, json=None, **kwargs):
-        kwargs['headers'] = self.headers
+        if 'headers' not in kwargs:
+            kwargs['headers'] = self.headers
         response = requests.post(url, data, json, **kwargs)
         return self.check_response(response)
 
     @function_log
     def put(self, url, data=None, **kwargs):
-        kwargs['headers'] = self.headers
+        if 'headers' not in kwargs:
+            kwargs['headers'] = self.headers
         response = requests.put(url, data, **kwargs)
         return self.check_response(response)
 
@@ -132,8 +137,8 @@ class BaseResource(object):
         return reduce(lambda x, y: join_url(x, y), args, self._list_url)
 
     def _load_schema(self, response):
-        # type: (str) -> List[Any]
-        objects, error = self.schema.loads(response, many=True)
+        # type: (str) -> Union[List[Any], Any]
+        objects, error = self.schema.loads(response)
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{}`. \n'

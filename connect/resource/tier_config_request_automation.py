@@ -18,7 +18,7 @@ from .automation import AutomationResource
 class TierConfigRequestAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
-    schema = TierConfigRequestSchema()
+    schema = TierConfigRequestSchema(many=True)
 
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str

@@ -18,7 +18,7 @@ from .automation import AutomationResource
 class FulfillmentAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'requests'
-    schema = FulfillmentSchema()
+    schema = FulfillmentSchema(many=True)
 
     def build_filter(self, status='pending'):
         # type: (str) -> Dict[str, Any]
@@ -47,7 +47,7 @@ class FulfillmentAutomation(AutomationResource):
             elif isinstance(result, ActivationTemplateResponse):
                 params = {'template_id': result.template_id}
 
-            self.approve(request.id, params)
+            return self.approve(request.id, params)
 
         except FulfillmentInquire as inquire:
             self.update_parameters(request.id, inquire.params)
@@ -58,5 +58,3 @@ class FulfillmentAutomation(AutomationResource):
 
         except Skip as skip:
             return skip.code
-
-        return ''
