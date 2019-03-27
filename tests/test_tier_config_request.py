@@ -7,6 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import os
 from collections import namedtuple
 
+import pytest
 from mock import MagicMock, patch
 
 from connect import TierConfigAutomation
@@ -27,6 +28,13 @@ def _get_response_ok():
             as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content)
+
+
+def _get_response_ok_invalid_product():
+    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
+            as file_handle:
+        content = file_handle.read()
+    return Response(ok=True, content=content.replace('CN-631-322-000', 'PRD-000-000-000'))
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
@@ -53,7 +61,7 @@ def test_create_resource():
 
     product = configuration.product
     assert isinstance(product, Product)
-    assert product.id == 'PRD-000-000-000'
+    assert product.id == 'CN-631-322-000'
     assert product.name == 'Product'
 
     connection = configuration.connection
@@ -148,7 +156,20 @@ def test_create_resource():
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_process():
-    automation = TierConfigAutomation()
+    automation = TierConfigAutomationHelper()
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+def test_process_not_implemented():
+    with pytest.raises(NotImplementedError):
+        automation = TierConfigAutomation()
+        automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+def test_process_invalid_product():
+    automation = TierConfigAutomationHelper()
     automation.process()
 
 
@@ -171,3 +192,8 @@ def test_get_tier_config_param():
     assert isinstance(param, Param)
     assert param.id == 'param_a'
     assert param.value == 'param_a_value'
+
+
+class TierConfigAutomationHelper(TierConfigAutomation):
+    def process_request(self, request):
+        pass
