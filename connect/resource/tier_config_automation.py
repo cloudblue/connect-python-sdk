@@ -9,7 +9,7 @@ from abc import ABCMeta
 from typing import Any, Optional
 
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
+from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema, TierConfig
 from .automation import AutomationResource
