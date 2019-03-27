@@ -9,13 +9,13 @@ from abc import ABCMeta
 from typing import Optional
 
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
+from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema, TierConfig
 from .automation import AutomationResource
 
 
-class TierConfigRequestAutomation(AutomationResource):
+class TierConfigAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     schema = TierConfigRequestSchema(many=True)
@@ -66,19 +66,6 @@ class TierConfigRequestAutomation(AutomationResource):
         objects = self._load_schema(response)
 
         if isinstance(objects, list) and len(objects) > 0:
-            # Return configuration field if defined, otherwise create TierConfig from request
-            return objects[0].configuration \
-                if objects[0].configuration.id \
-                else TierConfig(**vars(objects[0]))
+            return objects[0].configuration
         else:
-            # Return the object or, if an empty list, None
-            return objects or None
-
-    def get_tier_config_param(self, param_id, tier_id, product_id):
-        # type: (str, str, str) -> Optional[Param]
-        tier_config = self.get_tier_config(tier_id, product_id)
-        if not tier_config:
             return None
-
-        params = [param for param in tier_config.params if param.id == param_id]
-        return params[0] if len(params) > 0 else None
