@@ -88,6 +88,10 @@ class AccountSchema(BaseSchema):
     external_uid = fields.Str()
     contact_info = fields.Nested(ContactInfoSchema)
 
+    @post_load
+    def make_object(self, data):
+        return Account(**data)
+
 
 class EventInfoSchema(BaseSchema):
     at = fields.Str()
@@ -120,7 +124,7 @@ class TemplateSchema(BaseSchema):
 
 class TierConfigSchema(BaseSchema):
     name = fields.Str()
-    account = fields.Nested(AccountSchema, only=('id', 'name'))
+    account = fields.Nested(AccountSchema)
     product = fields.Nested(ProductSchema)
     tier_level = fields.Int()
     connection = fields.Nested(ConnectionSchema)
@@ -147,7 +151,7 @@ class ActivationSchema(BaseSchema):
 class TierConfigRequestSchema(BaseSchema):
     type = fields.Str()
     status = fields.Str()
-    configuration = fields.Nested(TierConfigSchema, only=('id', 'name'))
+    configuration = fields.Nested(TierConfigSchema)
     events = fields.Nested(EventsSchema)
     params = fields.List(fields.Nested(ParamSchema))
     assignee = fields.Nested(CompanySchema)

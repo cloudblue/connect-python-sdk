@@ -66,19 +66,9 @@ class TierConfigAutomation(AutomationResource):
         objects = self._load_schema(response)
 
         if isinstance(objects, list) and len(objects) > 0:
-            # Return configuration field if defined, otherwise create TierConfig from request
-            return objects[0].configuration \
-                if objects[0].configuration.id \
-                else TierConfig(**vars(objects[0]))
+            return objects[0].configuration
+        elif isinstance(objects, TierConfigRequest):
+            # Actually, we should no get here as schema has many=True
+            return objects.configuration
         else:
-            # Return the object or, if an empty list, None
-            return objects or None
-
-    def get_tier_config_param(self, param_id, tier_id, product_id):
-        # type: (str, str, str) -> Optional[Param]
-        tier_config = self.get_tier_config(tier_id, product_id)
-        if not tier_config:
             return None
-
-        params = [param for param in tier_config.params if param.id == param_id]
-        return params[0] if len(params) > 0 else None
