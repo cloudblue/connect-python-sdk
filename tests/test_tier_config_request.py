@@ -9,7 +9,7 @@ from collections import namedtuple
 
 from mock import MagicMock, patch
 
-from connect import TierConfigRequestAutomation
+from connect import TierConfigAutomation
 from connect.models import Param
 from connect.models.company import Company
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
@@ -27,7 +27,7 @@ def _get_response_ok():
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_resource():
-    requests = TierConfigRequestAutomation().list
+    requests = TierConfigAutomation().list
     assert isinstance(requests, list)
     assert len(requests) == 1
 
@@ -82,17 +82,37 @@ def test_create_resource():
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
+def test_dispatch():
+    pass
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_get_tier_config():
-    config = TierConfigRequestAutomation().get_tier_config(tier_id='', product_id='')
+    config = TierConfigAutomation().get_tier_config(tier_id='', product_id='')
     assert isinstance(config, TierConfig)
+
+
+@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]')))
+def test_get_tier_config_empty():
+    config = TierConfigAutomation().get_tier_config(tier_id='', product_id='')
+    assert not config
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_get_tier_config_param():
-    param = TierConfigRequestAutomation().get_tier_config_param(
+    param = TierConfigAutomation().get_tier_config_param(
         param_id='param_a',
         tier_id='',
         product_id='')
     assert isinstance(param, Param)
     assert param.id == 'param_a'
     assert param.value == 'param_a_value'
+
+
+@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]')))
+def test_get_tier_config_param_empty():
+    param = TierConfigAutomation().get_tier_config_param(
+        param_id='param_a',
+        tier_id='',
+        product_id='')
+    assert not param

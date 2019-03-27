@@ -15,7 +15,7 @@ from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchem
 from .automation import AutomationResource
 
 
-class TierConfigRequestAutomation(AutomationResource):
+class TierConfigAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     schema = TierConfigRequestSchema()

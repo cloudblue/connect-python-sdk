@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from typing import Union
 
-from connect import FulfillmentAutomation, TierConfigRequestAutomation
+from connect import FulfillmentAutomation, TierConfigAutomation
 from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
@@ -63,7 +63,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             raise Skip()
 
 
-class ExampleTierConfigRequestProcessor(TierConfigRequestAutomation):
+class ExampleTierConfigRequestProcessor(TierConfigAutomation):
     def process_request(self, request):
         # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
         pass
