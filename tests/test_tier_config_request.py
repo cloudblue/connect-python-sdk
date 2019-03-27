@@ -237,6 +237,6 @@ class TierConfigAutomationHelper(TierConfigAutomation):
 
     def process_request(self, request):
         if self.exception_class:
-            self.exception_class(self.response)
+            raise self.exception_class(self.response)
         else:
             return self.response
