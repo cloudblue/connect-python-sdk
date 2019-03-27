@@ -9,9 +9,10 @@ from collections import namedtuple
 
 import pytest
 from mock import MagicMock, patch
+from typing import Union
 
 from connect import TierConfigAutomation
-from connect.models import Param
+from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
 from connect.models.base import BaseModel
 from connect.models.company import Company
 from connect.models.connection import Connection
@@ -155,7 +156,7 @@ def test_create_resource():
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
-def test_process():
+def test_process_no_result():
     automation = TierConfigAutomationHelper()
     automation.process()
 
@@ -170,6 +171,13 @@ def test_process_not_implemented():
 @patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
 def test_process_invalid_product():
     automation = TierConfigAutomationHelper()
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+@patch('requests.post')
+def test_process_with_activation_tile(_):
+    automation = TierConfigAutomationHelper(ActivationTileResponse('TL-000-000-000'))
     automation.process()
 
 
@@ -195,5 +203,10 @@ def test_get_tier_config_param():
 
 
 class TierConfigAutomationHelper(TierConfigAutomation):
+    def __init__(self, response=''):
+        # type: (Union[ActivationTemplateResponse, ActivationTileResponse]) -> None
+        super(TierConfigAutomationHelper, self).__init__()
+        self.response = response
+
     def process_request(self, request):
-        pass
+        return self.response
