@@ -67,8 +67,5 @@ class TierConfigAutomation(AutomationResource):
 
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0].configuration
-        elif isinstance(objects, TierConfigRequest):
-            # Actually, we should no get here as schema has many=True
-            return objects.configuration
         else:
             return None

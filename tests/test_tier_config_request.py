@@ -9,13 +9,14 @@ from collections import namedtuple
 
 import pytest
 from mock import MagicMock, patch
-from typing import Union
+from typing import Union, ClassVar
 
 from connect import TierConfigAutomation
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
 from connect.models.base import BaseModel
 from connect.models.company import Company
 from connect.models.connection import Connection
+from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
 from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
@@ -175,9 +176,34 @@ def test_process_invalid_product():
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
-@patch('requests.post')
-def test_process_with_activation_tile(_):
-    automation = TierConfigAutomationHelper(ActivationTileResponse('TL-000-000-000'))
+@patch('requests.post', MagicMock(return_value=_get_response_ok()))
+def test_process_with_activation_tile():
+    automation = TierConfigAutomationHelper(ActivationTileResponse())
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+@patch('requests.post', MagicMock(return_value=_get_response_ok()))
+def test_process_with_activation_template():
+    automation = TierConfigAutomationHelper(ActivationTemplateResponse('TL-000-000-000'))
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+def test_process_raise_inquire():
+    automation = TierConfigAutomationHelper(exception_class=FulfillmentInquire)
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+def test_process_raise_fail():
+    automation = TierConfigAutomationHelper(exception_class=FulfillmentFail)
+    automation.process()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+def test_process_raise_skip():
+    automation = TierConfigAutomationHelper(exception_class=Skip)
     automation.process()
 
 
@@ -203,10 +229,14 @@ def test_get_tier_config_param():
 
 
 class TierConfigAutomationHelper(TierConfigAutomation):
-    def __init__(self, response=''):
-        # type: (Union[ActivationTemplateResponse, ActivationTileResponse]) -> None
+    def __init__(self, response='', exception_class=None):
+        # type: (Union[ActivationTemplateResponse, ActivationTileResponse, str], ClassVar) -> None
         super(TierConfigAutomationHelper, self).__init__()
         self.response = response
+        self.exception_class = exception_class
 
     def process_request(self, request):
-        return self.response
+        if self.exception_class:
+            self.exception_class(self.response)
+        else:
+            return self.response
