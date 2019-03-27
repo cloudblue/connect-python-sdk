@@ -9,7 +9,7 @@ from collections import namedtuple
 
 import pytest
 from mock import MagicMock, patch
-from typing import Union, ClassVar
+from typing import Union
 
 from connect import TierConfigAutomation
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
@@ -189,19 +189,25 @@ def test_process_with_activation_template():
     automation.process()
 
 
-@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+@patch('requests.post', MagicMock(return_value=_get_response_ok()))
+@patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_inquire():
     automation = TierConfigAutomationHelper(exception_class=FulfillmentInquire)
     automation.process()
 
 
-@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+@patch('requests.post', MagicMock(return_value=_get_response_ok()))
+@patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_fail():
     automation = TierConfigAutomationHelper(exception_class=FulfillmentFail)
     automation.process()
 
 
-@patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))
+@patch('requests.get', MagicMock(return_value=_get_response_ok()))
+@patch('requests.post', MagicMock(return_value=_get_response_ok()))
+@patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_skip():
     automation = TierConfigAutomationHelper(exception_class=Skip)
     automation.process()
@@ -230,7 +236,7 @@ def test_get_tier_config_param():
 
 class TierConfigAutomationHelper(TierConfigAutomation):
     def __init__(self, response='', exception_class=None):
-        # type: (Union[ActivationTemplateResponse, ActivationTileResponse, str], ClassVar) -> None
+        # type: (Union[ActivationTemplateResponse, ActivationTileResponse, str], type) -> None
         super(TierConfigAutomationHelper, self).__init__()
         self.response = response
         self.exception_class = exception_class
