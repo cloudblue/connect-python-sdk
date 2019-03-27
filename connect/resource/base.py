@@ -7,13 +7,14 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import marshmallow
 import requests
 from functools import reduce
+from requests.compat import urljoin
+
 from typing import Any, List, Dict, Union
 
 from connect.config import Config
 from connect.logger import function_log, logger
 from connect.models import BaseSchema, ServerErrorSchema
 from connect.models.exception import ServerErrorException
-from .utils import join_url
 
 
 class ApiClient(object):
@@ -130,11 +131,16 @@ class BaseResource(object):
     @property
     def _list_url(self):
         # type: () -> str
-        return join_url(self.config.api_url, self.__class__.resource)
+        return urljoin(self.config.api_url + (''
+                                                     if self.config.api_url.endswith('/')
+                                                     else '/'),
+                              self.__class__.resource)
 
     def _obj_url(self, *args):
         # type: ([str]) -> str
-        return reduce(lambda x, y: join_url(x, y), args, self._list_url)
+        return reduce(lambda x, y: urljoin(x + ('' if x.endswith('/') else '/'), y),
+                      args,
+                      self._list_url)
 
     def _load_schema(self, response):
         # type: (str) -> Union[List[Any], Any]

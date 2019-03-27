@@ -58,6 +58,16 @@ class Listing(BaseModel):
     provider = None  # type: Company
 
 
+class FileUsageRecord(BaseModel):
+    item_search_criteria = None  # type: str
+    item_search_value = None  # type: str
+    quantity = None  # type: int
+    start_time_utc = None  # type: str
+    end_time_utc = None  # type: str
+    asset_search_criteria = None  # type: str
+    asset_search_value = None  # type: str
+
+
 class RecordsSchema(BaseSchema):
     valid = fields.Int()
     invalid = fields.Int()
@@ -114,3 +124,17 @@ class ListingSchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return Listing(**data)
+
+
+class FileUsageRecordSchema(BaseSchema):
+    item_search_criteria = fields.Str()
+    item_search_value = fields.Str()
+    quantity = fields.Int()
+    start_time_utc = fields.Str()
+    end_time_utc = fields.Str()
+    asset_search_criteria = fields.Str()
+    asset_search_value = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return FileUsageRecord(**data)
