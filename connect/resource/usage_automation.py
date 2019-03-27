@@ -66,7 +66,8 @@ class UsageAutomation(AutomationResource):
         response = self.api.post(self._list_url, data=usage_file)
         return self._load_schema(response)
 
-    def create_usage_spreadsheet(self):
+    @staticmethod
+    def create_usage_spreadsheet():
         # type: () -> openpyxl.Workbook
         book = openpyxl.Workbook()
         sheet = book.active

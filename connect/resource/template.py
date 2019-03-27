@@ -8,7 +8,6 @@ from typing import List, Any
 
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from .base import BaseResource
-from .utils import join_url
 
 
 class TemplateResource(BaseResource):

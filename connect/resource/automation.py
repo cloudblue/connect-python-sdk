@@ -14,7 +14,6 @@ from connect.models import Param, ActivationTileResponse
 from connect.models.base import BaseModel
 from .base import BaseResource
 from .template import TemplateResource
-from .utils import join_url
 
 
 class AutomationResource(BaseResource):
