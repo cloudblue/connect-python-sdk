@@ -5,10 +5,10 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
+from tempfile import NamedTemporaryFile
 
 import openpyxl
 import requests
-from openpyxl.writer.excel import save_virtual_workbook
 from typing import Dict, Any, List
 
 from connect.logger import logger
@@ -87,7 +87,10 @@ class UsageAutomation(AutomationResource):
         # type: (File, openpyxl.Workbook) -> None
 
         # Generate spreadsheet file
-        file_contents = save_virtual_workbook(spreadsheet)
+        with NamedTemporaryFile() as tmp:
+            spreadsheet.save(tmp.name)
+            tmp.seek(0)
+            file_contents = tmp.read()
 
         # Setup request
         url = self._obj_url(usage_file.id, 'upload/')
