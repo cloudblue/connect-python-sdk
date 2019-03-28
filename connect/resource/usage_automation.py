@@ -10,7 +10,7 @@ from tempfile import NamedTemporaryFile
 
 import openpyxl
 import requests
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 from connect.logger import logger
 from connect.models.exception import FileCreationError, FileRetrievalError
@@ -128,10 +128,15 @@ class UsageAutomation(AutomationResource):
         book = self.create_spreadsheet(usage_records)
         self.upload_spreadsheet(usage_file, book)
 
-    def get_usage_template_file(self, product):
+    def get_usage_template(self, product):
         # type: (Product) -> str
         location = self._get_usage_template_download_location(product.id)
-        return self._retrieve_usage_template(location)
+        contents = self._retrieve_usage_template(location) if location else None
+        if not location or contents is None:
+            msg = 'Error obtaining template usage file from `{}`'.format(location)
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+        return contents
 
     def submit_usage(self, usage_file, usage_records):
         # type: (File, List[FileUsageRecord]) -> File
@@ -141,20 +146,25 @@ class UsageAutomation(AutomationResource):
 
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
-        response = self.api.get(self.urljoin(self.config.api_url, '/usage/products/' + product_id + ''))
         try:
+            response = self.api.get(self.urljoin(self.config.api_url, '/usage/products/' + product_id + ''))
             response_dict = json.loads(response)
             return response_dict['template_link']
-        except (requests.exceptions.RequestException, KeyError, ValueError):
+        except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
             return ''
 
     @staticmethod
     def _retrieve_usage_template(location):
-        # type: (str) -> str
+        # type: (str) -> Optional[str]
         try:
+            # Try loading from file
             with open(location) as file_handle:
                 return file_handle.read()
         except IOError:
-            msg = 'Error Obtaining template usage file from `{}`'.format(location)
-            logger.error(msg)
-            raise FileRetrievalError(msg)
+            # Try loading from URL
+            try:
+                file_handle = requests.get(location)
+                return file_handle.text
+            except requests.exceptions.RequestException:
+                # Fail
+                return None
