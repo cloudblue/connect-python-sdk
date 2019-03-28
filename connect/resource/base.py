@@ -4,13 +4,12 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+import functools
+from typing import Any, List, Dict, Union
+
 import marshmallow
 import requests
-from functools import reduce
-
 from requests import compat
-
-from typing import Any, List, Dict, Union
 
 from connect.config import Config
 from connect.logger import function_log, logger
@@ -135,7 +134,7 @@ class BaseResource(object):
 
     @staticmethod
     def urljoin(*args):
-        return reduce(lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b), args)
+        return functools.reduce(lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b), args)
 
     def _load_schema(self, response):
         # type: (str) -> Union[List[Any], Any]

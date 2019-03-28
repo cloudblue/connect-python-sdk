@@ -4,6 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+import json
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
@@ -12,7 +13,7 @@ import requests
 from typing import Dict, Any, List
 
 from connect.logger import logger
-from connect.models.exception import FileCreationError
+from connect.models.exception import FileCreationError, FileRetrievalError
 from connect.models.product import Product
 from connect.models.usage import FileSchema, Listing, File, FileUsageRecord
 from connect.resource import AutomationResource
@@ -68,12 +69,12 @@ class UsageAutomation(AutomationResource):
         return self._load_schema(response)
 
     @staticmethod
-    def create_usage_spreadsheet():
-        # type: () -> openpyxl.Workbook
+    def create_spreadsheet(usage_records):
+        # type: (List[FileUsageRecord]) -> openpyxl.Workbook
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
-        sheet['A1'] = 'usage_record_id'
+        sheet['A1'] = 'id'
         sheet['B1'] = 'item_search_criteria'
         sheet['C1'] = 'item_search_value'
         sheet['D1'] = 'quantity'
@@ -81,6 +82,16 @@ class UsageAutomation(AutomationResource):
         sheet['F1'] = 'end_time_utc'
         sheet['G1'] = 'asset_search_criteria'
         sheet['H1'] = 'asset_search_value'
+        for index, record in enumerate(usage_records):
+            row = str(index + 2)
+            sheet['A' + row] = record.id
+            sheet['B' + row] = record.item_search_criteria
+            sheet['C' + row] = record.item_search_value
+            sheet['D' + row] = record.quantity
+            sheet['E' + row] = record.start_time_utc
+            sheet['F' + row] = record.end_time_utc
+            sheet['G' + row] = record.asset_search_criteria
+            sheet['H' + row] = record.asset_search_value
         return book
 
     def upload_spreadsheet(self, usage_file, spreadsheet):
@@ -111,32 +122,39 @@ class UsageAutomation(AutomationResource):
             logger.error('{} -- Raw response: {}'.format(msg, response.content))
             raise FileCreationError(msg)
 
-    def create_populated_spreadsheet(self, file_usage_records):
-        # type: (List[FileUsageRecord]) -> openpyxl.Workbook
-        book = self.create_usage_spreadsheet()
-        sheet = book.active
-        for index, record in enumerate(file_usage_records):
-            row = str(index + 2)
-            sheet['A' + row] = record.id
-            sheet['B' + row] = record.item_search_criteria
-            sheet['C' + row] = record.item_search_value
-            sheet['D' + row] = record.quantity
-            sheet['E' + row] = record.start_time_utc
-            sheet['F' + row] = record.end_time_utc
-            sheet['G' + row] = record.asset_search_criteria
-            sheet['H' + row] = record.asset_search_value
-        return book
-
-    def upload_usage_records(self, usage_file, file_usage_records):
+    def upload_usage_records(self, usage_file, usage_records):
         # type: (File, List[FileUsageRecord]) -> None
         # TODO: Using xslx mechanism till usage records json api is available
-        book = self.create_populated_spreadsheet(file_usage_records)
+        book = self.create_spreadsheet(usage_records)
         self.upload_spreadsheet(usage_file, book)
 
-    """
     def get_usage_template_file(self, product):
         # type: (Product) -> str
-        response = self.api.get(self._obj_url())
-        response = self.api.check_response(requests.get(ur, headers=self.api.headers))
-        return self.check_response(response)
-    """
+        location = self._get_usage_template_download_location(product.id)
+        return self._retrieve_usage_template(location)
+
+    def submit_usage(self, usage_file, usage_records):
+        # type: (File, List[FileUsageRecord]) -> File
+        usage_file = self.create_usage_file(usage_file)
+        self.upload_usage_records(usage_file, usage_records)
+        return usage_file
+
+    def _get_usage_template_download_location(self, product_id):
+        # type: (str) -> str
+        response = self.api.get(self.urljoin(self.config.api_url, '/usage/products/' + product_id + ''))
+        try:
+            response_dict = json.loads(response)
+            return response_dict['template_link']
+        except (requests.exceptions.RequestException, KeyError, ValueError):
+            return ''
+
+    @staticmethod
+    def _retrieve_usage_template(location):
+        # type: (str) -> str
+        try:
+            with open(location) as file_handle:
+                return file_handle.read()
+        except IOError:
+            msg = 'Error Obtaining template usage file from `{}`'.format(location)
+            logger.error(msg)
+            raise FileRetrievalError(msg)

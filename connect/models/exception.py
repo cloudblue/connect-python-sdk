@@ -112,3 +112,9 @@ class FileCreationError(Message):
     def __init__(self, message):
         # type: (str) -> None
         super(FileCreationError, self).__init__(message, 'filecreation')
+
+
+class FileRetrievalError(Message):
+    def __init__(self, message):
+        # type: (str) -> None
+        super(FileRetrievalError, self).__init__(message, 'fileretrieval')
