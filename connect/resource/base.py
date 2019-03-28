@@ -7,7 +7,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import marshmallow
 import requests
 from functools import reduce
-from requests.compat import urljoin
+
+from requests import compat
 
 from typing import Any, List, Dict, Union
 
@@ -111,8 +112,12 @@ class BaseResource(object):
         # type: () -> List[Any]
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self._list_url, params=filters)
+        response = self.api.get(url=self.url, params=filters)
         return self._load_schema(response)
+
+    @property
+    def url(self):
+        return self.urljoin(self.config.api_url, self.resource)
 
     def build_filter(self):
         # type: () -> Dict[str, Any]
@@ -123,24 +128,14 @@ class BaseResource(object):
 
     def get(self, pk):
         # type: (str) -> Any
-        response = self.api.get(url=self._obj_url(pk))
+        response = self.api.get(url=self.urljoin(self.url, pk))
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    @property
-    def _list_url(self):
-        # type: () -> str
-        return urljoin(self.config.api_url + (''
-                                                     if self.config.api_url.endswith('/')
-                                                     else '/'),
-                              self.__class__.resource)
-
-    def _obj_url(self, *args):
-        # type: ([str]) -> str
-        return reduce(lambda x, y: urljoin(x + ('' if x.endswith('/') else '/'), y),
-                      args,
-                      self._list_url)
+    @staticmethod
+    def urljoin(*args):
+        return reduce(lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b), args)
 
     def _load_schema(self, response):
         # type: (str) -> Union[List[Any], Any]

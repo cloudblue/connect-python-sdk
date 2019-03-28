@@ -64,7 +64,7 @@ class UsageAutomation(AutomationResource):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response = self.api.post(self._list_url, data=usage_file)
+        response = self.api.post(self.url, data=usage_file)
         return self._load_schema(response)
 
     @staticmethod
@@ -93,7 +93,7 @@ class UsageAutomation(AutomationResource):
             file_contents = tmp.read()
 
         # Setup request
-        url = self._obj_url(usage_file.id, 'upload/')
+        url = self.urljoin(self.url, usage_file.id, 'upload/')
         headers = self.api.headers
         headers['Accept'] = 'application/json'
         delattr(headers, 'Content-Type')  # This must NOT be set for multipart post requests

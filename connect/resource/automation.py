@@ -43,19 +43,19 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        url = self._obj_url(pk, 'approve/')
+        url = self.urljoin(self.url, pk, 'approve/')
         return self.api.post(url=url, data=data if data else {})
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        url = self._obj_url(pk, 'inquire/')
+        url = self.urljoin(self.url, pk, 'inquire/')
         return self.api.post(url=url, data={})
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        url = self._obj_url(pk, 'fail/')
+        url = self.urljoin(self.url, pk, 'fail/')
         return self.api.post(url=url, data={'reason': reason})
 
     @function_log
@@ -71,6 +71,6 @@ class AutomationResource(BaseResource):
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
 
         return self.api.put(
-            url=self._obj_url(pk),
+            url=self.urljoin(self.url, pk),
             data=json.dumps({'asset': {'params': list_dict}}),
         )
