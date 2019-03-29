@@ -22,7 +22,7 @@ from connect.resource import AutomationResource
 class UsageAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=False)
+    schema = FileSchema(many=True)
 
     def build_filter(self, status='listed'):
         # type: (str) -> Dict[str, Any]
@@ -34,6 +34,7 @@ class UsageAutomation(AutomationResource):
     def dispatch(self, request):
         # type: (Listing) -> str
 
+        # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
