@@ -136,9 +136,9 @@ class BaseResource(object):
     def urljoin(*args):
         return functools.reduce(lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b), args)
 
-    def _load_schema(self, response):
-        # type: (str) -> Union[List[Any], Any]
-        objects, error = self.schema.loads(response)
+    def _load_schema(self, response, many=None):
+        # type: (str, bool) -> Union[List[Any], Any]
+        objects, error = self.schema.loads(response, many)
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{}`. \n'

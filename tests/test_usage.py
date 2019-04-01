@@ -18,19 +18,19 @@ from connect.models.marketplace import Contract
 from connect.models.product import Product
 from connect.resource import UsageAutomation
 
-Response = namedtuple('Response', ('ok', 'content', 'text'))
+Response = namedtuple('Response', ('ok', 'content', 'text', 'status_code'))
 
 
 def _get_response_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response_usage.json')) as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content, text='')
+    return Response(ok=True, content=content, text='', status_code=200)
 
 
 def _get_response_ok2():
     with open(os.path.join(os.path.dirname(__file__), 'response_usage2.json')) as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content, text='')
+    return Response(ok=True, content=content, text='', status_code=201)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
@@ -41,25 +41,26 @@ def test_create_resource():
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
-@patch('requests.post', MagicMock(return_value=Response(ok=True, content='[]', text='')))
+@patch('requests.post', MagicMock(return_value=_get_response_ok2()))
 def test_process():
     resource = UsageAutomationTester()
     resource.process()
 
 
 @patch('requests.get', MagicMock(
-    return_value=Response(ok=True, content='{"template_link": "..."}', text='test')))
+    return_value=Response(ok=True, content='{"template_link": "..."}', text='test', status_code=200)))
 def test_get_usage_template_ok():
     assert UsageAutomation().get_usage_template(Product(id='PRD-638-321-603')) == 'test'
 
 
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='{}', text='')))
+@patch('requests.get', MagicMock(return_value=Response(ok=True, content='{}', text='', status_code=200)))
 def test_get_usage_template_no_link():
     with pytest.raises(FileRetrievalError):
         UsageAutomation().get_usage_template(Product(id='PRD-638-321-603'))
 
 
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='{"template_link": "..."}', text=None)))
+@patch('requests.get', MagicMock(return_value=Response(
+    ok=True, content='{"template_link": "..."}', text=None, status_code=200)))
 def test_get_usage_template_no_file():
     with pytest.raises(FileRetrievalError):
         UsageAutomation().get_usage_template(Product(id='PRD-638-321-603'))
