@@ -75,7 +75,7 @@ class UsageAutomation(AutomationResource):
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
-        sheet['A1'] = 'id'
+        sheet['A1'] = 'record_id'
         sheet['B1'] = 'item_search_criteria'
         sheet['C1'] = 'item_search_value'
         sheet['D1'] = 'quantity'
@@ -85,7 +85,7 @@ class UsageAutomation(AutomationResource):
         sheet['H1'] = 'asset_search_value'
         for index, record in enumerate(usage_records):
             row = str(index + 2)
-            sheet['A' + row] = record.id
+            sheet['A' + row] = record.record_id
             sheet['B' + row] = record.item_search_criteria
             sheet['C' + row] = record.item_search_value
             sheet['D' + row] = record.quantity

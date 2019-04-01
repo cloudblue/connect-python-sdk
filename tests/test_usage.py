@@ -89,3 +89,27 @@ class UsageAutomationTester(UsageAutomation):
             pass
         elif request.contract.id == 'CRD-99082-45842-69183':
             pass
+        elif request.contract.id == 'CRD-99082-45842-69184':
+            usage_file = usage.File(
+                product=Product(id=request.product.id),
+                contract=Contract(id=request.contract.id)
+            )
+            usages = [usage.FileUsageRecord(
+                record_id='123',
+                item_search_criteria='item.mpn',
+                item_search_value='SKUA',
+                quantity=1,
+                start_time_utc=(date.today() - timedelta(1)).strftime('%Y-%m-%d'),
+                end_time_utc=time.strftime('%Y-%m-%d %H:%M:%S'),
+                asset_search_criteria='parameter.param_b',
+                asset_search_value='tenant2'
+            )]
+            self.submit_usage(usage_file, usages)
+        elif request.contract.id == 'CRD-99082-45842-69185':
+            pass
+        elif request.contract.id == 'CRD-99082-45842-69186':
+            pass
+        elif request.contract.id == 'CRD-99082-45842-69187':
+            pass
+        else:
+            raise UserWarning('Invalid test')

@@ -59,6 +59,7 @@ class Listing(BaseModel):
 
 
 class FileUsageRecord(BaseModel):
+    record_id = None  # type: str
     item_search_criteria = None  # type: str
     item_search_value = None  # type: str
     quantity = None  # type: int
@@ -127,6 +128,7 @@ class ListingSchema(BaseSchema):
 
 
 class FileUsageRecordSchema(BaseSchema):
+    record_id = fields.Str()
     item_search_criteria = fields.Str()
     item_search_value = fields.Str()
     quantity = fields.Int()
