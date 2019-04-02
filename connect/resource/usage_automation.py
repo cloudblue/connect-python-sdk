@@ -100,7 +100,7 @@ class UsageAutomation(AutomationResource):
 
         # Generate spreadsheet file
         with NamedTemporaryFile() as tmp:
-            spreadsheet.save(tmp.name)
+            spreadsheet.save(tmp)
             tmp.seek(0)
             file_contents = tmp.read()
 
