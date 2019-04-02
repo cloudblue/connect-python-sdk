@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import fields, post_load
-from typing import List
+from typing import List, Optional
 
 from .base import BaseModel, BaseSchema
 from .connection import Connection, ConnectionSchema
@@ -26,12 +26,14 @@ class Asset(BaseModel):
     tiers = None  # type: Tiers
 
     def get_param_by_id(self, id_):
+        # type: (str) -> Optional[Param]
         try:
             return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
 
     def get_item_by_mpn(self, mpn):
+        # type: (str) -> Optional[Item]
         try:
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:

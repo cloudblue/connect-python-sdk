@@ -6,46 +6,40 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Dict
+from typing import Any, Optional
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
-from connect.models.fulfillment import Fulfillment, FulfillmentSchema
+from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema, TierConfig
 from .automation import AutomationResource
 
 
-class FulfillmentAutomation(AutomationResource):
+class TierConfigAutomation(AutomationResource):
     __metaclass__ = ABCMeta
-    resource = 'requests'
-    schema = FulfillmentSchema()
-
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
-        filters = super(FulfillmentAutomation, self).build_filter()
-        if self.config.products:
-            filters['asset.product.id__in'] = ','.join(self.config.products)
-        return filters
+    resource = 'tier/config-requests'
+    schema = TierConfigRequestSchema()
 
     def dispatch(self, request):
-        # type: (Fulfillment) -> str
+        # type: (TierConfigRequest) -> Any
         try:
             if self.config.products \
-                    and request.asset.product.id not in self.config.products:
+                    and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'
 
-            logger.info('Start request process / ID request - {}'.format(request.id))
+            logger.info(
+                'Start tier config request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return ''
+                return
 
             params = {}
             if isinstance(result, ActivationTileResponse):
-                params = {'activation_tile': result.tile}
+                params = {'template': {'representation': result.tile}}
             elif isinstance(result, ActivationTemplateResponse):
-                params = {'template_id': result.template_id}
+                params = {'template': {'id': result.template_id}}
 
             self.approve(request.id, params)
 
@@ -59,6 +53,19 @@ class FulfillmentAutomation(AutomationResource):
         except Skip as skip:
             return skip.code
 
-    def process_request(self, request):
-        # type: (Fulfillment) -> str
-        raise NotImplementedError('Please implement `process_request` logic')
+        return
+
+    def get_tier_config(self, tier_id, product_id):
+        # type: (str, str) -> Optional[TierConfig]
+        params = {
+            'status': 'approved',
+            'configuration__product__id': product_id,
+            'configuration__account__id': tier_id,
+        }
+        response = self.api.get(url=self._list_url, params=params)
+        objects = self._load_schema(response)
+
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0].configuration
+        else:
+            return None

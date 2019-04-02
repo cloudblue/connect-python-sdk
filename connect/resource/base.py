@@ -11,7 +11,6 @@ from typing import Any, List, Dict
 from connect.config import Config
 from connect.logger import function_log, logger
 from connect.models import BaseSchema, ServerErrorSchema
-from connect.models.base import BaseModel
 from connect.models.exception import ServerErrorException
 from .utils import join_url
 
@@ -106,22 +105,21 @@ class BaseResource(object):
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
         response = self.api.get(url=self._list_url, params=filters)
-        return self.__loads_schema(response)
-
-    def get(self, pk):
-        # type: (str) -> Any
-        response = self.api.get(url=self._obj_url(pk))
-        objects = self.__loads_schema(response)
-        if isinstance(objects, list) and len(objects) > 0:
-            return objects[0]
+        return self._load_schema(response)
 
     def build_filter(self):
         # type: () -> Dict[str, Any]
         res_filter = {}
         if self.limit:
             res_filter['limit'] = self.limit
-
         return res_filter
+
+    def get(self, pk):
+        # type: (str) -> Any
+        response = self.api.get(url=self._obj_url(pk))
+        objects = self._load_schema(response)
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0]
 
     @property
     def _list_url(self):
@@ -132,13 +130,13 @@ class BaseResource(object):
         # type: (str) -> str
         return join_url(self._list_url, pk)
 
-    def __loads_schema(self, response):
-        # type: (str) -> List[BaseModel]
+    def _load_schema(self, response):
+        # type: (str) -> List[Any]
         objects, error = self.schema.loads(response, many=True)
         if error:
             raise TypeError(
-                'Invalid structure for initialisation objects. \n'
-                'Error: {}. \nServer Response: {}'.format(error, response),
+                'Invalid structure for initialization of `{}`. \n'
+                'Error: {}. \nServer Response: {}'.format(type(self).__name__, error, response),
             )
 
         return objects

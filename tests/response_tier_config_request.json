@@ -1,0 +1,98 @@
+[
+  {
+    "id": "TCR-000-000-000",
+    "type": "setup",
+    "status": "pending",
+    "configuration": {
+      "id": "TC-000-000-000",
+      "name": "Configuration of Reseller",
+      "account": {
+        "id": "TA-1-000-000-000"
+      },
+      "product": {
+        "id": "CN-631-322-000",
+        "name": "Product"
+      },
+      "tier_level": 1,
+      "connection": {
+        "id": "CT-9861-7949-8492",
+        "type": "production",
+        "hub": {
+          "id": "HB-12345-12345",
+          "name": "Provider Production Hub",
+          "account_id": "PA-9861-7949",
+          "uuid": "c106b775-7155-4b94-810d-a0c597fe801f"
+        },
+        "provider": {
+          "name": "Ingram Micro Prod DA",
+          "id": "PA-9861-7949"
+        },
+        "vendor": {
+          "name": "Large Largo and Co",
+          "id": "VA-9861-7949"
+        }
+      },
+      "events": {
+        "created": {
+          "at": "2018-11-21T11:10:29+00:00"
+        },
+        "updated": {
+          "at": "2018-11-21T11:10:29+00:00",
+          "by": {
+            "id": "PA-000-000",
+            "name": "Username"
+          }
+        }
+      },
+      "params": [
+        {
+          "id": "param_a",
+          "value": "param_a_value"
+        }
+      ],
+      "open_request": {
+        "id": "TCR-000-000-000"
+      },
+      "template": {
+        "id": "TP-000-000-000",
+        "representation": "Render text is here......"
+      }
+    },
+    "events": {
+      "created": {
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "inquired": {
+        "at": "2018-11-21T11:10:29+00:00",
+        "by": {
+          "id": "PA-000-000",
+          "name": "Username"
+        }
+      },
+      "pended": {
+        "at": "2018-11-21T11:10:29+00:00",
+        "by": {
+          "id": "PA-000-001",
+          "name": "Username1"
+        }
+      }
+    },
+    "params": [
+      {
+        "id": "param_a",
+        "value": "param_a_value"
+      }
+    ],
+    "assignee": {
+      "id": "PA-000-000",
+      "name": "Username"
+    },
+    "template": {
+      "id": "TP-000-000-000",
+      "representation": "Render text is here......"
+    },
+    "activation": {
+      "link": "http://example.com"
+    }
+  }
+]

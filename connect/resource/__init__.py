@@ -6,12 +6,14 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from .fulfillment_automation import FulfillmentAutomation
-from .fulfillment import FulfillmentResource
+from .automation import AutomationResource
 from .template import TemplateResource
+from .tier_config_automation import TierConfigAutomation
 
 
 __all__ = [
     'FulfillmentAutomation',
-    'FulfillmentResource',
-    'TemplateResource'
+    'AutomationResource',
+    'TemplateResource',
+    'TierConfigAutomation',
 ]

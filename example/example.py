@@ -6,12 +6,13 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from typing import Union
 
-from connect import FulfillmentAutomation
+from connect import FulfillmentAutomation, TierConfigAutomation
 from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment
+from connect.models.tier_config import TierConfigRequest
 
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")
@@ -62,6 +63,15 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             raise Skip()
 
 
+class ExampleTierConfigRequestProcessor(TierConfigAutomation):
+    def process_request(self, request):
+        # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
+        pass
+
+
 if __name__ == '__main__':
     request_processor = ExampleRequestProcessor()
     request_processor.process()
+
+    tier_config_request_processor = ExampleTierConfigRequestProcessor()
+    tier_config_request_processor.process()

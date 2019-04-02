@@ -1,4 +1,5 @@
 flake8==3.7.5
 pytest==4.2.0
 mock==2.0.0
+six==1.12.0
 -r sdk.txt

@@ -7,28 +7,36 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 
-from typing import List
+from typing import Any, List, Dict
 
 from connect.logger import function_log
-from connect.models import FulfillmentSchema, Param, ActivationTileResponse
+from connect.models import Param, ActivationTileResponse
 from .base import BaseResource
 from .template import TemplateResource
 from .utils import join_url
 
 
-class FulfillmentResource(BaseResource):
-    resource = 'requests'
+class AutomationResource(BaseResource):
     limit = 1000
-    schema = FulfillmentSchema()
 
     def build_filter(self):
-        # type: () -> dict
-        filters = super(FulfillmentResource, self).build_filter()
-        if self.config.products:
-            filters['asset.product.id__in'] = ','.join(self.config.products)
-
+        # type: () -> Dict[str, Any]
+        filters = super(AutomationResource, self).build_filter()
         filters['status'] = 'pending'
         return filters
+
+    def process(self):
+        # type: () -> None
+        for request in self.list:
+            self.dispatch(request)
+
+    def dispatch(self, request):
+        raise NotImplementedError('Please implement `{}.dispatch` method'
+                                  .format(self.__class__.__name__))
+
+    def process_request(self, request):
+        raise NotImplementedError('Please implement `{}.process_request` method'
+                                  .format(self.__class__.__name__))
 
     @function_log
     def approve(self, pk, data):
@@ -39,7 +47,8 @@ class FulfillmentResource(BaseResource):
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        return self.api.post(url=join_url(self._obj_url(pk), 'inquire/'), data=json.dumps({}))
+        url = join_url(self._obj_url(pk), 'inquire/')
+        return self.api.post(url=url, data=json.dumps({}))
 
     @function_log
     def fail(self, pk, reason):

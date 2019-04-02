@@ -9,13 +9,14 @@ import json
 import os
 from collections import namedtuple
 
+import six
 from mock import MagicMock, patch
 
+from connect import FulfillmentAutomation
 from connect.models import Param
 from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
 from connect.models.product import Item
-from connect.resource import FulfillmentResource
 
 Response = namedtuple('Response', ('ok', 'content'))
 
@@ -39,7 +40,7 @@ def test_create_model_from_response():
         content = json.loads(file_handle.read())[0]
 
     # Get requests from response
-    resource = FulfillmentResource()
+    resource = FulfillmentAutomation()
     requests = resource.list
     request_obj = resource.get(pk='PR-000-000-000')
 
@@ -66,7 +67,7 @@ def test_create_model_from_response():
             request_obj.asset.tiers,
         )
     except AttributeError:
-        assert False, 'Incorrectly initialized model '
+        assert False, 'Incorrectly initialized model'
 
     # Assert that returned data matches the one in the file
     assert requests[0].id == request_obj.id
@@ -75,18 +76,14 @@ def test_create_model_from_response():
     assert request_obj.marketplace.id == content['marketplace']['id']
     assert request_obj.asset.id == content['asset']['id']
     assert request_obj.asset.product.id == content['asset']['product']['id']
-    try:
-        # Python 2
-        assert isinstance(request_obj.asset.external_id, basestring)
-    except NameError:
-        # Python 3
-        assert isinstance(request_obj.asset.external_id, str)
+    assert isinstance(request_obj.asset.external_id, six.string_types)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_fulfillment_items():
     # Get request
-    requests = FulfillmentResource().list
+    requests = FulfillmentAutomation().list
+    assert isinstance(requests, list)
     assert len(requests) == 1
     request = requests[0]
     assert isinstance(request, Fulfillment)
@@ -116,7 +113,7 @@ def test_fulfillment_items():
 @patch('requests.get', MagicMock(return_value=_get_response2_ok()))
 def test_asset_methods():
     # Get asset
-    requests = FulfillmentResource().list
+    requests = FulfillmentAutomation().list
     assert len(requests) == 1
     assert isinstance(requests[0], Fulfillment)
     asset = requests[0].asset
