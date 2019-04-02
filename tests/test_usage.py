@@ -47,13 +47,14 @@ def test_process():
     resource.process()
 
 
-@patch('requests.get', MagicMock(
-    return_value=Response(ok=True, content='{"template_link": "..."}', text='test', status_code=200)))
+@patch('requests.get', MagicMock(return_value=Response(
+    ok=True, content='{"template_link": "..."}', text='test', status_code=200)))
 def test_get_usage_template_ok():
     assert UsageAutomation().get_usage_template(Product(id='PRD-638-321-603')) == 'test'
 
 
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='{}', text='', status_code=200)))
+@patch('requests.get', MagicMock(return_value=Response(
+    ok=True, content='{}', text='', status_code=200)))
 def test_get_usage_template_no_link():
     with pytest.raises(FileRetrievalError):
         UsageAutomation().get_usage_template(Product(id='PRD-638-321-603'))

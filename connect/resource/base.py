@@ -134,7 +134,9 @@ class BaseResource(object):
 
     @staticmethod
     def urljoin(*args):
-        return functools.reduce(lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b), args)
+        return functools.reduce(
+            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
+            args)
 
     def _load_schema(self, response, many=None):
         # type: (str, bool) -> Union[List[Any], Any]
