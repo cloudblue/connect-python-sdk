@@ -63,7 +63,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             raise Skip()
 
 
-class ExampleTierConfigRequestProcessor(TierConfigAutomation):
+class ExampleTierConfigProcessor(TierConfigAutomation):
     def process_request(self, request):
         # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
         pass
@@ -73,5 +73,5 @@ if __name__ == '__main__':
     request_processor = ExampleRequestProcessor()
     request_processor.process()
 
-    tier_config_request_processor = ExampleTierConfigRequestProcessor()
-    tier_config_request_processor.process()
+    tier_config_processor = ExampleTierConfigProcessor()
+    tier_config_processor.process()
