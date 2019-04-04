@@ -74,8 +74,8 @@ class ApiClient(object):
         """ Set correct kwargs for requests """
         fixed_kwargs = prev_kwargs.copy()
         fixed_kwargs.update(kwargs)
-        if 'get_url' not in fixed_kwargs:
-            fixed_kwargs['get_url'] = self.get_url(path)
+        if 'url' not in fixed_kwargs:
+            fixed_kwargs['url'] = self.get_url(path)
         if 'headers' not in fixed_kwargs:
             fixed_kwargs['headers'] = self.headers
         return fixed_kwargs

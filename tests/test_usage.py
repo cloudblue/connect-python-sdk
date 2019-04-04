@@ -10,7 +10,7 @@ from collections import namedtuple
 from datetime import date, timedelta
 
 import pytest
-from mock import patch, MagicMock
+from mock import patch, MagicMock, call
 
 from connect.models import usage
 from connect.models.exception import FileRetrievalError
@@ -47,12 +47,20 @@ def test_process():
     resource.process()
 
 
-@patch('requests.get', MagicMock(side_effect=[
-    Response(ok=True, content='{"template_link": "..."}', status_code=200),
-    Response(ok=True, content='template_contents', status_code=200)]))
-def test_get_usage_template_ok():
+@patch('requests.get')
+def test_get_usage_template_ok(get_mock):
+    get_mock.side_effect = [
+        Response(ok=True, content='{"template_link": "..."}', status_code=200),
+        Response(ok=True, content='template_contents', status_code=200)]
     resource = UsageAutomation()
     assert resource.get_usage_template(Product(id='PRD-638-321-603')) == 'template_contents'
+    get_mock.assert_has_calls([
+        call(
+            url='http://localhost:8080/api/public/v1//usage/products/PRD-638-321-603/template/',
+            headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+            params=None),
+        call('...')
+    ])
 
 
 @patch('requests.get', MagicMock(return_value=Response(

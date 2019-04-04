@@ -153,7 +153,8 @@ class UsageAutomation(AutomationResource):
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
         try:
-            response = self.api.get(path='/usage/products/' + product_id + '/template/')
+            response = self.api.get(url='{}/usage/products/{}/template/'
+                                    .format(self.config.api_url, product_id))
             response_dict = json.loads(response)
             return response_dict['template_link']
         except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
