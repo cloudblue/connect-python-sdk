@@ -26,10 +26,7 @@ class TemplateResource(BaseResource):
         # type: (str, str) -> ActivationTileResponse
         if not all([pk, request_id]):
             raise ValueError('Invalid ids for render template')
-
-        url = self.urljoin(self.url, pk, 'render')
-        response = self.api.get(url, params={'request_id': request_id})
-
+        response = self.api.get(path=pk + '/render', params={'request_id': request_id})
         return ActivationTileResponse(response)
 
     def get(self, pk):

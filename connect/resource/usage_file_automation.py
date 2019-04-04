@@ -39,7 +39,7 @@ class UsageFileAutomation(AutomationResource):
 
         # Catch action
         except UsageFileAction as usage:
-            self.api.post(self.urljoin(self.url, request.id, usage.code), data=usage.obj)
+            self.api.post(path='{}/{}'.format(request.id, usage.code), data=usage.obj)
             processing_result = usage.code
 
         # Catch skip

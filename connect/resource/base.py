@@ -18,15 +18,19 @@ from connect.models.exception import ServerErrorException
 
 
 class ApiClient(object):
-    def __init__(self, config=None):
-        # type: (Config) -> None
+    def __init__(self, config, base_path):
+        # type: (Config, str) -> None
+
+        # Assign base URL
+        self._base_path = base_path
 
         # Assign passed config or globally configured instance
         self._config = config or Config.get_instance()
 
-        # Assert data
-        if not isinstance(self.config, Config):
-            raise ValueError('A valid Config object is required to create an ApiClient')
+    @property
+    def base_path(self):
+        # type: () -> str
+        return self._base_path
 
     @property
     def config(self):
@@ -43,8 +47,47 @@ class ApiClient(object):
             'Content-Type': 'application/json',
         }
 
+    def get_url(self, path=''):
+        # type: (str) -> str
+        return self._urljoin(self.config.api_url, self.base_path, path)
+
+    @function_log
+    def get(self, path='', params=None, **kwargs):
+        kwargs = self._fix_request_kwargs(kwargs, path, params=params)
+        response = requests.get(**kwargs)
+        return self._check_response(response)
+
+    @function_log
+    def post(self, path='', data=None, json=None, **kwargs):
+        kwargs = self._fix_request_kwargs(kwargs, path, data=data, json=json)
+        response = requests.post(**kwargs)
+        return self._check_response(response)
+
+    @function_log
+    def put(self, path='', data=None, **kwargs):
+        kwargs = self._fix_request_kwargs(kwargs, path, data=data)
+        response = requests.put(**kwargs)
+        return self._check_response(response)
+
+    def _fix_request_kwargs(self, prev_kwargs, path, **kwargs):
+        # type: (Dict[str, Any], str, Dict[str, Any]) -> Dict[str, Any]
+        """ Set correct kwargs for requests """
+        fixed_kwargs = prev_kwargs.copy()
+        fixed_kwargs.update(kwargs)
+        if 'get_url' not in fixed_kwargs:
+            fixed_kwargs['get_url'] = self.get_url(path)
+        if 'headers' not in fixed_kwargs:
+            fixed_kwargs['headers'] = self.headers
+        return fixed_kwargs
+
     @staticmethod
-    def check_response(response):
+    def _urljoin(*args):
+        return functools.reduce(
+            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
+            args)
+
+    @staticmethod
+    def _check_response(response):
         # type: (requests.Response) -> str
         if not hasattr(response, 'content'):
             raise AttributeError(
@@ -59,47 +102,30 @@ class ApiClient(object):
 
         return response.content
 
-    @function_log
-    def get(self, url, params=None, **kwargs):
-        if 'headers' not in kwargs:
-            kwargs['headers'] = self.headers
-        response = requests.get(url, params, **kwargs)
-        return self.check_response(response)
-
-    @function_log
-    def post(self, url, data=None, json=None, **kwargs):
-        if 'headers' not in kwargs:
-            kwargs['headers'] = self.headers
-        response = requests.post(url, data, json, **kwargs)
-        return self.check_response(response)
-
-    @function_log
-    def put(self, url, data=None, **kwargs):
-        if 'headers' not in kwargs:
-            kwargs['headers'] = self.headers
-        response = requests.put(url, data, **kwargs)
-        return self.check_response(response)
-
 
 class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
-    api = None  # type: ApiClient
     schema = BaseSchema()  # type: marshmallow.Schema
 
     def __init__(self, config=None):
-        # Assign passed config or globally configured instance
-        self._config = config or Config.get_instance()
-
-        # Assert data
+        # Set api
         if not self.__class__.resource:
-            raise AttributeError('Resource name not specified in class {}'.format(
-                self.__class__.__name__) + '. Add an attribute `resource` name of the resource')
+            raise AttributeError('Resource name not specified in class {}. '
+                                 .format(self.__class__.__name__) +
+                                 'Add an attribute `resource` name of the resource')
+        self._api = ApiClient(config, self.__class__.resource)
+
+        # Set passed config or globally configured instance
+        self._config = config or Config.get_instance()
         if not isinstance(self.config, Config):
             raise ValueError('A valid Config object must be passed or globally configured '
                              'to create a ' + type(self).__name__)
-        if not BaseResource.api:
-            BaseResource.api = ApiClient(config)
+
+    @property
+    def api(self):
+        # type: () -> ApiClient
+        return self._api
 
     @property
     def config(self):
@@ -111,12 +137,8 @@ class BaseResource(object):
         # type: () -> List[Any]
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(url=self.url, params=filters)
+        response = self.api.get(params=filters)
         return self._load_schema(response)
-
-    @property
-    def url(self):
-        return self.urljoin(self.config.api_url, self.resource)
 
     def build_filter(self):
         # type: () -> Dict[str, Any]
@@ -127,16 +149,10 @@ class BaseResource(object):
 
     def get(self, pk):
         # type: (str) -> Any
-        response = self.api.get(url=self.urljoin(self.url, pk))
+        response = self.api.get(path=pk)
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
-
-    @staticmethod
-    def urljoin(*args):
-        return functools.reduce(
-            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
-            args)
 
     def _load_schema(self, response, many=None):
         # type: (str, bool) -> Union[List[Any], Any]

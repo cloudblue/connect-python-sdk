@@ -35,14 +35,13 @@ def _get_response2_ok():
 
 def test_resource_url():
     resource = FulfillmentAutomation()
-    assert resource.url == '{}{}'.format(resource.config.api_url, resource.resource)
+    assert resource.api.get_url() == resource.config.api_url + resource.resource + '/'
 
 
 def test_resource_urljoin():
     resource = FulfillmentAutomation()
-    assert resource.urljoin('hello', 'world') == 'hello/world'
-    assert resource.urljoin(resource.url, 'hello', 'world') == '{}{}/hello/world' \
-        .format(resource.config.api_url, resource.resource)
+    assert resource.api.base_path == resource.resource
+    assert resource.api.get_url('hello/world') == '{}{}/hello/world'.format(resource.config.api_url, resource.resource)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))

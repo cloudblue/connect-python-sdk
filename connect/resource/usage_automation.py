@@ -66,7 +66,7 @@ class UsageAutomation(AutomationResource):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response = self.api.post(self.url, data=usage_file)
+        response = self.api.post(data=usage_file)
         return self._load_schema(response, many=False)
 
     @staticmethod
@@ -105,7 +105,7 @@ class UsageAutomation(AutomationResource):
             file_contents = tmp.read()
 
         # Setup request
-        url = self.urljoin(self.url, usage_file.id, 'upload/')
+        url = self.api.get_url(usage_file.id + '/upload/')
         headers = self.api.headers
         headers['Accept'] = 'application/json'
         del headers['Content-Type']  # This must NOT be set for multipart post requests
@@ -130,10 +130,15 @@ class UsageAutomation(AutomationResource):
         self.upload_spreadsheet(usage_file, book)
 
     def get_usage_template(self, product):
-        # type: (Product) -> str
+        # type: (Product) -> bytes
         location = self._get_usage_template_download_location(product.id)
+        if not location:
+            msg = 'Error obtaining template usage file location'
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+
         contents = self._retrieve_usage_template(location) if location else None
-        if not location or contents is None:
+        if not contents:
             msg = 'Error obtaining template usage file from `{}`'.format(location)
             logger.error(msg)
             raise FileRetrievalError(msg)
@@ -148,8 +153,7 @@ class UsageAutomation(AutomationResource):
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
         try:
-            response = self.api.get(self.urljoin(self.config.api_url,
-                                                 '/usage/products/' + product_id + ''))
+            response = self.api.get(path='/usage/products/' + product_id + '/template/')
             response_dict = json.loads(response)
             return response_dict['template_link']
         except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
@@ -157,16 +161,9 @@ class UsageAutomation(AutomationResource):
 
     @staticmethod
     def _retrieve_usage_template(location):
-        # type: (str) -> Optional[str]
+        # type: (str) -> Optional[bytes]
         try:
-            # Try loading from file
-            with open(location) as file_handle:
-                return file_handle.read()
-        except IOError:
-            # Try loading from URL
-            try:
-                file_handle = requests.get(location)
-                return file_handle.text
-            except requests.exceptions.RequestException:
-                # Fail
-                return None
+            response = requests.get(location)
+            return response.content
+        except requests.exceptions.RequestException:
+            return None

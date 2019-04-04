@@ -43,20 +43,17 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        url = self.urljoin(self.url, pk, 'approve/')
-        return self.api.post(url=url, data=data if data else {})
+        return self.api.post(path=pk + '/approve/', data=data if data else {})
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        url = self.urljoin(self.url, pk, 'inquire/')
-        return self.api.post(url=url, data={})
+        return self.api.post(path=pk + '/inquire/', data={})
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        url = self.urljoin(self.url, pk, 'fail/')
-        return self.api.post(url=url, data={'reason': reason})
+        return self.api.post(path=pk + '/fail/', data={'reason': reason})
 
     @function_log
     def render_template(self, pk, template_id):
@@ -71,6 +68,6 @@ class AutomationResource(BaseResource):
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
 
         return self.api.put(
-            url=self.urljoin(self.url, pk),
+            path=pk,
             data=json.dumps({'asset': {'params': list_dict}}),
         )
