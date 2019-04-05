@@ -11,18 +11,19 @@ from typing import Any, List, Dict
 
 from connect.logger import function_log
 from connect.models import Param, ActivationTileResponse
+from connect.models.base import BaseModel
 from .base import BaseResource
 from .template import TemplateResource
-from .utils import join_url
 
 
 class AutomationResource(BaseResource):
     limit = 1000
 
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
+    def build_filter(self, status='pending'):
+        # type: (str) -> Dict[str, Any]
         filters = super(AutomationResource, self).build_filter()
-        filters['status'] = 'pending'
+        if status:
+            filters['status'] = status
         return filters
 
     def process(self):
@@ -31,6 +32,7 @@ class AutomationResource(BaseResource):
             self.dispatch(request)
 
     def dispatch(self, request):
+        # type: (BaseModel) -> str
         raise NotImplementedError('Please implement `{}.dispatch` method'
                                   .format(self.__class__.__name__))
 
@@ -41,20 +43,17 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        url = join_url(self._obj_url(pk), 'approve/')
-        return self.api.post(url=url, data=json.dumps(data if data else {}))
+        return self.api.post(path=pk + '/approve/', data=data if data else {})
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        url = join_url(self._obj_url(pk), 'inquire/')
-        return self.api.post(url=url, data=json.dumps({}))
+        return self.api.post(path=pk + '/inquire/', data={})
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        url = join_url(self._obj_url(pk), 'fail/')
-        return self.api.post(url=url, data=json.dumps({'reason': reason}))
+        return self.api.post(path=pk + '/fail/', data={'reason': reason})
 
     @function_log
     def render_template(self, pk, template_id):
@@ -69,6 +68,6 @@ class AutomationResource(BaseResource):
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
 
         return self.api.put(
-            url=self._obj_url(pk),
+            path=pk,
             data=json.dumps({'asset': {'params': list_dict}}),
         )

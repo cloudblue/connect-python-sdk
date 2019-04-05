@@ -18,11 +18,11 @@ from .automation import AutomationResource
 class FulfillmentAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'requests'
-    schema = FulfillmentSchema()
+    schema = FulfillmentSchema(many=True)
 
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
-        filters = super(FulfillmentAutomation, self).build_filter()
+    def build_filter(self, status='pending'):
+        # type: (str) -> Dict[str, Any]
+        filters = super(FulfillmentAutomation, self).build_filter(status)
         if self.config.products:
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
@@ -47,7 +47,7 @@ class FulfillmentAutomation(AutomationResource):
             elif isinstance(result, ActivationTemplateResponse):
                 params = {'template_id': result.template_id}
 
-            self.approve(request.id, params)
+            return self.approve(request.id, params)
 
         except FulfillmentInquire as inquire:
             self.update_parameters(request.id, inquire.params)
@@ -58,7 +58,3 @@ class FulfillmentAutomation(AutomationResource):
 
         except Skip as skip:
             return skip.code
-
-    def process_request(self, request):
-        # type: (Fulfillment) -> str
-        raise NotImplementedError('Please implement `process_request` logic')

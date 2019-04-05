@@ -1,0 +1,52 @@
+[
+  {
+    "id": "UF-2018-11-9878764342",
+    "name": "Usage for Feb 2019",
+    "description": "Usage for the product belonging to month Feb 2019",
+    "note": "My personal note",
+    "status": "READY",
+    "created_by": "rahul.mondal@ingrammicro.com",
+    "created_at": "2018-11-21T11:10:29+00:00",
+    "product": {
+      "id": "CN-631-322-000",
+      "name": "Google Apps",
+      "icon": "/media/VA-587-127/CN-783-317-575/media/CN-783-317-575-logo.png"
+    },
+    "contract": {
+      "id": "CRD-00000-00000-00000",
+      "name": "ACME Distribution Contract"
+    },
+    "marketplace": {
+      "id": "MP-198987",
+      "name": "France",
+      "icon": "/media/PA-123-123/marketplaces/MP-12345/image.png"
+    },
+    "vendor": {
+      "id": "VA-587-127",
+      "name": "Symantec"
+    },
+    "provider": {
+      "id": "PA-587-127",
+      "name": "ABC Corp"
+    },
+    "upload_file_uri": "<File Location for uploaded file>",
+    "processed_file_uri": "<File Location for generated file>",
+    "acceptance_note": "All usage data is correct",
+    "rejection_note": "Rejected due to wrong usage for item 56",
+    "error_detail": "Error details in case of usage file is marked as invalid",
+    "records": {
+      "valid": 56,
+      "invalid": 0
+    },
+    "uploaded_by": "rahul.mondal@ingrammicro.com",
+    "uploaded_at": "2018-11-21T11:10:29+00:00",
+    "submitted_by": "rahul.mondal@ingrammicro.com",
+    "submitted_at": "2018-11-21T11:10:29+00:00",
+    "accepted_by": "admin@a1provider.com",
+    "accepted_at": "2018-11-21T11:10:29+00:00",
+    "rejected_by": "admin@a1provider.com",
+    "rejected_at": "2018-11-21T11:10:29+00:00",
+    "closed_by": "admin@a1provider.com",
+    "closed_at": "2018-11-21T11:10:29+00:00"
+  }
+]

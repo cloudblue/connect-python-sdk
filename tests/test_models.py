@@ -33,6 +33,17 @@ def _get_response2_ok():
     return Response(ok=True, content=content)
 
 
+def test_resource_url():
+    resource = FulfillmentAutomation()
+    assert resource.api.get_url() == resource.config.api_url + resource.resource + '/'
+
+
+def test_resource_urljoin():
+    resource = FulfillmentAutomation()
+    assert resource.api.base_path == resource.resource
+    assert resource.api.get_url('hello/world') == '{}{}/hello/world'.format(resource.config.api_url, resource.resource)
+
+
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_model_from_response():
     # Parse JSON data from response file

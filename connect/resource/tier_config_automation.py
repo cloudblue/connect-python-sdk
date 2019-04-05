@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Optional
+from typing import Optional
 
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
@@ -18,10 +18,10 @@ from .automation import AutomationResource
 class TierConfigAutomation(AutomationResource):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
-    schema = TierConfigRequestSchema()
+    schema = TierConfigRequestSchema(many=True)
 
     def dispatch(self, request):
-        # type: (TierConfigRequest) -> Any
+        # type: (TierConfigRequest) -> str
         try:
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
@@ -33,7 +33,7 @@ class TierConfigAutomation(AutomationResource):
 
             if not result:
                 logger.info('Method `process_request` did not return result')
-                return
+                return ''
 
             params = {}
             if isinstance(result, ActivationTileResponse):
@@ -53,7 +53,7 @@ class TierConfigAutomation(AutomationResource):
         except Skip as skip:
             return skip.code
 
-        return
+        return ''
 
     def get_tier_config(self, tier_id, product_id):
         # type: (str, str) -> Optional[TierConfig]
@@ -62,7 +62,7 @@ class TierConfigAutomation(AutomationResource):
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
-        response = self.api.get(url=self._list_url, params=params)
+        response = self.api.get(params=params)
         objects = self._load_schema(response)
 
         if isinstance(objects, list) and len(objects) > 0:

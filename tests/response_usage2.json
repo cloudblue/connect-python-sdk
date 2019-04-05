@@ -1,0 +1,30 @@
+{
+  "id": "UF-2019-03-7288-5886",
+  "name": "test3",
+  "status": "draft",
+  "created_by": "unittest@connect.cloudblue.com",
+  "created_at": "2019-03-07T17:36:11Z",
+  "description": "",
+  "vendor": {
+    "id": "VA-004-290",
+    "name": "Marc FSG"
+  },
+  "provider": {
+    "id": "PA-425-033",
+    "name": "IMCDemos Testing Account"
+  },
+  "environment": "production",
+  "product": {
+    "id": "CN-631-322-000",
+    "name": "release15Test"
+  },
+  "contract": {
+    "id": "CRD-99082-45842-69180",
+    "name": "Contract of IMC Demos Spain Distribution Agreement"
+  },
+  "marketplace": {
+    "id": "MP-91673",
+    "name": "IMC demos Marketplace",
+    "icon": "/media/PA-425-033/marketplaces/MP-91673/icon.jpg"
+  }
+}

@@ -12,10 +12,12 @@ from .base import BaseModel, BaseSchema
 
 class Product(BaseModel):
     name = None  # type: str
+    icon = None  # type: str
 
 
 class ProductSchema(BaseSchema):
     name = fields.Str()
+    icon = fields.Str()
 
     @post_load
     def make_object(self, data):
