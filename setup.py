@@ -47,7 +47,7 @@ setup(
     install_requires=[str(ir.req) for ir in install_reqs],
 
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production',
 
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Libraries :: Python Modules',
