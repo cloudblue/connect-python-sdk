@@ -25,7 +25,20 @@ install_reqs = parse_requirements(
         'sdk.txt',
     ), session='None')
 
-VERSION = environ.get('TRAVIS_TAG')
+# Try to write VERSION file from Travis tag
+TRAVIS_TAG = environ.get('TRAVIS_TAG').strip()
+if TRAVIS_TAG:
+    with open('VERSION', 'w') as version_file:
+        version_file.write(TRAVIS_TAG)
+
+# Try to read VERSION from file
+with open('VERSION', 'r') as version_file:
+    VERSION = version_file.read().strip()
+
+# If VERSION is not defined, raise error
+if not VERSION:
+    raise EnvironmentError('VERSION not defined.')
+
 PACKAGES = find_packages(exclude=['tests*'])
 
 DOC = ''
