@@ -26,18 +26,17 @@ install_reqs = parse_requirements(
     ), session='None')
 
 # Try to write VERSION file from Travis tag
-TRAVIS_TAG = environ.get('TRAVIS_TAG').strip()
-if TRAVIS_TAG:
+TRAVIS_TAG = environ.get('TRAVIS_TAG')
+if TRAVIS_TAG and TRAVIS_TAG.strip():
     with open('VERSION', 'w') as version_file:
-        version_file.write(TRAVIS_TAG)
+        version_file.write(TRAVIS_TAG.strip())
 
 # Try to read VERSION from file
-with open('VERSION', 'r') as version_file:
-    VERSION = version_file.read().strip()
-
-# If VERSION is not defined, raise error
-if not VERSION:
-    raise EnvironmentError('VERSION not defined.')
+try:
+    with open('VERSION', 'r') as version_file:
+        VERSION = version_file.read().strip()
+except IOError:
+    raise EnvironmentError('VERSION file could not be read.')
 
 PACKAGES = find_packages(exclude=['tests*'])
 
