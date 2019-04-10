@@ -7,9 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from os.path import abspath, dirname, exists, join
-from os import environ
 from setuptools import find_packages, setup
-from warnings import warn
 
 try:  # for pip >= 10
     # noinspection PyProtectedMember,PyPackageRequirements
@@ -26,26 +24,6 @@ install_reqs = parse_requirements(
         'sdk.txt',
     ), session='None')
 
-# Get path to version file
-version_path = join(
-    dirname(abspath(__file__)),
-    'VERSION'
-)
-
-# Try to write version file from Travis tag
-travis_tag = environ.get('TRAVIS_TAG')
-if travis_tag and travis_tag.strip():
-    with open(version_path, 'w') as version_file:
-        version_file.write(travis_tag.strip())
-
-# Try to read version from file
-try:
-    with open(version_path, 'r') as version_file:
-        VERSION = version_file.read().strip()
-except IOError:
-    warn('`{}` file could not be read.'.format(version_path), RuntimeWarning)
-    VERSION = ''
-
 PACKAGES = find_packages(exclude=['tests*'])
 
 DOC = ''
@@ -55,7 +33,7 @@ if exists('README.md'):
 setup(
     name='connect-sdk',
     author='Ingram Micro',
-    version=VERSION,
+    version='0.0.0',
     keywords='sdk connect connect automation',
     packages=PACKAGES,
     description='Connect Python SDK',
