@@ -23,6 +23,7 @@ install:
 script:
 - flake8 connect
 - pytest --cov-report=xml --cov=./connect
+- sed -i "s/version='0.0.0'/version='${TRAVIS_TAG}'/g" setup.py
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

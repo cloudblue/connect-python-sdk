@@ -7,7 +7,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from os.path import abspath, dirname, exists, join
-from os import environ
 from setuptools import find_packages, setup
 
 try:  # for pip >= 10
@@ -25,7 +24,6 @@ install_reqs = parse_requirements(
         'sdk.txt',
     ), session='None')
 
-VERSION = environ.get('TRAVIS_TAG')
 PACKAGES = find_packages(exclude=['tests*'])
 
 DOC = ''
@@ -35,7 +33,7 @@ if exists('README.md'):
 setup(
     name='connect-sdk',
     author='Ingram Micro',
-    version=VERSION,
+    version='0.0.0',
     keywords='sdk connect connect automation',
     packages=PACKAGES,
     description='Connect Python SDK',
