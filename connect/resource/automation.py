@@ -5,8 +5,6 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
-import json
-
 from typing import Any, List, Dict
 
 from connect.logger import function_log
@@ -43,17 +41,17 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        return self.api.post(path=pk + '/approve/', data=json.dumps(data))
+        return self.api.post(path=pk + '/approve/', json=data)
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        return self.api.post(path=pk + '/inquire/', data='{}')
+        return self.api.post(path=pk + '/inquire/', json={})
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        return self.api.post(path=pk + '/fail/', data=json.dumps({'reason': reason}))
+        return self.api.post(path=pk + '/fail/', json={'reason': reason})
 
     @function_log
     def render_template(self, pk, template_id):
@@ -69,5 +67,5 @@ class AutomationResource(BaseResource):
 
         return self.api.put(
             path=pk,
-            data=json.dumps({'asset': {'params': list_dict}}),
+            json={'asset': {'params': list_dict}},
         )
