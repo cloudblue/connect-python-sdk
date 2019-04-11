@@ -52,25 +52,25 @@ class ApiClient(object):
         return self._urljoin(self.config.api_url, self.base_path, path)
 
     @function_log
-    def get(self, path='', params=None, **kwargs):
-        kwargs = self._fix_request_kwargs(kwargs, path, params=params)
+    def get(self, path='', **kwargs):
+        kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.get(**kwargs)
         return self._check_response(response)
 
     @function_log
-    def post(self, path='', data=None, json=None, **kwargs):
-        kwargs = self._fix_request_kwargs(kwargs, path, data=data, json=json)
+    def post(self, path='', **kwargs):
+        kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.post(**kwargs)
         return self._check_response(response)
 
     @function_log
-    def put(self, path='', data=None, **kwargs):
-        kwargs = self._fix_request_kwargs(kwargs, path, data=data)
+    def put(self, path='', **kwargs):
+        kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.put(**kwargs)
         return self._check_response(response)
 
-    def _fix_request_kwargs(self, prev_kwargs, path, **kwargs):
-        # type: (Dict[str, Any], str, Dict[str, Any]) -> Dict[str, Any]
+    def _fix_request_kwargs(self, path, prev_kwargs, **kwargs):
+        # type: (str, Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Set correct kwargs for requests """
         fixed_kwargs = prev_kwargs.copy()
         fixed_kwargs.update(kwargs)

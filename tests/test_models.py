@@ -41,7 +41,8 @@ def test_resource_url():
 def test_resource_urljoin():
     resource = FulfillmentAutomation()
     assert resource.api.base_path == resource.resource
-    assert resource.api.get_url('hello/world') == '{}{}/hello/world'.format(resource.config.api_url, resource.resource)
+    assert resource.api.get_url('hello/world') == '{}{}/hello/world'\
+        .format(resource.config.api_url, resource.resource)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))

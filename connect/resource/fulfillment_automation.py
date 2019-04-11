@@ -6,10 +6,10 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 
-from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse
+from connect.logger import logger, function_log
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment, FulfillmentSchema
 from .automation import AutomationResource
@@ -58,3 +58,15 @@ class FulfillmentAutomation(AutomationResource):
 
         except Skip as skip:
             return skip.code
+
+    @function_log
+    def update_parameters(self, pk, params):
+        # type: (str, List[Param]) -> str
+        list_dict = []
+        for _ in params:
+            list_dict.append(_.__dict__ if isinstance(_, Param) else _)
+
+        return self.api.put(
+            path=pk,
+            json={'asset': {'params': list_dict}},
+        )
