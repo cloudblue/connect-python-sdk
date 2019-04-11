@@ -4,6 +4,7 @@
 This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
+import json
 from abc import ABCMeta
 
 from connect.logger import logger
@@ -39,7 +40,9 @@ class UsageFileAutomation(AutomationResource):
 
         # Catch action
         except UsageFileAction as usage:
-            self.api.post(path='{}/{}'.format(request.id, usage.code), data=usage.obj)
+            self.api.post(path='{}/{}'.format(request.id, usage.code), data=json.dumps(
+                usage.obj,
+                default=lambda o: getattr(o, '__dict__', str(o))))
             processing_result = usage.code
 
         # Catch skip
