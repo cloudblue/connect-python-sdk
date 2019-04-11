@@ -5,10 +5,10 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
-from typing import Any, List, Dict
+from typing import Any, Dict
 
 from connect.logger import function_log
-from connect.models import Param, ActivationTileResponse
+from connect.models import ActivationTileResponse
 from connect.models.base import BaseModel
 from .base import BaseResource
 from .template import TemplateResource
@@ -57,15 +57,3 @@ class AutomationResource(BaseResource):
     def render_template(self, pk, template_id):
         # type: (str, str) -> ActivationTileResponse
         return TemplateResource(self.config).render(template_id, pk)
-
-    @function_log
-    def update_parameters(self, pk, params):
-        # type: (str, List[Param]) -> str
-        list_dict = []
-        for _ in params:
-            list_dict.append(_.__dict__ if isinstance(_, Param) else _)
-
-        return self.api.put(
-            path=pk,
-            json={'asset': {'params': list_dict}},
-        )
