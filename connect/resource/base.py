@@ -58,8 +58,8 @@ class ApiClient(object):
         return self._check_response(response)
 
     @function_log
-    def post(self, path='', data=None, json=None, **kwargs):
-        kwargs = self._fix_request_kwargs(kwargs, path, data=data, json=json)
+    def post(self, path='', data=None, **kwargs):
+        kwargs = self._fix_request_kwargs(kwargs, path, data=data)
         response = requests.post(**kwargs)
         return self._check_response(response)
 
