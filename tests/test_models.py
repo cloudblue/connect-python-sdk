@@ -17,6 +17,7 @@ from connect.models import Param
 from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
 from connect.models.product import Item
+from connect.models.tier_config import TierConfig
 
 Response = namedtuple('Response', ('ok', 'content'))
 
@@ -33,6 +34,13 @@ def _get_response2_ok():
     return Response(ok=True, content=content)
 
 
+def _get_response_tier_config_ok():
+    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json')) \
+            as file_handle:
+        content = file_handle.read()
+    return Response(ok=True, content=content)
+
+
 def test_resource_url():
     resource = FulfillmentAutomation()
     assert resource.api.get_url() == resource.config.api_url + resource.resource + '/'
@@ -41,7 +49,7 @@ def test_resource_url():
 def test_resource_urljoin():
     resource = FulfillmentAutomation()
     assert resource.api.base_path == resource.resource
-    assert resource.api.get_url('hello/world') == '{}{}/hello/world'\
+    assert resource.api.get_url('hello/world') == '{}{}/hello/world' \
         .format(resource.config.api_url, resource.resource)
 
 
@@ -140,3 +148,34 @@ def test_asset_methods():
     assert isinstance(asset.get_item_by_mpn('TEAM-ST3L2T1Y'), Item)
     assert asset.get_item_by_mpn('TEAM-ST3L2T1Y').mpn == 'TEAM-ST3L2T1Y'
     assert not asset.get_item_by_mpn('invalid-mpn')
+
+
+@patch('requests.get')
+def test_get_tier_config(get_mock):
+    get_mock.return_value = _get_response_tier_config_ok()
+    config = FulfillmentAutomation().get_tier_config('tier_id', 'product_id')
+    assert isinstance(config, TierConfig)
+    get_mock.assert_called_with(
+        url='http://localhost:8080/api/public/v1/tier/config-requests',
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'ApiKey XXXX:YYYYY'},
+        params={
+            'status': 'approved',
+            'configuration__product__id': 'product_id',
+            'configuration__account__id': 'tier_id'})
+
+
+@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]')))
+def test_get_tier_config_empty():
+    config = FulfillmentAutomation().get_tier_config('', '')
+    assert not config
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_tier_config_ok()))
+def test_get_tier_config_param():
+    tier_config = FulfillmentAutomation().get_tier_config('', '')
+    param = tier_config.get_param_by_id('param_a')
+    assert isinstance(param, Param)
+    assert param.id == 'param_a'
+    assert param.value == 'param_a_value'

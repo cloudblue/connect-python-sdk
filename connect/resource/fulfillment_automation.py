@@ -6,12 +6,13 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
 from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
 from connect.models.fulfillment import Fulfillment, FulfillmentSchema
+from connect.models.tier_config import TierConfig, TierConfigRequestSchema
 from .automation import AutomationResource
 
 
@@ -58,6 +59,22 @@ class FulfillmentAutomation(AutomationResource):
 
         except Skip as skip:
             return skip.code
+
+    def get_tier_config(self, tier_id, product_id):
+        # type: (str, str) -> Optional[TierConfig]
+        url = self.api.urljoin(self.config.api_url, 'tier/config-requests')
+        params = {
+            'status': 'approved',
+            'configuration__product__id': product_id,
+            'configuration__account__id': tier_id,
+        }
+        response = self.api.get(url=url, params=params)
+        objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
+
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0].configuration
+        else:
+            return None
 
     @function_log
     def update_parameters(self, pk, params):

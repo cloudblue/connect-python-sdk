@@ -7,7 +7,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import functools
 from typing import Any, List, Dict, Union
 
-import marshmallow
 import requests
 from requests import compat
 
@@ -51,7 +50,13 @@ class ApiClient(object):
 
     def get_url(self, path=''):
         # type: (str) -> str
-        return self._urljoin(self.config.api_url, self.base_path, path)
+        return self.urljoin(self.config.api_url, self.base_path, path)
+
+    @staticmethod
+    def urljoin(*args):
+        return functools.reduce(
+            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
+            args)
 
     @function_log
     def get(self, path='', **kwargs):
@@ -83,12 +88,6 @@ class ApiClient(object):
         return fixed_kwargs
 
     @staticmethod
-    def _urljoin(*args):
-        return functools.reduce(
-            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
-            args)
-
-    @staticmethod
     def _check_response(response):
         # type: (requests.Response) -> str
         if not hasattr(response, 'content'):
@@ -108,7 +107,7 @@ class ApiClient(object):
 class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
-    schema = BaseSchema()  # type: marshmallow.Schema
+    schema = BaseSchema()  # type: BaseSchema
 
     def __init__(self, config=None):
         # Set api
@@ -150,9 +149,10 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    def _load_schema(self, response, many=None):
-        # type: (str, bool) -> Union[List[Any], Any]
-        objects, error = self.schema.loads(response, many)
+    def _load_schema(self, response, many=None, schema=None):
+        # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
+        schema = schema or self.schema
+        objects, error = schema.loads(response, many)
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{}`. \n'
