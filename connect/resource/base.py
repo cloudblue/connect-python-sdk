@@ -21,11 +21,13 @@ class ApiClient(object):
     def __init__(self, config, base_path):
         # type: (Config, str) -> None
 
-        # Assign base URL
+        # Set base URL
         self._base_path = base_path
 
-        # Assign passed config or globally configured instance
+        # Set passed config or globally configured instance
         self._config = config or Config.get_instance()
+        if not isinstance(self._config, Config):
+            raise ValueError('A valid Config object must be passed or globally configured.')
 
     @property
     def base_path(self):
@@ -112,15 +114,9 @@ class BaseResource(object):
         # Set api
         if not self.__class__.resource:
             raise AttributeError('Resource name not specified in class {}. '
-                                 .format(self.__class__.__name__) +
-                                 'Add an attribute `resource` name of the resource')
+                                 'Add an attribute `resource` with the name of the resource'
+                                 .format(self.__class__.__name__))
         self._api = ApiClient(config, self.__class__.resource)
-
-        # Set passed config or globally configured instance
-        self._config = config or Config.get_instance()
-        if not isinstance(self.config, Config):
-            raise ValueError('A valid Config object must be passed or globally configured '
-                             'to create a ' + type(self).__name__)
 
     @property
     def api(self):
@@ -130,7 +126,7 @@ class BaseResource(object):
     @property
     def config(self):
         # type: () -> Config
-        return self._config
+        return self.api.config
 
     @property
     def list(self):
@@ -162,5 +158,4 @@ class BaseResource(object):
                 'Invalid structure for initialization of `{}`. \n'
                 'Error: {}. \nServer Response: {}'.format(type(self).__name__, error, response),
             )
-
         return objects
