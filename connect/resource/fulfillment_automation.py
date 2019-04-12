@@ -62,12 +62,12 @@ class FulfillmentAutomation(AutomationResource):
 
     def get_tier_config(self, tier_id, product_id):
         # type: (str, str) -> Optional[TierConfig]
+        url = self.api.urljoin(self.config.api_url, 'tier/config-requests')
         params = {
             'status': 'approved',
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
-        url = self.api.urljoin(self.config.api_url, 'tier/config-requests')
         response = self.api.get(url=url, params=params)
         objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
 
