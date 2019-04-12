@@ -213,27 +213,6 @@ def test_process_raise_skip():
     automation.process()
 
 
-@patch('requests.get', MagicMock(return_value=_get_response_ok()))
-def test_get_tier_config():
-    config = TierConfigAutomation().get_tier_config('', '')
-    assert isinstance(config, TierConfig)
-
-
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]')))
-def test_get_tier_config_empty():
-    config = TierConfigAutomation().get_tier_config('', '')
-    assert not config
-
-
-@patch('requests.get', MagicMock(return_value=_get_response_ok()))
-def test_get_tier_config_param():
-    tier_config = TierConfigAutomation().get_tier_config('', '')
-    param = tier_config.get_param_by_id('param_a')
-    assert isinstance(param, Param)
-    assert param.id == 'param_a'
-    assert param.value == 'param_a_value'
-
-
 class TierConfigAutomationHelper(TierConfigAutomation):
     def __init__(self, response='', exception_class=None):
         # type: (Union[ActivationTemplateResponse, ActivationTileResponse, str], type) -> None
