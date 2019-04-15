@@ -134,11 +134,13 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    def get_filters(self):
-        # type: () -> Dict[str, Any]
+    def get_filters(self, **kwargs):
+        # type: (Dict[str, str]) -> Dict[str, Any]
         filters = {}
         if self.limit:
             filters['limit'] = self.limit
+        for key, val in kwargs.items():
+            filters[key] = val
         return filters
 
     def get_list(self, filters=None):
