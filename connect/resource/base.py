@@ -135,7 +135,7 @@ class BaseResource(object):
             return objects[0]
 
     def get_filters(self, **kwargs):
-        # type: (Dict[str, str]) -> Dict[str, Any]
+        # type: (Dict[str, Any]) -> Dict[str, Any]
         filters = {}
         if self.limit:
             filters['limit'] = self.limit

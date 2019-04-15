@@ -18,7 +18,7 @@ class AutomationResource(BaseResource):
     limit = 1000
 
     def get_filters(self, status='pending', **kwargs):
-        # type: (str, Dict[str, str]) -> Dict[str, Any]
+        # type: (str, Dict[str, Any]) -> Dict[str, Any]
         return super(AutomationResource, self).get_filters(status=status, **kwargs)
 
     def process(self):
