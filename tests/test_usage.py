@@ -35,7 +35,7 @@ def _get_response_ok2():
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_resource():
-    requests = UsageAutomation().list
+    requests = UsageAutomation().get_list()
     assert isinstance(requests, list)
     assert len(requests) == 8
 

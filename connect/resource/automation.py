@@ -17,16 +17,16 @@ from .template import TemplateResource
 class AutomationResource(BaseResource):
     limit = 1000
 
-    def build_filter(self, status='pending'):
+    def get_filters(self, status='pending'):
         # type: (str) -> Dict[str, Any]
-        filters = super(AutomationResource, self).build_filter()
+        filters = super(AutomationResource, self).get_filters()
         if status:
             filters['status'] = status
         return filters
 
     def process(self):
         # type: () -> None
-        for request in self.list:
+        for request in self.get_list():
             self.dispatch(request)
 
     def dispatch(self, request):

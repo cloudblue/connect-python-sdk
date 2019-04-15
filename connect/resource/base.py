@@ -127,27 +127,26 @@ class BaseResource(object):
         # type: () -> Config
         return self.api.config
 
-    @property
-    def list(self):
-        # type: () -> List[Any]
-        filters = self.build_filter()
-        logger.info('Get list request by filter - {}'.format(filters))
-        response = self.api.get(params=filters)
-        return self._load_schema(response)
-
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
-        res_filter = {}
-        if self.limit:
-            res_filter['limit'] = self.limit
-        return res_filter
-
     def get(self, pk):
         # type: (str) -> Any
         response = self.api.get(path=pk)
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
+
+    def get_filters(self):
+        # type: () -> Dict[str, Any]
+        filters = {}
+        if self.limit:
+            filters['limit'] = self.limit
+        return filters
+
+    def get_list(self, filters=None):
+        # type: (Dict[str, Any]) -> List[Any]
+        filters = filters or self.get_filters()
+        logger.info('Get list request with filters - {}'.format(filters))
+        response = self.api.get(params=filters)
+        return self._load_schema(response)
 
     def _load_schema(self, response, many=None, schema=None):
         # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
