@@ -43,13 +43,13 @@ def _get_response_tier_config_ok():
 
 def test_resource_url():
     resource = FulfillmentAutomation()
-    assert resource.api.get_url() == resource.config.api_url + resource.resource + '/'
+    assert resource.client.get_url() == resource.config.api_url + resource.resource + '/'
 
 
 def test_resource_urljoin():
     resource = FulfillmentAutomation()
-    assert resource.api.base_path == resource.resource
-    assert resource.api.get_url('hello/world') == '{}{}/hello/world' \
+    assert resource.client.base_path == resource.resource
+    assert resource.client.get_url('hello/world') == '{}{}/hello/world' \
         .format(resource.config.api_url, resource.resource)
 
 
