@@ -5,7 +5,6 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 import os
-from collections import namedtuple
 
 import pytest
 from mock import MagicMock, patch
@@ -21,22 +20,24 @@ from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
     Activation, EventInfo, Account
-
-Response = namedtuple('Response', ('ok', 'content'))
+from response import Response
 
 
 def _get_response_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
             as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content)
+    return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response_ok_invalid_product():
     with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
             as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content.replace('CN-631-322-000', 'PRD-000-000-000'))
+    return Response(
+        ok=True,
+        content=content.replace('CN-631-322-000', 'PRD-000-000-000'),
+        status_code=200)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))

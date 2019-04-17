@@ -5,7 +5,6 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 import os
-from collections import namedtuple
 
 import pytest
 from mock import patch, MagicMock
@@ -18,8 +17,8 @@ from connect.models.marketplace import Contract, Marketplace
 from connect.models.product import Product
 from connect.models.usage import Records
 from connect.resource import UsageFileAutomation
+from response import Response
 
-Response = namedtuple('Response', ('ok', 'content'))
 current_action = ''
 
 
@@ -31,7 +30,7 @@ def _get_response_ok(*args, **kwargs):
     if current_action:
         content = content.replace('UF-2018-11-9878764342',
                                   'UF-2018-11-9878764342-' + current_action)
-    return Response(ok=True, content=content)
+    return Response(ok=True, content=content, status_code=200)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))

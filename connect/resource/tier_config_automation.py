@@ -65,4 +65,4 @@ class TierConfigAutomation(AutomationResource):
         return self.client.put(
             path=pk,
             json={'params': list_dict},
-        )
+        )[0]

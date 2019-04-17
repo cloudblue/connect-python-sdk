@@ -66,7 +66,7 @@ class UsageAutomation(AutomationResource):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response = self.client.post(json=usage_file.json)
+        response, _ = self.client.post(json=usage_file.json)
         return self._load_schema(response, many=False)
 
     @staticmethod
@@ -153,8 +153,8 @@ class UsageAutomation(AutomationResource):
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
         try:
-            response = self.client.get(url='{}/usage/products/{}/template/'
-                                       .format(self.config.api_url, product_id))
+            response, _ = self.client.get(url='{}/usage/products/{}/template/'
+                                          .format(self.config.api_url, product_id))
             response_dict = json.loads(response)
             return response_dict['template_link']
         except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):

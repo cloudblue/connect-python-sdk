@@ -68,7 +68,7 @@ class FulfillmentAutomation(AutomationResource):
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
-        response = self.client.get(url=url, params=params)
+        response, _ = self.client.get(url=url, params=params)
         objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
 
         if isinstance(objects, list) and len(objects) > 0:
@@ -86,4 +86,4 @@ class FulfillmentAutomation(AutomationResource):
         return self.client.put(
             path=pk,
             json={'asset': {'params': list_dict}},
-        )
+        )[0]
