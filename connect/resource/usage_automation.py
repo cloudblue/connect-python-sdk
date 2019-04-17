@@ -114,13 +114,16 @@ class UsageAutomation(AutomationResource):
 
         # Post request
         try:
-            response = requests.post(url, headers=headers, files=multipart)
+            content, status = self.client.post(
+                path=usage_file.id + '/upload/',
+                headers=headers,
+                files=multipart)
         except requests.RequestException as ex:
             raise FileCreationError('Error uploading file: {}'.format(ex))
-        logger.info('HTTP Code: {}'.format(response.status_code))
-        if response.status_code != 201:
-            msg = 'Unexpected server response, returned code {}'.format(response.status_code)
-            logger.error('{} -- Raw response: {}'.format(msg, response.content))
+        logger.info('HTTP Code: {}'.format(status))
+        if status != 201:
+            msg = 'Unexpected server response, returned code {}'.format(status)
+            logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
 
     def upload_usage_records(self, usage_file, usage_records):
