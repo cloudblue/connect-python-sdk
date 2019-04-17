@@ -20,13 +20,13 @@ from .response import Response
 
 
 def _get_response_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage.json')) as file_handle:
+    with open(os.path.join(os.path.dirname(__file__), 'response_usage.json'), 'r') as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response_ok2():
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage2.json')) as file_handle:
+    with open(os.path.join(os.path.dirname(__file__), 'response_usage2.json'), 'r') as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=201)
 

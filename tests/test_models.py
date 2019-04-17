@@ -21,19 +21,19 @@ from .response import Response
 
 
 def _get_response_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response.json')) as file_handle:
+    with open(os.path.join(os.path.dirname(__file__), 'response.json'), 'r') as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response2_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response2.json')) as file_handle:
+    with open(os.path.join(os.path.dirname(__file__), 'response2.json'), 'r') as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response_tier_config_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json')) \
+    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'), 'r') \
             as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=200)
@@ -54,7 +54,7 @@ def test_resource_urljoin():
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_model_from_response():
     # Parse JSON data from response file
-    with open(os.path.join(os.path.dirname(__file__), 'response.json')) as file_handle:
+    with open(os.path.join(os.path.dirname(__file__), 'response.json'), 'r') as file_handle:
         content = json.loads(file_handle.read())[0]
 
     # Get requests from response

@@ -24,14 +24,14 @@ from .response import Response
 
 
 def _get_response_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
+    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'), 'r')\
             as file_handle:
         content = file_handle.read()
     return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response_ok_invalid_product():
-    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'))\
+    with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json'), 'r')\
             as file_handle:
         content = file_handle.read()
     return Response(

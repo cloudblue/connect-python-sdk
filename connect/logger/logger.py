@@ -10,7 +10,7 @@ import logging
 import os
 from logging.config import dictConfig
 
-with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
+with open(os.path.join(os.path.dirname(__file__), 'config.json'), 'r') as config_file:
     config = json.load(config_file)
 
 dictConfig(config['logging'])
