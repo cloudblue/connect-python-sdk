@@ -17,7 +17,7 @@ from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
 from connect.models.product import Item
 from connect.models.tier_config import TierConfig
-from response import Response
+from .response import Response
 
 
 def _get_response_ok():

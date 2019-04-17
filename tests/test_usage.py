@@ -16,7 +16,7 @@ from connect.models.exception import FileRetrievalError
 from connect.models.marketplace import Contract
 from connect.models.product import Product
 from connect.resource import UsageAutomation
-from response import Response
+from .response import Response
 
 
 def _get_response_ok():

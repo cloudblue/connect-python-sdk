@@ -20,7 +20,7 @@ from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
     Activation, EventInfo, Account
-from response import Response
+from .response import Response
 
 
 def _get_response_ok():

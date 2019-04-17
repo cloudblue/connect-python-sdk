@@ -17,7 +17,7 @@ from connect.models.marketplace import Contract, Marketplace
 from connect.models.product import Product
 from connect.models.usage import Records
 from connect.resource import UsageFileAutomation
-from response import Response
+from .response import Response
 
 current_action = ''
 
