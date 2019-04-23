@@ -35,7 +35,7 @@ def _get_response_ok(*args, **kwargs):
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_resource():
-    requests = UsageFileAutomationTester().get_list()
+    requests = UsageFileAutomationTester().list()
     assert isinstance(requests, list)
     assert len(requests) == 1
 

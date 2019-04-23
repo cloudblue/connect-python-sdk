@@ -42,7 +42,7 @@ def _get_response_ok_invalid_product():
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_resource():
-    requests = TierConfigAutomation().get_list()
+    requests = TierConfigAutomation().list()
     assert isinstance(requests, list)
     assert len(requests) == 1
 

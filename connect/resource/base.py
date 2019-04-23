@@ -134,7 +134,7 @@ class BaseResource(object):
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
-    def get_filters(self, **kwargs):
+    def filters(self, **kwargs):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         filters = {}
         if self.limit:
@@ -143,11 +143,11 @@ class BaseResource(object):
             filters[key] = val
         return filters
 
-    def get_list(self, filters=None):
+    def list(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
-        filters = filters or self.get_filters()
+        filters = filters or self.filters()
         logger.info('Get list request with filters - {}'.format(filters))
-        response = self.api.get(params=filters)
+        response, _ = self._api.get(params=filters)
         return self._load_schema(response)
 
     def _load_schema(self, response, many=None, schema=None):

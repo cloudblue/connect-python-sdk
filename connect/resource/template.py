@@ -17,7 +17,7 @@ class TemplateResource(BaseResource):
     """
     resource = 'templates'
 
-    def get_list(self, filters=None):
+    def list(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
         raise AttributeError('This resource do not have method `get_list`')
 

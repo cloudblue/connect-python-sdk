@@ -17,13 +17,13 @@ from .template import TemplateResource
 class AutomationResource(BaseResource):
     limit = 1000
 
-    def get_filters(self, status='pending', **kwargs):
+    def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
-        return super(AutomationResource, self).get_filters(status=status, **kwargs)
+        return super(AutomationResource, self).filters(status=status, **kwargs)
 
     def process(self):
         # type: () -> None
-        for request in self.get_list():
+        for request in self.list():
             self.dispatch(request)
 
     def dispatch(self, request):
