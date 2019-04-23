@@ -40,7 +40,7 @@ class UsageFileAutomation(AutomationResource):
 
         # Catch action
         except UsageFileAction as usage:
-            self.api.post(
+            self._api.post(
                 path='{}/{}'.format(request.id, usage.code),
                 json=usage.obj.json
                 if isinstance(usage.obj, BaseModel)

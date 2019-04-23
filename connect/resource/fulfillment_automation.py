@@ -62,13 +62,13 @@ class FulfillmentAutomation(AutomationResource):
 
     def get_tier_config(self, tier_id, product_id):
         # type: (str, str) -> Optional[TierConfig]
-        url = self.api.urljoin(self.config.api_url, 'tier/config-requests')
+        url = self._api.urljoin(self.config.api_url, 'tier/config-requests')
         params = {
             'status': 'approved',
             'configuration__product__id': product_id,
             'configuration__account__id': tier_id,
         }
-        response = self.api.get(url=url, params=params)
+        response, _ = self._api.get(url=url, params=params)
         objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
 
         if isinstance(objects, list) and len(objects) > 0:
@@ -83,7 +83,7 @@ class FulfillmentAutomation(AutomationResource):
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
 
-        return self.api.put(
+        return self._api.put(
             path=pk,
             json={'asset': {'params': list_dict}},
-        )
+        )[0]

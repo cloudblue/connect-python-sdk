@@ -6,7 +6,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 import os
 import time
-from collections import namedtuple
 from datetime import date, timedelta
 
 import pytest
@@ -17,8 +16,7 @@ from connect.models.exception import FileRetrievalError
 from connect.models.marketplace import Contract
 from connect.models.product import Product
 from connect.resource import UsageAutomation
-
-Response = namedtuple('Response', ('ok', 'content', 'status_code'))
+from .response import Response
 
 
 def _get_response_ok():

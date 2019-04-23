@@ -41,17 +41,17 @@ class AutomationResource(BaseResource):
     @function_log
     def approve(self, pk, data):
         # type: (str, dict) -> str
-        return self.api.post(path=pk + '/approve/', json=data)
+        return self._api.post(path=pk + '/approve/', json=data)[0]
 
     @function_log
     def inquire(self, pk):
         # type: (str) -> str
-        return self.api.post(path=pk + '/inquire/', json={})
+        return self._api.post(path=pk + '/inquire/', json={})[0]
 
     @function_log
     def fail(self, pk, reason):
         # type: (str, str) -> str
-        return self.api.post(path=pk + '/fail/', json={'reason': reason})
+        return self._api.post(path=pk + '/fail/', json={'reason': reason})[0]
 
     @function_log
     def render_template(self, pk, template_id):

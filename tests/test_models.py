@@ -7,7 +7,6 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 import os
-from collections import namedtuple
 
 import six
 from mock import MagicMock, patch
@@ -18,38 +17,37 @@ from connect.models.asset import Asset
 from connect.models.fulfillment import Fulfillment
 from connect.models.product import Item
 from connect.models.tier_config import TierConfig
-
-Response = namedtuple('Response', ('ok', 'content'))
+from .response import Response
 
 
 def _get_response_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response.json')) as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content)
+    return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response2_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response2.json')) as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content)
+    return Response(ok=True, content=content, status_code=200)
 
 
 def _get_response_tier_config_ok():
     with open(os.path.join(os.path.dirname(__file__), 'response_tier_config_request.json')) \
             as file_handle:
         content = file_handle.read()
-    return Response(ok=True, content=content)
+    return Response(ok=True, content=content, status_code=200)
 
 
 def test_resource_url():
     resource = FulfillmentAutomation()
-    assert resource.api.get_url() == resource.config.api_url + resource.resource + '/'
+    assert resource._api.get_url() == resource.config.api_url + resource.resource + '/'
 
 
 def test_resource_urljoin():
     resource = FulfillmentAutomation()
-    assert resource.api.base_path == resource.resource
-    assert resource.api.get_url('hello/world') == '{}{}/hello/world' \
+    assert resource._api.base_path == resource.resource
+    assert resource._api.get_url('hello/world') == '{}{}/hello/world' \
         .format(resource.config.api_url, resource.resource)
 
 
@@ -166,7 +164,7 @@ def test_get_tier_config(get_mock):
             'configuration__account__id': 'tier_id'})
 
 
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]')))
+@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]', status_code=200)))
 def test_get_tier_config_empty():
     config = FulfillmentAutomation().get_tier_config('', '')
     assert not config
