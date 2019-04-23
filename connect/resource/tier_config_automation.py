@@ -62,7 +62,7 @@ class TierConfigAutomation(AutomationResource):
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
 
-        return self.api.put(
+        return self._api.put(
             path=pk,
             json={'params': list_dict},
-        )
+        )[0]

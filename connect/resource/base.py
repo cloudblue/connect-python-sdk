@@ -5,7 +5,7 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 import functools
-from typing import Any, List, Dict, Union
+from typing import Any, List, Dict, Union, Tuple
 
 import requests
 from requests import compat
@@ -54,27 +54,31 @@ class ApiClient(object):
 
     @staticmethod
     def urljoin(*args):
+        # type: (str) -> str
         return functools.reduce(
             lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
             args)
 
     @function_log
     def get(self, path='', **kwargs):
+        # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.get(**kwargs)
-        return self._check_response(response)
+        return self._check_and_pack_response(response)
 
     @function_log
     def post(self, path='', **kwargs):
+        # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.post(**kwargs)
-        return self._check_response(response)
+        return self._check_and_pack_response(response)
 
     @function_log
     def put(self, path='', **kwargs):
+        # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.put(**kwargs)
-        return self._check_response(response)
+        return self._check_and_pack_response(response)
 
     def _fix_request_kwargs(self, path, prev_kwargs, **kwargs):
         # type: (str, Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
@@ -88,20 +92,21 @@ class ApiClient(object):
         return fixed_kwargs
 
     @staticmethod
-    def _check_response(response):
-        # type: (requests.Response) -> str
-        if not hasattr(response, 'content'):
-            raise AttributeError(
-                'Response does not have attribute content. Check your request params. '
-                'Response status - {}'.format(response.status_code),
-            )
-
-        if not hasattr(response, 'ok') or not response.ok:
+    def _check_and_pack_response(response):
+        # type: (requests.Response) -> Tuple[str, int]
+        request_attrs = ('content', 'status_code', 'ok')
+        for attr in request_attrs:
+            if not hasattr(response, attr):
+                raise AttributeError(
+                    'Response does not have attribute `{}`. Check your request params. '
+                    'Response status - {}'.format(attr, response.status_code),
+                )
+        if not response.ok:
             data, error = ServerErrorSchema().loads(response.content)
             if data:
                 raise ServerErrorException(data)
 
-        return response.content
+        return response.content, response.status_code
 
 
 class BaseResource(object):
@@ -110,7 +115,7 @@ class BaseResource(object):
     schema = BaseSchema()  # type: BaseSchema
 
     def __init__(self, config=None):
-        # Set api
+        # Set client
         if not self.__class__.resource:
             raise AttributeError('Resource name not specified in class {}. '
                                  'Add an attribute `resource` with the name of the resource'
@@ -118,18 +123,13 @@ class BaseResource(object):
         self._api = ApiClient(config, self.__class__.resource)
 
     @property
-    def api(self):
-        # type: () -> ApiClient
-        return self._api
-
-    @property
     def config(self):
         # type: () -> Config
-        return self.api.config
+        return self._api.config
 
     def get(self, pk):
         # type: (str) -> Any
-        response = self.api.get(path=pk)
+        response, _ = self._api.get(path=pk)
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]

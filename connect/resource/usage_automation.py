@@ -66,7 +66,7 @@ class UsageAutomation(AutomationResource):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response = self.api.post(json=usage_file.json)
+        response, _ = self._api.post(json=usage_file.json)
         return self._load_schema(response, many=False)
 
     @staticmethod
@@ -105,8 +105,8 @@ class UsageAutomation(AutomationResource):
             file_contents = tmp.read()
 
         # Setup request
-        url = self.api.get_url(usage_file.id + '/upload/')
-        headers = self.api.headers
+        url = self._api.get_url(usage_file.id + '/upload/')
+        headers = self._api.headers
         headers['Accept'] = 'application/json'
         del headers['Content-Type']  # This must NOT be set for multipart post requests
         multipart = {'usage_file': ('usage_file.xlsx', file_contents)}
@@ -114,13 +114,16 @@ class UsageAutomation(AutomationResource):
 
         # Post request
         try:
-            response = requests.post(url, headers=headers, files=multipart)
+            content, status = self._api.post(
+                path=usage_file.id + '/upload/',
+                headers=headers,
+                files=multipart)
         except requests.RequestException as ex:
             raise FileCreationError('Error uploading file: {}'.format(ex))
-        logger.info('HTTP Code: {}'.format(response.status_code))
-        if response.status_code != 201:
-            msg = 'Unexpected server response, returned code {}'.format(response.status_code)
-            logger.error('{} -- Raw response: {}'.format(msg, response.content))
+        logger.info('HTTP Code: {}'.format(status))
+        if status != 201:
+            msg = 'Unexpected server response, returned code {}'.format(status)
+            logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
 
     def upload_usage_records(self, usage_file, usage_records):
@@ -153,8 +156,8 @@ class UsageAutomation(AutomationResource):
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
         try:
-            response = self.api.get(url='{}/usage/products/{}/template/'
-                                    .format(self.config.api_url, product_id))
+            response, _ = self._api.get(url='{}/usage/products/{}/template/'
+                                        .format(self.config.api_url, product_id))
             response_dict = json.loads(response)
             return response_dict['template_link']
         except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
