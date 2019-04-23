@@ -19,7 +19,7 @@ class TemplateResource(BaseResource):
 
     def list(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
-        raise AttributeError('This resource do not have method `get_list`')
+        raise AttributeError('This resource do not have method `list`')
 
     def render(self, pk, request_id):
         # type: (str, str) -> ActivationTileResponse
