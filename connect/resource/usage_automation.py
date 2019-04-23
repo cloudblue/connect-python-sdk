@@ -24,9 +24,9 @@ class UsageAutomation(AutomationResource):
     resource = 'usage/files'
     schema = FileSchema(many=True)
 
-    def build_filter(self, status='listed'):
-        # type: (str) -> Dict[str, Any]
-        filters = super(UsageAutomation, self).build_filter(status)
+    def filters(self, status='listed', **kwargs):
+        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        filters = super(UsageAutomation, self).filters(status, **kwargs)
         if self.config.products:
             filters['product__id'] = ','.join(self.config.products)
         return filters

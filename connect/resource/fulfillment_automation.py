@@ -21,9 +21,9 @@ class FulfillmentAutomation(AutomationResource):
     resource = 'requests'
     schema = FulfillmentSchema(many=True)
 
-    def build_filter(self, status='pending'):
-        # type: (str) -> Dict[str, Any]
-        filters = super(FulfillmentAutomation, self).build_filter(status)
+    def filters(self, status='pending', **kwargs):
+        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        filters = super(FulfillmentAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters

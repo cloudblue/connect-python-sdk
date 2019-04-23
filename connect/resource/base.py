@@ -120,32 +120,12 @@ class BaseResource(object):
             raise AttributeError('Resource name not specified in class {}. '
                                  'Add an attribute `resource` with the name of the resource'
                                  .format(self.__class__.__name__))
-        self.__api = ApiClient(config, self.__class__.resource)
-
-    @property
-    def _api(self):
-        # type: () -> ApiClient
-        return self.__api
+        self._api = ApiClient(config, self.__class__.resource)
 
     @property
     def config(self):
         # type: () -> Config
         return self._api.config
-
-    @property
-    def list(self):
-        # type: () -> List[Any]
-        filters = self.build_filter()
-        logger.info('Get list request by filter - {}'.format(filters))
-        response, _ = self._api.get(params=filters)
-        return self._load_schema(response)
-
-    def build_filter(self):
-        # type: () -> Dict[str, Any]
-        res_filter = {}
-        if self.limit:
-            res_filter['limit'] = self.limit
-        return res_filter
 
     def get(self, pk):
         # type: (str) -> Any
@@ -153,6 +133,22 @@ class BaseResource(object):
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
+
+    def filters(self, **kwargs):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        filters = {}
+        if self.limit:
+            filters['limit'] = self.limit
+        for key, val in kwargs.items():
+            filters[key] = val
+        return filters
+
+    def list(self, filters=None):
+        # type: (Dict[str, Any]) -> List[Any]
+        filters = filters or self.filters()
+        logger.info('Get list request with filters - {}'.format(filters))
+        response, _ = self._api.get(params=filters)
+        return self._load_schema(response)
 
     def _load_schema(self, response, many=None, schema=None):
         # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
