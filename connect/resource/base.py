@@ -120,24 +120,24 @@ class BaseResource(object):
             raise AttributeError('Resource name not specified in class {}. '
                                  'Add an attribute `resource` with the name of the resource'
                                  .format(self.__class__.__name__))
-        self._client = ApiClient(config, self.__class__.resource)
+        self.__api = ApiClient(config, self.__class__.resource)
 
     @property
-    def client(self):
+    def _api(self):
         # type: () -> ApiClient
-        return self._client
+        return self.__api
 
     @property
     def config(self):
         # type: () -> Config
-        return self.client.config
+        return self._api.config
 
     @property
     def list(self):
         # type: () -> List[Any]
         filters = self.build_filter()
         logger.info('Get list request by filter - {}'.format(filters))
-        response, _ = self.client.get(params=filters)
+        response, _ = self._api.get(params=filters)
         return self._load_schema(response)
 
     def build_filter(self):
@@ -149,7 +149,7 @@ class BaseResource(object):
 
     def get(self, pk):
         # type: (str) -> Any
-        response, _ = self.client.get(path=pk)
+        response, _ = self._api.get(path=pk)
         objects = self._load_schema(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
