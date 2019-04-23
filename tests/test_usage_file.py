@@ -24,7 +24,7 @@ current_action = ''
 
 # noinspection PyUnusedLocal
 def _get_response_ok(*args, **kwargs):
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage_file.json'), 'r') \
+    with open(os.path.join(os.path.dirname(__file__), 'response_usage_file.json')) \
             as file_handle:
         content = file_handle.read()
     if current_action:

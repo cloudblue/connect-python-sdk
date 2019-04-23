@@ -44,7 +44,7 @@ class Config(object):
             if not os.path.exists(file):
                 raise IOError('No file `{}` on directory'.format(file))
 
-            with open(file, 'r') as config_file:
+            with open(file) as config_file:
                 configs = config_file.read()
 
             try:
