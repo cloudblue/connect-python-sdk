@@ -101,61 +101,46 @@
       {
         "id": "email",
         "name": "email",
-        "title": null,
         "description": "Enter a valid email not used in Dropbox.",
-        "scope": null,
         "value": "",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       },
       {
         "id": "num_licensed_users",
         "name": "num_licensed_users",
-        "title": null,
         "description": "Ordered Licenses",
-        "scope": null,
         "value": "",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       },
       {
         "id": "reseller_id",
         "name": "reseller_id",
-        "title": null,
         "description": "Reseller ID",
-        "scope": null,
         "value": "",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       },
       {
         "id": "team_id",
         "name": "team_id",
-        "title": null,
         "description": "Team ID",
-        "scope": null,
         "value": "",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       },
       {
         "id": "team_name",
         "name": "team_name",
-        "title": null,
         "description": "Team Name",
-        "scope": null,
         "value": "",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       },
       {
@@ -163,11 +148,9 @@
         "name": "migration_info",
         "title": "Data for migration subscription",
         "description": "Json with data realted with the ralted fulfillment.",
-        "scope": null,
         "value": "{\"teamAdminEmail\":\"example.migration@mailinator.com\",\"teamId\":\"dbtid:AADaQq_w53nMDQbIPM_X123456PuzpcM2BI\",\"resellerId\":[\"3ONEYO1234\"],\"teamName\":\"Migration Team\",\"licNumber\":\"10\"}",
         "value_error": "None",
         "type": "text",
-        "constraints": null,
         "value_choices": []
       }
     ]
