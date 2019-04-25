@@ -16,19 +16,21 @@ from connect.models.exception import FileRetrievalError
 from connect.models.marketplace import Contract
 from connect.models.product import Product
 from connect.resource import UsageAutomation
-from .response import Response
+from .common import Response, load_str
 
 
 def _get_response_ok():
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage.json')) as file_handle:
-        content = file_handle.read()
-    return Response(ok=True, content=content, status_code=200)
+    return Response(
+        ok=True,
+        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage.json')),
+        status_code=200)
 
 
 def _get_response_ok2():
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage2.json')) as file_handle:
-        content = file_handle.read()
-    return Response(ok=True, content=content, status_code=201)
+    return Response(
+        ok=True,
+        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage2.json')),
+        status_code=201)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
