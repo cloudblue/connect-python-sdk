@@ -62,8 +62,8 @@ class ParamSchema(BaseSchema):
     value_error = fields.Str()
 
     # Undocumented fields (they appear in PHP SDK)
-    title = fields.Str(required=False)
-    scope = fields.Str(required=False)
+    title = fields.Str()
+    scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema, required=False)
 
     @post_load
