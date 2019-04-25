@@ -7,10 +7,20 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 import copy
 import json
 
+import six
 from typing import Dict
 
 from connect.logger import logger
+from connect.models.exception import Skip
 from connect.models.fulfillment import Fulfillment
+
+
+class MigrationAbortError(Exception):
+    pass
+
+
+class MigrationParamError(Exception):
+    pass
 
 
 class MigrationHandler(object):
@@ -48,22 +58,64 @@ class MigrationHandler(object):
 
             try:
                 # This will raise a ValueError if parsing fails
-                parsed_data = json.loads(raw_data)
+                try:
+                    parsed_data = json.loads(raw_data)
+                except ValueError as ex:
+                    raise MigrationAbortError(str(ex))
                 logger.debug('[MIGRATION::{}] Migration data `{}` parsed correctly'
                              .format(request.id, self.migration_key))
 
+                # These will keep track of processing status
+                processed_params = []
+                succeeded_params = []
+                failed_params = []
+
                 for param in request_copy.asset.params:
-                    if param.id in self.transformations:
-                        # Transformation operation is registered, so transform property
-                        logger.info('[MIGRATION::{}] Running transformation for parameter {}'
-                                    .format(request.id, param.id))
-                        param.value = self.transformations[param.id](parsed_data, request.id)
-                    else:
-                        pass
-            except ValueError:
-                pass
+                    # Try to process the param and report success or fail
+                    try:
+                        if param.id in self.transformations:
+                            # Transformation is defined, so apply it
+                            logger.info('[MIGRATION::{}] Running transformation for parameter {}'
+                                        .format(request.id, param.id))
+                            param.value = self.transformations[param.id](parsed_data, request.id)
+                        elif param.id in parsed_data:
+                            # Parsed data contains the key, so assign it
+                            if not isinstance(parsed_data[param.id], six.string_types):
+                                if self.serialize:
+                                    parsed_data[param.id] = json.loads(parsed_data[param.id])
+                                else:
+                                    type_name = type(parsed_data[param.id]).__name__
+                                    raise MigrationParamError(
+                                        'Parameter {} type must be str, but {} was given'
+                                        .format(param.id, type_name))
+                            param.value = parsed_data[param.id]
+                        succeeded_params.append(param.id)
+                    except MigrationParamError as ex:
+                        logger.error('[MIGRATION::{}] {}'.format(request.id, ex))
+                        failed_params.append(param.id)
+
+                    # Report processed param
+                    processed_params.append(param.id)
+
+                    # Raise abort if any params failed
+                    if failed_params:
+                        raise MigrationAbortError(
+                            'Processing of parameters {} failed, unable to complete migration.'
+                            .format(', '.join(failed_params)))
+
+                    logger.info('[MIGRATION::{}] Parameters {}/{} ({}) processed correctly.'
+                                .format(
+                                    request.id,
+                                    len(succeeded_params),
+                                    len(processed_params),
+                                    ', '.join(succeeded_params)))
+            except MigrationAbortError as ex:
+                logger.error('[MIGRATION::{}] {}'.format(request.id, ex))
+                raise Skip('Migration failed.')
+
+            return request_copy
         else:
-            logger.info('[MIGRATION::{}] Request does not need migration'
+            logger.info('[MIGRATION::{}] Request does not need migration.'
                         .format(request.id))
             return request
 
