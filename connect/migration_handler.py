@@ -8,7 +8,7 @@ import copy
 import json
 
 import six
-from typing import Dict
+from typing import Dict, List
 
 from connect.logger import logger
 from connect.models.exception import Skip
@@ -61,6 +61,7 @@ class MigrationHandler(object):
                 try:
                     parsed_data = json.loads(raw_data)
                 except ValueError as ex:
+                    # *** HIT
                     raise MigrationAbortError(str(ex))
                 logger.debug('[MIGRATION::{}] Migration data `{}` parsed correctly'
                              .format(request.id, self.migration_key))
@@ -69,16 +70,23 @@ class MigrationHandler(object):
                 processed_params = []
                 succeeded_params = []
                 failed_params = []
+                skipped_params = []
 
-                for param in request_copy.asset.params:
+                # Exclude param for migration_info from process list
+                params = [param for param in request_copy.asset.params if param.id != self.migration_key]
+
+                for param in params:
                     # Try to process the param and report success or fail
                     try:
                         if param.id in self.transformations:
+                            # *** HIT
                             # Transformation is defined, so apply it
                             logger.info('[MIGRATION::{}] Running transformation for parameter {}'
                                         .format(request.id, param.id))
                             param.value = self.transformations[param.id](parsed_data, request.id)
+                            succeeded_params.append(param.id)
                         elif param.id in parsed_data:
+                            # *** HIT
                             # Parsed data contains the key, so assign it
                             if not isinstance(parsed_data[param.id], six.string_types):
                                 if self.serialize:
@@ -89,27 +97,37 @@ class MigrationHandler(object):
                                         'Parameter {} type must be str, but {} was given'
                                         .format(param.id, type_name))
                             param.value = parsed_data[param.id]
-                        succeeded_params.append(param.id)
+                            succeeded_params.append(param.id)
+                        else:
+                            skipped_params.append(param.id)
                     except MigrationParamError as ex:
+                        # *** HIT
                         logger.error('[MIGRATION::{}] {}'.format(request.id, ex))
                         failed_params.append(param.id)
 
                     # Report processed param
                     processed_params.append(param.id)
 
-                    # Raise abort if any params failed
-                    if failed_params:
-                        raise MigrationAbortError(
-                            'Processing of parameters {} failed, unable to complete migration.'
-                            .format(', '.join(failed_params)))
+                # Raise abort if any params failed
+                if failed_params:
+                    # *** HIT
+                    raise MigrationAbortError(
+                        'Processing of parameters {} failed, unable to complete migration.'
+                        .format(', '.join(failed_params)))
 
-                    logger.info('[MIGRATION::{}] Parameters {}/{} ({}) processed correctly.'
-                                .format(
-                                    request.id,
-                                    len(succeeded_params),
-                                    len(processed_params),
-                                    ', '.join(succeeded_params)))
+                logger.info('[MIGRATION::{}] {} processed, {} succeeded{}, {} failed{}, '
+                            '{} skipped{}.'
+                            .format(
+                                request.id,
+                                len(processed_params),
+                                len(succeeded_params),
+                                self._format_params(succeeded_params),
+                                len(failed_params),
+                                self._format_params(failed_params),
+                                len(skipped_params),
+                                self._format_params(skipped_params)))
             except MigrationAbortError as ex:
+                # *** HIT
                 logger.error('[MIGRATION::{}] {}'.format(request.id, ex))
                 raise Skip('Migration failed.')
 
@@ -122,3 +140,8 @@ class MigrationHandler(object):
     def _needs_migration(self, request):
         # type: (Fulfillment) -> bool
         return request.asset.get_param_by_id(self.migration_key) is not None
+
+    @staticmethod
+    def _format_params(params):
+        # type: (List[str]) -> str
+        return ' (' + ', '.join(params) + ')' if len(params) > 0 else ''
