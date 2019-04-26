@@ -37,8 +37,8 @@ class Contact(BaseModel):
 
 class ContactSchema(BaseSchema):
     email = fields.Str()
-    first_name = fields.Str()
-    last_name = fields.Str()
+    first_name = fields.Str(allow_none=True)
+    last_name = fields.Str(allow_none=True)
     phone_number = fields.Nested(PhoneNumberSchema)
 
     @post_load
