@@ -95,10 +95,29 @@ class ProductSchema(BaseSchema):
         return Product(**data)
 
 
+class Renewal(BaseModel):
+    from_ = None  # type: str
+    to = None  # type: str
+    period_delta = None  # type: int
+    period_uom = None  # type: str
+
+
+class RenewalSchema(BaseSchema):
+    from_ = fields.Str(attribute='from')
+    to = fields.Str()
+    period_delta = fields.Int()
+    period_uom = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return Renewal(**data)
+
+
 class Item(BaseModel):
     mpn = None  # type: str
     quantity = None  # type: int
     old_quantity = None  # type: Optional[int]
+    renewal = None  # type: Optional[Renewal]
     global_id = None  # type: str
 
 
@@ -106,6 +125,7 @@ class ItemSchema(BaseSchema):
     mpn = fields.Str()
     quantity = fields.Integer()
     old_quantity = fields.Integer(allow_none=True)
+    renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
 
     @post_load

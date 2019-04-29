@@ -50,9 +50,9 @@ class Param(BaseModel):
     value_choice = None  # type: Optional[List[str]]
 
     # Undocumented fields (they appear in PHP SDK)
-    title = None  # type: str
-    scope = None  # type: str
-    constraints = None  # type: Constraints
+    title = None  # type: Optional[str]
+    scope = None  # type: Optional[str]
+    constraints = None  # type: Optional[Constraints]
 
 
 class ParamSchema(BaseSchema):
@@ -64,9 +64,9 @@ class ParamSchema(BaseSchema):
     value_choice = fields.Str(many=True, allow_none=True)
 
     # Undocumented fields (they appear in PHP SDK)
-    title = fields.Str()
-    scope = fields.Str()
-    constraints = fields.Nested(ConstraintsSchema)
+    title = fields.Str(allow_none=True)
+    scope = fields.Str(allow_none=True)
+    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
