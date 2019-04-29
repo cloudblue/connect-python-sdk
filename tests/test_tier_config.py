@@ -21,7 +21,6 @@ from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
     Activation, Account
-from .response import Response
 from .common import Response, load_str
 
 
