@@ -6,6 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import fields, post_load
+from typing import Optional
 
 from .base import BaseModel, BaseSchema
 
@@ -30,8 +31,8 @@ class PhoneNumberSchema(BaseSchema):
 
 class Contact(BaseModel):
     email = None  # type: str
-    first_name = None  # type: str
-    last_name = None  # type: str
+    first_name = None  # type: Optional[str]
+    last_name = None  # type: Optional[str]
     phone_number = None  # type: PhoneNumber
 
 
@@ -48,7 +49,7 @@ class ContactSchema(BaseSchema):
 
 class ContactInfo(BaseModel):
     address_line1 = None  # type: str
-    address_line2 = None  # type: str
+    address_line2 = None  # type: Optional[str]
     city = None  # type: str
     contact = None  # type: Contact
     country = None  # type: str
@@ -58,7 +59,7 @@ class ContactInfo(BaseModel):
 
 class ContactInfoSchema(BaseSchema):
     address_line1 = fields.Str()
-    address_line2 = fields.Str()
+    address_line2 = fields.Str(allow_none=True)
     city = fields.Str()
     contact = fields.Nested(ContactSchema)
     country = fields.Str()
