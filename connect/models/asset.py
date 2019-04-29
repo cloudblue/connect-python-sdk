@@ -48,8 +48,8 @@ class AssetSchema(BaseSchema):
     connection = fields.Nested(
         ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
     )
-    items = fields.List(fields.Nested(ItemSchema))
-    params = fields.List(fields.Nested(ParamSchema))
+    items = fields.Nested(ItemSchema, many=True)
+    params = fields.Nested(ParamSchema, many=True)
     tiers = fields.Nested(TiersSchema)
 
     @post_load

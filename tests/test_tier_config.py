@@ -15,11 +15,13 @@ from connect.models import Param, ActivationTileResponse, ActivationTemplateResp
 from connect.models.base import BaseModel
 from connect.models.company import Company
 from connect.models.connection import Connection
+from connect.models.event import EventInfo
 from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
 from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
-    Activation, EventInfo, Account
+    Activation, Account
+from .response import Response
 from .common import Response, load_str
 
 
