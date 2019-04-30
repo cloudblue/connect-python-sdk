@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional
 
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
-from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connect.models.exception import FailRequest, InquireRequest, SkipRequest
 from connect.models.fulfillment import Fulfillment, FulfillmentSchema
 from connect.models.tier_config import TierConfig, TierConfigRequestSchema
 from .automation import AutomationResource
@@ -50,14 +50,14 @@ class FulfillmentAutomation(AutomationResource):
 
             return self.approve(request.id, params)
 
-        except FulfillmentInquire as inquire:
+        except InquireRequest as inquire:
             self.update_parameters(request.id, inquire.params)
             return self.inquire(request.id)
 
-        except FulfillmentFail as fail:
+        except FailRequest as fail:
             return self.fail(request.id, reason=fail.message)
 
-        except Skip as skip:
+        except SkipRequest as skip:
             return skip.code
 
     def get_tier_config(self, tier_id, product_id):

@@ -26,25 +26,25 @@ class Message(Exception):
         return str(self)
 
 
-class FulfillmentFail(Message):
+class FailRequest(Message):
     def __init__(self, message=''):
         # type: (str) -> None
-        super(FulfillmentFail, self).__init__(message or 'Request failed', 'fail')
+        super(FailRequest, self).__init__(message or 'Request failed', 'fail')
 
 
-class FulfillmentInquire(Message):
+class InquireRequest(Message):
     params = None  # type: List[Param]
 
     def __init__(self, message='', params=None):
         # type: (str, List[Param]) -> None
-        super(FulfillmentInquire, self).__init__(message or 'Correct user input required', 'inquire')
+        super(InquireRequest, self).__init__(message or 'Correct user input required', 'inquire')
         self.params = params or []
 
 
-class Skip(Message):
+class SkipRequest(Message):
     def __init__(self, message=''):
         # type: (str) -> None
-        super(Skip, self).__init__(message or 'Request skipped', 'skip')
+        super(SkipRequest, self).__init__(message or 'Request skipped', 'skip')
 
 
 class ServerError(Exception):
@@ -107,3 +107,19 @@ class FileRetrievalError(Message):
     def __init__(self, message):
         # type: (str) -> None
         super(FileRetrievalError, self).__init__(message, 'fileretrieval')
+
+
+# These exist only for backwards compatibility
+# TODO: Add deprecation warning
+
+
+class FulfillmentFail(FailRequest):
+    pass
+
+
+class FulfillmentInquire(InquireRequest):
+    pass
+
+
+class Skip(SkipRequest):
+    pass
