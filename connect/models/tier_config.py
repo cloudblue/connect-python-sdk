@@ -12,6 +12,8 @@ from connect.models.base import BaseModel, BaseSchema
 from connect.models.company import Company, CompanySchema
 from connect.models.connection import Connection, ConnectionSchema
 from connect.models.contact import ContactInfo, ContactInfoSchema
+from connect.models.event import EventsSchema, Events
+from connect.models.marketplace import Activation, ActivationSchema
 from connect.models.product import Product, ProductSchema
 
 
@@ -22,21 +24,27 @@ class Account(BaseModel):
     contact_info = None  # type: ContactInfo
 
 
-class EventInfo(BaseModel):
-    at = None  # type: str
-    by = None  # type: Company
+class AccountSchema(BaseSchema):
+    name = fields.Str()
+    external_id = fields.Str()
+    external_uid = fields.Str()
+    contact_info = fields.Nested(ContactInfoSchema)
 
-
-class Events(BaseModel):
-    created = None  # type: EventInfo
-    inquired = None  # type: EventInfo
-    pended = None  # type: EventInfo
-    validated = None  # type: EventInfo
-    updated = None  # type: EventInfo
+    @post_load
+    def make_object(self, data):
+        return Account(**data)
 
 
 class Template(BaseModel):
     representation = None  # type: str
+
+
+class TemplateSchema(BaseSchema):
+    representation = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return Template(**data)
 
 
 class TierConfig(BaseModel):
@@ -45,7 +53,7 @@ class TierConfig(BaseModel):
     product = None  # type: Product
     tier_level = None  # type: int
     connection = None  # type: Connection
-    events = None  # type: Events
+    events = None  # type: Optional[Events]
     params = None  # type: List[Param]
     template = None  # type: Template
 
@@ -60,76 +68,14 @@ class TierConfig(BaseModel):
             return None
 
 
-class Activation(BaseModel):
-    link = None  # type: str
-
-
-class TierConfigRequest(BaseModel):
-    type = None  # type: str
-    status = None  # type: str
-    configuration = None  # type: TierConfig
-    events = None  # type: Events
-    params = None  # type: List[Param]
-    assignee = None  # type: Company
-    template = None  # type: Template
-    activation = None  # type: Activation
-
-    def get_param_by_id(self, id_):
-        # type: (str) -> Optional[Param]
-        try:
-            return list(filter(lambda param: param.id == id_, self.params))[0]
-        except IndexError:
-            return None
-
-
-class AccountSchema(BaseSchema):
-    name = fields.Str()
-    external_id = fields.Str()
-    external_uid = fields.Str()
-    contact_info = fields.Nested(ContactInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Account(**data)
-
-
-class EventInfoSchema(BaseSchema):
-    at = fields.Str()
-    by = fields.Nested(CompanySchema)
-
-    @post_load
-    def make_object(self, data):
-        return EventInfo(**data)
-
-
-class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema, required=False)
-    pended = fields.Nested(EventInfoSchema, required=False)
-    validated = fields.Nested(EventInfoSchema, required=False)
-    updated = fields.Nested(EventInfoSchema, required=False)
-
-    @post_load
-    def make_object(self, data):
-        return Events(**data)
-
-
-class TemplateSchema(BaseSchema):
-    representation = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Template(**data)
-
-
 class TierConfigSchema(BaseSchema):
     name = fields.Str()
     account = fields.Nested(AccountSchema)
     product = fields.Nested(ProductSchema)
     tier_level = fields.Int()
     connection = fields.Nested(ConnectionSchema)
-    events = fields.Nested(EventsSchema)
-    params = fields.List(fields.Nested(ParamSchema))
+    events = fields.Nested(EventsSchema, allow_none=True)
+    params = fields.Nested(ParamSchema, many=True)
     template = fields.Nested(TemplateSchema)
 
     # Undocumented fields (they appear in PHP SDK)
@@ -140,23 +86,37 @@ class TierConfigSchema(BaseSchema):
         return TierConfig(**data)
 
 
-class ActivationSchema(BaseSchema):
-    link = fields.Str()
+class TierConfigRequest(BaseModel):
+    type = None  # type: str
+    status = None  # type: str
+    configuration = None  # type: TierConfig
+    events = None  # type: Optional[Events]
+    params = None  # type: List[Param]
+    assignee = None  # type: Optional[Company]
+    template = None  # type: Optional[Template]
+    reason = None  # type: Optional[str]
+    activation = None  # type: Optional[Activation]
+    notes = None  # type: Optional[str]
 
-    @post_load
-    def make_object(self, data):
-        return Activation(**data)
+    def get_param_by_id(self, id_):
+        # type: (str) -> Optional[Param]
+        try:
+            return list(filter(lambda param: param.id == id_, self.params))[0]
+        except IndexError:
+            return None
 
 
 class TierConfigRequestSchema(BaseSchema):
     type = fields.Str()
     status = fields.Str()
     configuration = fields.Nested(TierConfigSchema)
-    events = fields.Nested(EventsSchema)
-    params = fields.List(fields.Nested(ParamSchema))
-    assignee = fields.Nested(CompanySchema)
-    template = fields.Nested(TemplateSchema)
-    activation = fields.Nested(ActivationSchema)
+    events = fields.Nested(EventsSchema, allow_none=True)
+    params = fields.Nested(ParamSchema, many=True)
+    assignee = fields.Nested(CompanySchema, allow_none=True)
+    template = fields.Nested(TemplateSchema, allow_none=True)
+    reason = fields.Str(allow_none=True)
+    activation = fields.Nested(ActivationSchema, allow_none=True)
+    notes = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
