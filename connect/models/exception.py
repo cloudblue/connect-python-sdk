@@ -7,7 +7,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from typing import List, Dict, Any, Optional
 
 from connect.models import Param
-from .server_error import ServerError
+from .server_error_response import ServerErrorResponse
 
 
 class Message(Exception):
@@ -16,36 +16,43 @@ class Message(Exception):
 
     def __init__(self, message='', code='', obj=None):
         # type: (str, str, object) -> None
-        self.message = message
+        super(Message, self).__init__(message)
         self.code = code
         self.obj = obj
 
+    @property
+    def message(self):
+        # type: () -> str
+        return str(self)
+
 
 class FulfillmentFail(Message):
-    def __init__(self, *args, **kwargs):
-        # type: (*any, **any) -> None
-        super(FulfillmentFail, self).__init__(*args, **kwargs)
-        self.message = self.message or 'Request failed'
-        self.code = 'fail'
+    def __init__(self, message=''):
+        # type: (str) -> None
+        super(FulfillmentFail, self).__init__(message or 'Request failed', 'fail')
 
 
 class FulfillmentInquire(Message):
     params = None  # type: List[Param]
 
-    def __init__(self, *args, **kwargs):
-        # type: (*any, **any) -> None
-        super(FulfillmentInquire, self).__init__(*args, **kwargs)
-        self.message = self.message or 'Correct user input required'
-        self.code = 'inquire'
-        self.params = kwargs.get('params', [])
+    def __init__(self, message='', params=None):
+        # type: (str, List[Param]) -> None
+        super(FulfillmentInquire, self).__init__(message or 'Correct user input required', 'inquire')
+        self.params = params or []
 
 
 class Skip(Message):
-    def __init__(self, *args, **kwargs):
-        # type: (*any, **any) -> None
-        super(Skip, self).__init__(*args, **kwargs)
-        self.message = self.message or 'Request skipped'
-        self.code = 'skip'
+    def __init__(self, message=''):
+        # type: (str) -> None
+        super(Skip, self).__init__(message or 'Request skipped', 'skip')
+
+
+class ServerError(Exception):
+    message = 'Server error'  # type: str
+
+    def __init__(self, error):
+        # type: (ServerErrorResponse) -> None
+        super(ServerError, self).__init__(str(error), error.error_code)
 
 
 class UsageFileAction(Message):
@@ -88,24 +95,6 @@ class SubmitUsageFile(UsageFileAction):
             'Usage File Submited',
             'submit',
             {'rejection_note': rejection_note})
-
-
-class ServerErrorException(Exception):
-    message = 'Server error'  # type: str
-
-    def __init__(self, error=None, *args, **kwargs):
-        # type: (ServerError, *any, **any) -> None
-
-        if error and isinstance(error, ServerError):
-            self.message = str({
-                "error_code": error.error_code,
-                "params": kwargs.get('params', []),
-                "errors": error.errors,
-            })
-        else:
-            self.message = self.__class__.message
-
-        super(ServerErrorException, self).__init__(self.message, *args)
 
 
 class FileCreationError(Message):

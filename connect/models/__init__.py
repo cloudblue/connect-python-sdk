@@ -10,7 +10,7 @@ from .base import BaseSchema
 from .fulfillment import FulfillmentSchema
 from .parameters import Param, ParamSchema
 from .product import Item, ItemSchema
-from .server_error import ServerErrorSchema
+from .server_error_response import ServerErrorResponseSchema
 
 __all__ = [
     'ActivationTemplateResponse',
@@ -21,5 +21,5 @@ __all__ = [
     'ItemSchema',
     'Param',
     'ParamSchema',
-    'ServerErrorSchema',
+    'ServerErrorResponseSchema',
 ]
