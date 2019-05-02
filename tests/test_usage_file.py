@@ -17,16 +17,14 @@ from connect.models.marketplace import Contract, Marketplace
 from connect.models.product import Product
 from connect.models.usage import Records
 from connect.resource import UsageFileAutomation
-from .response import Response
+from .common import Response, load_str
 
 current_action = ''
 
 
 # noinspection PyUnusedLocal
 def _get_response_ok(*args, **kwargs):
-    with open(os.path.join(os.path.dirname(__file__), 'response_usage_file.json')) \
-            as file_handle:
-        content = file_handle.read()
+    content = load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage_file.json'))
     if current_action:
         content = content.replace('UF-2018-11-9878764342',
                                   'UF-2018-11-9878764342-' + current_action)
