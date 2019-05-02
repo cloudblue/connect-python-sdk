@@ -311,7 +311,8 @@ def test_migration_transform(info_mock, debug_mock):
         call('[MIGRATION::PR-7001-1234-5678] Running migration operations for request '
              'PR-7001-1234-5678'),
         call('[MIGRATION::PR-7001-1234-5678] Running transformation for parameter email'),
-        call('[MIGRATION::PR-7001-1234-5678] Running transformation for parameter num_licensed_users'),
+        call('[MIGRATION::PR-7001-1234-5678] Running transformation for parameter '
+             'num_licensed_users'),
         call('[MIGRATION::PR-7001-1234-5678] Running transformation for parameter team_id'),
         call('[MIGRATION::PR-7001-1234-5678] Running transformation for parameter team_name'),
         call('[MIGRATION::PR-7001-1234-5678] 5 processed, 4 succeeded '
@@ -369,7 +370,8 @@ def test_migration_transform_manual_fail(info_mock, debug_mock, error_mock):
     assert error_mock.call_count == 2
     error_mock.assert_has_calls([
         call('[MIGRATION::PR-7001-1234-5678] Manual fail.'),
-        call('[MIGRATION::PR-7001-1234-5678] Processing of parameters email failed, unable to complete migration.')
+        call('[MIGRATION::PR-7001-1234-5678] Processing of parameters email failed, '
+             'unable to complete migration.')
     ])
 
 
