@@ -11,8 +11,8 @@ from mock import patch, MagicMock
 
 from connect.models import usage
 from connect.models.company import Company
-from connect.models.exception import SkipRequest, AcceptUsageFile, CloseUsageFile, DeleteUsageFile, \
-    RejectUsageFile, SubmitUsageFile
+from connect.models.exception import SkipRequest, AcceptUsageFile, CloseUsageFile, \
+    DeleteUsageFile, RejectUsageFile, SubmitUsageFile
 from connect.models.marketplace import Contract, Marketplace
 from connect.models.product import Product
 from connect.models.usage import Records

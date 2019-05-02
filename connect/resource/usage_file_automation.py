@@ -32,8 +32,8 @@ class UsageFileAutomation(AutomationResource):
             result = self.process_request(request)
 
             # Report that expected exception was not raised
-            processing_result = 'UsageFileAutomation.process_request returned {} ' \
-                                'while is expected to raise UsageFileAction or SkipRequest exception' \
+            processing_result = 'UsageFileAutomation.process_request returned {} while ' \
+                                'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
             logger.warning(processing_result)
             raise UserWarning(processing_result)
