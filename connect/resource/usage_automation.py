@@ -13,10 +13,9 @@ import requests
 from typing import Dict, Any, List, Optional
 
 from connect.logger import logger
-from connect.models.exception import FileCreationError, FileRetrievalError
-from connect.models.product import Product
-from connect.models.usage import FileSchema, Listing, File, FileUsageRecord
-from connect.resource import AutomationResource
+from connect.models import FileCreationError, FileRetrievalError, Product, FileSchema, Listing, \
+    File, FileUsageRecord
+from .automation import AutomationResource
 
 
 class UsageAutomation(AutomationResource):

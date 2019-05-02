@@ -6,10 +6,10 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from marshmallow import fields, post_load
 
-from connect.models.base import BaseModel, BaseSchema
-from connect.models.company import Company, CompanySchema
-from connect.models.marketplace import Contract, Marketplace, ContractSchema, MarketplaceSchema
-from connect.models.product import Product, ProductSchema
+from .base import BaseModel, BaseSchema
+from .company import Company, CompanySchema
+from .marketplace import Contract, Marketplace, ContractSchema, MarketplaceSchema
+from .product import Product, ProductSchema
 
 
 class Records(BaseModel):

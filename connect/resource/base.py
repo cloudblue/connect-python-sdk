@@ -12,8 +12,7 @@ from requests import compat
 
 from connect.config import Config
 from connect.logger import function_log, logger
-from connect.models import BaseSchema, ServerErrorResponseSchema
-from connect.models.exception import ServerError
+from connect.models import BaseSchema, ServerError, ServerErrorResponseSchema
 
 
 class ApiClient(object):

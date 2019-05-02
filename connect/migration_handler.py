@@ -11,8 +11,7 @@ import six
 from typing import Dict, List
 
 from connect.logger import logger
-from connect.models.exception import Skip
-from connect.models.fulfillment import Fulfillment
+from connect.models import Fulfillment, SkipRequest
 
 
 class MigrationAbortError(Exception):
@@ -123,7 +122,7 @@ class MigrationHandler(object):
                         .format(', '.join(failed_params)))
             except MigrationAbortError as ex:
                 logger.error('[MIGRATION::{}] {}'.format(request.id, ex))
-                raise Skip('Migration failed.')
+                raise SkipRequest('Migration failed.')
 
             return request_copy
         else:

@@ -12,9 +12,7 @@ from mock import patch, Mock, call
 from typing import Dict
 
 from connect.migration_handler import MigrationHandler, MigrationParamError
-from connect.models import FulfillmentSchema
-from connect.models.exception import Skip
-from connect.models.fulfillment import Fulfillment
+from connect.models import FulfillmentSchema, SkipRequest, Fulfillment
 from tests.common import load_str
 
 
@@ -131,7 +129,7 @@ def test_migration_wrong_info(info_mock, debug_mock, error_mock):
     assert not error
 
     handler = MigrationHandler({})
-    with pytest.raises(Skip):
+    with pytest.raises(SkipRequest):
         handler.migrate(request)
 
     assert info_mock.call_count == 1
@@ -208,7 +206,7 @@ def test_migration_direct_no_serialize(info_mock, debug_mock, error_mock):
     assert not error
 
     handler = MigrationHandler({})
-    with pytest.raises(Skip):
+    with pytest.raises(SkipRequest):
         handler.migrate(request)
 
     assert info_mock.call_count == 2
@@ -345,7 +343,7 @@ def test_migration_transform_manual_fail(info_mock, debug_mock, error_mock):
     handler = MigrationHandler({
         'email': _raise_error
     })
-    with pytest.raises(Skip):
+    with pytest.raises(SkipRequest):
         handler.migrate(request)
 
     assert info_mock.call_count == 3

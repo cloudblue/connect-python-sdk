@@ -7,14 +7,14 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import fields, post_load
 from typing import Optional, List
 
-from connect.models import Param, ParamSchema
-from connect.models.base import BaseModel, BaseSchema
-from connect.models.company import Company, CompanySchema
-from connect.models.connection import Connection, ConnectionSchema
-from connect.models.contact import ContactInfo, ContactInfoSchema
-from connect.models.event import EventsSchema, Events
-from connect.models.marketplace import Activation, ActivationSchema
-from connect.models.product import Product, ProductSchema
+from .base import BaseModel, BaseSchema
+from .company import Company, CompanySchema
+from .connection import Connection, ConnectionSchema
+from .contact import ContactInfo, ContactInfoSchema
+from .event import EventsSchema, Events
+from .marketplace import Activation, ActivationSchema
+from .parameters import Param, ParamSchema
+from .product import Product, ProductSchema
 
 
 class Account(BaseModel):

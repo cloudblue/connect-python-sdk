@@ -11,9 +11,12 @@ name = 'connect'
 
 __all__ = [
     'config',
-    'resource',
-    'models',
     'logger',
+    'migration_handler',
+    'models',
+    'resource',
+
+    # TODO: Provided for backwards compatibility
     'FulfillmentAutomation',
     'TierConfigAutomation',
 ]

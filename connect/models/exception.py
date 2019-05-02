@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from typing import List, Dict, Any, Optional
 
-from connect.models import Param
+from .parameters import Param
 from .server_error_response import ServerErrorResponse
 
 

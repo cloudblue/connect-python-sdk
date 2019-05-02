@@ -8,8 +8,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from typing import Any, Dict
 
 from connect.logger import function_log
-from connect.models import ActivationTileResponse
-from connect.models.base import BaseModel
+from connect.models import ActivationTileResponse, BaseModel
 from .base import BaseResource
 from .template import TemplateResource
 

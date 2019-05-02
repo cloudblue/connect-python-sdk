@@ -37,10 +37,9 @@ $ pip install connect-sdk
 
 ### Example
 ```python
-from connect import FulfillmentAutomation, TierConfigAutomation
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse
-from connect.models.exception import FailRequest, InquireRequest, SkipRequest
+from connect.models import ActivationTileResponse, FailRequest, InquireRequest, SkipRequest
+from connect.resource import FulfillmentAutomation, TierConfigAutomation
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
@@ -71,7 +70,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
             # Approve by Template
-            return ActivationTemplateResponse('TL-497-535-242')
+            # return ActivationTemplateResponse('TL-497-535-242')
             # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 

@@ -10,7 +10,7 @@ from connect.logger import logger
 from connect.models.base import BaseModel
 from connect.models.exception import UsageFileAction, SkipRequest
 from connect.models.usage import FileSchema, File
-from connect.resource import AutomationResource
+from .automation import AutomationResource
 
 
 class UsageFileAutomation(AutomationResource):

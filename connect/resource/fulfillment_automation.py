@@ -9,10 +9,9 @@ from abc import ABCMeta
 from typing import Any, Dict, List, Optional
 
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
-from connect.models.exception import FailRequest, InquireRequest, SkipRequest
-from connect.models.fulfillment import Fulfillment, FulfillmentSchema
-from connect.models.tier_config import TierConfig, TierConfigRequestSchema
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
+    InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, \
+    TierConfig, TierConfigRequestSchema
 from .automation import AutomationResource
 
 
