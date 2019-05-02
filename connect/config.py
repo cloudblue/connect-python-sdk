@@ -94,7 +94,7 @@ class Config(object):
     @property
     def products(self):
         """
-        :return: Valod product ids.
+        :return: Valid product ids.
         :rtype: List[str]
         """
         return self._products
