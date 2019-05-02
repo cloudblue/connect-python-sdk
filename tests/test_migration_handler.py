@@ -214,7 +214,7 @@ def test_migration_direct_no_serialize(info_mock, debug_mock, error_mock):
     assert info_mock.call_count == 2
     info_mock.assert_has_calls([
         call('[MIGRATION::PR-7001-1234-5678] Running migration operations '
-                                 'for request PR-7001-1234-5678'),
+             'for request PR-7001-1234-5678'),
         call('[MIGRATION::PR-7001-1234-5678] 5 processed, 1 succeeded (email), '
              '1 failed (team_name), 3 skipped (num_licensed_users, reseller_id, team_id).')
     ])
@@ -373,6 +373,6 @@ def test_migration_transform_manual_fail(info_mock, debug_mock, error_mock):
     ])
 
 
-def _raise_error(data, request_id):
+def _raise_error(_, __):
     # type: (Dict[str, str], str) -> None
     raise MigrationParamError('Manual fail.')
