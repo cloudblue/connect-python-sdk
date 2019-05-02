@@ -12,10 +12,10 @@ from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
     InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, \
     TierConfig, TierConfigRequestSchema
-from .automation import AutomationResource
+from .automation_engine import AutomationEngine
 
 
-class FulfillmentAutomation(AutomationResource):
+class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     schema = FulfillmentSchema(many=True)

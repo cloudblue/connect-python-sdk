@@ -15,10 +15,10 @@ from typing import Dict, Any, List, Optional
 from connect.logger import logger
 from connect.models import FileCreationError, FileRetrievalError, Product, FileSchema, Listing, \
     File, FileUsageRecord
-from .automation import AutomationResource
+from .automation_engine import AutomationEngine
 
 
-class UsageAutomation(AutomationResource):
+class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = FileSchema(many=True)

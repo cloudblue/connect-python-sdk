@@ -10,10 +10,10 @@ from connect.logger import logger
 from connect.models.base import BaseModel
 from connect.models.exception import UsageFileAction, SkipRequest
 from connect.models.usage import FileSchema, File
-from .automation import AutomationResource
+from .automation_engine import AutomationEngine
 
 
-class UsageFileAutomation(AutomationResource):
+class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = FileSchema(many=True)

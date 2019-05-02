@@ -11,10 +11,10 @@ from typing import List
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
     InquireRequest, SkipRequest, TierConfigRequest, TierConfigRequestSchema
-from .automation import AutomationResource
+from .automation_engine import AutomationEngine
 
 
-class TierConfigAutomation(AutomationResource):
+class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     schema = TierConfigRequestSchema(many=True)

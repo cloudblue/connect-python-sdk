@@ -13,12 +13,12 @@ from .base import BaseResource
 from .template import TemplateResource
 
 
-class AutomationResource(BaseResource):
+class AutomationEngine(BaseResource):
     limit = 1000
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
-        return super(AutomationResource, self).filters(status=status, **kwargs)
+        return super(AutomationEngine, self).filters(status=status, **kwargs)
 
     def process(self):
         # type: () -> None
