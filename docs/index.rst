@@ -1,5 +1,5 @@
-connect
-=======
+Connect Python SDK
+==================
 
 ...
 

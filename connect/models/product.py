@@ -72,12 +72,31 @@ class CustomerUiSettingsSchema(BaseSchema):
 
 
 class Product(BaseModel):
+    """ Represents basic marketing information about salable items, parameters, configurations,
+    latest published version and connections.
+
+    It contains basic product information like name, description and logo, along with the latest
+    published version details. So in a single point we can say a single product object always
+    represent the latest published version of that product.
+    """
+
     name = None  # type: str
+    """ (str) Product name. """
+
     icon = None  # type: str
+    """ (str) Product icon URI. """
+
     short_description = None  # type: str
+    """ (str) Short description of product. """
+
     detailed_description = None  # type: str
+    """ (str) Detailed description of product. """
+
     version = None  # type: int
+    """ (int) Version of product. """
+
     configurations = None  # type: ProductConfiguration
+    """ (:py:class:`.ProductConfiguration`) Product configuration. """
 
 
 class ProductSchema(BaseSchema):

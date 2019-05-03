@@ -11,8 +11,13 @@ from .company import CompanySchema, Company
 
 
 class EventInfo(BaseModel):
+    """ Represents the date and user that caused an event. """
+
     at = None  # type: Optional[str]
+    """ (str|None) Date when the event occurred. """
+
     by = None  # type: Optional[Company]
+    """ (:py:class:`.Company`) User that caused the event. """
 
 
 class EventInfoSchema(BaseSchema):
@@ -25,11 +30,22 @@ class EventInfoSchema(BaseSchema):
 
 
 class Events(BaseModel):
+    """ Represents a set of events that can take place on an object. """
+
     created = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Creation event. """
+
     inquired = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Inquire event. """
+
     pended = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Pending event. """
+
     validated = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Validation event. """
+
     updated = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Update event. """
 
 
 class EventsSchema(BaseSchema):

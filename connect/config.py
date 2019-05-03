@@ -69,7 +69,7 @@ class Config(object):
     def get_instance(cls):
         """
         :return: Global instance.
-        :rtype: Config
+        :rtype: :py:class:`.Config`
         """
         if not cls._instance:
             cls._instance = Config(file='config.json')

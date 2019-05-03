@@ -9,7 +9,10 @@ from .base import BaseModel, BaseSchema
 
 
 class Company(BaseModel):
+    """ Represents a company within the platform. """
+
     name = None  # type: str
+    """ (str) Company name. """
 
 
 class CompanySchema(BaseSchema):

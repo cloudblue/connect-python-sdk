@@ -11,9 +11,16 @@ from .base import BaseModel, BaseSchema
 
 class PhoneNumber(BaseModel):
     country_code = None  # type: str
+    """ (str) Country code. """
+
     area_code = None  # type: str
+    """ (str) Area code. """
+
     phone_number = None  # type: str
+    """ (str) Phone number. """
+
     extension = None  # type: str
+    """ (str) Phone extension. """
 
 
 class PhoneNumberSchema(BaseSchema):
@@ -28,10 +35,19 @@ class PhoneNumberSchema(BaseSchema):
 
 
 class Contact(BaseModel):
-    email = None  # type: str
+    """ Person of contact. """
+
     first_name = None  # type: Optional[str]
+    """ (str|None) First name. """
+
     last_name = None  # type: Optional[str]
+    """ (str|None) Last name. """
+
+    email = None  # type: str
+    """ (str) Email address. """
+
     phone_number = None  # type: PhoneNumber
+    """ (:py:class:`.PhoneNumber`) Phone number."""
 
 
 class ContactSchema(BaseSchema):
@@ -46,13 +62,28 @@ class ContactSchema(BaseSchema):
 
 
 class ContactInfo(BaseModel):
+    """ Represents the information of a contact. """
+
     address_line1 = None  # type: str
+    """ (str) Street address, first line. """
+
     address_line2 = None  # type: Optional[str]
-    city = None  # type: str
-    contact = None  # type: Contact
+    """ (str|Null) Street address, second line. """
+
     country = None  # type: str
-    postal_code = None  # type: str
+    """ (str) Country code. """
+
     state = None  # type: str
+    """ (str) State name. """
+
+    city = None  # type: str
+    """ (str) City name. """
+
+    postal_code = None  # type: str
+    """ (str) Postal ZIP code. """
+
+    contact = None  # type: Contact
+    """ (:py:class:`.Contact`) Person of contact. """
 
 
 class ContactInfoSchema(BaseSchema):

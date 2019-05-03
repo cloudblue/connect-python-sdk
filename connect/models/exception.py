@@ -10,8 +10,18 @@ from .server_error_response import ServerErrorResponse
 
 
 class Message(Exception):
+    """ Base class for all Connect exceptions.
+
+    :param str message: Exception message.
+    :param str code: Exception code.
+    :param object obj: Additional information.
+    """
+
     code = None  # type: str
+    """ (str) Exception code. """
+
     obj = None  # type: object
+    """ (str) Additional information. """
 
     def __init__(self, message='', code='', obj=None):
         # type: (str, str, object) -> None
@@ -21,13 +31,20 @@ class Message(Exception):
 
     @property
     def message(self):
-        # type: () -> str
+        """ Deprecated property to get the exception message. Use ``str(exception)`` instead.
+
+        :return: The exception message.
+        :rtype: str
+        """
         return str(self)
 
 
 class FailRequest(Message):
+    """ Causes the request being processed to fail.
+
+    :param str message: Exception message.
+    """
     def __init__(self, message=''):
-        # type: (str) -> None
         super(FailRequest, self).__init__(message or 'Request failed', 'fail')
 
 
