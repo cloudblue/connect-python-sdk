@@ -12,15 +12,15 @@ import requests
 from typing import Dict, Any, List, Optional
 
 from connect.logger import logger
-from connect.models import FileCreationError, FileRetrievalError, Product, FileSchema, Listing, \
-    File, FileUsageRecord
+from connect.models import FileCreationError, FileRetrievalError, Product, UsageFileSchema, UsageListing, \
+    UsageFile, FileUsageRecord
 from .automation_engine import AutomationEngine
 
 
 class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=True)
+    schema = UsageFileSchema(many=True)
 
     def filters(self, status='listed', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
@@ -30,7 +30,7 @@ class UsageAutomation(AutomationEngine):
         return filters
 
     def dispatch(self, request):
-        # type: (Listing) -> str
+        # type: (UsageListing) -> str
 
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
@@ -58,7 +58,7 @@ class UsageAutomation(AutomationEngine):
         return 'success'
 
     def create_usage_file(self, usage_file):
-        # type: (File) -> File
+        # type: (UsageFile) -> UsageFile
         if not usage_file.name or not usage_file.product.id or not usage_file.contract.id:
             raise FileCreationError('Usage File Creation requires name, product id, contract id')
         if not usage_file.description:
@@ -94,7 +94,7 @@ class UsageAutomation(AutomationEngine):
         return book
 
     def upload_spreadsheet(self, usage_file, spreadsheet):
-        # type: (File, openpyxl.Workbook) -> None
+        # type: (UsageFile, openpyxl.Workbook) -> None
 
         # Generate spreadsheet file
         with NamedTemporaryFile() as tmp:
@@ -125,7 +125,7 @@ class UsageAutomation(AutomationEngine):
             raise FileCreationError(msg)
 
     def upload_usage_records(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> None
+        # type: (UsageFile, List[FileUsageRecord]) -> None
         # TODO: Using xslx mechanism till usage records json api is available
         book = self.create_spreadsheet(usage_records)
         self.upload_spreadsheet(usage_file, book)
@@ -146,7 +146,7 @@ class UsageAutomation(AutomationEngine):
         return contents
 
     def submit_usage(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> File
+        # type: (UsageFile, List[FileUsageRecord]) -> UsageFile
         usage_file = self.create_usage_file(usage_file)
         self.upload_usage_records(usage_file, usage_records)
         return usage_file

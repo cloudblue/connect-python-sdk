@@ -10,7 +10,7 @@ from datetime import date, timedelta
 import pytest
 from mock import patch, MagicMock, call
 
-from connect.models import FileRetrievalError, Contract, Product, File, FileUsageRecord
+from connect.models import FileRetrievalError, Contract, Product, UsageFile, FileUsageRecord
 from connect.resource import UsageAutomation
 from .common import Response, load_str
 
@@ -77,9 +77,9 @@ def test_get_usage_template_no_file():
 
 class UsageAutomationTester(UsageAutomation):
     def process_request(self, request):
-        # type: (File) -> None
+        # type: (UsageFile) -> None
         if request.contract.id == 'CRD-99082-45842-69181':
-            usage_file = File(
+            usage_file = UsageFile(
                 name='sdk test',
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
@@ -99,7 +99,7 @@ class UsageAutomationTester(UsageAutomation):
         elif request.contract.id == 'CRD-99082-45842-69183':
             pass
         elif request.contract.id == 'CRD-99082-45842-69184':
-            usage_file = File(
+            usage_file = UsageFile(
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
             )

@@ -68,7 +68,7 @@ class ContactInfo(BaseModel):
     """ (str) Street address, first line. """
 
     address_line2 = None  # type: Optional[str]
-    """ (str|Null) Street address, second line. """
+    """ (str|None) Street address, second line. """
 
     country = None  # type: str
     """ (str) Country code. """

@@ -28,8 +28,8 @@ from .server_error_response import ServerErrorResponse, ServerErrorResponseSchem
 from .tier_config import Account, AccountSchema, Template, TemplateSchema, TierConfig, \
     TierConfigRequest, TierConfigRequestSchema, TierConfigSchema
 from .tiers import Tier, Tiers, TierSchema, TiersSchema
-from .usage import File, FileSchema, FileUsageRecord, FileUsageRecordSchema, \
-    Listing, ListingSchema, Records, RecordsSchema
+from .usage import UsageFile, UsageFileSchema, FileUsageRecord, FileUsageRecordSchema, \
+    UsageListing, UsageListingSchema, UsageRecords, UsageRecordsSchema
 
 __all__ = [
     'AcceptUsageFile',
@@ -72,10 +72,10 @@ __all__ = [
     'Events',
     'EventsSchema',
     'FailRequest',
-    'File',
+    'UsageFile',
     'FileCreationError',
     'FileRetrievalError',
-    'FileSchema',
+    'UsageFileSchema',
     'FileUsageRecord',
     'FileUsageRecordSchema',
     'Fulfillment',
@@ -93,8 +93,8 @@ __all__ = [
     'InquireRequest',
     'Item',
     'ItemSchema',
-    'Listing',
-    'ListingSchema',
+    'UsageListing',
+    'UsageListingSchema',
     'Marketplace',
     'MarketplaceSchema',
     'Message',
@@ -106,8 +106,8 @@ __all__ = [
     'ProductConfiguration',
     'ProductConfigurationSchema',
     'ProductSchema',
-    'Records',
-    'RecordsSchema',
+    'UsageRecords',
+    'UsageRecordsSchema',
     'RejectUsageFile',
     'Renewal',
     'RenewalSchema',

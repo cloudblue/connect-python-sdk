@@ -8,17 +8,17 @@ from abc import ABCMeta
 from connect.logger import logger
 from connect.models.base import BaseModel
 from connect.models.exception import UsageFileAction, SkipRequest
-from connect.models.usage import FileSchema, File
+from connect.models.usage import UsageFileSchema, UsageFile
 from .automation_engine import AutomationEngine
 
 
 class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=True)
+    schema = UsageFileSchema(many=True)
 
     def dispatch(self, request):
-        # type: (File) -> str
+        # type: (UsageFile) -> str
         try:
             # Validate product
             if self.config.products \
