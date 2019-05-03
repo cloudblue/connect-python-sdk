@@ -10,9 +10,16 @@ from .base import BaseModel
 
 
 class ServerErrorResponse(BaseModel):
+    """ Server response when an error occurs. """
+
     error_code = None  # type: str
+    """ (str) Error code. """
+
     params = None  # type: dict
+    """ (dict) Error params. """
+
     errors = None  # type: List[str]
+    """ (List[str]) List of errors. """
 
     def __str__(self):
         return str({

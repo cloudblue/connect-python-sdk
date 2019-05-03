@@ -10,8 +10,13 @@ from .base import BaseModel, BaseSchema
 
 
 class ValueChoice(BaseModel):
+    """ A value choice for a parameter. """
+
     value = None  # type: str
+    """ (str) Value. """
+
     label = None  # type: str
+    """ (str) Label. """
 
 
 class ValueChoiceSchema(Schema):
@@ -24,9 +29,16 @@ class ValueChoiceSchema(Schema):
 
 
 class Constraints(BaseModel):
+    """ Parameter constraints. """
+
     hidden = None  # type: bool
+    """ (bool) Is the parameter hidden? """
+
     required = None  # type: bool
+    """ (bool) Is the parameter required? """
+
     choices = None  # type: List[ValueChoice]
+    """ (List[:py:class:`.ValueChoice`]) Parameter value choices. """
 
 
 class ConstraintsSchema(BaseSchema):
@@ -40,17 +52,35 @@ class ConstraintsSchema(BaseSchema):
 
 
 class Param(BaseModel):
+    """ Parameters are used in product and asset definitions. """
+
     name = None  # type: str
+    """ (str) Name of parameter. """
+
     description = None  # type: str
+    """ (str) Description of parameter. """
+
     type = None  # type: str
+    """ (str) Type of parameter. """
+
     value = None  # type: str
+    """ (str) Value of parameter. """
+
     value_error = None  # type: Optional[str]
+    """ (str|None) Error indicated for parameter. """
+
     value_choice = None  # type: Optional[List[str]]
+    """ (List[str]|None) Available choices for parameter. """
 
     # Undocumented fields (they appear in PHP SDK)
     title = None  # type: Optional[str]
+    """ (str|None) Title for parameter. """
+
     scope = None  # type: Optional[str]
+    """ (str|None) Scope of parameter. """
+
     constraints = None  # type: Optional[Constraints]
+    """ (:py:class:`.Constraints` | None) Parameter constraints. """
 
 
 class ParamSchema(BaseSchema):

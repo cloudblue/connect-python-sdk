@@ -15,7 +15,7 @@ from .exception import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, FailReq
     FileCreationError, FileRetrievalError, FulfillmentFail, FulfillmentInquire, InquireRequest, \
     Message, RejectUsageFile, ServerError, SkipRequest, Skip, SubmitUsageFile, UsageFileAction
 from .fulfillment import Fulfillment, FulfillmentSchema
-from .hub import Hub, HubInstance, HubInstanceSchema, Hubs, HubSchema, HubsSchema, HubStats, \
+from .hub import Hub, HubInstance, HubInstanceSchema, ExtIdHub, HubSchema, ExtIdHubSchema, HubStats, \
     HubStatsSchema
 from .marketplace import Activation, ActivationSchema, Agreement, AgreementSchema, AgreementStats,\
     AgreementStatsSchema, Contract, ContractSchema, Marketplace, MarketplaceSchema
@@ -85,9 +85,9 @@ __all__ = [
     'Hub',
     'HubInstance',
     'HubInstanceSchema',
-    'Hubs',
+    'ExtIdHub',
     'HubSchema',
-    'HubsSchema',
+    'ExtIdHubSchema',
     'HubStats',
     'HubStatsSchema',
     'InquireRequest',

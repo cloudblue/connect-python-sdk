@@ -3,7 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict
 
 from .parameters import Param
 from .server_error_response import ServerErrorResponse
@@ -49,31 +49,49 @@ class FailRequest(Message):
 
 
 class InquireRequest(Message):
+    """ Causes the request being processed to inquire for some information.
+
+    :param str message: Exception message.
+    :param List[Param] params: Parameters to inquire.
+    """
+
     params = None  # type: List[Param]
+    """ (List[:py:class:`.Param`]) Parameters to inquire. """
 
     def __init__(self, message='', params=None):
-        # type: (str, List[Param]) -> None
         super(InquireRequest, self).__init__(message or 'Correct user input required', 'inquire')
         self.params = params or []
 
 
 class SkipRequest(Message):
+    """ Causes the request being processed to be skipped.
+
+    :param str message: Exception message.
+    """
+
     def __init__(self, message=''):
-        # type: (str) -> None
         super(SkipRequest, self).__init__(message or 'Request skipped', 'skip')
 
 
 class ServerError(Exception):
-    message = 'Server error'  # type: str
+    """ Indicates that the server returned an error.
+
+    :param ServerErrorResponse error: Response returned by the server.
+    """
 
     def __init__(self, error):
-        # type: (ServerErrorResponse) -> None
         super(ServerError, self).__init__(str(error), error.error_code)
 
 
 class UsageFileAction(Message):
+    """ Base exception for Usage API actions.
+
+    :param str message: Exception message.
+    :param str code: Exception code.
+    :param Dict[str, Any]|None data: Additional information.
+    """
+
     def __init__(self, message, code, data=None):
-        # type: (str, str, Optional[Dict[str, Any]]) -> None
         super(UsageFileAction, self).__init__(message, code, data)
 
 

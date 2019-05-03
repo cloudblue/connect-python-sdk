@@ -16,18 +16,27 @@ from .tiers import Tiers, TiersSchema
 class Asset(BaseModel):
     """ Represents a saleable item that can be provided/distributed in terms of one purchase.
 
-    These assets can be requests using ``FulfillmentAutomation`` resource.
+    These assets can be requested using :py:class:`connect.resource.FulfillmentAutomation`
+    resource.
 
     An asset is characterized by the following:
 
     - Every asset reflects some purchase (somebody purchases either a service or a good).
-    - Purchase action can be reverted (canceled) or terminated when terms of purchase are expired, see full state diagram on FIG.5
-    - Asset can be subscription-based (when customer pay for usage in some time terms) or one-time based
-    - Matter of asset is defined as list of purchased items with purchased quantities (asset items).
-    - Item in asset may be either reservation-based, when customer decides how much items of SKU to be purchased or Pay-Per-User based when actual use of the SKU defines quantity for asset item
-    - Asset may be modified using change requests: either set of items may be changed or quantities of reservation-based items may be changed.
-    - Some assets can be put into suspend state, when service is not actually provided and no charges happened.
-    - Assets also may be parametrized by one or more parameters which are differentiate one asset from another.
+    - Purchase action can be reverted (canceled) or terminated when terms of purchase are expired,
+      see full state diagram on FIG.5
+    - Asset can be subscription-based (when customer pay for usage in some time terms) or
+      one-time based.
+    - Matter of asset is defined as list of purchased items with purchased quantities
+      (asset items).
+    - Item in asset may be either reservation-based, when customer decides how many items of SKU
+      to be purchased or Pay-Per-User based when actual use of the SKU defines quantity for
+      asset item.
+    - Asset may be modified using change requests: either set of items may be changed or quantities
+      of reservation-based items may be changed.
+    - Some assets can be put into suspend state, when service is not actually provided
+      and no charges happened.
+    - Assets also may be parametrized by one or more parameters which are differentiate
+      one asset from another.
     """
 
     status = None  # type: str
