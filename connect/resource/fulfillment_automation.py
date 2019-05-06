@@ -26,6 +26,8 @@ class FulfillmentAutomation(AutomationEngine):
     - :py:class:`connect.models.InquireRequest`: Inquire for more information.
     - :py:class:`connect.models.FailRequest`: Causes the request to fail.
     - :py:class:`connect.models.SkipRequest`: Skips processing the request.
+
+    Create an instance of your subclass and call its ``process`` method to begin processing.
     """
 
     __metaclass__ = ABCMeta
