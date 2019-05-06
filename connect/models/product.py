@@ -29,7 +29,7 @@ class Item(BaseModel):
     global_id = None  # type: str
     mpn = None  # type: str
     old_quantity = None  # type: int
-    quantity = None  # type: Union[int, str]
+    quantity = None  # type: Union[int, None]
 
 
 class ItemSchema(BaseSchema):
@@ -45,4 +45,6 @@ class ItemSchema(BaseSchema):
             quantity = data['quantity']
             if quantity.isdigit() or (quantity.startswith('-') and quantity[1:].isdigit()):
                 data['quantity'] = int(quantity)
+            else:
+                data['quantity'] = None
         return Item(**data)
