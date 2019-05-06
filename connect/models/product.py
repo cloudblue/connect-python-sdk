@@ -4,7 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from marshmallow import fields, post_load
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from .base import BaseModel, BaseSchema
 
@@ -174,10 +174,10 @@ class Item(BaseModel):
     mpn = None  # type: str
     """ (str) Item manufacture part number. """
 
-    quantity = None  # type: Union[int, None]
+    quantity = None  # type: Optional[int]
     """ (int|None) Number of items of the type in the asset, or ``None`` if unlimited """
 
-    old_quantity = None  # type: Union[int, None]
+    old_quantity = None  # type: Optional[int]
     """ (int|None) Previous value of quantity. """
 
     renewal = None  # type: Optional[Renewal]
