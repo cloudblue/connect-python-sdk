@@ -88,7 +88,7 @@ class UsageFileAction(Message):
 
     :param str message: Exception message.
     :param str code: Exception code.
-    :param Dict[str, Any]|None data: Additional information.
+    :param Optional[Dict[str,Any]] data: Additional information.
     """
 
     def __init__(self, message, code, data=None):
