@@ -177,7 +177,7 @@ class Item(BaseModel):
     quantity = None  # type: Union[int, None]
     """ (int|None) Number of items of the type in the asset, or ``None`` if unlimited """
 
-    old_quantity = None  # type: Optional[int]
+    old_quantity = None  # type: Union[int, None]
     """ (int|None) Previous value of quantity. """
 
     renewal = None  # type: Optional[Renewal]
@@ -192,17 +192,18 @@ class Item(BaseModel):
 class ItemSchema(BaseSchema):
     mpn = fields.Str()
     quantity = fields.Str()
-    old_quantity = fields.Integer(allow_none=True)
+    old_quantity = fields.Str(allow_none=True)
     renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
 
     @post_load
     def make_object(self, data):
-        # If quantity string contains a number, convert to int
-        if 'quantity' in data:
-            quantity = data['quantity']
-            if quantity.isdigit() or (quantity.startswith('-') and quantity[1:].isdigit()):
-                data['quantity'] = int(quantity)
-            else:
-                data['quantity'] = None
+        params = ('quantity', 'old_quantity')
+        for param in params:
+            if param in data:
+                value = data[param]
+                if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
+                    data[param] = int(value)
+                else:
+                    data[param] = None
         return Item(**data)
