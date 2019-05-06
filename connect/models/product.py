@@ -115,7 +115,7 @@ class RenewalSchema(BaseSchema):
 
 class Item(BaseModel):
     mpn = None  # type: str
-    quantity = None  # type: Union[int, str]
+    quantity = None  # type: Union[int, None]
     old_quantity = None  # type: Optional[int]
     renewal = None  # type: Optional[Renewal]
     global_id = None  # type: str
@@ -135,4 +135,6 @@ class ItemSchema(BaseSchema):
             quantity = data['quantity']
             if quantity.isdigit() or (quantity.startswith('-') and quantity[1:].isdigit()):
                 data['quantity'] = int(quantity)
+            else:
+                data['quantity'] = None
         return Item(**data)
