@@ -12,7 +12,7 @@ from .template import TemplateResource
 
 
 class AutomationEngine(BaseResource):
-    limit = 1000
+    limit = 1000  # type: int
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]

@@ -10,10 +10,8 @@ from .base import BaseResource
 
 
 class TemplateResource(BaseResource):
-    """ Specific resource.
-    One method `render`
-    He returns json string with activation tile
-    """
+    """ Template Resource. """
+
     resource = 'templates'
 
     def list(self, filters=None):
@@ -21,12 +19,23 @@ class TemplateResource(BaseResource):
         raise AttributeError('This resource do not have method `list`')
 
     def render(self, pk, request_id):
-        # type: (str, str) -> ActivationTileResponse
+        """ Get an activation tile.
+
+        :param str pk: Primary key of the template to obtain.
+        :param str request_id: Id of the associated request.
+        :return: ActivationTileResponse object with tile contents.
+        :rtype: ActivationTileResponse
+        """
         if not all([pk, request_id]):
             raise ValueError('Invalid ids for render template')
         response, _ = self._api.get(path=pk + '/render', params={'request_id': request_id})
         return ActivationTileResponse(response)
 
     def get(self, pk):
-        # type: (str) -> ActivationTemplateResponse
+        """ Get an activation template.
+
+        :param str pk: Primary key of the template to obtain.
+        :return: ActivationTemplateResponse object with template contents.
+        :rtype: ActivationTemplateResponse
+        """
         return ActivationTemplateResponse(template_id=pk)
