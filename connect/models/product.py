@@ -174,8 +174,8 @@ class Item(BaseModel):
     mpn = None  # type: str
     """ (str) Item manufacture part number. """
 
-    quantity = None  # type: Union[int, str]
-    """ (int|str) Number of items of the type in the asset, or 'unlimited' """
+    quantity = None  # type: Union[int, None]
+    """ (int|None) Number of items of the type in the asset, or ``None`` if unlimited """
 
     old_quantity = None  # type: Optional[int]
     """ (int|None) Previous value of quantity. """
@@ -203,4 +203,6 @@ class ItemSchema(BaseSchema):
             quantity = data['quantity']
             if quantity.isdigit() or (quantity.startswith('-') and quantity[1:].isdigit()):
                 data['quantity'] = int(quantity)
+            else:
+                data['quantity'] = None
         return Item(**data)
