@@ -36,8 +36,8 @@ class MigrationHandler(object):
       in the migration data on direct assignation flow. Default value is ``False``.
     """
 
-    def __init__(self, transformations, migration_key='migration_info', serialize=False):
-        self._transformations = transformations
+    def __init__(self, transformations=None, migration_key='migration_info', serialize=False):
+        self._transformations = transformations or {}
         self._migration_key = migration_key
         self._serialize = serialize
 
