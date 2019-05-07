@@ -3,7 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from typing import List, Dict
+from typing import List
 
 from .parameters import Param
 from .server_error_response import ServerErrorResponse

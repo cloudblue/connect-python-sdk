@@ -5,12 +5,11 @@
 
 from abc import ABCMeta
 
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
 
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
-    InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, \
-    TierConfig, TierConfigRequestSchema
+    InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, TierConfigRequestSchema
 from .automation_engine import AutomationEngine
 
 
