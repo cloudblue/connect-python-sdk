@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import fields, post_load
-from typing import Union
+from typing import Optional
 
 from .base import BaseModel, BaseSchema
 
@@ -28,8 +28,8 @@ class ProductSchema(BaseSchema):
 class Item(BaseModel):
     global_id = None  # type: str
     mpn = None  # type: str
-    old_quantity = None  # type: Union[int, None]
-    quantity = None  # type: Union[int, None]
+    old_quantity = None  # type: Optional[int]
+    quantity = None  # type: Optional[int]
 
 
 class ItemSchema(BaseSchema):
@@ -43,9 +43,8 @@ class ItemSchema(BaseSchema):
         params = ('quantity', 'old_quantity')
         for param in params:
             if param in data:
-                value = data[param]
-                if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
-                    data[param] = int(value)
+                if data[param] != 'unlimited':
+                    data[param] = int(data[param])
                 else:
                     data[param] = None
         return Item(**data)
