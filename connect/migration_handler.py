@@ -23,9 +23,9 @@ class MigrationParamError(Exception):
 
 
 class MigrationHandler(object):
-    def __init__(self, transformations, migration_key='migration_info', serialize=False):
+    def __init__(self, transformations=None, migration_key='migration_info', serialize=False):
         # type: (Dict[str, callable], str, bool) -> None
-        self._transformations = transformations
+        self._transformations = transformations or {}
         self._migration_key = migration_key
         self._serialize = serialize
 
