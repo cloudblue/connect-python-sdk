@@ -22,8 +22,21 @@ class MigrationParamError(Exception):
 
 
 class MigrationHandler(object):
+    """ This class helps migrating data from a legacy service into Connect.
+
+    :param Dict[str,callable] transformations: Contains the param id as keys, and the function that
+      produces the value of the parameter. This function will receive two arguments:
+
+      - **transform_data** (Dict[str, Any]): Contains the entire transformation information as a
+        JSON object, parsed from the param with ``migration_key`` id.
+      - **request_id** (str): The id of the request being processed.
+    :param str migration_key: The name of the Connect parameter that stores the legacy data
+      in json format. Default value is ``migration_info``.
+    :param bool serialize: If ``True``, it will automatically serialize any non-string value
+      in the migration data on direct assignation flow. Default value is ``False``.
+    """
+
     def __init__(self, transformations, migration_key='migration_info', serialize=False):
-        # type: (Dict[str, callable], str, bool) -> None
         self._transformations = transformations
         self._migration_key = migration_key
         self._serialize = serialize
@@ -73,7 +86,7 @@ class MigrationHandler(object):
                           if param.id != self.migration_key]
 
                 for param in params:
-                    # Try to process the param and report success or fail
+                    # Try to process the param and report success or failure
                     try:
                         if param.id in self.transformations:
                             # Transformation is defined, so apply it
