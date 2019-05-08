@@ -103,8 +103,8 @@ class Renewal(BaseModel):
 
 
 class RenewalSchema(BaseSchema):
-    from_ = fields.Str(attribute='from')
-    to = fields.Str()
+    from_ = fields.DateTime(attribute='from')
+    to = fields.DateTime()
     period_delta = fields.Int()
     period_uom = fields.Str()
 
