@@ -5,8 +5,6 @@
 
 from abc import ABCMeta
 
-from typing import Dict, List
-
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
     InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, TierConfigRequestSchema
@@ -36,9 +34,9 @@ class FulfillmentAutomation(AutomationEngine):
     def filters(self, status='pending', **kwargs):
         """
         :param str status: Status of the requests. Default: ``'pending'``.
-        :param Dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
         :return: The set of filters for this resource.
-        :rtype: Dict[str,Any]
+        :rtype: dict[str,Any]
         """
         filters = super(FulfillmentAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
@@ -103,7 +101,7 @@ class FulfillmentAutomation(AutomationEngine):
         """ Sends a list of Param objects to Connect for updating.
 
         :param str pk: Id of the request.
-        :param List[Param] params: List of parameters to update.
+        :param list[Param] params: List of parameters to update.
         :return: The server response.
         :rtype: str
         """

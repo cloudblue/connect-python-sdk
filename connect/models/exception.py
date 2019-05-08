@@ -6,7 +6,6 @@
 from typing import List
 
 from .parameters import Param
-from .server_error_response import ServerErrorResponse
 
 
 class Message(Exception):
@@ -24,7 +23,6 @@ class Message(Exception):
     """ (str) Additional information. """
 
     def __init__(self, message='', code='', obj=None):
-        # type: (str, str, object) -> None
         super(Message, self).__init__(message)
         self.code = code
         self.obj = obj

@@ -6,15 +6,13 @@
 import json
 import os
 
-from typing import List
-
 
 class Config(object):
     """ Initialization config for public api.
 
     :param str api_url: Public api url.
     :param str api_key: Service user ApiKey.
-    :param str|List[str] products: Optional product ids.
+    :param str|list[str] products: Optional product ids.
     :param str file: Config file name.
     """
 
@@ -95,6 +93,6 @@ class Config(object):
     def products(self):
         """
         :return: Valid product ids.
-        :rtype: List[str]
+        :rtype: list[str]
         """
         return self._products

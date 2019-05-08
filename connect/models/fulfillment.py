@@ -11,7 +11,9 @@ from .marketplace import Contract, ContractSchema, Marketplace, MarketplaceSchem
 
 
 class Fulfillment(BaseModel):
-    """ Represents a request for the :py:class:`connect.resource.FulfillmentAutomation` resource. """
+    """ Represents a request for the :py:class:`connect.resource.FulfillmentAutomation`
+    resource.
+    """
 
     type = None  # type: str
     """ (str) Asset status. See :py:class:`.Asset` class for details. """

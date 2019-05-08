@@ -5,8 +5,6 @@
 
 from abc import ABCMeta
 
-from typing import List
-
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
     InquireRequest, SkipRequest, TierConfigRequest, TierConfigRequestSchema
@@ -73,7 +71,7 @@ class TierConfigAutomation(AutomationEngine):
         """ Sends a list of Param objects to Connect for updating.
 
         :param str pk: Id of the request.
-        :param List[Param] params: List of parameters to update.
+        :param list[Param] params: List of parameters to update.
         :return: The server response.
         :rtype: str
         """

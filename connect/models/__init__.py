@@ -15,8 +15,8 @@ from .exception import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, FailReq
     FileCreationError, FileRetrievalError, FulfillmentFail, FulfillmentInquire, InquireRequest, \
     Message, RejectUsageFile, ServerError, SkipRequest, Skip, SubmitUsageFile, UsageFileAction
 from .fulfillment import Fulfillment, FulfillmentSchema
-from .hub import Hub, HubInstance, HubInstanceSchema, ExtIdHub, HubSchema, ExtIdHubSchema, HubStats, \
-    HubStatsSchema
+from .hub import Hub, HubInstance, HubInstanceSchema, ExtIdHub, HubSchema, ExtIdHubSchema, \
+    HubStats, HubStatsSchema
 from .marketplace import Activation, ActivationSchema, Agreement, AgreementSchema, AgreementStats,\
     AgreementStatsSchema, Contract, ContractSchema, Marketplace, MarketplaceSchema
 from .parameters import Constraints, ConstraintsSchema, Param, ParamSchema, ValueChoice, \
@@ -71,11 +71,11 @@ __all__ = [
     'EventInfoSchema',
     'Events',
     'EventsSchema',
+    'ExtIdHub',
+    'ExtIdHubSchema',
     'FailRequest',
-    'UsageFile',
     'FileCreationError',
     'FileRetrievalError',
-    'UsageFileSchema',
     'FileUsageRecord',
     'FileUsageRecordSchema',
     'Fulfillment',
@@ -85,16 +85,12 @@ __all__ = [
     'Hub',
     'HubInstance',
     'HubInstanceSchema',
-    'ExtIdHub',
     'HubSchema',
-    'ExtIdHubSchema',
     'HubStats',
     'HubStatsSchema',
     'InquireRequest',
     'Item',
     'ItemSchema',
-    'UsageListing',
-    'UsageListingSchema',
     'Marketplace',
     'MarketplaceSchema',
     'Message',
@@ -106,8 +102,6 @@ __all__ = [
     'ProductConfiguration',
     'ProductConfigurationSchema',
     'ProductSchema',
-    'UsageRecords',
-    'UsageRecordsSchema',
     'RejectUsageFile',
     'Renewal',
     'RenewalSchema',
@@ -127,7 +121,13 @@ __all__ = [
     'Tiers',
     'TierSchema',
     'TiersSchema',
+    'UsageFile',
     'UsageFileAction',
+    'UsageFileSchema',
+    'UsageListing',
+    'UsageListingSchema',
+    'UsageRecords',
+    'UsageRecordsSchema',
     'ValueChoice',
     'ValueChoiceSchema',
 ]

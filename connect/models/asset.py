@@ -41,7 +41,7 @@ class Asset(BaseModel):
 
     status = None  # type: str
     """ Assets may have one of the following statuses:
-    
+
     - new: First purchase requested.
     - processing: Until first purchase request is either completed or rejected.
     - active: After the first purchase request is completed.

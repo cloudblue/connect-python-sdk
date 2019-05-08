@@ -12,8 +12,8 @@ import requests
 from typing import Dict, Any, List, Optional
 
 from connect.logger import logger
-from connect.models import FileCreationError, FileRetrievalError, Product, UsageFileSchema, UsageListing, \
-    UsageFile, FileUsageRecord
+from connect.models import FileCreationError, FileRetrievalError, Product, \
+    UsageFileSchema, UsageListing, UsageFile, FileUsageRecord
 from .automation_engine import AutomationEngine
 
 

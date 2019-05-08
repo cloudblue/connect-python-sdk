@@ -35,7 +35,9 @@ class Marketplace(BaseModel):
     """ (:py:class:`.Company`) Provider account - the object owner. """
 
     hubs = None  # type: List[ExtIdHub]
-    """ (List[:py:class:`.ExtIdHub`]) List of account-hub relations associated with the Marketplace object. """
+    """ (List[:py:class:`.ExtIdHub`]) List of account-hub relations associated
+    with the Marketplace object.
+    """
 
     zone = None  # type: str
     """ (str) Zone where the marketplace is located, there can be following zones:
@@ -226,7 +228,9 @@ class Contract(BaseModel):
     """ (:py:class:`.Activation`) Activation information. """
 
     signee = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) Reference object to the user of the owner company, who signed the contract. """
+    """ (:py:class:`.Company` | None) Reference object to the user of the owner company,
+    who signed the contract.
+    """
 
 
 class ContractSchema(BaseSchema):
