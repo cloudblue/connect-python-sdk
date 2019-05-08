@@ -21,7 +21,7 @@ class EventInfo(BaseModel):
 
 
 class EventInfoSchema(BaseSchema):
-    at = fields.Str(allow_none=True)
+    at = fields.DateTime(allow_none=True)
     by = fields.Nested(CompanySchema, allow_none=True)
 
     @post_load
