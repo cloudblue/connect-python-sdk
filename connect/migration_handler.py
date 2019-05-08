@@ -3,11 +3,38 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+""" This module provides the :py:class:`.MigrationHandler` class, which helps migrating data
+from a legacy service into Connect.
+
+We can use an instance of this class into our request processor, like this: ::
+
+    class ProductFulfillment(FulfillmentAutomation):
+        def __init__(self):
+            self.migration_handler = MigrationHandler({
+                'email': lambda data, request_id: data['teamAdminEmail'].upper(),
+                'team_id': lambda data, request_id: data['teamId'].upper(),
+                'team_name': lambda data, request_id: data['teamName'].upper(),
+                'num_licensed_users': lambda data, request_id: int(data['licNumber']) * 10
+            })
+
+        def process_request(request):
+            if request.type == 'purchase':
+                request = self.migration_handler.migrate()
+
+                # The migrate() method returns a new request object with
+                # the parameter values updated, we must update the parameters
+                # and approve the fulfillment
+
+                self.update_parameters(request.id, request.asset.params)
+                return ActivationTileResponse('The data has been migrated :)')
+
+"""
+
 import copy
 import json
 
 import six
-from typing import Dict, List
+from typing import List
 
 from connect.logger import logger
 from connect.models import Fulfillment, SkipRequest
@@ -24,10 +51,10 @@ class MigrationParamError(Exception):
 class MigrationHandler(object):
     """ This class helps migrating data from a legacy service into Connect.
 
-    :param Dict[str,callable] transformations: Contains the param id as keys, and the function that
+    :param dict[str,callable] transformations: Contains the param id as keys, and the function that
       produces the value of the parameter. This function will receive two arguments:
 
-      - **transform_data** (Dict[str, Any]): Contains the entire transformation information as a
+      - **transform_data** (dict[str, Any]): Contains the entire transformation information as a
         JSON object, parsed from the param with ``migration_key`` id.
       - **request_id** (str): The id of the request being processed.
     :param str migration_key: The name of the Connect parameter that stores the legacy data
@@ -43,21 +70,36 @@ class MigrationHandler(object):
 
     @property
     def transformations(self):
-        # type: () -> Dict[str, callable]
+        """
+        :return: The transformations defined for the handler.
+        :rtype: dict[str, callable]
+        """
         return self._transformations
 
     @property
     def migration_key(self):
-        # type: () -> str
+        """
+        :return: The id of the parameter that contains the migration data.
+        :rtype: str
+        """
         return self._migration_key
 
     @property
     def serialize(self):
-        # type: () -> bool
+        """
+        :return: Whether the migration data is serialized automatically when it does not have
+          a transformation function and the data is not a string.
+        :rtype: bool
+        """
         return self._serialize
 
     def migrate(self, request):
-        # type: (Fulfillment) -> Fulfillment
+        """ Call this function to perform migration of one request.
+
+        :param Fulfillment request: The request to migrate.
+        :return: A new request object with the parameter values updated.
+        :rtype: Fulfillment
+        """
         if self._needs_migration(request):
             logger.info('[MIGRATION::{}] Running migration operations for request {}'
                         .format(request.id, request.id))
