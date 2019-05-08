@@ -201,9 +201,8 @@ class ItemSchema(BaseSchema):
         params = ('quantity', 'old_quantity')
         for param in params:
             if param in data:
-                value = data[param]
-                if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
-                    data[param] = int(value)
+                if data[param] != 'unlimited':
+                    data[param] = int(data[param])
                 else:
                     data[param] = None
         return Item(**data)
