@@ -19,7 +19,7 @@ We can use an instance of this class into our request processor, like this: ::
 
         def process_request(request):
             if request.type == 'purchase':
-                request = self.migration_handler.migrate()
+                request = self.migration_handler.migrate(request)
 
                 # The migrate() method returns a new request object with
                 # the parameter values updated, we must update the parameters
