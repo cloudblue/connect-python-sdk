@@ -1,7 +1,10 @@
-Example
-*******
+Examples
+********
 
-::
+Fulfillment processing
+======================
+
+ ::
 
     from connect.logger import logger
     from connect.models import ActivationTileResponse, FailRequest, InquireRequest, SkipRequest
