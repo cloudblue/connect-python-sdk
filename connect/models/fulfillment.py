@@ -2,6 +2,7 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+import datetime
 
 from marshmallow import fields, post_load
 
@@ -18,11 +19,11 @@ class Fulfillment(BaseModel):
     type = None  # type: str
     """ (str) Asset status. See :py:class:`.Asset` class for details. """
 
-    created = None  # type: str
-    """ (str) Date of request creation. """
+    created = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of request creation. """
 
-    updated = None  # type: str
-    """ (str) Date of last request modification. """
+    updated = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of last request modification. """
 
     status = None  # type: str
     """ (str) Status of request. One of:

@@ -2,9 +2,10 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+import datetime
+from typing import Optional
 
 from marshmallow import fields, post_load
-from typing import Optional
 
 from .base import BaseModel, BaseSchema
 from .company import CompanySchema, Company
@@ -13,8 +14,8 @@ from .company import CompanySchema, Company
 class EventInfo(BaseModel):
     """ Represents the date and user that caused an event. """
 
-    at = None  # type: Optional[str]
-    """ (str|None) Date when the event occurred. """
+    at = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Date when the event occurred. """
 
     by = None  # type: Optional[Company]
     """ (:py:class:`.Company`) User that caused the event. """

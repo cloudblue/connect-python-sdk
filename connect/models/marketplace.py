@@ -2,9 +2,10 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+import datetime
+from typing import Optional, List
 
 from marshmallow import fields, post_load
-from typing import Optional, List
 
 from .base import BaseModel, BaseSchema
 from .company import Company, CompanySchema
@@ -89,12 +90,12 @@ class Agreement(BaseModel):
     description = None  # type: str
     """ (str) Agreement details (Markdown). """
 
-    created = None  # type: str
-    """ (str) Date of creation of the agreement. """
+    created = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of creation of the agreement. """
 
-    updated = None  # type: str
-    """ (str) Date of the update of the agreement. It can be creation of the new version,
-    change of the field, etc. (any change).
+    updated = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of the update of the agreement. It can be creation
+    of the new version, change of the field, etc. (any change).
     """
 
     owner = None  # type: Company
@@ -115,8 +116,8 @@ class Agreement(BaseModel):
     link = None  # type: str
     """ (str) Url to the document. """
 
-    version_created = None  # type: str
-    """ (str) Date of the creation of the version. """
+    version_created = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of the creation of the version. """
 
     version_contracts = None  # type: int
     """ (int) Number of contracts this version has. """
@@ -169,8 +170,8 @@ class Activation(BaseModel):
     message = None  # type: str
     """ (str) Activation message. """
 
-    date = None  # type: Optional[str]
-    """ (str|None) Activation date. """
+    date = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Activation date. """
 
 
 class ActivationSchema(BaseSchema):
@@ -212,17 +213,17 @@ class Contract(BaseModel):
     creator = None  # type: Company
     """ (:py:class:`.Company`) Reference object to the creator company. """
 
-    created = None  # type: str
-    """ (str) Contract creation date. """
+    created = None  # type: datetime.datetime
+    """ (datetime.datetime) Contract creation date. """
 
-    updated = None  # type: str
-    """ (str) Date of contract status update. """
+    updated = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of contract status update. """
 
-    enrolled = None  # type: Optional[str]
-    """ (str|None) Date when contract was enrolled. """
+    enrolled = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Date when contract was enrolled. """
 
-    version_created = None  # type: str
-    """ (str) Contract version creation date. """
+    version_created = None  # type: datetime.datetime
+    """ (datetime.datetime) Contract version creation date. """
 
     activation = None  # type: Activation
     """ (:py:class:`.Activation`) Activation information. """
@@ -244,7 +245,7 @@ class ContractSchema(BaseSchema):
     creator = fields.Nested(CompanySchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
-    enrolled = fields.Str(allow_none=True)
+    enrolled = fields.DateTime(allow_none=True)
     version_created = fields.DateTime()
     activation = fields.Nested(ActivationSchema)
     signee = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)

@@ -2,9 +2,10 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+import datetime
+from typing import List, Optional
 
 from marshmallow import fields, post_load
-from typing import List, Optional
 
 from .base import BaseModel, BaseSchema
 
@@ -144,11 +145,11 @@ class ProductSchema(BaseSchema):
 class Renewal(BaseModel):
     """ Item renewal data. """
 
-    from_ = None  # type: str
-    """ (str) Date of renewal beginning. """
+    from_ = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of renewal beginning. """
 
-    to = None  # type: str
-    """ (str) Date of renewal end. """
+    to = None  # type: datetime.datetime
+    """ (datetime.datetime) Date of renewal end. """
 
     period_delta = None  # type: int
     """ (int) Size of renewal period. """
