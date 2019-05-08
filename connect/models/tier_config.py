@@ -143,13 +143,15 @@ class TierConfigRequest(BaseModel):
     """ (:py:class:`.Template` | None) Template Object. This is filled only if TCR is approved. """
 
     reason = None  # type: Optional[str]
-    """ (str\None) Failing reason. This is filled only if TCR is failed. """
+    """ (str|None) Failing reason. This is filled only if TCR is failed. """
 
     activation = None  # type: Optional[Activation]
     """ (:py:class:`.Activation` | None) Activation object. This is created only if TCR
     has ordering parameters and seen in inquiring state of the TCR.
     """
+
     notes = None  # type: Optional[str]
+    """ (str) TCR pending notes. Notes can be modified only in Pending state. """
 
     def get_param_by_id(self, id_):
         """ Get a Tier Config Request parameter.
