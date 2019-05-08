@@ -11,8 +11,9 @@ from datetime import date, timedelta
 import pytest
 from mock import patch, MagicMock, call
 
-from connect.models import FileRetrievalError, Contract, Product, File, FileUsageRecord
-from connect.resource import UsageAutomation
+from connect.exceptions import FileRetrievalError
+from connect.models import Contract, Product, File, FileUsageRecord
+from connect.resources import UsageAutomation
 from .common import Response, load_str
 
 

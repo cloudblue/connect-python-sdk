@@ -7,10 +7,11 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from typing import Union
 
 from connect.config import Config
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, FailRequest, \
-    InquireRequest, SkipRequest, Fulfillment, TierConfigRequest
-from connect.resource import FulfillmentAutomation, TierConfigAutomation
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, \
+    Fulfillment, TierConfigRequest
+from connect.resources import FulfillmentAutomation, TierConfigAutomation
 
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")

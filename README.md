@@ -37,9 +37,10 @@ $ pip install connect-sdk
 
 ### Example
 ```python
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger
-from connect.models import ActivationTileResponse, FailRequest, InquireRequest, SkipRequest
-from connect.resource import FulfillmentAutomation, TierConfigAutomation
+from connect.models import ActivationTileResponse
+from connect.resources import FulfillmentAutomation, TierConfigAutomation
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):

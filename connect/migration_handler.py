@@ -10,16 +10,9 @@ import json
 import six
 from typing import Dict, List
 
+from connect.exceptions import MigrationAbortError, MigrationParamError, SkipRequest
 from connect.logger import logger
-from connect.models import Fulfillment, SkipRequest
-
-
-class MigrationAbortError(Exception):
-    pass
-
-
-class MigrationParamError(Exception):
-    pass
+from connect.models import Fulfillment
 
 
 class MigrationHandler(object):

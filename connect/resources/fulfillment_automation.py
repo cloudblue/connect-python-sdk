@@ -8,10 +8,10 @@ from abc import ABCMeta
 
 from typing import Any, Dict, List, Optional
 
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
-    InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, \
-    TierConfig, TierConfigRequestSchema
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
+    Fulfillment, FulfillmentSchema, TierConfig, TierConfigRequestSchema
 from .automation_engine import AutomationEngine
 
 

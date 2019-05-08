@@ -12,9 +12,9 @@ import openpyxl
 import requests
 from typing import Dict, Any, List, Optional
 
+from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models import FileCreationError, FileRetrievalError, Product, FileSchema, Listing, \
-    File, FileUsageRecord
+from connect.models import Product, FileSchema, Listing, File, FileUsageRecord
 from .automation_engine import AutomationEngine
 
 

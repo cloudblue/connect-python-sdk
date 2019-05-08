@@ -9,9 +9,10 @@ import os
 import pytest
 from mock import patch, MagicMock
 
-from connect.models import Company, SkipRequest, AcceptUsageFile, CloseUsageFile, DeleteUsageFile, \
-    RejectUsageFile, SubmitUsageFile, Contract, Marketplace, Product, Records, File
-from connect.resource import UsageFileAutomation
+from connect.exceptions import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, RejectUsageFile, \
+    SkipRequest, SubmitUsageFile
+from connect.models import Company, Contract, Marketplace, Product, Records, File
+from connect.resources import UsageFileAutomation
 from .common import Response, load_str
 
 current_action = ''
