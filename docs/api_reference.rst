@@ -7,6 +7,12 @@ config
 .. automodule:: connect.config
    :members:
 
+exceptions
+==========
+
+.. automodule:: connect.exceptions
+   :members:
+
 logger
 ======
 
@@ -19,10 +25,10 @@ models
 .. automodule:: connect.models
    :members:
 
-resource
-========
+resources
+=========
 
-.. automodule:: connect.resource
+.. automodule:: connect.resources
    :members:
 
 migration_handler
