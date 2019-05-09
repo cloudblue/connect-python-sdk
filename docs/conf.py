@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = u'connect'
+project = u'Connect SDK'
 copyright = u'2019, Ingram Micro'
 author = u'Ingram Micro'
 

@@ -2,8 +2,8 @@ Connect Python SDK allows an easy and fast integration with Connect fulfillment 
 
 In order to use this library, please ensure that you have read first the documentation available on Connect knowledge base article located `here <http://help.vendor.connect.cloud.im/support/solutions/articles/43000030735-fulfillment-management-module>`_, this one will provide you a great information on the REST API that this library implements.
 
-Class Features
-==============
+Introduction
+============
 
 This library may be consumed in your project in order to automate the fulfillment of requests, this class once imported into your project will allow you to:
 
@@ -21,20 +21,20 @@ This library may be consumed in your project in order to automate the fulfillmen
 - Generate and upload usage files to report usage for active contracts and listings.
 - Process usage file status changes.
 - Work with Notes for requests.
-- Generate logs
-- Collect debug logs in case of failure
+- Generate logs.
+- Collect debug logs in case of failure.
 
 Your code may use any scheduler to execute, from a simple cron to a cloud scheduler like the ones available in Azure, Google, Amazon or other cloud platforms.
 
 Installation
-============
+^^^^^^^^^^^^
 
 In order to use the SDK with your product, you must install the ``connect-sdk`` package from `PyPI (Python Package Index) <https://pypi.org/project/connect-sdk/>`_. You can do so using ``pip``: ::
 
     $ pip install connect-sdk
 
 Requirements
-============
+^^^^^^^^^^^^
 
 * Python 2.7+ or Python 3.4+
 * `Requests <https://pypi.org/project/requests/>`_
