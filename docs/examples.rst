@@ -1,8 +1,8 @@
 Examples
 ********
 
-Fulfillment processing
-======================
+Fulfillment
+===========
 
  ::
 
