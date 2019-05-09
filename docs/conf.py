@@ -102,7 +102,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'connectdoc'
+htmlhelp_basename = 'connectsdkdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -129,7 +129,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'connect.tex', u'connect Documentation',
+    (master_doc, 'connectsdk.tex', u'Connect SDK Documentation',
      u'Ingram Micro', 'manual'),
 ]
 
@@ -139,7 +139,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'connect', u'connect Documentation',
+    (master_doc, 'connectsdk', u'Connect SDK Documentation',
      [author], 1)
 ]
 
@@ -150,8 +150,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'connect', u'connect Documentation',
-     author, 'connect', 'One line description of project.',
+    (master_doc, 'connectsdk', u'Connect SDK Documentation',
+     author, 'connectsdk', 'One line description of project.',
      'Miscellaneous'),
 ]
 
