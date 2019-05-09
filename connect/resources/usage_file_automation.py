@@ -5,10 +5,9 @@
 
 from abc import ABCMeta
 
+from connect.exceptions import SkipRequest, UsageFileAction
 from connect.logger import logger
-from connect.models.base import BaseModel
-from connect.models.exception import UsageFileAction, SkipRequest
-from connect.models.usage import UsageFileSchema, UsageFile
+from connect.models import BaseModel, UsageFile, UsageFileSchema
 from .automation_engine import AutomationEngine
 
 

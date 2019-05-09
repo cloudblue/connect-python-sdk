@@ -10,8 +10,9 @@ import six
 from mock import patch, Mock, call
 from typing import Dict
 
+from connect.exceptions import SkipRequest
 from connect.migration_handler import MigrationHandler, MigrationParamError
-from connect.models import FulfillmentSchema, SkipRequest, Fulfillment
+from connect.models import FulfillmentSchema, Fulfillment
 from tests.common import load_str
 
 

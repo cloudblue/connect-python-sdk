@@ -11,9 +11,10 @@ from mock import MagicMock, patch
 from typing import Union
 
 from connect import TierConfigAutomation
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
-    Company, Connection, EventInfo, InquireRequest, FailRequest, SkipRequest, Hub, Product, \
-    TierConfigRequest, TierConfig, Events, Template, Activation, Account
+    Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
+    Template, Activation, Account
 from .common import Response, load_str
 
 

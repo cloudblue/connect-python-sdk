@@ -5,9 +5,10 @@
 
 from abc import ABCMeta
 
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, FailRequest,\
-    InquireRequest, SkipRequest, Fulfillment, FulfillmentSchema, TierConfigRequestSchema
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
+    Fulfillment, FulfillmentSchema, TierConfigRequestSchema
 from .automation_engine import AutomationEngine
 
 
