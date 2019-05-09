@@ -13,7 +13,7 @@ from .product import Product, ProductSchema
 
 class Connection(BaseModel):
     """ Represents a communication channel which provides the ability
-    to order products within particular hub.
+    to order pr oducts within particular hub.
 
     Standalone connection is required for each product and for each provider account.
     """
