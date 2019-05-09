@@ -6,7 +6,6 @@
 from typing import List
 
 from .models.parameters import Param
-from .models.server_error_response import ServerErrorResponse
 
 
 class Message(Exception):
