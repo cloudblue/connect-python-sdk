@@ -9,7 +9,7 @@ import json
 from marshmallow import Schema, fields, post_load
 
 
-class BaseModel:
+class BaseModel(object):
     id = None  # type: str
 
     def __init__(self, **kwargs):
