@@ -5,6 +5,7 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 import os
+from datetime import datetime
 
 import pytest
 from mock import MagicMock, patch
@@ -15,11 +16,12 @@ from connect.models import Param, ActivationTileResponse, ActivationTemplateResp
 from connect.models.base import BaseModel
 from connect.models.company import Company
 from connect.models.connection import Connection
+from connect.models.event import EventInfo
 from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
 from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
-    Activation, EventInfo, Account
+    Activation, Account
 from .response import Response
 
 
@@ -90,13 +92,15 @@ def test_create_resource():
     events = configuration.events
     assert isinstance(events, Events)
     assert isinstance(events.created, EventInfo)
-    assert events.created.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.created.at, datetime)
+    assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
     assert not events.inquired
     assert not events.pended
     assert not events.validated
     assert isinstance(events.updated, EventInfo)
-    assert events.updated.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.updated.at, datetime)
+    assert str(events.updated.at) == '2018-11-21 11:10:29'
     assert isinstance(events.updated.by, Company)
     assert events.updated.by.id == 'PA-000-000'
     assert events.updated.by.name == 'Username'
@@ -120,15 +124,18 @@ def test_create_resource():
     events = request.events
     assert isinstance(events, Events)
     assert isinstance(events.created, EventInfo)
-    assert events.created.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.created.at, datetime)
+    assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
     assert isinstance(events.inquired, EventInfo)
-    assert events.inquired.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.inquired.at, datetime)
+    assert str(events.inquired.at) == '2018-11-21 11:10:29'
     assert isinstance(events.inquired.by, Company)
     assert events.inquired.by.id == 'PA-000-000'
     assert events.inquired.by.name == 'Username'
     assert isinstance(events.pended, EventInfo)
-    assert events.pended.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.pended.at, datetime)
+    assert str(events.pended.at) == '2018-11-21 11:10:29'
     assert isinstance(events.pended.by, Company)
     assert events.pended.by.id == 'PA-000-001'
     assert events.pended.by.name == 'Username1'

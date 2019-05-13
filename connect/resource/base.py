@@ -157,6 +157,6 @@ class BaseResource(object):
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{}`. \n'
-                'Error: {}. \nServer Response: {}'.format(type(self).__name__, error, response),
+                'Error: {}. \nServer Response: {}'.format(type(schema).__name__, error, response),
             )
         return objects
