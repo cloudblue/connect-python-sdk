@@ -44,7 +44,7 @@ class Fulfillment(BaseModel):
     - inquiring -> pending
     """
 
-    params_from_url = None  # type: str
+    params_form_url = None  # type: str
     """ (str) URL for customer/reseller/provider for modifying param value
     based on vendor's feedback.
     """
