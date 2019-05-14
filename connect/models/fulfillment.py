@@ -6,7 +6,6 @@ import datetime
 
 from marshmallow import fields, post_load
 
-from connect.models import Company
 from .asset import Asset, AssetSchema
 from .base import BaseModel, BaseSchema
 from .marketplace import Contract, ContractSchema, Marketplace, MarketplaceSchema
