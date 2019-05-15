@@ -5,7 +5,8 @@
 
 # This file provides backwards compatibility with the previous location
 # and names of exception classes
-# TODO: Add deprecation warning
+
+import warnings
 
 from connect.exceptions import FailRequest as FulfillmentFail
 from connect.exceptions import InquireRequest as FulfillmentInquire
@@ -16,3 +17,6 @@ __all__ = [
     'FulfillmentInquire',
     'Skip'
 ]
+
+warnings.warn('Imported deprecated module `connect.models.exception`. '
+              'Import `connect.exceptions` instead.', DeprecationWarning)

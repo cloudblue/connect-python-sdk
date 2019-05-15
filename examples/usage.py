@@ -5,11 +5,15 @@
 
 from datetime import date, timedelta
 import time
+import warnings
 
 from connect.config import Config
 from connect.logger import logger
 from connect.models import Contract, UsageRecord, UsageFile, UsageListing, Product
 from connect.resources import UsageAutomation
+
+# Enable processing of deprecation warnings
+warnings.simplefilter('default')
 
 # Set logger level / default level ERROR
 logger.setLevel('DEBUG')

@@ -6,11 +6,15 @@
 # NOTE: This example development is in progress. This is just a skeleton.
 
 from typing import Union
+import warnings
 
 from connect.config import Config
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, TierConfigRequest
 from connect.resources import TierConfigAutomation
+
+# Enable processing of deprecation warnings
+warnings.simplefilter('default')
 
 # Set logger level / default level ERROR
 logger.setLevel('DEBUG')
