@@ -6,7 +6,7 @@
 from datetime import date, timedelta
 import time
 
-from connect.models import Contract, FileUsageRecord, UsageFile, UsageListing, Product
+from connect.models import Contract, UsageRecord, UsageFile, UsageListing, Product
 from connect.resources import UsageAutomation
 
 
@@ -25,7 +25,7 @@ class UsageExample(UsageAutomation):
             )
 
             usages = [
-                FileUsageRecord(
+                UsageRecord(
                     record_id='unique record value',
 
                     item_search_criteria='item.mpn',

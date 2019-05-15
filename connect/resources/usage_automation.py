@@ -13,7 +13,7 @@ from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models import Product, UsageFileSchema, UsageListing, UsageFile, FileUsageRecord
+from connect.models import Product, UsageFileSchema, UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
 
@@ -87,7 +87,7 @@ class UsageAutomation(AutomationEngine):
         """ Submit a usage file.
 
         :param UsageFile usage_file: Usage file.
-        :param list[FileUsageRecord] usage_records: Records.
+        :param list[UsageRecord] usage_records: Records.
         :return: Usage file.
         :rtype: UsageFile
         """
@@ -125,14 +125,14 @@ class UsageAutomation(AutomationEngine):
         return self._load_schema(response, many=False)
 
     def _upload_usage_records(self, usage_file, usage_records):
-        # type: (UsageFile, List[FileUsageRecord]) -> None
+        # type: (UsageFile, List[UsageRecord]) -> None
         # TODO: Using xslx mechanism till usage records json api is available
         book = self._create_spreadsheet(usage_records)
         self._upload_spreadsheet(usage_file, book)
 
     @staticmethod
     def _create_spreadsheet(usage_records):
-        # type: (List[FileUsageRecord]) -> openpyxl.Workbook
+        # type: (List[UsageRecord]) -> openpyxl.Workbook
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
