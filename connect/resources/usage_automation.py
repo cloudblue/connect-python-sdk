@@ -9,7 +9,7 @@ from tempfile import NamedTemporaryFile
 
 import openpyxl
 import requests
-from typing import Dict, Any, List, Optional
+from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
@@ -18,12 +18,18 @@ from .automation_engine import AutomationEngine
 
 
 class UsageAutomation(AutomationEngine):
+    """ Automates reporting of Usage Files. """
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = UsageFileSchema(many=True)
 
     def filters(self, status='listed', **kwargs):
-        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        """
+        :param str status: Status of the requests. Default: ``'listed'``.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :return: The set of filters for this resource.
+        :rtype: dict[str,Any]
+        """
         filters = super(UsageAutomation, self).filters(status, **kwargs)
         if self.config.products:
             filters['product__id'] = ','.join(self.config.products)
@@ -58,7 +64,12 @@ class UsageAutomation(AutomationEngine):
         return 'success'
 
     def get_usage_template(self, product):
-        # type: (Product) -> bytes
+        """ Returns the template file contents for a specified product.
+
+        :param Product product: Specific product.
+        :return: The template file contents.
+        :rtype: bytes
+        """
         location = self._get_usage_template_download_location(product.id)
         if not location:
             msg = 'Error obtaining template usage file location'
@@ -73,7 +84,13 @@ class UsageAutomation(AutomationEngine):
         return contents
 
     def submit_usage(self, usage_file, usage_records):
-        # type: (UsageFile, List[FileUsageRecord]) -> UsageFile
+        """ Submit a usage file.
+
+        :param UsageFile usage_file: Usage file.
+        :param list[FileUsageRecord] usage_records: Records.
+        :return: Usage file.
+        :rtype: UsageFile
+        """
         usage_file = self._create_usage_file(usage_file)
         self._upload_usage_records(usage_file, usage_records)
         return usage_file

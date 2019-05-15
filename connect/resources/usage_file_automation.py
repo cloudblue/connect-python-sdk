@@ -12,6 +12,7 @@ from .automation_engine import AutomationEngine
 
 
 class UsageFileAutomation(AutomationEngine):
+    """ Automates workflow of Usage Files. """
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = UsageFileSchema(many=True)
