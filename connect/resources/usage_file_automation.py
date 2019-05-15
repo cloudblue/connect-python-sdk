@@ -12,7 +12,11 @@ from .automation_engine import AutomationEngine
 
 
 class UsageFileAutomation(AutomationEngine):
-    """ Automates workflow of Usage Files. """
+    """ Automates workflow of Usage Files.
+
+    For an example on how to use this class, see :ref:`usage_file_example`.
+    """
+
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = UsageFileSchema(many=True)

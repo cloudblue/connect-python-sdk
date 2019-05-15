@@ -2,9 +2,18 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
+from connect.config import Config
+from connect.logger import logger
 from connect.exceptions import AcceptUsageFile, DeleteUsageFile, SkipRequest, SubmitUsageFile
 from connect.models import UsageFile
 from connect.resources import UsageFileAutomation
+
+# Set logger level / default level ERROR
+logger.setLevel('DEBUG')
+
+# If we remove this line, it is done implicitly
+Config(file='config.json')
 
 
 class UsageFileExample(UsageFileAutomation):

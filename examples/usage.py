@@ -6,8 +6,16 @@
 from datetime import date, timedelta
 import time
 
+from connect.config import Config
+from connect.logger import logger
 from connect.models import Contract, UsageRecord, UsageFile, UsageListing, Product
 from connect.resources import UsageAutomation
+
+# Set logger level / default level ERROR
+logger.setLevel('DEBUG')
+
+# If we remove this line, it is done implicitly
+Config(file='config.json')
 
 
 class UsageExample(UsageAutomation):
