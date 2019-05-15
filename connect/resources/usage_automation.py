@@ -13,7 +13,7 @@ from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models import Product, UsageFileSchema, UsageListing, UsageFile, UsageRecord
+from connect.models import UsageFileSchema, UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
 
