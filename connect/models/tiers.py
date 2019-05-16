@@ -29,7 +29,7 @@ class TierSchema(BaseSchema):
     name = fields.Str()
     contact_info = fields.Nested(ContactInfoSchema)
     external_id = fields.Str()
-    external_uid = fields.UUID()
+    external_uid = fields.Str()
 
     @post_load
     def make_object(self, data):
