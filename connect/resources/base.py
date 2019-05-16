@@ -111,7 +111,6 @@ class ApiClient(object):
 class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
-    schema = BaseSchema()  # type: BaseSchema
     model_class = BaseModel
 
     def __init__(self, config=None):
@@ -152,7 +151,10 @@ class BaseResource(object):
 
     def _load_schema(self, response, many=None, schema=None):
         # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
-        schema = schema or self.schema
+        if not schema and many is None:
+            many = True
+        # noinspection PyProtectedMember
+        schema = schema or self.model_class._schema
         objects, error = schema.loads(response, many)
         if error:
             raise TypeError(

@@ -8,7 +8,7 @@ from abc import ABCMeta
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, FulfillmentSchema, TierConfigRequestSchema
+    Fulfillment, TierConfigRequestSchema
 from .automation_engine import AutomationEngine
 
 
@@ -32,7 +32,6 @@ class FulfillmentAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'requests'
-    schema = FulfillmentSchema(many=True)
     model_class = Fulfillment
 
     def filters(self, status='pending', **kwargs):

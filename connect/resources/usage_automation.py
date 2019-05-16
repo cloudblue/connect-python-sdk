@@ -13,7 +13,7 @@ from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models import UsageFileSchema, UsageListing, UsageFile, UsageRecord
+from connect.models import UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
 
@@ -25,7 +25,6 @@ class UsageAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = UsageFileSchema(many=True)
     model_class = UsageFile
 
     def filters(self, status='listed', **kwargs):
