@@ -6,94 +6,9 @@
 import datetime
 from typing import List, Optional, Union
 
-from marshmallow import fields, post_load
-
-from .base import BaseModel, BaseSchema
-
-
-class ProductConfigurationSchema(BaseSchema):
-    suspend_resume_supported = fields.Bool()
-    requires_reseller_information = fields.Bool()
-
-    @post_load
-    def make_object(self, data):
-        return ProductConfiguration(**data)
-
-
-class DownloadLinkSchema(BaseSchema):
-    title = fields.Str()
-    url = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return DownloadLink(**data)
-
-
-class DocumentSchema(BaseSchema):
-    title = fields.Str()
-    url = fields.Str()
-    visible_for = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Document(**data)
-
-
-class CustomerUiSettingsSchema(BaseSchema):
-    description = fields.Str()
-    getting_started = fields.Str()
-    download_links = fields.Nested(DownloadLinkSchema, many=True)
-    documents = fields.Nested(DocumentSchema, many=True)
-
-    @post_load
-    def make_object(self, data):
-        return CustomerUiSettings(**data)
-
-
-class ProductSchema(BaseSchema):
-    name = fields.Str()
-    icon = fields.Str()
-    short_description = fields.Str()
-    detailed_description = fields.Str()
-    version = fields.Int()
-    configurations = fields.Nested(ProductConfigurationSchema)
-    customer_ui_settings = fields.Nested(CustomerUiSettingsSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Product(**data)
-
-
-class RenewalSchema(BaseSchema):
-    from_ = fields.DateTime(attribute='from')
-    to = fields.DateTime()
-    period_delta = fields.Int()
-    period_uom = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Renewal(**data)
-
-
-class ItemSchema(BaseSchema):
-    mpn = fields.Str()
-    quantity = fields.Str()
-    old_quantity = fields.Str(allow_none=True)
-    renewal = fields.Nested(RenewalSchema, allow_none=True)
-    global_id = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        params = ('quantity', 'old_quantity')
-        for param in params:
-            if param in data:
-                if data[param] != 'unlimited':
-                    float_val = float(data[param])
-                    int_val = int(float_val)
-                    data[param] = int_val if float_val == int_val else float_val
-                else:
-                    data[param] = -1
-        return Item(**data)
+from .base import BaseModel
+from connect.models.schemas import ProductConfigurationSchema, DownloadLinkSchema, DocumentSchema,\
+    CustomerUiSettingsSchema, ProductSchema, RenewalSchema, ItemSchema
 
 
 class ProductConfiguration(BaseModel):

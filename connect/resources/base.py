@@ -13,7 +13,8 @@ from connect.config import Config
 from connect.deprecated import deprecated
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
-from connect.models import BaseModel, BaseSchema, ServerErrorResponse
+from connect.models import BaseModel, ServerErrorResponse
+from connect.models.schemas import BaseSchema
 
 
 class ApiClient(object):

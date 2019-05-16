@@ -5,15 +5,7 @@
 
 import json
 
-from marshmallow import Schema, fields, post_load
-
-
-class BaseSchema(Schema):
-    id = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return BaseModel(**data)
+from .schemas import BaseSchema
 
 
 class BaseModel(object):

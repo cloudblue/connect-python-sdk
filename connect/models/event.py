@@ -2,34 +2,13 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import datetime
 from typing import Optional
 
-from marshmallow import fields, post_load
-
-from .base import BaseModel, BaseSchema
-from .company import CompanySchema, Company
-
-
-class EventInfoSchema(BaseSchema):
-    at = fields.DateTime(allow_none=True)
-    by = fields.Nested(CompanySchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return EventInfo(**data)
-
-
-class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema)
-    pended = fields.Nested(EventInfoSchema)
-    validated = fields.Nested(EventInfoSchema)
-    updated = fields.Nested(EventInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Events(**data)
+from .base import BaseModel
+from .company import Company
+from connect.models.schemas import EventInfoSchema, EventsSchema
 
 
 class EventInfo(BaseModel):

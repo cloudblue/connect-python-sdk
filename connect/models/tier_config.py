@@ -3,69 +3,18 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import Optional, List
 
-from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
-from .connection import Connection, ConnectionSchema
-from .contact import ContactInfo, ContactInfoSchema
-from .event import EventsSchema, Events
-from .marketplace import Activation, ActivationSchema
-from .parameters import Param, ParamSchema
-from .product import Product, ProductSchema
-
-
-class AccountSchema(BaseSchema):
-    name = fields.Str()
-    external_id = fields.Str(allow_none=True)
-    external_uid = fields.Str(allow_none=True)
-    contact_info = fields.Nested(ContactInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Account(**data)
-
-
-class TemplateSchema(BaseSchema):
-    representation = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Template(**data)
-
-
-class TierConfigSchema(BaseSchema):
-    name = fields.Str()
-    account = fields.Nested(AccountSchema)
-    product = fields.Nested(ProductSchema)
-    tier_level = fields.Int()
-    connection = fields.Nested(ConnectionSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    template = fields.Nested(TemplateSchema)
-    open_request = fields.Nested(BaseSchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfig(**data)
-
-
-class TierConfigRequestSchema(BaseSchema):
-    type = fields.Str()
-    status = fields.Str()
-    configuration = fields.Nested(TierConfigSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    assignee = fields.Nested(CompanySchema, allow_none=True)
-    template = fields.Nested(TemplateSchema, allow_none=True)
-    reason = fields.Str(allow_none=True)
-    activation = fields.Nested(ActivationSchema, allow_none=True)
-    notes = fields.Str(allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfigRequest(**data)
+from .base import BaseModel
+from .company import Company
+from .connection import Connection
+from .contact import ContactInfo
+from .event import Events
+from .marketplace import Activation
+from .parameters import Param
+from .product import Product
+from connect.models.schemas import AccountSchema, TemplateSchema, TierConfigSchema, \
+    TierConfigRequestSchema
 
 
 class Account(BaseModel):

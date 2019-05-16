@@ -3,46 +3,10 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import Optional
 
-from .base import BaseModel, BaseSchema
-
-
-class PhoneNumberSchema(BaseSchema):
-    country_code = fields.Str(allow_none=True)
-    area_code = fields.Str(allow_none=True)
-    phone_number = fields.Str(allow_none=True)
-    extension = fields.Str(allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return PhoneNumber(**data)
-
-
-class ContactSchema(BaseSchema):
-    email = fields.Str()
-    first_name = fields.Str(allow_none=True)
-    last_name = fields.Str(allow_none=True)
-    phone_number = fields.Nested(PhoneNumberSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Contact(**data)
-
-
-class ContactInfoSchema(BaseSchema):
-    address_line1 = fields.Str()
-    address_line2 = fields.Str(allow_none=True)
-    city = fields.Str()
-    contact = fields.Nested(ContactSchema)
-    country = fields.Str()
-    postal_code = fields.Str()
-    state = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return ContactInfo(**data)
+from .base import BaseModel
+from connect.models.schemas import PhoneNumberSchema, ContactSchema, ContactInfoSchema
 
 
 class PhoneNumber(BaseModel):
