@@ -10,24 +10,24 @@ from .base import BaseModel, BaseSchema
 
 
 class PhoneNumber(BaseModel):
-    country_code = None  # type: str
-    """ (str) Country code. """
+    country_code = None  # type: Optional[str]
+    """ (str|None) Country code. """
 
-    area_code = None  # type: str
-    """ (str) Area code. """
+    area_code = None  # type: Optional[str]
+    """ (str|None) Area code. """
 
-    phone_number = None  # type: str
-    """ (str) Phone number. """
+    phone_number = None  # type: Optional[str]
+    """ (str|None) Phone number. """
 
-    extension = None  # type: str
-    """ (str) Phone extension. """
+    extension = None  # type: Optional[str]
+    """ (str|None) Phone extension. """
 
 
 class PhoneNumberSchema(BaseSchema):
-    country_code = fields.Str()
-    area_code = fields.Str()
-    phone_number = fields.Str()
-    extension = fields.Str()
+    country_code = fields.Str(allow_none=True)
+    area_code = fields.Str(allow_none=True)
+    phone_number = fields.Str(allow_none=True)
+    extension = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
