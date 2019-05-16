@@ -2,8 +2,9 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import datetime
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from marshmallow import fields, post_load
 
@@ -87,9 +88,11 @@ class ItemSchema(BaseSchema):
         for param in params:
             if param in data:
                 if data[param] != 'unlimited':
-                    data[param] = int(data[param])
+                    float_val = float(data[param])
+                    int_val = int(float_val)
+                    data[param] = int_val if float_val == int_val else float_val
                 else:
-                    data[param] = None
+                    data[param] = -1
         return Item(**data)
 
 
@@ -209,11 +212,11 @@ class Item(BaseModel):
     mpn = None  # type: str
     """ (str) Item manufacture part number. """
 
-    quantity = None  # type: Optional[int]
-    """ (int|None) Number of items of the type in the asset, or ``None`` if unlimited """
+    quantity = None  # type: Union[int,float]
+    """ (int|float) Number of items of the type in the asset (-1 if unlimited) """
 
-    old_quantity = None  # type: Optional[int]
-    """ (int|None) Previous value of quantity. """
+    old_quantity = None  # type: Union[int,float,None]
+    """ (int|float|None) Previous value of quantity. """
 
     renewal = None  # type: Optional[Renewal]
     """ (:py:class:`.Renewal` | None) Parameters of renewal request
