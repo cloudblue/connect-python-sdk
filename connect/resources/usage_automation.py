@@ -26,6 +26,7 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = UsageFileSchema(many=True)
+    model_class = UsageFile
 
     def filters(self, status='listed', **kwargs):
         """

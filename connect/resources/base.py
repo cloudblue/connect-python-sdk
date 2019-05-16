@@ -12,7 +12,7 @@ from requests import compat
 from connect.config import Config
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
-from connect.models import BaseSchema, ServerErrorResponseSchema
+from connect.models import BaseModel, BaseSchema, ServerErrorResponseSchema
 
 
 class ApiClient(object):
@@ -112,6 +112,7 @@ class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
     schema = BaseSchema()  # type: BaseSchema
+    model_class = BaseModel
 
     def __init__(self, config=None):
         # Set client

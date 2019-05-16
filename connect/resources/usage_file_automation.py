@@ -20,6 +20,7 @@ class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = UsageFileSchema(many=True)
+    model_class = UsageFile
 
     def dispatch(self, request):
         # type: (UsageFile) -> str

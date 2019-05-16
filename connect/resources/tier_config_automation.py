@@ -33,6 +33,7 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     schema = TierConfigRequestSchema(many=True)
+    model_class = TierConfigRequest
 
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str

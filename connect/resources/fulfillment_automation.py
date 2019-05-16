@@ -33,6 +33,7 @@ class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     schema = FulfillmentSchema(many=True)
+    model_class = Fulfillment
 
     def filters(self, status='pending', **kwargs):
         """
