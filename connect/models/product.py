@@ -6,7 +6,7 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
 from marshmallow import fields, post_load
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from .base import BaseModel, BaseSchema
 
@@ -115,8 +115,8 @@ class RenewalSchema(BaseSchema):
 
 class Item(BaseModel):
     mpn = None  # type: str
-    quantity = None  # type: Optional[int]
-    old_quantity = None  # type: Optional[int]
+    quantity = None  # type: Union[int,float]
+    old_quantity = None  # type: Union[int,float,None]
     renewal = None  # type: Optional[Renewal]
     global_id = None  # type: str
 
@@ -134,7 +134,9 @@ class ItemSchema(BaseSchema):
         for param in params:
             if param in data:
                 if data[param] != 'unlimited':
-                    data[param] = int(data[param])
+                    float_val = float(data[param])
+                    int_val = int(float_val)
+                    data[param] = int_val if float_val == int_val else float_val
                 else:
-                    data[param] = None
+                    data[param] = -1
         return Item(**data)
