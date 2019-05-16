@@ -4,17 +4,15 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import functools
-from typing import Any, List, Dict, Union, Tuple
+from typing import Any, List, Dict, Tuple
 
 import requests
 from requests import compat
 
 from connect.config import Config
-from connect.deprecated import deprecated
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
 from connect.models import BaseModel, ServerErrorResponse
-from connect.models.schemas import BaseSchema
 
 
 class ApiClient(object):
@@ -150,18 +148,3 @@ class BaseResource(object):
         logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
-
-    @deprecated('16.0', 'BaseModel.deserialize(json_str)')
-    def _load_schema(self, response, many=None, schema=None):
-        # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
-        if not schema and many is None:
-            many = True
-        # noinspection PyProtectedMember
-        schema = schema or self.model_class._schema
-        objects, error = schema.loads(response, many)
-        if error:
-            raise TypeError(
-                'Invalid structure for initialization of `{}`. \n'
-                'Error: {}. \nServer Response: {}'.format(type(schema).__name__, error, response),
-            )
-        return objects
