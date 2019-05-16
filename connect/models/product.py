@@ -10,15 +10,6 @@ from marshmallow import fields, post_load
 from .base import BaseModel, BaseSchema
 
 
-class ProductConfiguration(BaseModel):
-    """ Product configurations. """
-    suspend_resume_supported = None  # type: bool
-    """ (bool) Is suspend and resume supported for the product? """
-
-    requires_reseller_information = None  # type: bool
-    """ (bool) Does the product require reseller information? """
-
-
 class ProductConfigurationSchema(BaseSchema):
     suspend_resume_supported = fields.Bool()
     requires_reseller_information = fields.Bool()
@@ -28,16 +19,6 @@ class ProductConfigurationSchema(BaseSchema):
         return ProductConfiguration(**data)
 
 
-class DownloadLink(BaseModel):
-    """ Download link for a product. """
-
-    title = None  # type: str
-    """ (str) Link title. """
-
-    url = None  # type: str
-    """ (str) Link URL. """
-
-
 class DownloadLinkSchema(BaseSchema):
     title = fields.Str()
     url = fields.Str()
@@ -45,19 +26,6 @@ class DownloadLinkSchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return DownloadLink(**data)
-
-
-class Document(BaseModel):
-    """ Document for a product. """
-
-    title = None  # title: str
-    """ (str) Document title. """
-
-    url = None  # title: str
-    """ (str) Document URL. """
-
-    visible_for = None  # title: str
-    """ (str) Document visibility. One of: admin, user. """
 
 
 class DocumentSchema(BaseSchema):
@@ -70,8 +38,104 @@ class DocumentSchema(BaseSchema):
         return Document(**data)
 
 
+class CustomerUiSettingsSchema(BaseSchema):
+    description = fields.Str()
+    getting_started = fields.Str()
+    download_links = fields.Nested(DownloadLinkSchema, many=True)
+    documents = fields.Nested(DocumentSchema, many=True)
+
+    @post_load
+    def make_object(self, data):
+        return CustomerUiSettings(**data)
+
+
+class ProductSchema(BaseSchema):
+    name = fields.Str()
+    icon = fields.Str()
+    short_description = fields.Str()
+    detailed_description = fields.Str()
+    version = fields.Int()
+    configurations = fields.Nested(ProductConfigurationSchema)
+    customer_ui_settings = fields.Nested(CustomerUiSettingsSchema)
+
+    @post_load
+    def make_object(self, data):
+        return Product(**data)
+
+
+class RenewalSchema(BaseSchema):
+    from_ = fields.DateTime(attribute='from')
+    to = fields.DateTime()
+    period_delta = fields.Int()
+    period_uom = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return Renewal(**data)
+
+
+class ItemSchema(BaseSchema):
+    mpn = fields.Str()
+    quantity = fields.Str()
+    old_quantity = fields.Str(allow_none=True)
+    renewal = fields.Nested(RenewalSchema, allow_none=True)
+    global_id = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        params = ('quantity', 'old_quantity')
+        for param in params:
+            if param in data:
+                if data[param] != 'unlimited':
+                    data[param] = int(data[param])
+                else:
+                    data[param] = None
+        return Item(**data)
+
+
+class ProductConfiguration(BaseModel):
+    """ Product configurations. """
+
+    _schema = ProductConfigurationSchema()
+
+    suspend_resume_supported = None  # type: bool
+    """ (bool) Is suspend and resume supported for the product? """
+
+    requires_reseller_information = None  # type: bool
+    """ (bool) Does the product require reseller information? """
+
+
+class DownloadLink(BaseModel):
+    """ Download link for a product. """
+
+    _schema = DownloadLinkSchema()
+
+    title = None  # type: str
+    """ (str) Link title. """
+
+    url = None  # type: str
+    """ (str) Link URL. """
+
+
+class Document(BaseModel):
+    """ Document for a product. """
+
+    _schema = DocumentSchema()
+
+    title = None  # title: str
+    """ (str) Document title. """
+
+    url = None  # title: str
+    """ (str) Document URL. """
+
+    visible_for = None  # title: str
+    """ (str) Document visibility. One of: admin, user. """
+
+
 class CustomerUiSettings(BaseModel):
     """ Customer Ui Settings for a product. """
+
+    _schema = CustomerUiSettingsSchema()
 
     description = None  # type: str
     """ (str) Description. """
@@ -86,17 +150,6 @@ class CustomerUiSettings(BaseModel):
     """ (List[:py:class:`.Document`]) Documents. """
 
 
-class CustomerUiSettingsSchema(BaseSchema):
-    description = fields.Str()
-    getting_started = fields.Str()
-    download_links = fields.Nested(DownloadLinkSchema, many=True)
-    documents = fields.Nested(DocumentSchema, many=True)
-
-    @post_load
-    def make_object(self, data):
-        return CustomerUiSettings(**data)
-
-
 class Product(BaseModel):
     """ Represents basic marketing information about salable items, parameters, configurations,
     latest published version and connections.
@@ -105,6 +158,8 @@ class Product(BaseModel):
     published version details. So in a single point we can say a single product object always
     represent the latest published version of that product.
     """
+
+    _schema = ProductSchema()
 
     name = None  # type: str
     """ (str) Product name. """
@@ -128,22 +183,10 @@ class Product(BaseModel):
     """ (:py:class:`.CustomerUiSettings`) Customer Ui Settings. """
 
 
-class ProductSchema(BaseSchema):
-    name = fields.Str()
-    icon = fields.Str()
-    short_description = fields.Str()
-    detailed_description = fields.Str()
-    version = fields.Int()
-    configurations = fields.Nested(ProductConfigurationSchema)
-    customer_ui_settings = fields.Nested(CustomerUiSettingsSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Product(**data)
-
-
 class Renewal(BaseModel):
     """ Item renewal data. """
+
+    _schema = RenewalSchema()
 
     from_ = None  # type: datetime.datetime
     """ (datetime.datetime) Date of renewal beginning. """
@@ -158,19 +201,10 @@ class Renewal(BaseModel):
     """ (str) Unit of measure for renewal period. One of: year, month, day, hour. """
 
 
-class RenewalSchema(BaseSchema):
-    from_ = fields.DateTime(attribute='from')
-    to = fields.DateTime()
-    period_delta = fields.Int()
-    period_uom = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Renewal(**data)
-
-
 class Item(BaseModel):
     """ A product item. """
+
+    _schema = ItemSchema()
 
     mpn = None  # type: str
     """ (str) Item manufacture part number. """
@@ -188,22 +222,3 @@ class Item(BaseModel):
 
     global_id = None  # type: str
     """ (str) Global id. """
-
-
-class ItemSchema(BaseSchema):
-    mpn = fields.Str()
-    quantity = fields.Str()
-    old_quantity = fields.Str(allow_none=True)
-    renewal = fields.Nested(RenewalSchema, allow_none=True)
-    global_id = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        params = ('quantity', 'old_quantity')
-        for param in params:
-            if param in data:
-                if data[param] != 'unlimited':
-                    data[param] = int(data[param])
-                else:
-                    data[param] = None
-        return Item(**data)

@@ -13,6 +13,23 @@ from .product import Item, ItemSchema, Product, ProductSchema
 from .tiers import Tiers, TiersSchema
 
 
+class AssetSchema(BaseSchema):
+    status = fields.Str()
+    external_id = fields.Str()
+    external_uid = fields.Str(allow_none=True)
+    product = fields.Nested(ProductSchema, only=('id', 'name'))
+    connection = fields.Nested(
+        ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
+    )
+    items = fields.Nested(ItemSchema, many=True)
+    params = fields.Nested(ParamSchema, many=True)
+    tiers = fields.Nested(TiersSchema)
+
+    @post_load
+    def make_object(self, data):
+        return Asset(**data)
+
+
 class Asset(BaseModel):
     """ Represents a saleable item that can be provided/distributed in terms of one purchase.
 
@@ -38,6 +55,8 @@ class Asset(BaseModel):
     - Assets also may be parametrized by one or more parameters which are differentiate
       one asset from another.
     """
+
+    _schema = AssetSchema()
 
     status = None  # type: str
     """ Assets may have one of the following statuses:
@@ -95,20 +114,3 @@ class Asset(BaseModel):
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
-
-
-class AssetSchema(BaseSchema):
-    status = fields.Str()
-    external_id = fields.Str()
-    external_uid = fields.Str(allow_none=True)
-    product = fields.Nested(ProductSchema, only=('id', 'name'))
-    connection = fields.Nested(
-        ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
-    )
-    items = fields.Nested(ItemSchema, many=True)
-    params = fields.Nested(ParamSchema, many=True)
-    tiers = fields.Nested(TiersSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Asset(**data)

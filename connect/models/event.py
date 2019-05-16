@@ -11,16 +11,6 @@ from .base import BaseModel, BaseSchema
 from .company import CompanySchema, Company
 
 
-class EventInfo(BaseModel):
-    """ Represents the date and user that caused an event. """
-
-    at = None  # type: Optional[datetime.datetime]
-    """ (datetime.datetime|None) Date when the event occurred. """
-
-    by = None  # type: Optional[Company]
-    """ (:py:class:`.Company`) User that caused the event. """
-
-
 class EventInfoSchema(BaseSchema):
     at = fields.DateTime(allow_none=True)
     by = fields.Nested(CompanySchema, allow_none=True)
@@ -30,8 +20,34 @@ class EventInfoSchema(BaseSchema):
         return EventInfo(**data)
 
 
+class EventsSchema(BaseSchema):
+    created = fields.Nested(EventInfoSchema)
+    inquired = fields.Nested(EventInfoSchema)
+    pended = fields.Nested(EventInfoSchema)
+    validated = fields.Nested(EventInfoSchema)
+    updated = fields.Nested(EventInfoSchema)
+
+    @post_load
+    def make_object(self, data):
+        return Events(**data)
+
+
+class EventInfo(BaseModel):
+    """ Represents the date and user that caused an event. """
+
+    _schema = EventInfoSchema()
+
+    at = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Date when the event occurred. """
+
+    by = None  # type: Optional[Company]
+    """ (:py:class:`.Company`) User that caused the event. """
+
+
 class Events(BaseModel):
     """ Represents a set of events that can take place on an object. """
+
+    _schema = EventsSchema()
 
     created = None  # type: EventInfo
     """ (:py:class:`.EventInfo`) Creation event. """
@@ -47,15 +63,3 @@ class Events(BaseModel):
 
     updated = None  # type: EventInfo
     """ (:py:class:`.EventInfo`) Update event. """
-
-
-class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema)
-    pended = fields.Nested(EventInfoSchema)
-    validated = fields.Nested(EventInfoSchema)
-    updated = fields.Nested(EventInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Events(**data)

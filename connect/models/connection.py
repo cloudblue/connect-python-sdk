@@ -11,12 +11,26 @@ from .hub import Hub, HubSchema
 from .product import Product, ProductSchema
 
 
+class ConnectionSchema(BaseSchema):
+    type = fields.Str()
+    provider = fields.Nested(CompanySchema, only=('id', 'name'))
+    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
+    product = fields.Nested(ProductSchema)
+    hub = fields.Nested(HubSchema)
+
+    @post_load
+    def make_object(self, data):
+        return Connection(**data)
+
+
 class Connection(BaseModel):
     """ Represents a communication channel which provides the ability
     to order products within particular hub.
 
     Standalone connection is required for each product and for each provider account.
     """
+
+    _schema = ConnectionSchema()
 
     type = None  # type: str
     """ (str) Type of connection. """
@@ -32,15 +46,3 @@ class Connection(BaseModel):
 
     hub = None  # type: Hub
     """ (:py:class:`.Hub`) Hub Reference. """
-
-
-class ConnectionSchema(BaseSchema):
-    type = fields.Str()
-    provider = fields.Nested(CompanySchema, only=('id', 'name'))
-    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
-    product = fields.Nested(ProductSchema)
-    hub = fields.Nested(HubSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Connection(**data)

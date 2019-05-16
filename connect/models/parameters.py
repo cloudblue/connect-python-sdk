@@ -9,16 +9,6 @@ from typing import List, Optional
 from .base import BaseModel, BaseSchema
 
 
-class ValueChoice(BaseModel):
-    """ A value choice for a parameter. """
-
-    value = None  # type: str
-    """ (str) Value. """
-
-    label = None  # type: str
-    """ (str) Label. """
-
-
 class ValueChoiceSchema(Schema):
     value = fields.Str()
     label = fields.Str()
@@ -26,19 +16,6 @@ class ValueChoiceSchema(Schema):
     @post_load
     def make_object(self, data):
         return ValueChoice(**data)
-
-
-class Constraints(BaseModel):
-    """ Parameter constraints. """
-
-    hidden = None  # type: bool
-    """ (bool) Is the parameter hidden? """
-
-    required = None  # type: bool
-    """ (bool) Is the parameter required? """
-
-    choices = None  # type: List[ValueChoice]
-    """ (List[:py:class:`.ValueChoice`]) Parameter value choices. """
 
 
 class ConstraintsSchema(BaseSchema):
@@ -51,8 +28,55 @@ class ConstraintsSchema(BaseSchema):
         return Constraints(**data)
 
 
+class ParamSchema(BaseSchema):
+    name = fields.Str()
+    description = fields.Str()
+    type = fields.Str()
+    value = fields.Str()
+    value_error = fields.Str(allow_none=True)
+    value_choice = fields.Str(many=True, allow_none=True)
+
+    # Undocumented fields (they appear in PHP SDK)
+    title = fields.Str(allow_none=True)
+    scope = fields.Str(allow_none=True)
+    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
+
+    @post_load
+    def make_object(self, data):
+        return Param(**data)
+
+
+class ValueChoice(BaseModel):
+    """ A value choice for a parameter. """
+
+    _schema = ValueChoiceSchema()
+
+    value = None  # type: str
+    """ (str) Value. """
+
+    label = None  # type: str
+    """ (str) Label. """
+
+
+class Constraints(BaseModel):
+    """ Parameter constraints. """
+
+    _schema = ConstraintsSchema()
+
+    hidden = None  # type: bool
+    """ (bool) Is the parameter hidden? """
+
+    required = None  # type: bool
+    """ (bool) Is the parameter required? """
+
+    choices = None  # type: List[ValueChoice]
+    """ (List[:py:class:`.ValueChoice`]) Parameter value choices. """
+
+
 class Param(BaseModel):
     """ Parameters are used in product and asset definitions. """
+
+    _schema = ParamSchema()
 
     name = None  # type: str
     """ (str) Name of parameter. """
@@ -81,21 +105,3 @@ class Param(BaseModel):
 
     constraints = None  # type: Optional[Constraints]
     """ (:py:class:`.Constraints` | None) Parameter constraints. """
-
-
-class ParamSchema(BaseSchema):
-    name = fields.Str()
-    description = fields.Str()
-    type = fields.Str()
-    value = fields.Str()
-    value_error = fields.Str(allow_none=True)
-    value_choice = fields.Str(many=True, allow_none=True)
-
-    # Undocumented fields (they appear in PHP SDK)
-    title = fields.Str(allow_none=True)
-    scope = fields.Str(allow_none=True)
-    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return Param(**data)

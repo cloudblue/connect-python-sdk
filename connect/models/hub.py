@@ -11,29 +11,12 @@ from .company import Company, CompanySchema
 from .event import Events, EventsSchema
 
 
-class HubInstance(BaseModel):
-    """ An instance of a hub. """
-
-    type = None  # type: str
-    """ (str) E-Commerce system type. """
-
-
 class HubInstanceSchema(BaseSchema):
     type = fields.Str()
 
     @post_load
     def make_object(self, data):
         return HubInstance(**data)
-
-
-class HubStats(BaseModel):
-    """ Hub stats. """
-
-    connections = None  # type: int
-    """ (int) Number of connections active for this Hub. """
-
-    marketplaces = None  # type: int
-    """ (int) Number of marketplaces for this Hub. """
 
 
 class HubStatsSchema(BaseSchema):
@@ -45,8 +28,53 @@ class HubStatsSchema(BaseSchema):
         return HubStats(**data)
 
 
+class HubSchema(BaseSchema):
+    name = fields.Str()
+    company = fields.Nested(CompanySchema)
+    description = fields.Str(allow_none=True)
+    instance = fields.Nested(HubInstanceSchema)
+    events = fields.Nested(EventsSchema)
+    stats = fields.Nested(HubStatsSchema)
+
+    @post_load
+    def make_object(self, data):
+        return Hub(**data)
+
+
+class ExtIdHubSchema(Schema):
+    hub = fields.Nested(HubSchema, only=('id', 'name'))
+    external_id = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return ExtIdHub(**data)
+
+
+class HubInstance(BaseModel):
+    """ An instance of a hub. """
+
+    _schema = HubInstanceSchema()
+
+    type = None  # type: str
+    """ (str) E-Commerce system type. """
+
+
+class HubStats(BaseModel):
+    """ Hub stats. """
+
+    _schema = HubStatsSchema()
+
+    connections = None  # type: int
+    """ (int) Number of connections active for this Hub. """
+
+    marketplaces = None  # type: int
+    """ (int) Number of marketplaces for this Hub. """
+
+
 class Hub(BaseModel):
     """ A Hub. """
+
+    _schema = HubSchema()
 
     name = None  # type: str
     """ (str) Hub name. """
@@ -67,33 +95,13 @@ class Hub(BaseModel):
     """ (:py:class:`.HubStats`) Hub stats. """
 
 
-class HubSchema(BaseSchema):
-    name = fields.Str()
-    company = fields.Nested(CompanySchema)
-    description = fields.Str(allow_none=True)
-    instance = fields.Nested(HubInstanceSchema)
-    events = fields.Nested(EventsSchema)
-    stats = fields.Nested(HubStatsSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Hub(**data)
-
-
 class ExtIdHub(BaseModel):
     """ Associates a :py:class:`.Hub` with an external id. """
+
+    _schema = ExtIdHubSchema()
 
     hub = None  # type: Hub
     """ (:py:class:`.Hub`) Hub. """
 
     external_id = None  # type: str
     """ (str) External id. """
-
-
-class ExtIdHubSchema(Schema):
-    hub = fields.Nested(HubSchema, only=('id', 'name'))
-    external_id = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return ExtIdHub(**data)
