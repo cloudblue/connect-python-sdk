@@ -5,6 +5,7 @@
 
 from typing import List
 
+from connect.deprecated import deprecated
 from .models.parameters import Param
 
 
@@ -28,6 +29,7 @@ class Message(Exception):
         self.obj = obj
 
     @property
+    @deprecated('16.0', 'str(exception)')
     def message(self):
         """ Deprecated property to get the exception message. Use ``str(exception)`` instead.
 

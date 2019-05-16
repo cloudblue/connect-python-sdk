@@ -4,12 +4,16 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from typing import Union
+import warnings
 
 from connect.config import Config
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Fulfillment
 from connect.resources import FulfillmentAutomation
+
+# Enable processing of deprecation warnings
+warnings.simplefilter('default')
 
 # Set logger level / default level ERROR
 logger.setLevel('DEBUG')
