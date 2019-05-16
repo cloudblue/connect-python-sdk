@@ -12,7 +12,7 @@ from typing import Dict
 
 from connect.exceptions import SkipRequest
 from connect.migration_handler import MigrationHandler, MigrationParamError
-from connect.models import FulfillmentSchema, Fulfillment
+from connect.models import Fulfillment
 from tests.common import load_str
 
 
@@ -37,8 +37,7 @@ def test_needs_migration():
         os.path.dirname(__file__),
         'data',
         'response.json'))
-    requests_no_migration, error = FulfillmentSchema().loads(response_no_migration, many=True)
-    assert not error
+    requests_no_migration = Fulfillment.deserialize(response_no_migration)
     assert isinstance(requests_no_migration, list)
     assert len(requests_no_migration) == 1
     assert isinstance(requests_no_migration[0], Fulfillment)
@@ -49,8 +48,7 @@ def test_needs_migration():
         os.path.dirname(__file__),
         'data',
         'request.migrate.valid.json'))
-    request, error = FulfillmentSchema().loads(response_migration)
-    assert not error
+    request = Fulfillment.deserialize(response_migration)
     assert isinstance(request, Fulfillment)
     assert handler._needs_migration(request)
 
@@ -62,8 +60,7 @@ def test_no_migration(info_mock):
         os.path.dirname(__file__),
         'data',
         'response.json'))
-    requests, error = FulfillmentSchema().loads(response, many=True)
-    assert not error
+    requests = Fulfillment.deserialize(response)
     assert isinstance(requests, list)
     assert len(requests) == 1
 
@@ -82,8 +79,7 @@ def test_migration_skip_all(info_mock, debug_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.valid.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler()
     request_out = handler.migrate(request)
@@ -125,8 +121,7 @@ def test_migration_wrong_info(info_mock, debug_mock, error_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.invalid.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler()
     with pytest.raises(SkipRequest):
@@ -157,8 +152,7 @@ def test_migration_direct(info_mock, debug_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.direct.success.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler()
     request_out = handler.migrate(request)
@@ -202,8 +196,7 @@ def test_migration_direct_no_serialize(info_mock, debug_mock, error_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.direct.notserialized.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler()
     with pytest.raises(SkipRequest):
@@ -242,8 +235,7 @@ def test_migration_direct_serialize(info_mock, debug_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.direct.notserialized.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler(serialize=True)
     request_out = handler.migrate(request)
@@ -282,8 +274,7 @@ def test_migration_transform(info_mock, debug_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.transformation.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler({
         'email': lambda data, request_id: data['teamAdminEmail'].upper(),
@@ -337,8 +328,7 @@ def test_migration_transform_manual_fail(info_mock, debug_mock, error_mock):
         os.path.dirname(__file__),
         'data',
         'request.migrate.transformation.json'))
-    request, error = FulfillmentSchema().loads(response)
-    assert not error
+    request = Fulfillment.deserialize(response)
 
     handler = MigrationHandler({
         'email': _raise_error

@@ -13,7 +13,7 @@ from connect.config import Config
 from connect.deprecated import deprecated
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
-from connect.models import BaseModel, BaseSchema, ServerErrorResponseSchema
+from connect.models import BaseModel, BaseSchema, ServerErrorResponse
 
 
 class ApiClient(object):
@@ -102,7 +102,7 @@ class ApiClient(object):
                     'Response status - {}'.format(attr, response.status_code),
                 )
         if not response.ok:
-            data, error = ServerErrorResponseSchema().loads(response.content)
+            data, error = ServerErrorResponse.deserialize(response.content)
             if data:
                 raise ServerError(data)
 
