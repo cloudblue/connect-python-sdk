@@ -8,7 +8,7 @@ from abc import ABCMeta
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, TierConfigRequestSchema
+    Fulfillment, TierConfigRequest
 from .automation_engine import AutomationEngine
 
 
@@ -97,7 +97,7 @@ class FulfillmentAutomation(AutomationEngine):
             'configuration__account__id': tier_id,
         }
         response, _ = self._api.get(url=url, params=params)
-        objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
+        objects = TierConfigRequest.deserialize(response)
 
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0].configuration

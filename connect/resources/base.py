@@ -10,6 +10,7 @@ import requests
 from requests import compat
 
 from connect.config import Config
+from connect.deprecated import deprecated
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
 from connect.models import BaseModel, BaseSchema, ServerErrorResponseSchema
@@ -129,7 +130,7 @@ class BaseResource(object):
     def get(self, pk):
         # type: (str) -> Any
         response, _ = self._api.get(path=pk)
-        objects = self._load_schema(response)
+        objects = self.model_class.deserialize(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
@@ -147,8 +148,9 @@ class BaseResource(object):
         filters = filters or self.filters()
         logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
-        return self._load_schema(response)
+        return self.model_class.deserialize(response)
 
+    @deprecated('16.0', 'BaseModel.deserialize_str()')
     def _load_schema(self, response, many=None, schema=None):
         # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
         if not schema and many is None:

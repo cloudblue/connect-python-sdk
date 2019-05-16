@@ -42,7 +42,17 @@ class BaseModel(object):
         return json.loads(dump)
 
     @classmethod
-    def deserialize(cls, json_data):
+    def deserialize(cls, json_str):
+        """ Deserialize a string containing JSON data into a model.
+
+        :param str json_str: String containing the JSON data to be deserialized.
+        :return: An instance of the same class as the receiver of the call, or a list of instances.
+        :rtype: Any|list[Any]
+        """
+        return cls.deserialize_json(json.loads(json_str))
+
+    @classmethod
+    def deserialize_json(cls, json_data):
         """ Deserialize JSON data into a model.
 
         :param dict|list json_data: JSON list or dictionary to be deserialized.
