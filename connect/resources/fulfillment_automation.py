@@ -26,6 +26,8 @@ class FulfillmentAutomation(AutomationEngine):
     - :py:class:`connect.models.SkipRequest`: Skips processing the request.
 
     Create an instance of your subclass and call its ``process`` method to begin processing.
+
+    For an example on how to use this class, see :ref:`fulfillment_example`.
     """
 
     __metaclass__ = ABCMeta
@@ -78,6 +80,11 @@ class FulfillmentAutomation(AutomationEngine):
 
     def get_tier_config(self, tier_id, product_id):
         """
+        Gets the specified tier config data. For example, to get Tier 1 configuration data
+        for one request, within the FulfillmentAutomation instance, we can do: ::
+
+            self.get_tier_config(request.asset.tiers.tier1.id, request.asset.product.id)
+
         :param str tier_id: Id of the requested Tier Config.
         :param str product_id: Id of the product.
         :return: The requested Tier Config, or ``None`` if it was not found.

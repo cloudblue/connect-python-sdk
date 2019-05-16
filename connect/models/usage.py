@@ -13,7 +13,7 @@ from .product import Product, ProductSchema
 
 class UsageRecords(BaseModel):
     """ Usage Records Object. """
-    # TODO: Verify that this data si correct.
+    # TODO: Verify that this data is correct.
 
     valid = None  # type: int
     """ (int) Valid. """
@@ -138,8 +138,8 @@ class UsageListing(BaseModel):
     """ (:py:class:`.Company`) Provider Object. """
 
 
-class FileUsageRecord(BaseModel):
-    """ File Usage Record Object. """
+class UsageRecord(BaseModel):
+    """ Usage Record Object. """
 
     record_id = None  # type: str
     """ (str) Record id. """
@@ -224,7 +224,7 @@ class UsageListingSchema(BaseSchema):
         return UsageListing(**data)
 
 
-class FileUsageRecordSchema(BaseSchema):
+class UsageRecordSchema(BaseSchema):
     record_id = fields.Str()
     item_search_criteria = fields.Str()
     item_search_value = fields.Str()
@@ -236,4 +236,4 @@ class FileUsageRecordSchema(BaseSchema):
 
     @post_load
     def make_object(self, data):
-        return FileUsageRecord(**data)
+        return UsageRecord(**data)

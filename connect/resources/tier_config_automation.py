@@ -26,6 +26,8 @@ class TierConfigAutomation(AutomationEngine):
     - :py:class:`connect.models.SkipRequest`: Skips processing the request.
 
     Create an instance of your subclass and call its ``process`` method to begin processing.
+
+    For an example on how to use this class, see :ref:`tier_config_example`.
     """
 
     __metaclass__ = ABCMeta

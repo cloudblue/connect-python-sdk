@@ -11,7 +11,7 @@ import pytest
 from mock import patch, MagicMock, call
 
 from connect.exceptions import FileRetrievalError
-from connect.models import Contract, Product, FileUsageRecord, UsageFile
+from connect.models import Contract, Product, UsageRecord, UsageFile
 from connect.resources import UsageAutomation
 from .common import Response, load_str
 
@@ -85,7 +85,7 @@ class UsageAutomationTester(UsageAutomation):
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
             )
-            usages = [FileUsageRecord(
+            usages = [UsageRecord(
                 item_search_criteria='item.mpn',
                 item_search_value='SKUA',
                 quantity=1,
@@ -104,7 +104,7 @@ class UsageAutomationTester(UsageAutomation):
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
             )
-            usages = [FileUsageRecord(
+            usages = [UsageRecord(
                 record_id='123',
                 item_search_criteria='item.mpn',
                 item_search_value='SKUA',

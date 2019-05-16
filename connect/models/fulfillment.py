@@ -43,7 +43,7 @@ class Fulfillment(BaseModel):
     - inquiring -> pending
     """
 
-    params_from_url = None  # type: str
+    params_form_url = None  # type: str
     """ (str) URL for customer/reseller/provider for modifying param value
     based on vendor's feedback.
     """
@@ -55,6 +55,9 @@ class Fulfillment(BaseModel):
 
     reason = None  # type: str
     """ (str) Fail reason in case of status of request is failed. """
+
+    note = None  # type: str
+    """ (str) Details of note. """
 
     asset = None  # type: Asset
     """ (:py:class:`.Asset`) Asset object. """
@@ -104,6 +107,7 @@ class FulfillmentSchema(BaseSchema):
     updated = fields.DateTime()
     created = fields.DateTime()
     reason = fields.Str()
+    note = fields.Str()
     params_form_url = fields.Str()
     contract = fields.Nested(ContractSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))

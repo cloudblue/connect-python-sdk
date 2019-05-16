@@ -1,64 +1,30 @@
 Examples
 ********
 
-Fulfillment
-===========
+.. _fulfillment_example:
 
- ::
+Processing Fulfillment Requests
+===============================
 
-    from connect.logger import logger
-    from connect.models import ActivationTileResponse, FailRequest, InquireRequest, SkipRequest
-    from connect.resource import FulfillmentAutomation, TierConfigAutomation
+.. literalinclude:: ../examples/fulfillment.py
 
+.. _tier_config_example:
 
-    class ExampleRequestProcessor(FulfillmentAutomation):
-        def process_request(self, request):
+Processing Tier Config Requests
+===============================
 
-            logger.info('Processing request {} for contract {}, product {}, marketplace {}'
-                        .format(request.id,
-                                request.contract.id,
-                                request.asset.product.name,
-                                request.marketplace.name))
+.. literalinclude:: ../examples/tier_config.py
 
-            # Custom logic
-            if request.type == 'purchase':
-                for item in request.asset.items:
-                    if item.quantity > 100000:
-                        raise FailRequest(
-                            message='Is Not possible to purchase product')
+.. _usage_example:
 
-                for param in request.asset.params:
-                    if param.name == 'email' and not param.value:
-                        param.value_error = 'Email address has not been provided, please provide one'
-                        raise InquireRequest(params=[param])
+Reporting Usage Files
+=====================
 
-                # Approve by ActivationTile
-                return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, '
-                                              'you decided to have an account in our amazing service!')
-                # Or
-                # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
+.. literalinclude:: ../examples/usage.py
 
-                # Approve by Template
-                # return ActivationTemplateResponse('TL-497-535-242')
-                # Or
-                # return TemplateResource().get(pk='TEMPLATE_ID')
+.. _usage_file_example:
 
-            elif request.type == 'change':
-                # Fail
-                raise FailRequest()
-            else:
-                # Skip request
-                raise SkipRequest()
+Workflow of Usage Files
+=======================
 
-    class ExampleTierConfigProcessor(TierConfigAutomation):
-        def process_request(self, request):
-            pass
-
-
-    if __name__ == '__main__':
-        request_processor = ExampleRequestProcessor()
-        request_processor.process()
-
-        tier_config_processor = ExampleTierConfigProcessor()
-        tier_config_processor.process()
-
+.. literalinclude:: ../examples/usage_file.py

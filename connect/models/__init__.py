@@ -25,8 +25,8 @@ from .server_error_response import ServerErrorResponse, ServerErrorResponseSchem
 from .tier_config import Account, AccountSchema, Template, TemplateSchema, TierConfig, \
     TierConfigRequest, TierConfigRequestSchema, TierConfigSchema
 from .tiers import Tier, Tiers, TierSchema, TiersSchema
-from .usage import UsageFile, UsageFileSchema, FileUsageRecord, FileUsageRecordSchema, \
-    UsageListing, UsageListingSchema, UsageRecords, UsageRecordsSchema
+from .usage import UsageFile, UsageFileSchema, UsageListing, UsageListingSchema, UsageRecord, \
+    UsageRecords, UsageRecordSchema, UsageRecordsSchema
 
 __all__ = [
     'Account',
@@ -67,8 +67,6 @@ __all__ = [
     'EventsSchema',
     'ExtIdHub',
     'ExtIdHubSchema',
-    'FileUsageRecord',
-    'FileUsageRecordSchema',
     'Fulfillment',
     'FulfillmentSchema',
     'Hub',
@@ -107,7 +105,9 @@ __all__ = [
     'UsageFileSchema',
     'UsageListing',
     'UsageListingSchema',
+    'UsageRecord',
     'UsageRecords',
+    'UsageRecordSchema',
     'UsageRecordsSchema',
     'ValueChoice',
     'ValueChoiceSchema',

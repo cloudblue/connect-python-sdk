@@ -8,18 +8,17 @@ from typing import Union
 from connect.config import Config
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, \
-    Fulfillment, TierConfigRequest
-from connect.resources import FulfillmentAutomation, TierConfigAutomation
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Fulfillment
+from connect.resources import FulfillmentAutomation
 
 # Set logger level / default level ERROR
-logger.setLevel("DEBUG")
+logger.setLevel('DEBUG')
 
 # If we remove this line, it is done implicitly
 Config(file='config.json')
 
 
-class ExampleRequestProcessor(FulfillmentAutomation):
+class FulfillmentExample(FulfillmentAutomation):
     def process_request(self, request):
         # type: (Fulfillment) -> Union[ActivationTemplateResponse, ActivationTileResponse]
 
@@ -60,15 +59,6 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             raise SkipRequest()
 
 
-class ExampleTierConfigProcessor(TierConfigAutomation):
-    def process_request(self, request):
-        # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
-        pass
-
-
 if __name__ == '__main__':
-    request_processor = ExampleRequestProcessor()
-    request_processor.process()
-
-    tier_config_processor = ExampleTierConfigProcessor()
-    tier_config_processor.process()
+    fulfillment_example = FulfillmentExample()
+    fulfillment_example.process()
