@@ -43,7 +43,7 @@ class Asset(BaseModel):
 class AssetSchema(BaseSchema):
     status = fields.Str()
     external_id = fields.Str()
-    external_uid = fields.UUID()
+    external_uid = fields.Str()
     product = fields.Nested(ProductSchema, only=('id', 'name'))
     connection = fields.Nested(
         ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
