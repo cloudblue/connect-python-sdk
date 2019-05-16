@@ -150,7 +150,7 @@ class BaseResource(object):
         response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
 
-    @deprecated('16.0', 'BaseModel.deserialize_str()')
+    @deprecated('16.0', 'BaseModel.deserialize()')
     def _load_schema(self, response, many=None, schema=None):
         # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
         if not schema and many is None:
