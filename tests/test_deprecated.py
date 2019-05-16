@@ -8,10 +8,8 @@ import pytest
 from connect.exceptions import Message
 
 
-def _(_): pass
-
-
 def test_deprecated_message():
     # type: () -> None
     with pytest.deprecated_call():
-        _(Message('Hello').message)
+        # noinspection PyStatementEffect
+        Message('Hello').message
