@@ -109,6 +109,11 @@ class ApiClient(object):
 
 
 class BaseResource(object):
+    """ Base class of all resources.
+
+    :param Config config: Config object or ``None`` to use environment config (default).
+    """
+
     resource = None  # type: str
     limit = 100  # type: int
     schema = BaseSchema()  # type: BaseSchema
