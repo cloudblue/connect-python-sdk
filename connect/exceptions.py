@@ -30,10 +30,9 @@ class Message(Exception):
         self.obj = obj
 
     @property
-    @deprecated(deprecated_in='16.0', details='Use `str(exception)` instead')
+    @deprecated(deprecated_in='16.0', details='Use ``str(exception)`` instead')
     def message(self):
-        """ Deprecated property to get the exception message. Use ``str(exception)`` instead.
-
+        """
         :return: The exception message.
         :rtype: str
         """
