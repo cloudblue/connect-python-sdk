@@ -135,7 +135,7 @@ class QuantityField(fields.Field):
                     return int_val if int_val == float_val else float_val
                 except ValueError:
                     raise ValueError({
-                        attr: [u'Not a valid string encoded number or "unlimited".']
+                        attr: [u'Not a valid string encoded number nor "unlimited".']
                     })
         elif isinstance(value, (int, float)):
             return value
