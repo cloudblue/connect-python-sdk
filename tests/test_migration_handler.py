@@ -140,8 +140,8 @@ def test_migration_wrong_info(info_mock, debug_mock, error_mock):
                                   '"licNumber":"10"}')
 
     assert error_mock.call_count == 1
-    error_mock.assert_called_with('[MIGRATION::PR-7001-1234-5678] Extra data: '
-                                  'line 1 column 17 - line 1 column 179 (char 16 - 178)')
+    error_mock.assert_called_with('[MIGRATION::PR-7001-1234-5678] '
+                                  'Extra data: line 1 column 17 (char 16)')
 
 
 @patch('connect.migration_handler.logger.debug')
