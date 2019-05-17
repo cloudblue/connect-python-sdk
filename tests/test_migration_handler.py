@@ -19,7 +19,7 @@ from tests.common import load_str
 
 def test_properties():
     # type: () -> None
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     assert isinstance(handler, MigrationHandler)
     assert isinstance(handler.transformations, dict)
     assert isinstance(handler.migration_key, str)
@@ -31,7 +31,7 @@ def test_properties():
 
 def test_needs_migration():
     # type: () -> None
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
 
     # No migration needed
     response_no_migration = load_str(os.path.join(
@@ -68,7 +68,7 @@ def test_no_migration(info_mock):
     assert isinstance(requests, list)
     assert len(requests) == 1
 
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     request = handler.migrate(requests[0])
     info_mock.assert_called_once_with('[MIGRATION::PR-5852-1608-0000] '
                                       'Request does not need migration.')
@@ -86,7 +86,7 @@ def test_migration_skip_all(info_mock, debug_mock):
     request, error = FulfillmentSchema().loads(response)
     assert not error
 
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     request_out = handler.migrate(request)
 
     assert info_mock.call_count == 2
@@ -129,7 +129,7 @@ def test_migration_wrong_info(info_mock, debug_mock, error_mock):
     request, error = FulfillmentSchema().loads(response)
     assert not error
 
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     with pytest.raises(SkipRequest):
         handler.migrate(request)
 
@@ -146,8 +146,8 @@ def test_migration_wrong_info(info_mock, debug_mock, error_mock):
                                   '"licNumber":"10"}')
 
     assert error_mock.call_count == 1
-    error_mock.assert_called_with('[MIGRATION::PR-7001-1234-5678] Extra data: '
-                                  'line 1 column 17 - line 1 column 179 (char 16 - 178)')
+    error_mock.assert_called_with('[MIGRATION::PR-7001-1234-5678] '
+                                  'Extra data: line 1 column 17 (char 16)')
 
 
 @patch('connect.migration_handler.logger.debug')
@@ -161,7 +161,7 @@ def test_migration_direct(info_mock, debug_mock):
     request, error = FulfillmentSchema().loads(response)
     assert not error
 
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     request_out = handler.migrate(request)
 
     assert request_out != request
@@ -206,7 +206,7 @@ def test_migration_direct_no_serialize(info_mock, debug_mock, error_mock):
     request, error = FulfillmentSchema().loads(response)
     assert not error
 
-    handler = MigrationHandler({})
+    handler = MigrationHandler()
     with pytest.raises(SkipRequest):
         handler.migrate(request)
 
@@ -246,7 +246,7 @@ def test_migration_direct_serialize(info_mock, debug_mock):
     request, error = FulfillmentSchema().loads(response)
     assert not error
 
-    handler = MigrationHandler({}, serialize=True)
+    handler = MigrationHandler(serialize=True)
     request_out = handler.migrate(request)
 
     assert request_out != request
