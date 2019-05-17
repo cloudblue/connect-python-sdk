@@ -13,8 +13,7 @@ from .event import Events
 from .marketplace import Activation
 from .parameters import Param
 from .product import Product
-from connect.models.schemas import AccountSchema, TemplateSchema, TierConfigSchema, \
-    TierConfigRequestSchema
+from .schemas import AccountSchema, TemplateSchema, TierConfigSchema, TierConfigRequestSchema
 
 
 class Account(BaseModel):
@@ -76,6 +75,36 @@ class TierConfig(BaseModel):
 
     open_request = None  # type: Optional[BaseModel]
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
+
+    @classmethod
+    def get(cls, tier_id, product_id, config=None):
+        """
+        Gets the specified tier config data. For example, to get Tier 1 configuration data
+        for one request we can do: ::
+
+            TierConfig.get(request.asset.tiers.tier1.id, request.asset.product.id)
+
+        :param str tier_id: Id of the requested Tier Config.
+        :param str product_id: Id of the product.
+        :param Config config: Config to use, or ``None`` to use environment config (default).
+        :return: The requested Tier Config, or ``None`` if it was not found.
+        :rtype: Optional[TierConfig]
+        """
+        from connect.resources.base import ApiClient
+
+        response, _ = ApiClient(config, base_path='tier/config-requests').get(
+            params={
+                'status': 'approved',
+                'configuration__product__id': product_id,
+                'configuration__account__id': tier_id,
+            }
+        )
+        objects = TierConfigRequest.deserialize(response)
+
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0].configuration
+        else:
+            return None
 
     def get_param_by_id(self, id_):
         """ Get a Tier Config parameter.

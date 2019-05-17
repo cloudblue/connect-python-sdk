@@ -148,10 +148,10 @@ def test_asset_methods():
 @patch('requests.get')
 def test_get_tier_config(get_mock):
     get_mock.return_value = _get_response_tier_config_ok()
-    config = FulfillmentAutomation().get_tier_config('tier_id', 'product_id')
+    config = TierConfig.get('tier_id', 'product_id')
     assert isinstance(config, TierConfig)
     get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/tier/config-requests',
+        url='http://localhost:8080/api/public/v1/tier/config-requests/',
         headers={
             'Content-Type': 'application/json',
             'Authorization': 'ApiKey XXXX:YYYYY'},
