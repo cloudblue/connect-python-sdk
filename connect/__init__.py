@@ -11,13 +11,14 @@ import resources
 
 
 # TODO: These classes will be removed in the future.
-# They are now located in connect.reousrces package.
+# They are now located in connect.resources package.
 
 
 class FulfillmentAutomation(resources.FulfillmentAutomation):
     __metaclass__ = ABCMeta
 
-    @deprecated(deprecated_in='16.0', details='Import class from ``connect.resources`` package instead.')
+    @deprecated(deprecated_in='16.0',
+                details='Import class from ``connect.resources`` package instead.')
     def __init__(self, config=None):
         super(FulfillmentAutomation, self).__init__(config)
 
@@ -25,7 +26,8 @@ class FulfillmentAutomation(resources.FulfillmentAutomation):
 class TierConfigAutomation(resources.TierConfigAutomation):
     __metaclass__ = ABCMeta
 
-    @deprecated(deprecated_in='16.0', details='Import class from ``connect.resources`` package instead.')
+    @deprecated(deprecated_in='16.0',
+                details='Import class from ``connect.resources`` package instead.')
     def __init__(self, config=None):
         super(TierConfigAutomation, self).__init__(config)
 
