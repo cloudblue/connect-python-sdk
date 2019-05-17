@@ -7,14 +7,15 @@ from abc import ABCMeta
 
 from deprecation import deprecated
 
-import resources
+from .resources import FulfillmentAutomation as BaseFulfillmentAutomation
+from .resources import TierConfigAutomation as BaseTierConfigAutomation
 
 
 # TODO: These classes will be removed in the future.
 # They are now located in connect.resources package.
 
 
-class FulfillmentAutomation(resources.FulfillmentAutomation):
+class FulfillmentAutomation(BaseFulfillmentAutomation):
     __metaclass__ = ABCMeta
 
     @deprecated(deprecated_in='16.0',
@@ -23,7 +24,7 @@ class FulfillmentAutomation(resources.FulfillmentAutomation):
         super(FulfillmentAutomation, self).__init__(config)
 
 
-class TierConfigAutomation(resources.TierConfigAutomation):
+class TierConfigAutomation(BaseTierConfigAutomation):
     __metaclass__ = ABCMeta
 
     @deprecated(deprecated_in='16.0',
