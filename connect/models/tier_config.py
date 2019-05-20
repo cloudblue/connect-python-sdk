@@ -8,7 +8,7 @@ from marshmallow import fields, post_load
 from typing import Optional, List
 
 from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
+from .company import User, UserSchema
 from .connection import Connection, ConnectionSchema
 from .contact import ContactInfo, ContactInfoSchema
 from .event import EventsSchema, Events
@@ -92,7 +92,7 @@ class TierConfigRequest(BaseModel):
     configuration = None  # type: TierConfig
     events = None  # type: Optional[Events]
     params = None  # type: List[Param]
-    assignee = None  # type: Optional[Company]
+    assignee = None  # type: Optional[User]
     template = None  # type: Optional[Template]
     reason = None  # type: Optional[str]
     activation = None  # type: Optional[Activation]
@@ -112,7 +112,7 @@ class TierConfigRequestSchema(BaseSchema):
     configuration = fields.Nested(TierConfigSchema)
     events = fields.Nested(EventsSchema, allow_none=True)
     params = fields.Nested(ParamSchema, many=True)
-    assignee = fields.Nested(CompanySchema, allow_none=True)
+    assignee = fields.Nested(UserSchema, allow_none=True)
     template = fields.Nested(TemplateSchema, allow_none=True)
     reason = fields.Str(allow_none=True)
     activation = fields.Nested(ActivationSchema, allow_none=True)
