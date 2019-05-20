@@ -3,21 +3,23 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import Optional, List
 
-from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
-from .connection import Connection, ConnectionSchema
-from .contact import ContactInfo, ContactInfoSchema
-from .event import EventsSchema, Events
-from .marketplace import Activation, ActivationSchema
-from .parameters import Param, ParamSchema
-from .product import Product, ProductSchema
+from .base import BaseModel
+from .company import Company
+from .connection import Connection
+from .contact import ContactInfo
+from .event import Events
+from .marketplace import Activation
+from .parameters import Param
+from .product import Product
+from .schemas import AccountSchema, TemplateSchema, TierConfigSchema, TierConfigRequestSchema
 
 
 class Account(BaseModel):
     """ Tier account. """
+
+    _schema = AccountSchema()
 
     name = None  # type: str
     """ (str) Account name. """
@@ -31,34 +33,19 @@ class Account(BaseModel):
     """ (:py:class:`.ContactInfo`) Contact. """
 
 
-class AccountSchema(BaseSchema):
-    name = fields.Str()
-    external_id = fields.Str(allow_none=True)
-    external_uid = fields.Str(allow_none=True)
-    contact_info = fields.Nested(ContactInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Account(**data)
-
-
 class Template(BaseModel):
     """ Tier Template """
+
+    _schema = TemplateSchema()
 
     representation = None  # type: str
     """ (str) Template representation. """
 
 
-class TemplateSchema(BaseSchema):
-    representation = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Template(**data)
-
-
 class TierConfig(BaseModel):
     """ Full representation of Tier object. """
+
+    _schema = TierConfigSchema()
 
     name = None  # type: str
     """ (str) Tier configuration of account.name. """
@@ -89,6 +76,36 @@ class TierConfig(BaseModel):
     open_request = None  # type: Optional[BaseModel]
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
 
+    @classmethod
+    def get(cls, tier_id, product_id, config=None):
+        """
+        Gets the specified tier config data. For example, to get Tier 1 configuration data
+        for one request we can do: ::
+
+            TierConfig.get(request.asset.tiers.tier1.id, request.asset.product.id)
+
+        :param str tier_id: Id of the requested Tier Config.
+        :param str product_id: Id of the product.
+        :param Config config: Config to use, or ``None`` to use environment config (default).
+        :return: The requested Tier Config, or ``None`` if it was not found.
+        :rtype: Optional[TierConfig]
+        """
+        from connect.resources.base import ApiClient
+
+        response, _ = ApiClient(config, base_path='tier/config-requests').get(
+            params={
+                'status': 'approved',
+                'configuration__product__id': product_id,
+                'configuration__account__id': tier_id,
+            }
+        )
+        objects = TierConfigRequest.deserialize(response)
+
+        if isinstance(objects, list) and len(objects) > 0:
+            return objects[0].configuration
+        else:
+            return None
+
     def get_param_by_id(self, id_):
         """ Get a Tier Config parameter.
 
@@ -102,23 +119,9 @@ class TierConfig(BaseModel):
             return None
 
 
-class TierConfigSchema(BaseSchema):
-    name = fields.Str()
-    account = fields.Nested(AccountSchema)
-    product = fields.Nested(ProductSchema)
-    tier_level = fields.Int()
-    connection = fields.Nested(ConnectionSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    template = fields.Nested(TemplateSchema)
-    open_request = fields.Nested(BaseSchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfig(**data)
-
-
 class TierConfigRequest(BaseModel):
+    _schema = TierConfigRequestSchema()
+
     type = None  # type: str
     """ (str) TCR type. One of: setup, update. """
 
@@ -164,20 +167,3 @@ class TierConfigRequest(BaseModel):
             return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
-
-
-class TierConfigRequestSchema(BaseSchema):
-    type = fields.Str()
-    status = fields.Str()
-    configuration = fields.Nested(TierConfigSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    assignee = fields.Nested(CompanySchema, allow_none=True)
-    template = fields.Nested(TemplateSchema, allow_none=True)
-    reason = fields.Str(allow_none=True)
-    activation = fields.Nested(ActivationSchema, allow_none=True)
-    notes = fields.Str(allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfigRequest(**data)

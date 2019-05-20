@@ -13,7 +13,7 @@ from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models import UsageFileSchema, UsageListing, UsageFile, UsageRecord
+from connect.models import UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
 
@@ -25,7 +25,7 @@ class UsageAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = UsageFileSchema(many=True)
+    model_class = UsageFile
 
     def filters(self, status='listed', **kwargs):
         """
@@ -126,7 +126,7 @@ class UsageAutomation(AutomationEngine):
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
         response, _ = self._api.post(json=usage_file.json)
-        return self._load_schema(response, many=False)
+        return self.model_class.deserialize(response)
 
     def _upload_usage_records(self, usage_file, usage_records):
         # type: (UsageFile, List[UsageRecord]) -> None

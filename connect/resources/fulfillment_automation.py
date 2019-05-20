@@ -5,10 +5,12 @@
 
 from abc import ABCMeta
 
+from deprecation import deprecated
+
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, FulfillmentSchema, TierConfigRequestSchema
+    Fulfillment, TierConfigRequest
 from .automation_engine import AutomationEngine
 
 
@@ -32,7 +34,7 @@ class FulfillmentAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'requests'
-    schema = FulfillmentSchema(many=True)
+    model_class = Fulfillment
 
     def filters(self, status='pending', **kwargs):
         """
@@ -78,6 +80,7 @@ class FulfillmentAutomation(AutomationEngine):
         except SkipRequest as skip:
             return skip.code
 
+    @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):
         """
         Gets the specified tier config data. For example, to get Tier 1 configuration data
@@ -97,7 +100,7 @@ class FulfillmentAutomation(AutomationEngine):
             'configuration__account__id': tier_id,
         }
         response, _ = self._api.get(url=url, params=params)
-        objects = self._load_schema(response, schema=TierConfigRequestSchema(many=True))
+        objects = TierConfigRequest.deserialize(response)
 
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0].configuration

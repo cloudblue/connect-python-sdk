@@ -3,14 +3,14 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import List, Optional
 
-from .base import BaseModel, BaseSchema
-from .connection import Connection, ConnectionSchema
-from .parameters import Param, ParamSchema
-from .product import Item, ItemSchema, Product, ProductSchema
-from .tiers import Tiers, TiersSchema
+from .base import BaseModel
+from .connection import Connection
+from .parameters import Param
+from .product import Item, Product
+from .tiers import Tiers
+from connect.models.schemas import AssetSchema
 
 
 class Asset(BaseModel):
@@ -38,6 +38,8 @@ class Asset(BaseModel):
     - Assets also may be parametrized by one or more parameters which are differentiate
       one asset from another.
     """
+
+    _schema = AssetSchema()
 
     status = None  # type: str
     """ Assets may have one of the following statuses:
@@ -95,20 +97,3 @@ class Asset(BaseModel):
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
-
-
-class AssetSchema(BaseSchema):
-    status = fields.Str()
-    external_id = fields.Str()
-    external_uid = fields.Str(allow_none=True)
-    product = fields.Nested(ProductSchema, only=('id', 'name'))
-    connection = fields.Nested(
-        ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
-    )
-    items = fields.Nested(ItemSchema, many=True)
-    params = fields.Nested(ParamSchema, many=True)
-    tiers = fields.Nested(TiersSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Asset(**data)

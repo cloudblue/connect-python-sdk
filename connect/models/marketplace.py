@@ -2,14 +2,15 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import datetime
 from typing import Optional, List
 
-from marshmallow import fields, post_load
-
-from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
-from .hub import ExtIdHub, ExtIdHubSchema
+from .base import BaseModel
+from .company import Company
+from .hub import ExtIdHub
+from connect.models.schemas import MarketplaceSchema, AgreementStatsSchema, AgreementSchema, \
+    ActivationSchema, ContractSchema
 
 
 class Marketplace(BaseModel):
@@ -19,6 +20,8 @@ class Marketplace(BaseModel):
     A Marketplace is a way to list Products to specified regions (based on Distribution Agreements)
     and use specific Hubs to provision incoming Fulfillment requests.
     """
+
+    _schema = MarketplaceSchema()
 
     name = None  # type: str
     """ (str) Marketplace title, unique for an account. """
@@ -45,22 +48,10 @@ class Marketplace(BaseModel):
     AF, NA, OC, AS, EU, SA (It is continents). """
 
 
-class MarketplaceSchema(BaseSchema):
-    name = fields.Str()
-    description = fields.Str()
-    active_contracts = fields.Int()
-    icon = fields.Str()
-    owner = fields.Nested(CompanySchema, only=('id', 'name'))
-    hubs = fields.Nested(ExtIdHubSchema, many=True)
-    zone = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Marketplace(**data)
-
-
 class AgreementStats(BaseModel):
     """ Agreement stats. """
+
+    _schema = AgreementStatsSchema()
 
     contracts = None  # type: Optional[int]
     """ (int|None) Number of contracts this agreement has. """
@@ -69,17 +60,10 @@ class AgreementStats(BaseModel):
     """ (int) Number of versions in the agreement. """
 
 
-class AgreementStatsSchema(BaseSchema):
-    contracts = fields.Int(allow_none=True)
-    versions = fields.Int()
-
-    @post_load
-    def make_object(self, data):
-        return AgreementStatsSchema(**data)
-
-
 class Agreement(BaseModel):
     """ An Agreement object. """
+
+    _schema = AgreementSchema()
 
     type = None  # type: str
     """ (str) Type of the agreement. One of: distribution, program, service. """
@@ -138,31 +122,10 @@ class Agreement(BaseModel):
     """
 
 
-class AgreementSchema(BaseSchema):
-    type = fields.Str()
-    title = fields.Str()
-    description = fields.Str()
-    created = fields.DateTime()
-    updated = fields.DateTime()
-    owner = fields.Nested(CompanySchema)
-    stats = fields.Nested(AgreementStatsSchema, allow_none=True)
-    author = fields.Nested(CompanySchema, allow_none=True)
-    version = fields.Int()
-    active = fields.Bool()
-    link = fields.Str()
-    version_created = fields.DateTime()
-    version_contracts = fields.Int()
-    agreements = fields.Nested('AgreementSchema', many=True)
-    parent = fields.Nested('AgreementSchema', only=('id', 'name'), allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return Agreement(**data)
-
-
 class Activation(BaseModel):
     """ Activation object. """
+
+    _schema = ActivationSchema()
 
     link = None  # type: Optional[str]
     """ (str|None) Activation link. """
@@ -174,18 +137,10 @@ class Activation(BaseModel):
     """ (datetime.datetime|None) Activation date. """
 
 
-class ActivationSchema(BaseSchema):
-    link = fields.Str(allow_none=True)
-    message = fields.Str()
-    date = fields.DateTime(allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return Activation(**data)
-
-
 class Contract(BaseModel):
     """ Contract object. """
+
+    _schema = ContractSchema()
 
     name = None  # type: str
     """ (str) Contract name. """
@@ -232,24 +187,3 @@ class Contract(BaseModel):
     """ (:py:class:`.Company` | None) Reference object to the user of the owner company,
     who signed the contract.
     """
-
-
-class ContractSchema(BaseSchema):
-    name = fields.Str()
-    version = fields.Int()
-    type = fields.Str()
-    status = fields.Str()
-    agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
-    owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    creator = fields.Nested(CompanySchema, only=('id', 'name'))
-    created = fields.DateTime()
-    updated = fields.DateTime()
-    enrolled = fields.DateTime(allow_none=True)
-    version_created = fields.DateTime()
-    activation = fields.Nested(ActivationSchema)
-    signee = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return Contract(**data)

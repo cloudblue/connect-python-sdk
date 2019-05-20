@@ -3,14 +3,15 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import Schema, fields, post_load
-
-from .base import BaseModel, BaseSchema
-from .contact import ContactInfo, ContactInfoSchema
+from .base import BaseModel
+from .contact import ContactInfo
+from connect.models.schemas import TierSchema, TiersSchema
 
 
 class Tier(BaseModel):
     """ Tier Object. """
+
+    _schema = TierSchema()
 
     name = None  # type: str
     """ (str) Tier name. """
@@ -25,19 +26,10 @@ class Tier(BaseModel):
     """ (str) External uid. """
 
 
-class TierSchema(BaseSchema):
-    name = fields.Str()
-    contact_info = fields.Nested(ContactInfoSchema)
-    external_id = fields.Str()
-    external_uid = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Tier(**data)
-
-
 class Tiers(BaseModel):
     """ Tiers object. """
+
+    _schema = TiersSchema()
 
     customer = None  # type: Tier
     """ (:py:class:`.Tier`) Customer Level Tier Object. """
@@ -47,13 +39,3 @@ class Tiers(BaseModel):
 
     tier2 = None  # type: Tier
     """ (:py:class:`.Tier`) Level 2 Tier Object. """
-
-
-class TiersSchema(Schema):
-    customer = fields.Nested(TierSchema)
-    tier1 = fields.Nested(TierSchema)
-    tier2 = fields.Nested(TierSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Tiers(**data)

@@ -3,17 +3,19 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
-
-from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
-from .marketplace import Contract, Marketplace, ContractSchema, MarketplaceSchema
-from .product import Product, ProductSchema
+from .base import BaseModel
+from .company import Company
+from .marketplace import Contract, Marketplace
+from .product import Product
+from connect.models.schemas import UsageRecordsSchema, UsageFileSchema, UsageListingSchema, \
+    UsageRecordSchema
 
 
 class UsageRecords(BaseModel):
     """ Usage Records Object. """
     # TODO: Verify that this data is correct.
+
+    _schema = UsageRecordsSchema()
 
     valid = None  # type: int
     """ (int) Valid. """
@@ -24,6 +26,8 @@ class UsageRecords(BaseModel):
 
 class UsageFile(BaseModel):
     """ Usage File Object. """
+
+    _schema = UsageFileSchema()
 
     name = None  # type: str
     """ (str) Name of the Usage file object. """
@@ -118,6 +122,8 @@ class UsageFile(BaseModel):
 class UsageListing(BaseModel):
     """ Usage Listing Object. """
 
+    _schema = UsageListingSchema()
+
     status = None  # type: str
     """ (str) Status. """
 
@@ -140,6 +146,8 @@ class UsageListing(BaseModel):
 
 class UsageRecord(BaseModel):
     """ Usage Record Object. """
+
+    _schema = UsageRecordSchema()
 
     record_id = None  # type: str
     """ (str) Record id. """
@@ -164,76 +172,3 @@ class UsageRecord(BaseModel):
 
     asset_search_value = None  # type: str
     """ (str) Asset search value. """
-
-
-class UsageRecordsSchema(BaseSchema):
-    valid = fields.Int()
-    invalid = fields.Int()
-
-    @post_load
-    def make_object(self, data):
-        return UsageRecords(**data)
-
-
-class UsageFileSchema(BaseSchema):
-    name = fields.Str()
-    description = fields.Str()
-    note = fields.Str()
-    status = fields.Str()
-    created_by = fields.Str()
-    created_at = fields.Str()
-    upload_file_uri = fields.Str()
-    processed_file_uri = fields.Str()
-    product = fields.Nested(ProductSchema)
-    contract = fields.Nested(ContractSchema)
-    marketplace = fields.Nested(MarketplaceSchema)
-    vendor = fields.Nested(CompanySchema)
-    provider = fields.Nested(CompanySchema)
-    acceptance_note = fields.Str()
-    rejection_note = fields.Str()
-    error_details = fields.Str()
-    records = fields.Nested(UsageRecordsSchema)
-    uploaded_by = fields.Str()
-    uploaded_at = fields.Str()
-    submitted_by = fields.Str()
-    submitted_at = fields.Str()
-    accepted_by = fields.Str()
-    accepted_at = fields.Str()
-    rejected_by = fields.Str()
-    rejected_at = fields.Str()
-    closed_by = fields.Str()
-    closed_at = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return UsageFile(**data)
-
-
-class UsageListingSchema(BaseSchema):
-    status = fields.Str()
-    contract = fields.Nested(ContractSchema)
-    product = fields.Nested(ProductSchema)
-    created = fields.Str()
-
-    # Undocumented fields (they appear in PHP SDK)
-    vendor = fields.Nested(CompanySchema)
-    provider = fields.Nested(CompanySchema)
-
-    @post_load
-    def make_object(self, data):
-        return UsageListing(**data)
-
-
-class UsageRecordSchema(BaseSchema):
-    record_id = fields.Str()
-    item_search_criteria = fields.Str()
-    item_search_value = fields.Str()
-    quantity = fields.Int()
-    start_time_utc = fields.Str()
-    end_time_utc = fields.Str()
-    asset_search_criteria = fields.Str()
-    asset_search_value = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return UsageRecord(**data)
