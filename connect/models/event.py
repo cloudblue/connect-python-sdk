@@ -8,7 +8,7 @@ from typing import Optional
 from marshmallow import fields, post_load
 
 from .base import BaseModel, BaseSchema
-from .company import CompanySchema, Company
+from .company import User, UserSchema
 
 
 class EventInfo(BaseModel):
@@ -17,13 +17,13 @@ class EventInfo(BaseModel):
     at = None  # type: Optional[datetime.datetime]
     """ (datetime.datetime|None) Date when the event occurred. """
 
-    by = None  # type: Optional[Company]
-    """ (:py:class:`.Company`) User that caused the event. """
+    by = None  # type: Optional[User]
+    """ (:py:class:`.User`) User that caused the event. """
 
 
 class EventInfoSchema(BaseSchema):
     at = fields.DateTime(allow_none=True)
-    by = fields.Nested(CompanySchema, allow_none=True)
+    by = fields.Nested(UserSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
