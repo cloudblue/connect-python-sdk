@@ -14,7 +14,7 @@ from typing import Union
 from connect import TierConfigAutomation
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
 from connect.models.base import BaseModel
-from connect.models.company import Company
+from connect.models.company import Company, User
 from connect.models.connection import Connection
 from connect.models.event import EventInfo
 from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
@@ -101,7 +101,7 @@ def test_create_resource():
     assert isinstance(events.updated, EventInfo)
     assert isinstance(events.updated.at, datetime)
     assert str(events.updated.at) == '2018-11-21 11:10:29'
-    assert isinstance(events.updated.by, Company)
+    assert isinstance(events.updated.by, User)
     assert events.updated.by.id == 'PA-000-000'
     assert events.updated.by.name == 'Username'
 
@@ -130,13 +130,13 @@ def test_create_resource():
     assert isinstance(events.inquired, EventInfo)
     assert isinstance(events.inquired.at, datetime)
     assert str(events.inquired.at) == '2018-11-21 11:10:29'
-    assert isinstance(events.inquired.by, Company)
+    assert isinstance(events.inquired.by, User)
     assert events.inquired.by.id == 'PA-000-000'
     assert events.inquired.by.name == 'Username'
     assert isinstance(events.pended, EventInfo)
     assert isinstance(events.pended.at, datetime)
     assert str(events.pended.at) == '2018-11-21 11:10:29'
-    assert isinstance(events.pended.by, Company)
+    assert isinstance(events.pended.by, User)
     assert events.pended.by.id == 'PA-000-001'
     assert events.pended.by.name == 'Username1'
     assert not events.validated
@@ -150,7 +150,7 @@ def test_create_resource():
     assert request.params[0].value == 'param_a_value'
 
     assignee = request.assignee
-    assert isinstance(assignee, Company)
+    assert isinstance(assignee, User)
     assert assignee.id == 'PA-000-000'
     assert assignee.name == 'Username'
 

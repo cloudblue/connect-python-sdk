@@ -20,3 +20,15 @@ class CompanySchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return Company(**data)
+
+
+class User(BaseModel):
+    name = None  # type: str
+
+
+class UserSchema(BaseSchema):
+    name = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return User(**data)
