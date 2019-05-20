@@ -7,7 +7,7 @@ import datetime
 from typing import Optional
 
 from .base import BaseModel
-from .company import Company
+from .company import User
 from connect.models.schemas import EventInfoSchema, EventsSchema
 
 
@@ -19,8 +19,8 @@ class EventInfo(BaseModel):
     at = None  # type: Optional[datetime.datetime]
     """ (datetime.datetime|None) Date when the event occurred. """
 
-    by = None  # type: Optional[Company]
-    """ (:py:class:`.Company`) User that caused the event. """
+    by = None  # type: Optional[User]
+    """ (:py:class:`.User`) User that caused the event. """
 
 
 class Events(BaseModel):

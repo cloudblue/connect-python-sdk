@@ -6,7 +6,7 @@
 from typing import Optional, List
 
 from .base import BaseModel
-from .company import Company
+from .company import User
 from .connection import Connection
 from .contact import ContactInfo
 from .event import Events
@@ -110,8 +110,8 @@ class TierConfigRequest(BaseModel):
     Params can be modified only in Pending state.
     """
 
-    assignee = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) TCR environment. One of: test, prod, preview. """
+    assignee = None  # type: Optional[User]
+    """ (:py:class:`.User` | None) TCR environment. One of: test, prod, preview. """
 
     template = None  # type: Optional[Template]
     """ (:py:class:`.Template` | None) Template Object. This is filled only if TCR is approved. """
