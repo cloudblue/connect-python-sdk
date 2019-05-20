@@ -6,7 +6,7 @@
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
 from .asset import Asset
 from .base import BaseModel
-from .company import Company
+from .company import Company, User
 from .connection import Connection
 from .contact import Contact, ContactInfo, PhoneNumber
 from .event import EventInfo, Events
@@ -63,5 +63,6 @@ __all__ = [
     'UsageListing',
     'UsageRecord',
     'UsageRecords',
+    'User',
     'ValueChoice',
 ]

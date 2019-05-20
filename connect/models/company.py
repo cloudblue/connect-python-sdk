@@ -4,7 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from .base import BaseModel
-from connect.models.schemas import CompanySchema
+from connect.models.schemas import CompanySchema, UserSchema
 
 
 class Company(BaseModel):
@@ -14,3 +14,12 @@ class Company(BaseModel):
 
     name = None  # type: str
     """ (str) Company name. """
+
+
+class User(BaseModel):
+    """ Represents a user within the platform. """
+
+    _schema = UserSchema()
+
+    name = None  # type: str
+    """ (str) User name. """
