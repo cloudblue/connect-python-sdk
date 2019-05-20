@@ -7,7 +7,7 @@ import datetime
 from typing import Optional, List
 
 from .base import BaseModel
-from .company import Company
+from .company import Company, User
 from .hub import ExtIdHub
 from connect.models.schemas import MarketplaceSchema, AgreementStatsSchema, AgreementSchema, \
     ActivationSchema, ContractSchema
@@ -88,8 +88,8 @@ class Agreement(BaseModel):
     stats = None  # type: Optional[AgreementStats]
     """ (:py:class:`.AgreementStats` | None) Agreement stats. """
 
-    author = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) Reference to the user who created the version. """
+    author = None  # type: Optional[User]
+    """ (:py:class:`.User` | None) Reference to the user who created the version. """
 
     version = None  # type: int
     """ (int) Chronological number of the version. """
@@ -165,8 +165,8 @@ class Contract(BaseModel):
     owner = None  # type: Optional[Company]
     """ (:py:class:`.Company` | None) Reference object to the owner company. """
 
-    creator = None  # type: Company
-    """ (:py:class:`.Company`) Reference object to the creator company. """
+    creator = None  # type: User
+    """ (:py:class:`.User`) Reference object to the creator. """
 
     created = None  # type: datetime.datetime
     """ (datetime.datetime) Contract creation date. """
@@ -183,7 +183,7 @@ class Contract(BaseModel):
     activation = None  # type: Activation
     """ (:py:class:`.Activation`) Activation information. """
 
-    signee = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) Reference object to the user of the owner company,
+    signee = None  # type: Optional[User]
+    """ (:py:class:`.User` | None) Reference object to the user of the owner company,
     who signed the contract.
     """

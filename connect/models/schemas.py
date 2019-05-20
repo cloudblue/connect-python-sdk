@@ -4,6 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from marshmallow import Schema, fields, post_load
+import six
 
 
 class BaseSchema(Schema):
@@ -138,9 +139,18 @@ class DownloadLinkSchema(BaseSchema):
         return DownloadLink(**data)
 
 
+class UserSchema(BaseSchema):
+    name = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import User
+        return User(**data)
+
+
 class EventInfoSchema(BaseSchema):
     at = fields.DateTime(allow_none=True)
-    by = fields.Nested(CompanySchema, allow_none=True)
+    by = fields.Nested(UserSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -216,25 +226,36 @@ class RenewalSchema(BaseSchema):
         return Renewal(**data)
 
 
+class QuantityField(fields.Field):
+    def _deserialize(self, value, attr, obj, **kwargs):
+        if isinstance(value, six.string_types):
+            if value == 'unlimited':
+                return -1
+            else:
+                try:
+                    float_val = float(value)
+                    int_val = int(float_val)
+                    return int_val if int_val == float_val else float_val
+                except ValueError:
+                    raise ValueError({
+                        attr: [u'Not a valid string encoded number nor "unlimited".']
+                    })
+        elif isinstance(value, (int, float)):
+            return value
+        else:
+            raise ValueError({attr: [u'Not a valid int, float or string.']})
+
+
 class ItemSchema(BaseSchema):
     mpn = fields.Str()
-    quantity = fields.Str()
-    old_quantity = fields.Str(allow_none=True)
+    quantity = QuantityField()
+    old_quantity = QuantityField(allow_none=True)
     renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
 
     @post_load
     def make_object(self, data):
         from connect.models import Item
-        params = ('quantity', 'old_quantity')
-        for param in params:
-            if param in data:
-                if data[param] != 'unlimited':
-                    float_val = float(data[param])
-                    int_val = int(float_val)
-                    data[param] = int_val if float_val == int_val else float_val
-                else:
-                    data[param] = -1
         return Item(**data)
 
 
@@ -261,7 +282,7 @@ class AgreementSchema(BaseSchema):
     updated = fields.DateTime()
     owner = fields.Nested(CompanySchema)
     stats = fields.Nested(AgreementStatsSchema, allow_none=True)
-    author = fields.Nested(CompanySchema, allow_none=True)
+    author = fields.Nested(UserSchema, allow_none=True)
     version = fields.Int()
     active = fields.Bool()
     link = fields.Str()
@@ -285,13 +306,13 @@ class ContractSchema(BaseSchema):
     agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
     owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    creator = fields.Nested(CompanySchema, only=('id', 'name'))
+    creator = fields.Nested(UserSchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.DateTime(allow_none=True)
     version_created = fields.DateTime()
     activation = fields.Nested(ActivationSchema)
-    signee = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
+    signee = fields.Nested(UserSchema, only=('id', 'name'), allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -471,7 +492,7 @@ class TierConfigRequestSchema(BaseSchema):
     configuration = fields.Nested(TierConfigSchema)
     events = fields.Nested(EventsSchema, allow_none=True)
     params = fields.Nested(ParamSchema, many=True)
-    assignee = fields.Nested(CompanySchema, allow_none=True)
+    assignee = fields.Nested(UserSchema, allow_none=True)
     template = fields.Nested(TemplateSchema, allow_none=True)
     reason = fields.Str(allow_none=True)
     activation = fields.Nested(ActivationSchema, allow_none=True)
