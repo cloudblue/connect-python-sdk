@@ -8,17 +8,17 @@ from marshmallow import fields, post_load
 from typing import Optional
 
 from connect.models.base import BaseModel, BaseSchema
-from connect.models.company import CompanySchema, Company
+from connect.models.company import User, UserSchema
 
 
 class EventInfo(BaseModel):
     at = None  # type: Optional[str]
-    by = None  # type: Optional[Company]
+    by = None  # type: Optional[User]
 
 
 class EventInfoSchema(BaseSchema):
-    at = fields.Str(allow_none=True)
-    by = fields.Nested(CompanySchema, allow_none=True)
+    at = fields.DateTime(allow_none=True)
+    by = fields.Nested(UserSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
