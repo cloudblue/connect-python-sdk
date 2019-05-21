@@ -47,7 +47,7 @@ class Conversation(BaseModel):
     """ (str) Conversation topic. """
 
     messages = None  # type: List[ConversationMessage]
-    """ (List[:py:class:`.ConversationMessage`]) List of :py:class:`.ConversationMessage` 
+    """ (List[:py:class:`.ConversationMessage`]) List of :py:class:`.ConversationMessage`
     objects.
     """
 
