@@ -8,7 +8,7 @@ from typing import Optional, List
 from marshmallow import fields, post_load
 
 from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
+from .company import Company, CompanySchema, User, UserSchema
 from .hub import ExtIdHub, ExtIdHubSchema
 
 
@@ -104,8 +104,8 @@ class Agreement(BaseModel):
     stats = None  # type: Optional[AgreementStats]
     """ (:py:class:`.AgreementStats` | None) Agreement stats. """
 
-    author = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) Reference to the user who created the version. """
+    author = None  # type: Optional[User]
+    """ (:py:class:`.User` | None) Reference to the user who created the version. """
 
     version = None  # type: int
     """ (int) Chronological number of the version. """
@@ -146,7 +146,7 @@ class AgreementSchema(BaseSchema):
     updated = fields.DateTime()
     owner = fields.Nested(CompanySchema)
     stats = fields.Nested(AgreementStatsSchema, allow_none=True)
-    author = fields.Nested(CompanySchema, allow_none=True)
+    author = fields.Nested(UserSchema, allow_none=True)
     version = fields.Int()
     active = fields.Bool()
     link = fields.Str()
@@ -210,8 +210,8 @@ class Contract(BaseModel):
     owner = None  # type: Optional[Company]
     """ (:py:class:`.Company` | None) Reference object to the owner company. """
 
-    creator = None  # type: Company
-    """ (:py:class:`.Company`) Reference object to the creator company. """
+    creator = None  # type: User
+    """ (:py:class:`.User`) Reference object to the creator. """
 
     created = None  # type: datetime.datetime
     """ (datetime.datetime) Contract creation date. """
@@ -228,8 +228,8 @@ class Contract(BaseModel):
     activation = None  # type: Activation
     """ (:py:class:`.Activation`) Activation information. """
 
-    signee = None  # type: Optional[Company]
-    """ (:py:class:`.Company` | None) Reference object to the user of the owner company,
+    signee = None  # type: Optional[User]
+    """ (:py:class:`.User` | None) Reference object to the user of the owner company,
     who signed the contract.
     """
 
@@ -242,13 +242,13 @@ class ContractSchema(BaseSchema):
     agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
     owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    creator = fields.Nested(CompanySchema, only=('id', 'name'))
+    creator = fields.Nested(UserSchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.DateTime(allow_none=True)
     version_created = fields.DateTime()
     activation = fields.Nested(ActivationSchema)
-    signee = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
+    signee = fields.Nested(UserSchema, only=('id', 'name'), allow_none=True)
 
     @post_load
     def make_object(self, data):

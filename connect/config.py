@@ -14,6 +14,10 @@ class Config(object):
     :param str api_key: Service user ApiKey.
     :param str|list[str] products: Optional product ids.
     :param str file: Config file name.
+    :raises ValueError: Raised if either ``file`` or one of ``api_url`` or ``api_key`` are missing.
+    :raises TypeError: Raised if ``products`` is not a string or list of strings, or if config file
+        does not contain JSON data.
+    :raises IOError: Raised if the specified ``file`` could not be opened.
     """
 
     # Global instance
@@ -23,8 +27,7 @@ class Config(object):
     def __init__(self, api_url=None, api_key=None, products=None, file=None):
         # Check arguments
         if not file and not any([api_key, api_url]):
-            raise ValueError('Filename or api_key and api_url are expected'
-                             'in Config initialization')
+            raise ValueError('Expected file or api_key and api_url in Config initialization')
         if products and not isinstance(products, (str, list)):
             raise TypeError('Products can be string or string list. Found type '
                             + type(products).__name__)

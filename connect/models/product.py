@@ -7,6 +7,7 @@ import datetime
 from typing import List, Optional, Union
 
 from marshmallow import fields, post_load
+import six
 
 from .base import BaseModel, BaseSchema
 
@@ -191,22 +192,33 @@ class Item(BaseModel):
     """ (str) Global id. """
 
 
+class QuantityField(fields.Field):
+    def _deserialize(self, value, attr, obj, **kwargs):
+        if isinstance(value, six.string_types):
+            if value == 'unlimited':
+                return -1
+            else:
+                try:
+                    float_val = float(value)
+                    int_val = int(float_val)
+                    return int_val if int_val == float_val else float_val
+                except ValueError:
+                    raise ValueError({
+                        attr: [u'Not a valid string encoded number nor "unlimited".']
+                    })
+        elif isinstance(value, (int, float)):
+            return value
+        else:
+            raise ValueError({attr: [u'Not a valid int, float or string.']})
+
+
 class ItemSchema(BaseSchema):
     mpn = fields.Str()
-    quantity = fields.Str()
-    old_quantity = fields.Str(allow_none=True)
+    quantity = QuantityField()
+    old_quantity = QuantityField(allow_none=True)
     renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
 
     @post_load
     def make_object(self, data):
-        params = ('quantity', 'old_quantity')
-        for param in params:
-            if param in data:
-                if data[param] != 'unlimited':
-                    float_val = float(data[param])
-                    int_val = int(float_val)
-                    data[param] = int_val if float_val == int_val else float_val
-                else:
-                    data[param] = -1
         return Item(**data)

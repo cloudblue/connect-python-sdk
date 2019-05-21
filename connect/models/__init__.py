@@ -6,7 +6,7 @@
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
 from .asset import Asset, AssetSchema
 from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
+from .company import Company, CompanySchema, User, UserSchema
 from .connection import Connection, ConnectionSchema
 from .contact import Contact, ContactInfo, ContactInfoSchema, ContactSchema, \
     PhoneNumber, PhoneNumberSchema
@@ -109,6 +109,8 @@ __all__ = [
     'UsageRecords',
     'UsageRecordSchema',
     'UsageRecordsSchema',
+    'User',
+    'UserSchema',
     'ValueChoice',
     'ValueChoiceSchema',
 ]

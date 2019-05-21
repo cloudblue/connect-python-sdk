@@ -21,3 +21,18 @@ class CompanySchema(BaseSchema):
     @post_load
     def make_object(self, data):
         return Company(**data)
+
+
+class User(BaseModel):
+    """ Represents a user within the platform. """
+
+    name = None  # type: str
+    """ (str) User name. """
+
+
+class UserSchema(BaseSchema):
+    name = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        return User(**data)
