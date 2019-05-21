@@ -99,3 +99,13 @@ class Fulfillment(BaseModel):
         return list(filter(
             lambda item: item.quantity == 0 and item.old_quantity > 0,
             self.asset.items))
+
+    def get_conversation(self, config=None):
+        """
+        :param Config config: Configuration, or ``None`` to use the environment config (default).
+        :return: Conversation.
+        :rtype: Conversation
+        """
+        from connect.resources.base import ApiClient
+        response, _ = ApiClient(config, base_path='conversations')\
+            .get(params={'instance_id': self.id})

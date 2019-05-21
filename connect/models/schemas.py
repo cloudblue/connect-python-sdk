@@ -579,3 +579,27 @@ class UsageRecordSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import UsageRecord
         return UsageRecord(**data)
+
+
+class ConversationMessageSchema(BaseSchema):
+    conversation = fields.Str()
+    created = fields.DateTime()
+    creator = fields.Nested(UserSchema)
+    text = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import ConversationMessage
+        return ConversationMessage(**data)
+
+
+class ConversationSchema(BaseSchema):
+    instance_id = fields.Str()
+    created = fields.DateTime()
+    topic = fields.Str()
+    messages = fields.Nested(ConversationMessageSchema, many=True)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Conversation
+        return Conversation(**data)
