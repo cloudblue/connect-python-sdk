@@ -50,35 +50,69 @@ class FulfillmentAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (Fulfillment) -> str
+
+        conversation = request.get_conversation(self.config)
+
         try:
             if self.config.products \
                     and request.asset.product.id not in self.config.products:
                 return 'Invalid product'
 
             logger.info('Start request process / ID request - {}'.format(request.id))
-            result = self.process_request(request)
+            process_result = self.process_request(request)
 
-            if not result:
+            if not process_result:
                 logger.info('Method `process_request` did not return result')
                 return ''
 
-            params = {}
-            if isinstance(result, ActivationTileResponse):
-                params = {'activation_tile': result.tile}
-            elif isinstance(result, ActivationTemplateResponse):
-                params = {'template_id': result.template_id}
+            if isinstance(process_result, ActivationTileResponse):
+                message = 'Activated using custom activation tile.'
+                approved = self.approve(request.id, {'activation_tile': process_result.tile})
+            elif isinstance(process_result, ActivationTemplateResponse):
+                message = 'Activated using template {}.'.format(process_result.template_id)
+                approved = self.approve(request.id, {'template_id': process_result.template_id})
+            else:
+                # We should not get here
+                message = ''
+                approved = ''
 
-            return self.approve(request.id, params)
+            if conversation:
+                try:
+                    conversation.add_message(message)
+                except TypeError as ex:
+                    logger.error('Error updating conversation for request {}: {}'
+                                 .format(request.id, ex))
+            return approved
 
         except InquireRequest as inquire:
             self.update_parameters(request.id, inquire.params)
-            return self.inquire(request.id)
+            inquired = self.inquire(request.id)
+            try:
+                conversation.add_message(str(inquire))
+            except TypeError as ex:
+                logger.error('Error updating conversation for request {}: {}'
+                             .format(request.id, ex))
+            return inquired
 
         except FailRequest as fail:
-            return self.fail(request.id, reason=str(fail))
+            # PyCharm incorrectly detects unreachable code here, so disable
+            # noinspection PyUnreachableCode
+            failed = self.fail(request.id, reason=str(fail))
+            try:
+                conversation.add_message(str(fail))
+            except TypeError as ex:
+                logger.error('Error updating conversation for request {}: {}'
+                             .format(request.id, ex))
+            return failed
 
         except SkipRequest as skip:
-            return skip.code
+            skipped = skip.code
+            try:
+                conversation.add_message(str(skip))
+            except TypeError as ex:
+                logger.error('Error updating conversation for request {}: {}'
+                             .format(request.id, ex))
+            return skipped
 
     @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):

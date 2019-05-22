@@ -7,6 +7,7 @@ import datetime
 
 from .asset import Asset
 from .base import BaseModel
+from .conversation import Conversation
 from .marketplace import Contract, Marketplace
 from connect.models.schemas import FulfillmentSchema
 
@@ -103,9 +104,19 @@ class Fulfillment(BaseModel):
     def get_conversation(self, config=None):
         """
         :param Config config: Configuration, or ``None`` to use the environment config (default).
-        :return: Conversation.
-        :rtype: Conversation
+        :return: The conversation for this request, or ``None`` if there is none.
+        :rtype: Conversation|None
         """
         from connect.resources.base import ApiClient
-        response, _ = ApiClient(config, base_path='conversations')\
-            .get(params={'instance_id': self.id})
+
+        client = ApiClient(config, base_path='conversations')
+        response, _ = client.get(params={'instance_id': self.id})
+        try:
+            conversations = Conversation.deserialize(response)
+            if conversations and conversations[0].id:
+                response, _ = client.get(conversations[0].id)
+                return Conversation.deserialize(response)
+            else:
+                return None
+        except TypeError:
+            return None

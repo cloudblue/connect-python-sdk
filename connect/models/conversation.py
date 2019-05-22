@@ -58,6 +58,7 @@ class Conversation(BaseModel):
         :param Config config: Configuration, or ``None`` to use the environment config (default).
         :return: The added message.
         :rtype: ConversationMessage
+        :raises TypeError: Raised if the message cannot be deserialized.
         """
 
         from connect.resources.base import ApiClient
