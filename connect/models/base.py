@@ -40,6 +40,7 @@ class BaseModel(object):
         :param str json_str: String containing the JSON data to be deserialized.
         :return: An instance of the same class as the receiver of the call, or a list of instances.
         :rtype: Any|list[Any]
+        :raises TypeError: Raised if the data cannot be deserialized.
         """
         return cls.deserialize_json(json.loads(json_str))
 
@@ -50,6 +51,7 @@ class BaseModel(object):
         :param dict|list json_data: JSON list or dictionary to be deserialized.
         :return: An instance of the same class as the receiver of the call, or a list of instances.
         :rtype: Any|list[Any]
+        :raises TypeError: Raised if the data cannot be deserialized.
         """
         objects, error = cls._schema.load(json_data, many=isinstance(json_data, list))
         if error:

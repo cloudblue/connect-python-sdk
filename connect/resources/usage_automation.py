@@ -73,6 +73,7 @@ class UsageAutomation(AutomationEngine):
         :param Product product: Specific product.
         :return: The template file contents.
         :rtype: bytes
+        :raises FileRetrievalError: Raised if the file contents could not be retrieved.
         """
         location = self._get_usage_template_download_location(product.id)
         if not location:
@@ -94,6 +95,7 @@ class UsageAutomation(AutomationEngine):
         :param list[UsageRecord] usage_records: Records.
         :return: Usage file.
         :rtype: UsageFile
+        :raises FileCreationError: Raised if creation or uploading of the file fails.
         """
         usage_file = self._create_usage_file(usage_file)
         self._upload_usage_records(usage_file, usage_records)

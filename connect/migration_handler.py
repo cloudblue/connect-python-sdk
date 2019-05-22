@@ -92,6 +92,8 @@ class MigrationHandler(object):
         :param Fulfillment request: The request to migrate.
         :return: A new request object with the parameter values updated.
         :rtype: Fulfillment
+        :raises SkipRequest: Raised if migration fails for some reason.
+        :raises MigrationParamError: Raised if the value for a parameter is not a string.
         """
         if self._needs_migration(request):
             logger.info('[MIGRATION::{}] Running migration operations for request {}'
