@@ -99,7 +99,17 @@ class Fulfillment(BaseModel):
             self.asset.items))
 
     def needs_migration(self, migration_key='migration_info'):
-        # type: (str) -> bool
+        """
+        Indicates whether the request contains data to be migrated from a legacy product.
+        Migration is performed by an external service. All you have to do for a request that
+        needs migration is to skip processing by raising a
+        :py:class:`connect.exceptions.SkipRequest` exception.
+
+        :param str migration_key: The name of the parameter that contains the migration data
+            (optional; default value is ``migration_info``).
+        :return: Whether the request needs migrating.
+        :rtype: bool
+        """
         return self.asset.get_param_by_id(migration_key) is not None
 
 
