@@ -51,6 +51,9 @@ class Conversation(BaseModel):
     objects.
     """
 
+    creator = None  # type: User
+    """ (:py:class:`.User`) Creator of the conversation. """
+
     def add_message(self, message, config=None):
         """ Adds a message to the conversation.
 

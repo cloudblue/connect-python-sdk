@@ -118,5 +118,5 @@ class Fulfillment(BaseModel):
                 return Conversation.deserialize(response)
             else:
                 return None
-        except TypeError:
+        except ValueError:
             return None

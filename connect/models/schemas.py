@@ -598,6 +598,7 @@ class ConversationSchema(BaseSchema):
     created = fields.DateTime()
     topic = fields.Str()
     messages = fields.Nested(ConversationMessageSchema, many=True)
+    creator = fields.Nested(UserSchema)
 
     @post_load
     def make_object(self, data):
