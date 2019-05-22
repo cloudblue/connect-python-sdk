@@ -98,6 +98,10 @@ class Fulfillment(BaseModel):
             lambda item: item.quantity == 0 and item.old_quantity > 0,
             self.asset.items))
 
+    def needs_migration(self, migration_key='migration_info'):
+        # type: (str) -> bool
+        return self.asset.get_param_by_id(migration_key) is not None
+
 
 class FulfillmentSchema(BaseSchema):
     activation_key = fields.Str()
