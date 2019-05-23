@@ -5,8 +5,10 @@ This file is part of the Ingram Micro Cloud Blue Connect SDK.
 Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 
+from typing import List, Optional, Union
+
 from marshmallow import fields, post_load
-from typing import List, Optional
+import six
 
 from .base import BaseModel, BaseSchema
 
@@ -115,16 +117,36 @@ class RenewalSchema(BaseSchema):
 
 class Item(BaseModel):
     mpn = None  # type: str
-    quantity = None  # type: int
-    old_quantity = None  # type: Optional[int]
+    quantity = None  # type: Union[int,float]
+    old_quantity = None  # type: Union[int,float,None]
     renewal = None  # type: Optional[Renewal]
     global_id = None  # type: str
 
 
+class QuantityField(fields.Field):
+    def _deserialize(self, value, attr, obj, **kwargs):
+        if isinstance(value, six.string_types):
+            if value == 'unlimited':
+                return -1
+            else:
+                try:
+                    float_val = float(value)
+                    int_val = int(float_val)
+                    return int_val if int_val == float_val else float_val
+                except ValueError:
+                    raise ValueError({
+                        attr: [u'Not a valid string encoded number nor "unlimited".']
+                    })
+        elif isinstance(value, (int, float)):
+            return value
+        else:
+            raise ValueError({attr: [u'Not a valid int, float or string.']})
+
+
 class ItemSchema(BaseSchema):
     mpn = fields.Str()
-    quantity = fields.Integer()
-    old_quantity = fields.Integer(allow_none=True)
+    quantity = QuantityField()
+    old_quantity = QuantityField(allow_none=True)
     renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
 

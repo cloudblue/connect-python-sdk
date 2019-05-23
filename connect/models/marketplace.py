@@ -9,7 +9,7 @@ from marshmallow import fields, post_load
 from typing import Optional, List
 
 from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
+from .company import Company, CompanySchema, User, UserSchema
 from .hub import Hubs, HubsSchema
 
 
@@ -59,7 +59,7 @@ class Agreement(BaseModel):
     updated = None  # type: str
     owner = None  # type: Company
     stats = None  # type: Optional[AgreementStats]
-    author = None  # type: Optional[Company]
+    author = None  # type: Optional[User]
     version = None  # type: int
     active = None  # type: bool
     link = None  # type: str
@@ -78,7 +78,7 @@ class AgreementSchema(BaseSchema):
     updated = fields.DateTime()
     owner = fields.Nested(CompanySchema)
     stats = fields.Nested(AgreementStatsSchema, allow_none=True)
-    author = fields.Nested(CompanySchema, allow_none=True)
+    author = fields.Nested(UserSchema, allow_none=True)
     version = fields.Int()
     active = fields.Bool()
     link = fields.Str()
@@ -117,13 +117,13 @@ class Contract(BaseModel):
     agreement = None  # type: Agreement
     marketplace = None  # type: Optional[Marketplace]
     owner = None  # type: Optional[Company]
-    creator = None  # type: Company
+    creator = None  # type: User
     created = None  # type: str
     updated = None  # type: str
     enrolled = None  # type: Optional[str]
     version_created = None  # type: str
     activation = None  # type: Activation
-    signee = None  # type: Optional[Company]
+    signee = None  # type: Optional[User]
 
 
 class ContractSchema(BaseSchema):
@@ -134,13 +134,13 @@ class ContractSchema(BaseSchema):
     agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
     owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    creator = fields.Nested(CompanySchema, only=('id', 'name'))
+    creator = fields.Nested(UserSchema, only=('id', 'name'))
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.Str(allow_none=True)
     version_created = fields.DateTime()
     activation = fields.Nested(ActivationSchema)
-    signee = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
+    signee = fields.Nested(UserSchema, only=('id', 'name'), allow_none=True)
 
     @post_load
     def make_object(self, data):
