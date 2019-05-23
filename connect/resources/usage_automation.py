@@ -58,7 +58,47 @@ class UsageAutomation(AutomationEngine):
                     .format(request.product.id, result))
         return 'success'
 
-    def create_usage_file(self, usage_file):
+    def get_usage_template(self, product):
+        # type: (Product) -> bytes
+        location = self._get_usage_template_download_location(product.id)
+        if not location:
+            msg = 'Error obtaining template usage file location'
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+
+        contents = self._retrieve_usage_template(location) if location else None
+        if not contents:
+            msg = 'Error obtaining template usage file from `{}`'.format(location)
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+        return contents
+
+    def submit_usage(self, usage_file, usage_records):
+        # type: (File, List[FileUsageRecord]) -> File
+        usage_file = self._create_usage_file(usage_file)
+        self._upload_usage_records(usage_file, usage_records)
+        return usage_file
+
+    def _get_usage_template_download_location(self, product_id):
+        # type: (str) -> str
+        try:
+            response, _ = self._api.get(url='{}/usage/products/{}/template/'
+                                        .format(self.config.api_url, product_id))
+            response_dict = json.loads(response)
+            return response_dict['template_link']
+        except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
+            return ''
+
+    @staticmethod
+    def _retrieve_usage_template(location):
+        # type: (str) -> Optional[bytes]
+        try:
+            response = requests.get(location)
+            return response.content
+        except requests.exceptions.RequestException:
+            return None
+
+    def _create_usage_file(self, usage_file):
         # type: (File) -> File
         if not usage_file.name or not usage_file.product.id or not usage_file.contract.id:
             raise FileCreationError('Usage File Creation requires name, product id, contract id')
@@ -68,8 +108,14 @@ class UsageAutomation(AutomationEngine):
         response, _ = self._api.post(json=usage_file.json)
         return self._load_schema(response, many=False)
 
+    def _upload_usage_records(self, usage_file, usage_records):
+        # type: (File, List[FileUsageRecord]) -> None
+        # TODO: Using xslx mechanism till usage records json api is available
+        book = self._create_spreadsheet(usage_records)
+        self._upload_spreadsheet(usage_file, book)
+
     @staticmethod
-    def create_spreadsheet(usage_records):
+    def _create_spreadsheet(usage_records):
         # type: (List[FileUsageRecord]) -> openpyxl.Workbook
         book = openpyxl.Workbook()
         sheet = book.active
@@ -94,7 +140,7 @@ class UsageAutomation(AutomationEngine):
             sheet['H' + row] = record.asset_search_value
         return book
 
-    def upload_spreadsheet(self, usage_file, spreadsheet):
+    def _upload_spreadsheet(self, usage_file, spreadsheet):
         # type: (File, openpyxl.Workbook) -> None
 
         # Generate spreadsheet file
@@ -124,49 +170,3 @@ class UsageAutomation(AutomationEngine):
             msg = 'Unexpected server response, returned code {}'.format(status)
             logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
-
-    def upload_usage_records(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> None
-        # TODO: Using xslx mechanism till usage records json api is available
-        book = self.create_spreadsheet(usage_records)
-        self.upload_spreadsheet(usage_file, book)
-
-    def get_usage_template(self, product):
-        # type: (Product) -> bytes
-        location = self._get_usage_template_download_location(product.id)
-        if not location:
-            msg = 'Error obtaining template usage file location'
-            logger.error(msg)
-            raise FileRetrievalError(msg)
-
-        contents = self._retrieve_usage_template(location) if location else None
-        if not contents:
-            msg = 'Error obtaining template usage file from `{}`'.format(location)
-            logger.error(msg)
-            raise FileRetrievalError(msg)
-        return contents
-
-    def submit_usage(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> File
-        usage_file = self.create_usage_file(usage_file)
-        self.upload_usage_records(usage_file, usage_records)
-        return usage_file
-
-    def _get_usage_template_download_location(self, product_id):
-        # type: (str) -> str
-        try:
-            response, _ = self._api.get(url='{}/usage/products/{}/template/'
-                                        .format(self.config.api_url, product_id))
-            response_dict = json.loads(response)
-            return response_dict['template_link']
-        except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
-            return ''
-
-    @staticmethod
-    def _retrieve_usage_template(location):
-        # type: (str) -> Optional[bytes]
-        try:
-            response = requests.get(location)
-            return response.content
-        except requests.exceptions.RequestException:
-            return None

@@ -12,17 +12,17 @@ from .base import BaseModel, BaseSchema
 
 
 class PhoneNumber(BaseModel):
-    country_code = None  # type: str
-    area_code = None  # type: str
-    phone_number = None  # type: str
-    extension = None  # type: str
+    country_code = None  # type: Optional[str]
+    area_code = None  # type: Optional[str]
+    phone_number = None  # type: Optional[str]
+    extension = None  # type: Optional[str]
 
 
 class PhoneNumberSchema(BaseSchema):
-    country_code = fields.Str()
-    area_code = fields.Str()
-    phone_number = fields.Str()
-    extension = fields.Str()
+    country_code = fields.Str(allow_none=True)
+    area_code = fields.Str(allow_none=True)
+    phone_number = fields.Str(allow_none=True)
+    extension = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):

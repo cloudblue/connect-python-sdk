@@ -39,6 +39,16 @@ def _get_response_tier_config_ok():
                     status_code=200)
 
 
+def _get_response_migration():
+    return Response(
+        ok=True,
+        content=load_str(os.path.join(
+            os.path.dirname(__file__),
+            'data',
+            'response_migration.json')),
+        status_code=200)
+
+
 def test_resource_url():
     resource = FulfillmentAutomation()
     assert resource._api.get_url() == resource.config.api_url + resource.resource + '/'
@@ -176,3 +186,21 @@ def test_get_tier_config_param():
     assert isinstance(param, Param)
     assert param.id == 'param_a'
     assert param.value == 'param_a_value'
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok2()))
+def test_doesnt_need_migration():
+    requests = FulfillmentAutomation().list()
+    assert len(requests) == 1
+    request = requests[0]
+    assert isinstance(request, Fulfillment)
+    assert not request.needs_migration()
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_migration()))
+def test_needs_migration():
+    requests = FulfillmentAutomation().list()
+    assert len(requests) == 1
+    request = requests[0]
+    assert isinstance(request, Fulfillment)
+    assert request.needs_migration()
