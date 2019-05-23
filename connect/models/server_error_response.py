@@ -11,17 +11,24 @@ from typing import List
 from .base import BaseModel
 
 
-class ServerError(BaseModel):
+class ServerErrorResponse(BaseModel):
     error_code = None  # type: str
     params = None  # type: dict
     errors = None  # type: List[str]
 
+    def __str__(self):
+        return str({
+            'error_code': self.error_code,
+            'params': self.params,
+            'errors': self.errors,
+        })
 
-class ServerErrorSchema(Schema):
+
+class ServerErrorResponseSchema(Schema):
     error_code = fields.Str()
     params = fields.Dict()
     errors = fields.List(fields.Str())
 
     @post_load
     def make_object(self, data):
-        return ServerError(**data)
+        return ServerErrorResponse(**data)

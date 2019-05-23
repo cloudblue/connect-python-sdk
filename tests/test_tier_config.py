@@ -17,7 +17,7 @@ from connect.models.base import BaseModel
 from connect.models.company import Company, User
 from connect.models.connection import Connection
 from connect.models.event import EventInfo
-from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
+from connect.models.exception import InquireRequest, FailRequest, SkipRequest
 from connect.models.hub import Hub
 from connect.models.product import Product
 from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
@@ -201,7 +201,7 @@ def test_process_with_activation_template():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_inquire():
-    automation = TierConfigAutomationHelper(exception_class=FulfillmentInquire)
+    automation = TierConfigAutomationHelper(exception_class=InquireRequest)
     automation.process()
 
 
@@ -209,7 +209,7 @@ def test_process_raise_inquire():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_fail():
-    automation = TierConfigAutomationHelper(exception_class=FulfillmentFail)
+    automation = TierConfigAutomationHelper(exception_class=FailRequest)
     automation.process()
 
 
@@ -217,7 +217,7 @@ def test_process_raise_fail():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_skip():
-    automation = TierConfigAutomationHelper(exception_class=Skip)
+    automation = TierConfigAutomationHelper(exception_class=SkipRequest)
     automation.process()
 
 

@@ -40,7 +40,7 @@ $ pip install connect-sdk
 from connect import FulfillmentAutomation, TierConfigAutomation
 from connect.logger import logger
 from connect.models import ActivationTemplateResponse, ActivationTileResponse
-from connect.models.exception import FulfillmentFail, FulfillmentInquire, Skip
+from connect.models.exception import FailRequest, InquireRequest, SkipRequest
 
 
 class ExampleRequestProcessor(FulfillmentAutomation):
@@ -56,13 +56,13 @@ class ExampleRequestProcessor(FulfillmentAutomation):
         if request.type == 'purchase':
             for item in request.asset.items:
                 if item.quantity > 100000:
-                    raise FulfillmentFail(
+                    raise FailRequest(
                         message='Is Not possible to purchase product')
 
             for param in request.asset.params:
                 if param.name == 'email' and not param.value:
                     param.value_error = 'Email address has not been provided, please provide one'
-                    raise FulfillmentInquire(params=[param])
+                    raise InquireRequest(params=[param])
 
             # Approve by ActivationTile
             return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, '
@@ -77,11 +77,10 @@ class ExampleRequestProcessor(FulfillmentAutomation):
 
         elif request.type == 'change':
             # Fail
-            raise FulfillmentFail()
+            raise FailRequest()
         else:
             # Skip request
-            raise Skip()
-
+            raise SkipRequest()
 
 class ExampleTierConfigProcessor(TierConfigAutomation):
     def process_request(self, request):

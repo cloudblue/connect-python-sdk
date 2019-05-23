@@ -12,8 +12,8 @@ from requests import compat
 
 from connect.config import Config
 from connect.logger import function_log, logger
-from connect.models import BaseSchema, ServerErrorSchema
-from connect.models.exception import ServerErrorException
+from connect.models import BaseSchema, ServerErrorResponseSchema
+from connect.models.exception import ServerError
 
 
 class ApiClient(object):
@@ -102,9 +102,9 @@ class ApiClient(object):
                     'Response status - {}'.format(attr, response.status_code),
                 )
         if not response.ok:
-            data, error = ServerErrorSchema().loads(response.content)
+            data, error = ServerErrorResponseSchema().loads(response.content)
             if data:
-                raise ServerErrorException(data)
+                raise ServerError(data)
 
         return response.content, response.status_code
 
