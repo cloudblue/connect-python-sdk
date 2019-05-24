@@ -1,0 +1,157 @@
+[
+  {
+    "asset": {
+      "connection": {
+        "id": "CT-0000-0000-0000",
+        "provider": {
+          "id": "PA-473-705",
+          "name": "ACME Provider"
+        },
+        "type": "preview",
+        "vendor": {
+          "id": "VA-691-879",
+          "name": "Marc FSG"
+        }
+      },
+      "external_id": "899",
+      "id": "AS-893-495-635-9",
+      "items": [
+        {
+          "id": "TEAM_ST3L2T1Y",
+          "mpn": "TEAM-ST3L2T1Y",
+          "old_quantity": "0",
+          "quantity": "100"
+        },
+        {
+          "id": "TEAM_ST3L2TAC1M",
+          "mpn": "TEAM-ST3L2TAC1M",
+          "old_quantity": "0",
+          "quantity": "200"
+        },
+        {
+          "id": "UPSIZE_TEST",
+          "mpn": "UPSIZE_TEST",
+          "old_quantity": "200",
+          "quantity": "201"
+        },
+        {
+          "id": "DOWNSIZE_TEST",
+          "mpn": "DOWNSIZE_TEST",
+          "old_quantity": "200",
+          "quantity": "199"
+        },
+        {
+          "id": "DELETE_TEST",
+          "mpn": "DELETE_TEST",
+          "old_quantity": "200",
+          "quantity": "0"
+        }
+      ],
+      "params": [
+        {
+          "description": "How customer Feels",
+          "id": "howyoufeel",
+          "name": "How You feel today?",
+          "type": "dropdown",
+          "value": "Good",
+          "value_choices": [
+            {
+              "label": "Really Good",
+              "value": "reallygood"
+            },
+            {
+              "label": "Good",
+              "value": "Good"
+            },
+            {
+              "label": "Don't ask",
+              "value": "bad"
+            }
+          ],
+          "value_error": ""
+        },
+        {
+          "description": "Team Identifier on Dropbox system",
+          "id": "teamID",
+          "name": "Team ID",
+          "type": "text",
+          "value": "1",
+          "value_choices": [],
+          "value_error": ""
+        },
+        {
+          "id": "migration_info",
+          "name": "migration_info",
+          "title": "Data for migration subscription",
+          "description": "Json with data realted with the ralted fulfillment.",
+          "scope": null,
+          "value": "{\"email\":\"example.migration@mailinator.com\",\"team_id\":\"dbtid:AADaQq_w53nMDQbIPM_X123456PuzpcM2BI\",\"team_name\":\"Migration Team\",\"num_licensed_users\":\"10\"}",
+          "value_error": "None",
+          "type": "text",
+          "constraints": null,
+          "value_choices": []
+        }
+      ],
+      "product": {
+        "id": "CN-573-708-587",
+        "name": "Dropbox Test"
+      },
+      "tiers": {
+        "customer": {
+          "contact_info": {
+            "address_line1": "Darren Passage",
+            "address_line2": "",
+            "city": "West Douglas",
+            "contact": {
+              "email": "markbrooks-0189@VA-691-879.com",
+              "first_name": "Mark",
+              "last_name": "Brooks",
+              "phone_number": {
+                "area_code": "1",
+                "country_code": "+252",
+                "extension": "",
+                "phone_number": "474842"
+              }
+            },
+            "country": "us",
+            "postal_code": "30690",
+            "state": "Nevada"
+          },
+          "external_id": "889",
+          "id": "TA-0-5870-9239-0029",
+          "name": "Kaiser LLC"
+        },
+        "tier1": {
+          "contact_info": {
+            "address_line1": "noname",
+            "address_line2": "",
+            "city": "noname",
+            "contact": {
+              "email": "no-reply@acme.example.com",
+              "first_name": "ACME",
+              "last_name": "Reseller",
+              "phone_number": {
+                "area_code": "234",
+                "country_code": "+1",
+                "extension": "",
+                "phone_number": "567890"
+              }
+            },
+            "country": "us",
+            "postal_code": "12111",
+            "state": "Alaska"
+          },
+          "external_id": "1",
+          "id": "TA-0-7251-3930-7482",
+          "name": "ACME Reseller"
+        },
+        "tier2": {}
+      }
+    },
+    "created": "2018-09-03T10:28:18.472670+00:00",
+    "id": "PR-5620-6510-8214",
+    "status": "approved",
+    "type": "purchase",
+    "updated": "2018-09-04T10:38:58.045330+00:00"
+  }
+]
