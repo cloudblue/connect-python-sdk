@@ -7,8 +7,8 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import fields, post_load
 from typing import Optional
 
-from connect.models.base import BaseModel, BaseSchema
-from connect.models.company import User, UserSchema
+from .base import BaseModel, BaseSchema
+from .company import User, UserSchema
 
 
 class EventInfo(BaseModel):

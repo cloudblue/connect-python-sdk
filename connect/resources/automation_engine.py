@@ -8,18 +8,17 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from typing import Any, Dict
 
 from connect.logger import function_log
-from connect.models import ActivationTileResponse
-from connect.models.base import BaseModel
+from connect.models import ActivationTileResponse, BaseModel
 from .base import BaseResource
 from .template import TemplateResource
 
 
-class AutomationResource(BaseResource):
+class AutomationEngine(BaseResource):
     limit = 1000
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
-        return super(AutomationResource, self).filters(status=status, **kwargs)
+        return super(AutomationEngine, self).filters(status=status, **kwargs)
 
     def process(self):
         # type: () -> None

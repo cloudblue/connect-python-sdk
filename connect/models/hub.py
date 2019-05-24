@@ -8,9 +8,9 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 from marshmallow import Schema, fields, post_load
 from typing import Optional
 
-from connect.models.company import Company, CompanySchema
-from connect.models.event import Events, EventsSchema
 from .base import BaseModel, BaseSchema
+from .company import Company, CompanySchema
+from .event import Events, EventsSchema
 
 
 class HubInstance(BaseModel):

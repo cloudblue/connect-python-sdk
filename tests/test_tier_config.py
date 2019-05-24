@@ -12,16 +12,10 @@ from mock import MagicMock, patch
 from typing import Union
 
 from connect import TierConfigAutomation
-from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
-from connect.models.base import BaseModel
-from connect.models.company import Company, User
-from connect.models.connection import Connection
-from connect.models.event import EventInfo
-from connect.models.exception import InquireRequest, FailRequest, SkipRequest
-from connect.models.hub import Hub
-from connect.models.product import Product
-from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
-    Activation, Account
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
+from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
+    Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
+    Template, Activation, Account, User
 from .common import Response, load_str
 
 

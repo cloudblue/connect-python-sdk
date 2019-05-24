@@ -12,14 +12,13 @@ import openpyxl
 import requests
 from typing import Dict, Any, List, Optional
 
+from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models.exception import FileCreationError, FileRetrievalError
-from connect.models.product import Product
-from connect.models.usage import FileSchema, Listing, File, FileUsageRecord
-from connect.resource import AutomationResource
+from connect.models import Product, FileSchema, Listing, File, FileUsageRecord
+from .automation_engine import AutomationEngine
 
 
-class UsageAutomation(AutomationResource):
+class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = FileSchema(many=True)

@@ -6,14 +6,14 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from abc import ABCMeta
 
+from connect.exceptions import SkipRequest, UsageFileAction
 from connect.logger import logger
 from connect.models.base import BaseModel
-from connect.models.exception import UsageFileAction, SkipRequest
 from connect.models.usage import FileSchema, File
-from connect.resource import AutomationResource
+from .automation_engine import AutomationEngine
 
 
-class UsageFileAutomation(AutomationResource):
+class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     schema = FileSchema(many=True)

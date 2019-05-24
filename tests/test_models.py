@@ -12,11 +12,7 @@ import six
 from mock import MagicMock, patch
 
 from connect import FulfillmentAutomation
-from connect.models import Param
-from connect.models.asset import Asset
-from connect.models.fulfillment import Fulfillment
-from connect.models.product import Item
-from connect.models.tier_config import TierConfig
+from connect.models import Asset, Param, Fulfillment, Item, TierConfig
 from .common import Response, load_str
 
 

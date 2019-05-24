@@ -6,13 +6,12 @@ Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 """
 from typing import Union
 
-from connect import FulfillmentAutomation, TierConfigAutomation
 from connect.config import Config
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger
-from connect.models import ActivationTemplateResponse, ActivationTileResponse
-from connect.models.exception import FailRequest, InquireRequest, SkipRequest
-from connect.models.fulfillment import Fulfillment
-from connect.models.tier_config import TierConfigRequest
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, \
+    Fulfillment, TierConfigRequest
+from connect.resources import FulfillmentAutomation, TierConfigAutomation
 
 # Set logger level / default level ERROR
 logger.setLevel("DEBUG")
@@ -50,8 +49,7 @@ class ExampleRequestProcessor(FulfillmentAutomation):
             # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
             # Approve by Template
-            # noinspection PyUnreachableCode
-            return ActivationTemplateResponse('TL-497-535-242')
+            # return ActivationTemplateResponse('TL-497-535-242')
             # Or
             # return TemplateResource().get(pk='TEMPLATE_ID')
 

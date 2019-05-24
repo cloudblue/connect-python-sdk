@@ -8,14 +8,14 @@ from abc import ABCMeta
 
 from typing import List
 
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
-from connect.models.exception import FailRequest, InquireRequest, SkipRequest
-from connect.models.tier_config import TierConfigRequest, TierConfigRequestSchema
-from .automation import AutomationResource
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
+    TierConfigRequest, TierConfigRequestSchema
+from .automation_engine import AutomationEngine
 
 
-class TierConfigAutomation(AutomationResource):
+class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     schema = TierConfigRequestSchema(many=True)

@@ -8,15 +8,14 @@ from abc import ABCMeta
 
 from typing import Any, Dict, List, Optional
 
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param
-from connect.models.exception import FailRequest, InquireRequest, SkipRequest
-from connect.models.fulfillment import Fulfillment, FulfillmentSchema
-from connect.models.tier_config import TierConfig, TierConfigRequestSchema
-from .automation import AutomationResource
+from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
+    Fulfillment, FulfillmentSchema, TierConfig, TierConfigRequestSchema
+from .automation_engine import AutomationEngine
 
 
-class FulfillmentAutomation(AutomationResource):
+class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     schema = FulfillmentSchema(many=True)

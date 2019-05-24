@@ -9,14 +9,10 @@ import os
 import pytest
 from mock import patch, MagicMock
 
-from connect.models import usage
-from connect.models.company import Company
-from connect.models.exception import SkipRequest, AcceptUsageFile, CloseUsageFile, \
-    DeleteUsageFile, RejectUsageFile, SubmitUsageFile
-from connect.models.marketplace import Contract, Marketplace
-from connect.models.product import Product
-from connect.models.usage import Records
-from connect.resource import UsageFileAutomation
+from connect.exceptions import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, RejectUsageFile, \
+    SkipRequest, SubmitUsageFile
+from connect.models import Company, Contract, Marketplace, Product, Records, File
+from connect.resources import UsageFileAutomation
 from .common import Response, load_str
 
 current_action = ''
@@ -38,7 +34,7 @@ def test_create_resource():
     assert len(requests) == 1
 
     request = requests[0]
-    assert isinstance(request, usage.File)
+    assert isinstance(request, File)
     assert request.id == 'UF-2018-11-9878764342'
     assert request.name == 'Usage for Feb 2019'
     assert request.description == 'Usage for the product belonging to month Feb 2019'
@@ -116,7 +112,7 @@ def test_process():
 
 class UsageFileAutomationTester(UsageFileAutomation):
     def process_request(self, request):
-        # type: (usage.File) -> None
+        # type: (File) -> None
         if request.id == 'UF-2018-11-9878764342-accept':
             raise AcceptUsageFile('Valid file moving forward')
         elif request.id == 'UF-2018-11-9878764342-close':

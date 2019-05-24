@@ -11,9 +11,9 @@ import requests
 from requests import compat
 
 from connect.config import Config
+from connect.exceptions import ServerError
 from connect.logger import function_log, logger
 from connect.models import BaseSchema, ServerErrorResponseSchema
-from connect.models.exception import ServerError
 
 
 class ApiClient(object):
