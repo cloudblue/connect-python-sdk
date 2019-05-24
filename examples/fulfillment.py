@@ -42,7 +42,8 @@ class FulfillmentExample(FulfillmentAutomation):
 
                 for param in request.asset.params:
                     if param.name == 'email' and not param.value:
-                        param.value_error = 'Email address has not been provided, please provide one'
+                        param.value_error = 'Email address has not been provided, ' \
+                                            'please provide one'
                         raise InquireRequest(params=[param])
 
                 # Approve by ActivationTile
