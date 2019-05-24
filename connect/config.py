@@ -1,40 +1,33 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
 import os
 
-from typing import List, Union
-
 
 class Config(object):
+    """ Initialization config for public api.
+
+    :param str api_url: Public api url.
+    :param str api_key: Service user ApiKey.
+    :param str|list[str] products: Optional product ids.
+    :param str file: Config file name.
+    :raises ValueError: Raised if either ``file`` or one of ``api_url`` or ``api_key`` are missing.
+    :raises TypeError: Raised if ``products`` is not a string or list of strings, or if config file
+        does not contain JSON data.
+    :raises IOError: Raised if the specified ``file`` could not be opened.
+    """
+
     # Global instance
     _instance = None  # type: Config
 
     # noinspection PyShadowingBuiltins
-    def __init__(
-            self,
-            api_url=None,  # type: str
-            api_key=None,  # type: str
-            products=None,  # type: Union[str, List[str]]
-            file=None  # type: str
-    ):
-        """
-        Initialization config for public api
-        :param api_url: Public api url
-        :param api_key: Service user ApiKey
-        :param products (optional): Id products
-        :param file: Config file name
-        """
-
+    def __init__(self, api_url=None, api_key=None, products=None, file=None):
         # Check arguments
         if not file and not any([api_key, api_url]):
-            raise ValueError('Filename or api_key and api_url are expected'
-                             'in Config initialization')
+            raise ValueError('Expected file or api_key and api_url in Config initialization')
         if products and not isinstance(products, (str, list)):
             raise TypeError('Products can be string or string list. Found type '
                             + type(products).__name__)
@@ -75,22 +68,34 @@ class Config(object):
 
     @classmethod
     def get_instance(cls):
-        # type: () -> Config
+        """
+        :return: Global instance.
+        :rtype: :py:class:`.Config`
+        """
         if not cls._instance:
             cls._instance = Config(file='config.json')
         return cls._instance
 
     @property
     def api_url(self):
-        # type: () -> str
+        """
+        :return: Api URL.
+        :rtype: str
+        """
         return self._api_url
 
     @property
     def api_key(self):
-        # type: () -> str
+        """
+        :return: ApiKey.
+        :rtype: str
+        """
         return self._api_key
 
     @property
     def products(self):
-        # type: () -> List[str]
+        """
+        :return: Valid product ids.
+        :rtype: list[str]
+        """
         return self._products

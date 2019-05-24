@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from typing import Any, Dict
 
@@ -14,7 +12,7 @@ from .template import TemplateResource
 
 
 class AutomationEngine(BaseResource):
-    limit = 1000
+    limit = 1000  # type: int
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]

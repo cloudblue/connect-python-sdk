@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
 from connect.logger import logger
-from connect.models.base import BaseModel
-from connect.models.usage import FileSchema, File
+from connect.models import BaseModel, UsageFile, UsageFileSchema
 from .automation_engine import AutomationEngine
 
 
 class UsageFileAutomation(AutomationEngine):
+    """ Automates workflow of Usage Files.
+
+    For an example on how to use this class, see :ref:`usage_file_example`.
+    """
+
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=True)
+    schema = UsageFileSchema(many=True)
 
     def dispatch(self, request):
-        # type: (File) -> str
+        # type: (UsageFile) -> str
         try:
             # Validate product
             if self.config.products \

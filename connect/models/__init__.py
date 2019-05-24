@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from .activation_response import ActivationTemplateResponse, ActivationTileResponse
 from .asset import Asset, AssetSchema
@@ -14,8 +12,8 @@ from .contact import Contact, ContactInfo, ContactInfoSchema, ContactSchema, \
     PhoneNumber, PhoneNumberSchema
 from .event import EventInfo, EventInfoSchema, Events, EventsSchema
 from .fulfillment import Fulfillment, FulfillmentSchema
-from .hub import Hub, HubInstance, HubInstanceSchema, Hubs, HubSchema, HubsSchema, HubStats, \
-    HubStatsSchema
+from .hub import Hub, HubInstance, HubInstanceSchema, ExtIdHub, HubSchema, ExtIdHubSchema, \
+    HubStats, HubStatsSchema
 from .marketplace import Activation, ActivationSchema, Agreement, AgreementSchema, AgreementStats,\
     AgreementStatsSchema, Contract, ContractSchema, Marketplace, MarketplaceSchema
 from .parameters import Constraints, ConstraintsSchema, Param, ParamSchema, ValueChoice, \
@@ -27,8 +25,8 @@ from .server_error_response import ServerErrorResponse, ServerErrorResponseSchem
 from .tier_config import Account, AccountSchema, Template, TemplateSchema, TierConfig, \
     TierConfigRequest, TierConfigRequestSchema, TierConfigSchema
 from .tiers import Tier, Tiers, TierSchema, TiersSchema
-from .usage import File, FileSchema, FileUsageRecord, FileUsageRecordSchema, \
-    Listing, ListingSchema, Records, RecordsSchema
+from .usage import UsageFile, UsageFileSchema, UsageListing, UsageListingSchema, UsageRecord, \
+    UsageRecords, UsageRecordSchema, UsageRecordsSchema
 
 __all__ = [
     'Account',
@@ -67,24 +65,18 @@ __all__ = [
     'EventInfoSchema',
     'Events',
     'EventsSchema',
-    'File',
-    'FileSchema',
-    'FileUsageRecord',
-    'FileUsageRecordSchema',
+    'ExtIdHub',
+    'ExtIdHubSchema',
     'Fulfillment',
     'FulfillmentSchema',
     'Hub',
     'HubInstance',
     'HubInstanceSchema',
-    'Hubs',
     'HubSchema',
-    'HubsSchema',
     'HubStats',
     'HubStatsSchema',
     'Item',
     'ItemSchema',
-    'Listing',
-    'ListingSchema',
     'Marketplace',
     'MarketplaceSchema',
     'Param',
@@ -95,8 +87,6 @@ __all__ = [
     'ProductConfiguration',
     'ProductConfigurationSchema',
     'ProductSchema',
-    'Records',
-    'RecordsSchema',
     'Renewal',
     'RenewalSchema',
     'ServerErrorResponse',
@@ -111,6 +101,14 @@ __all__ = [
     'Tiers',
     'TierSchema',
     'TiersSchema',
+    'UsageFile',
+    'UsageFileSchema',
+    'UsageListing',
+    'UsageListingSchema',
+    'UsageRecord',
+    'UsageRecords',
+    'UsageRecordSchema',
+    'UsageRecordsSchema',
     'User',
     'UserSchema',
     'ValueChoice',

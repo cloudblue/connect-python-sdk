@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import os
 import time
 from datetime import date, timedelta
@@ -12,7 +11,7 @@ import pytest
 from mock import patch, MagicMock, call
 
 from connect.exceptions import FileRetrievalError
-from connect.models import Contract, Product, File, FileUsageRecord
+from connect.models import Contract, Product, UsageRecord, UsageFile
 from connect.resources import UsageAutomation
 from .common import Response, load_str
 
@@ -79,14 +78,14 @@ def test_get_usage_template_no_file():
 
 class UsageAutomationTester(UsageAutomation):
     def process_request(self, request):
-        # type: (File) -> None
+        # type: (UsageFile) -> None
         if request.contract.id == 'CRD-99082-45842-69181':
-            usage_file = File(
+            usage_file = UsageFile(
                 name='sdk test',
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
             )
-            usages = [FileUsageRecord(
+            usages = [UsageRecord(
                 item_search_criteria='item.mpn',
                 item_search_value='SKUA',
                 quantity=1,
@@ -101,11 +100,11 @@ class UsageAutomationTester(UsageAutomation):
         elif request.contract.id == 'CRD-99082-45842-69183':
             pass
         elif request.contract.id == 'CRD-99082-45842-69184':
-            usage_file = File(
+            usage_file = UsageFile(
                 product=Product(id=request.product.id),
                 contract=Contract(id=request.contract.id)
             )
-            usages = [FileUsageRecord(
+            usages = [UsageRecord(
                 record_id='123',
                 item_search_criteria='item.mpn',
                 item_search_value='SKUA',

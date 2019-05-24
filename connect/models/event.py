@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
-from marshmallow import fields, post_load
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+import datetime
 from typing import Optional
+
+from marshmallow import fields, post_load
 
 from .base import BaseModel, BaseSchema
 from .company import User, UserSchema
 
 
 class EventInfo(BaseModel):
-    at = None  # type: Optional[str]
+    """ Represents the date and user that caused an event. """
+
+    at = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Date when the event occurred. """
+
     by = None  # type: Optional[User]
+    """ (:py:class:`.User`) User that caused the event. """
 
 
 class EventInfoSchema(BaseSchema):
@@ -26,11 +31,22 @@ class EventInfoSchema(BaseSchema):
 
 
 class Events(BaseModel):
+    """ Represents a set of events that can take place on an object. """
+
     created = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Creation event. """
+
     inquired = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Inquire event. """
+
     pended = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Pending event. """
+
     validated = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Validation event. """
+
     updated = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Update event. """
 
 
 class EventsSchema(BaseSchema):
