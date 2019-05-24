@@ -13,12 +13,6 @@ exceptions
 .. automodule:: connect.exceptions
    :members:
 
-logger
-======
-
-.. automodule:: connect.logger
-   :members:
-
 models
 ======
 
@@ -29,10 +23,4 @@ resources
 =========
 
 .. automodule:: connect.resources
-   :members:
-
-migration_handler
-=================
-
-.. automodule:: connect.migration_handler
    :members:
