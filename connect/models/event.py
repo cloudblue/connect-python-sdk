@@ -2,17 +2,19 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import datetime
 from typing import Optional
 
-from marshmallow import fields, post_load
-
-from .base import BaseModel, BaseSchema
-from .company import User, UserSchema
+from .base import BaseModel
+from .company import User
+from connect.models.schemas import EventInfoSchema, EventsSchema
 
 
 class EventInfo(BaseModel):
     """ Represents the date and user that caused an event. """
+
+    _schema = EventInfoSchema()
 
     at = None  # type: Optional[datetime.datetime]
     """ (datetime.datetime|None) Date when the event occurred. """
@@ -21,17 +23,10 @@ class EventInfo(BaseModel):
     """ (:py:class:`.User`) User that caused the event. """
 
 
-class EventInfoSchema(BaseSchema):
-    at = fields.DateTime(allow_none=True)
-    by = fields.Nested(UserSchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return EventInfo(**data)
-
-
 class Events(BaseModel):
     """ Represents a set of events that can take place on an object. """
+
+    _schema = EventsSchema()
 
     created = None  # type: EventInfo
     """ (:py:class:`.EventInfo`) Creation event. """
@@ -47,15 +42,3 @@ class Events(BaseModel):
 
     updated = None  # type: EventInfo
     """ (:py:class:`.EventInfo`) Update event. """
-
-
-class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema)
-    pended = fields.Nested(EventInfoSchema)
-    validated = fields.Nested(EventInfoSchema)
-    updated = fields.Nested(EventInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Events(**data)

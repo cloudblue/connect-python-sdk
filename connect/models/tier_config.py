@@ -3,68 +3,74 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import Optional, List
 
-from .base import BaseModel, BaseSchema
-from .company import User, UserSchema
-from .connection import Connection, ConnectionSchema
-from .contact import ContactInfo, ContactInfoSchema
-from .event import EventsSchema, Events
-from .marketplace import Activation, ActivationSchema
-from .parameters import Param, ParamSchema
-from .product import Product, ProductSchema
+from .base import BaseModel
+from .company import User
+from .connection import Connection
+from .contact import ContactInfo
+from .event import Events
+from .marketplace import Activation
+from .parameters import Param
+from .product import Product
+from connect.models.schemas import TemplateSchema, TierAccountSchema, \
+    TierAccountsSchema, TierConfigSchema, TierConfigRequestSchema
 
 
-class Account(BaseModel):
+class TierAccount(BaseModel):
     """ Tier account. """
 
+    _schema = TierAccountSchema()
+
     name = None  # type: str
-    """ (str) Account name. """
+    """ (str) Tier name. """
+
+    contact_info = None  # type: ContactInfo
+    """ (:py:class:`.ContactInfo`) Tier Contact Object. """
 
     external_id = None  # type: Optional[str]
     """ (str|None) Only in case of filtering by this field. """
+
     external_uid = None  # type: Optional[str]
     """ (str|None) Only in case of filtering by this field. """
 
-    contact_info = None  # type: ContactInfo
-    """ (:py:class:`.ContactInfo`) Contact. """
 
+class TierAccounts(BaseModel):
+    """ TierAccounts object. """
 
-class AccountSchema(BaseSchema):
-    name = fields.Str()
-    external_id = fields.Str(allow_none=True)
-    external_uid = fields.Str(allow_none=True)
-    contact_info = fields.Nested(ContactInfoSchema)
+    _schema = TierAccountsSchema()
 
-    @post_load
-    def make_object(self, data):
-        return Account(**data)
+    customer = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Customer Level TierAccount Object. """
+
+    tier1 = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Level 1 TierAccount Object. """
+
+    tier2 = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Level 2 TierAccount Object. """
 
 
 class Template(BaseModel):
     """ Tier Template """
 
+    _schema = TemplateSchema()
+
     representation = None  # type: str
     """ (str) Template representation. """
-
-
-class TemplateSchema(BaseSchema):
-    representation = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return Template(**data)
 
 
 class TierConfig(BaseModel):
     """ Full representation of Tier object. """
 
+    _schema = TierConfigSchema()
+
     name = None  # type: str
     """ (str) Tier configuration of account.name. """
 
-    account = None  # type: Account
-    """ (:py:class:`.Account`) Full tier account representation (same as in Asset). """
+    account = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Full tier account representation
+    (same as in :py:class:`.Asset`).
+    """
 
     product = None  # type: Product
     """ (:py:class:`.Product`) Reference object to product (application). """
@@ -102,23 +108,9 @@ class TierConfig(BaseModel):
             return None
 
 
-class TierConfigSchema(BaseSchema):
-    name = fields.Str()
-    account = fields.Nested(AccountSchema)
-    product = fields.Nested(ProductSchema)
-    tier_level = fields.Int()
-    connection = fields.Nested(ConnectionSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    template = fields.Nested(TemplateSchema)
-    open_request = fields.Nested(BaseSchema, allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfig(**data)
-
-
 class TierConfigRequest(BaseModel):
+    _schema = TierConfigRequestSchema()
+
     type = None  # type: str
     """ (str) TCR type. One of: setup, update. """
 
@@ -164,20 +156,3 @@ class TierConfigRequest(BaseModel):
             return list(filter(lambda param: param.id == id_, self.params))[0]
         except IndexError:
             return None
-
-
-class TierConfigRequestSchema(BaseSchema):
-    type = fields.Str()
-    status = fields.Str()
-    configuration = fields.Nested(TierConfigSchema)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True)
-    assignee = fields.Nested(UserSchema, allow_none=True)
-    template = fields.Nested(TemplateSchema, allow_none=True)
-    reason = fields.Str(allow_none=True)
-    activation = fields.Nested(ActivationSchema, allow_none=True)
-    notes = fields.Str(allow_none=True)
-
-    @post_load
-    def make_object(self, data):
-        return TierConfigRequest(**data)

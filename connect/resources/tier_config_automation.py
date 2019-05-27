@@ -8,7 +8,7 @@ from abc import ABCMeta
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    TierConfigRequest, TierConfigRequestSchema
+    TierConfigRequest
 from .automation_engine import AutomationEngine
 
 
@@ -32,7 +32,7 @@ class TierConfigAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
-    schema = TierConfigRequestSchema(many=True)
+    model_class = TierConfigRequest
 
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str

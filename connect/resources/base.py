@@ -4,7 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import functools
-from typing import Any, List, Dict, Union, Tuple
+from typing import Any, List, Dict, Tuple
 
 import requests
 from requests import compat
@@ -12,7 +12,7 @@ from requests import compat
 from connect.config import Config
 from connect.exceptions import ServerError
 from connect.logger import function_log, logger
-from connect.models import BaseSchema, ServerErrorResponseSchema
+from connect.models import BaseModel, ServerErrorResponse
 
 
 class ApiClient(object):
@@ -101,7 +101,7 @@ class ApiClient(object):
                     'Response status - {}'.format(attr, response.status_code),
                 )
         if not response.ok:
-            data, error = ServerErrorResponseSchema().loads(response.content)
+            data, error = ServerErrorResponse.deserialize(response.content)
             if data:
                 raise ServerError(data)
 
@@ -116,7 +116,7 @@ class BaseResource(object):
 
     resource = None  # type: str
     limit = 100  # type: int
-    schema = BaseSchema()  # type: BaseSchema
+    model_class = BaseModel
 
     def __init__(self, config=None):
         # Set client
@@ -134,7 +134,7 @@ class BaseResource(object):
     def get(self, pk):
         # type: (str) -> Any
         response, _ = self._api.get(path=pk)
-        objects = self._load_schema(response)
+        objects = self.model_class.deserialize(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
 
@@ -152,15 +152,4 @@ class BaseResource(object):
         filters = filters or self.filters()
         logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
-        return self._load_schema(response)
-
-    def _load_schema(self, response, many=None, schema=None):
-        # type: (str, bool, BaseSchema) -> Union[List[Any], Any]
-        schema = schema or self.schema
-        objects, error = schema.loads(response, many)
-        if error:
-            raise TypeError(
-                'Invalid structure for initialization of `{}`. \n'
-                'Error: {}. \nServer Response: {}'.format(type(schema).__name__, error, response),
-            )
-        return objects
+        return self.model_class.deserialize(response)

@@ -13,7 +13,7 @@ from typing import Union
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
     Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
-    Template, Activation, Account, User
+    Template, Activation, User, TierAccount
 from connect.resources import TierConfigAutomation
 from .common import Response, load_str
 
@@ -55,7 +55,7 @@ def test_create_resource():
     assert configuration.tier_level == 1
 
     account = configuration.account
-    assert isinstance(account, Account)
+    assert isinstance(account, TierAccount)
     assert account.id == 'TA-1-000-000-000'
 
     product = configuration.product

@@ -2,19 +2,21 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import datetime
 
-from marshmallow import fields, post_load
-
-from .asset import Asset, AssetSchema
-from .base import BaseModel, BaseSchema
-from .marketplace import Contract, ContractSchema, Marketplace, MarketplaceSchema
+from .asset import Asset
+from .base import BaseModel
+from .marketplace import Contract, Marketplace
+from connect.models.schemas import FulfillmentSchema
 
 
 class Fulfillment(BaseModel):
     """ Represents a request for the :py:class:`connect.resource.FulfillmentAutomation`
     resource.
     """
+
+    _schema = FulfillmentSchema()
 
     type = None  # type: str
     """ (str) Asset status. See :py:class:`.Asset` class for details. """
@@ -111,21 +113,3 @@ class Fulfillment(BaseModel):
         :rtype: bool
         """
         return self.asset.get_param_by_id(migration_key) is not None
-
-
-class FulfillmentSchema(BaseSchema):
-    activation_key = fields.Str()
-    asset = fields.Nested(AssetSchema)
-    status = fields.Str()
-    type = fields.Str()
-    updated = fields.DateTime()
-    created = fields.DateTime()
-    reason = fields.Str()
-    note = fields.Str()
-    params_form_url = fields.Str()
-    contract = fields.Nested(ContractSchema, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
-
-    @post_load
-    def make_object(self, data):
-        return Fulfillment(**data)

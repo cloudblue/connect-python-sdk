@@ -3,31 +3,27 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import Schema, fields, post_load
 from typing import Optional
 
-from .base import BaseModel, BaseSchema
-from .company import Company, CompanySchema
-from .event import Events, EventsSchema
+from .base import BaseModel
+from .company import Company
+from .event import Events
+from connect.models.schemas import HubInstanceSchema, HubStatsSchema, HubSchema, ExtIdHubSchema
 
 
 class HubInstance(BaseModel):
     """ An instance of a hub. """
 
+    _schema = HubInstanceSchema()
+
     type = None  # type: str
     """ (str) E-Commerce system type. """
 
 
-class HubInstanceSchema(BaseSchema):
-    type = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return HubInstance(**data)
-
-
 class HubStats(BaseModel):
     """ Hub stats. """
+
+    _schema = HubStatsSchema()
 
     connections = None  # type: int
     """ (int) Number of connections active for this Hub. """
@@ -36,17 +32,10 @@ class HubStats(BaseModel):
     """ (int) Number of marketplaces for this Hub. """
 
 
-class HubStatsSchema(BaseSchema):
-    connections = fields.Int()
-    marketplaces = fields.Int()
-
-    @post_load
-    def make_object(self, data):
-        return HubStats(**data)
-
-
 class Hub(BaseModel):
     """ A Hub. """
+
+    _schema = HubSchema()
 
     name = None  # type: str
     """ (str) Hub name. """
@@ -67,33 +56,13 @@ class Hub(BaseModel):
     """ (:py:class:`.HubStats`) Hub stats. """
 
 
-class HubSchema(BaseSchema):
-    name = fields.Str()
-    company = fields.Nested(CompanySchema)
-    description = fields.Str(allow_none=True)
-    instance = fields.Nested(HubInstanceSchema)
-    events = fields.Nested(EventsSchema)
-    stats = fields.Nested(HubStatsSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Hub(**data)
-
-
 class ExtIdHub(BaseModel):
     """ Associates a :py:class:`.Hub` with an external id. """
+
+    _schema = ExtIdHubSchema()
 
     hub = None  # type: Hub
     """ (:py:class:`.Hub`) Hub. """
 
     external_id = None  # type: str
     """ (str) External id. """
-
-
-class ExtIdHubSchema(Schema):
-    hub = fields.Nested(HubSchema, only=('id', 'name'))
-    external_id = fields.Str()
-
-    @post_load
-    def make_object(self, data):
-        return ExtIdHub(**data)

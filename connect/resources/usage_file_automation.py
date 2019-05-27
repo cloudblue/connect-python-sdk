@@ -7,7 +7,7 @@ from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
 from connect.logger import logger
-from connect.models import BaseModel, UsageFile, UsageFileSchema
+from connect.models import BaseModel, UsageFile
 from .automation_engine import AutomationEngine
 
 
@@ -19,7 +19,7 @@ class UsageFileAutomation(AutomationEngine):
 
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = UsageFileSchema(many=True)
+    model_class = UsageFile
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
