@@ -13,24 +13,41 @@ from .event import Events
 from .marketplace import Activation
 from .parameters import Param
 from .product import Product
-from .schemas import AccountSchema, TemplateSchema, TierConfigSchema, TierConfigRequestSchema
+from connect.models.schemas import TemplateSchema, TierAccountSchema, \
+    TierAccountsSchema, TierConfigSchema, TierConfigRequestSchema
 
 
-class Account(BaseModel):
+class TierAccount(BaseModel):
     """ Tier account. """
 
-    _schema = AccountSchema()
+    _schema = TierAccountSchema()
 
     name = None  # type: str
-    """ (str) Account name. """
+    """ (str) Tier name. """
+
+    contact_info = None  # type: ContactInfo
+    """ (:py:class:`.ContactInfo`) Tier Contact Object. """
 
     external_id = None  # type: Optional[str]
     """ (str|None) Only in case of filtering by this field. """
+
     external_uid = None  # type: Optional[str]
     """ (str|None) Only in case of filtering by this field. """
 
-    contact_info = None  # type: ContactInfo
-    """ (:py:class:`.ContactInfo`) Contact. """
+
+class TierAccounts(BaseModel):
+    """ TierAccounts object. """
+
+    _schema = TierAccountsSchema()
+
+    customer = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Customer Level TierAccount Object. """
+
+    tier1 = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Level 1 TierAccount Object. """
+
+    tier2 = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Level 2 TierAccount Object. """
 
 
 class Template(BaseModel):
@@ -50,8 +67,10 @@ class TierConfig(BaseModel):
     name = None  # type: str
     """ (str) Tier configuration of account.name. """
 
-    account = None  # type: Account
-    """ (:py:class:`.Account`) Full tier account representation (same as in Asset). """
+    account = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Full tier account representation
+    (same as in :py:class:`.Asset`).
+    """
 
     product = None  # type: Product
     """ (:py:class:`.Product`) Reference object to product (application). """

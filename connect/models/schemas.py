@@ -85,18 +85,6 @@ class ContactInfoSchema(BaseSchema):
         return ContactInfo(**data)
 
 
-class AccountSchema(BaseSchema):
-    name = fields.Str()
-    external_id = fields.Str(allow_none=True)
-    external_uid = fields.Str(allow_none=True)
-    contact_info = fields.Nested(ContactInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        from connect.models import Account
-        return Account(**data)
-
-
 class ValueChoiceSchema(Schema):
     value = fields.Str()
     label = fields.Str()
@@ -396,7 +384,7 @@ class TemplateSchema(BaseSchema):
         return Template(**data)
 
 
-class TierSchema(BaseSchema):
+class TierAccountSchema(BaseSchema):
     name = fields.Str()
     contact_info = fields.Nested(ContactInfoSchema)
     external_id = fields.Str()
@@ -404,19 +392,19 @@ class TierSchema(BaseSchema):
 
     @post_load
     def make_object(self, data):
-        from connect.models import Tier
-        return Tier(**data)
+        from connect.models import TierAccount
+        return TierAccount(**data)
 
 
-class TiersSchema(Schema):
-    customer = fields.Nested(TierSchema)
-    tier1 = fields.Nested(TierSchema)
-    tier2 = fields.Nested(TierSchema)
+class TierAccountsSchema(Schema):
+    customer = fields.Nested(TierAccountSchema)
+    tier1 = fields.Nested(TierAccountSchema)
+    tier2 = fields.Nested(TierAccountSchema)
 
     @post_load
     def make_object(self, data):
-        from connect.models import Tiers
-        return Tiers(**data)
+        from connect.models import TierAccounts
+        return TierAccounts(**data)
 
 
 class ConnectionSchema(BaseSchema):
@@ -442,7 +430,7 @@ class AssetSchema(BaseSchema):
     )
     items = fields.Nested(ItemSchema, many=True)
     params = fields.Nested(ParamSchema, many=True)
-    tiers = fields.Nested(TiersSchema)
+    tiers = fields.Nested(TierAccountsSchema)
 
     @post_load
     def make_object(self, data):
@@ -471,7 +459,7 @@ class FulfillmentSchema(BaseSchema):
 
 class TierConfigSchema(BaseSchema):
     name = fields.Str()
-    account = fields.Nested(AccountSchema)
+    account = fields.Nested(TierAccountSchema)
     product = fields.Nested(ProductSchema)
     tier_level = fields.Int()
     connection = fields.Nested(ConnectionSchema)
