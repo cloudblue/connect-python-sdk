@@ -9,8 +9,8 @@ import os
 import six
 from mock import MagicMock, patch
 
-from connect import FulfillmentAutomation
 from connect.models import Asset, Param, Fulfillment, Item, TierConfig
+from connect.resources import FulfillmentAutomation
 from .common import Response, load_str
 
 

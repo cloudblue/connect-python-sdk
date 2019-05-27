@@ -62,7 +62,7 @@ class TierConfigAutomation(AutomationEngine):
             return self.inquire(request.id)
 
         except FailRequest as fail:
-            return self.fail(request.id, reason=fail.message)
+            return self.fail(request.id, reason=str(fail))
 
         except SkipRequest as skip:
             return skip.code

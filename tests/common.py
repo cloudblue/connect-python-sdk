@@ -4,7 +4,6 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from collections import namedtuple
-
 from typing import Optional
 
 Response = namedtuple('Response', ('ok', 'content', 'status_code'))

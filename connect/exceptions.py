@@ -5,6 +5,9 @@
 
 from typing import List
 
+from deprecation import deprecated
+import six
+
 from .models.parameters import Param
 
 
@@ -23,14 +26,17 @@ class Message(Exception):
     """ (str) Additional information. """
 
     def __init__(self, message='', code='', obj=None):
+        # On Python 2, Unicode messages must be utf-8 encoded
+        if six.PY2 and isinstance(message, six.string_types) and not isinstance(message, str):
+            message = message.encode('utf-8')
         super(Message, self).__init__(message)
         self.code = code
         self.obj = obj
 
     @property
+    @deprecated(deprecated_in='16.0', details='Use ``str(exception)`` instead.')
     def message(self):
-        """ Deprecated property to get the exception message. Use ``str(exception)`` instead.
-
+        """
         :return: The exception message.
         :rtype: str
         """
@@ -139,11 +145,3 @@ class FileRetrievalError(Message):
     def __init__(self, message):
         # type: (str) -> None
         super(FileRetrievalError, self).__init__(message, 'fileretrieval')
-
-
-class MigrationAbortError(Exception):
-    pass
-
-
-class MigrationParamError(Exception):
-    pass

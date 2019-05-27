@@ -10,11 +10,11 @@ import pytest
 from mock import MagicMock, patch
 from typing import Union
 
-from connect import TierConfigAutomation
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
     Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
     Template, Activation, Account, User
+from connect.resources import TierConfigAutomation
 from .common import Response, load_str
 
 
