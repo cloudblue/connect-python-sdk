@@ -40,7 +40,6 @@ __all__ = [
     'config',
     'exceptions',
     'logger',
-    'migration_handler',
     'models',
     'resources',
     'FulfillmentAutomation',

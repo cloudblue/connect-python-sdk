@@ -18,12 +18,10 @@ from .parameters import Constraints, Param, ValueChoice
 from .product import CustomerUiSettings, Document, DownloadLink, Item, Product, \
     ProductConfiguration, Renewal
 from .server_error_response import ServerErrorResponse
-from .tier_config import Account, Template, TierConfig, TierConfigRequest
-from .tiers import Tier, Tiers
+from .tier_config import Template, TierAccount, TierAccounts, TierConfig, TierConfigRequest
 from .usage import UsageFile, UsageListing, UsageRecord, UsageRecords
 
 __all__ = [
-    'Account',
     'Activation',
     'ActivationTemplateResponse',
     'ActivationTileResponse',
@@ -58,10 +56,10 @@ __all__ = [
     'Renewal',
     'ServerErrorResponse',
     'Template',
-    'Tier',
+    'TierAccount',
+    'TierAccounts',
     'TierConfig',
     'TierConfigRequest',
-    'Tiers',
     'UsageFile',
     'UsageListing',
     'UsageRecord',

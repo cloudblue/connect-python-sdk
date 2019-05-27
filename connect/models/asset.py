@@ -9,7 +9,7 @@ from .base import BaseModel
 from .connection import Connection
 from .parameters import Param
 from .product import Item, Product
-from .tiers import Tiers
+from .tier_config import TierAccounts
 from connect.models.schemas import AssetSchema
 
 
@@ -71,8 +71,8 @@ class Asset(BaseModel):
     params = None  # type: List[Param]
     """ (List[:py:class:`.Param`]) List of product parameter objects. """
 
-    tiers = None  # type: Tiers
-    """ (:py:class:`.Tiers`) Supply chain accounts. """
+    tiers = None  # type: TierAccounts
+    """ (:py:class:`.TierAccounts`) Supply chain accounts. """
 
     def get_param_by_id(self, id_):
         """ Get a parameter of the asset.
