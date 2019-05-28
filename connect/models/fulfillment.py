@@ -47,7 +47,8 @@ class Fulfillment(BaseModel):
 
     def needs_migration(self, migration_key='migration_info'):
         # type: (str) -> bool
-        return self.asset.get_param_by_id(migration_key) is not None
+        param = self.asset.get_param_by_id(migration_key)
+        return param is not None and param.value
 
 
 class FulfillmentSchema(BaseSchema):
