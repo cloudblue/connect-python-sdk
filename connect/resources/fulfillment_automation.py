@@ -5,6 +5,8 @@
 
 from abc import ABCMeta
 
+from deprecation import deprecated
+
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
@@ -78,6 +80,7 @@ class FulfillmentAutomation(AutomationEngine):
         except SkipRequest as skip:
             return skip.code
 
+    @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):
         """
         Gets the specified tier config data. For example, to get Tier 1 configuration data
