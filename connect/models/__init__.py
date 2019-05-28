@@ -9,6 +9,7 @@ from .base import BaseModel
 from .company import Company, User
 from .connection import Connection
 from .contact import Contact, ContactInfo, PhoneNumber
+from .conversation import Conversation, ConversationMessage
 from .event import EventInfo, Events
 from .fulfillment import Fulfillment
 from .hub import Hub, HubInstance, ExtIdHub, HubStats
@@ -34,6 +35,8 @@ __all__ = [
     'Contact',
     'ContactInfo',
     'Contract',
+    'Conversation',
+    'ConversationMessage',
     'CustomerUiSettings',
     'Document',
     'DownloadLink',
