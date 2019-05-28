@@ -167,8 +167,8 @@ def test_get_tier_config(get_mock):
             'Authorization': 'ApiKey XXXX:YYYYY'},
         params={
             'status': 'approved',
-            'configuration__product__id': 'product_id',
-            'configuration__account__id': 'tier_id'})
+            'configuration.product.id': 'product_id',
+            'configuration.account.id': 'tier_id'})
 
 
 @patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]', status_code=200)))
