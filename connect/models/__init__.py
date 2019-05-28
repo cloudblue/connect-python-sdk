@@ -9,6 +9,7 @@ from .base import BaseModel
 from .company import Company, User
 from .connection import Connection
 from .contact import Contact, ContactInfo, PhoneNumber
+from .conversation import Conversation, ConversationMessage
 from .event import EventInfo, Events
 from .fulfillment import Fulfillment
 from .hub import Hub, HubInstance, ExtIdHub, HubStats
@@ -17,12 +18,10 @@ from .parameters import Constraints, Param, ValueChoice
 from .product import CustomerUiSettings, Document, DownloadLink, Item, Product, \
     ProductConfiguration, Renewal
 from .server_error_response import ServerErrorResponse
-from .tier_config import Account, Template, TierConfig, TierConfigRequest
-from .tiers import Tier, Tiers
+from .tier_config import Template, TierAccount, TierAccounts, TierConfig, TierConfigRequest
 from .usage import UsageFile, UsageListing, UsageRecord, UsageRecords
 
 __all__ = [
-    'Account',
     'Activation',
     'ActivationTemplateResponse',
     'ActivationTileResponse',
@@ -36,6 +35,8 @@ __all__ = [
     'Contact',
     'ContactInfo',
     'Contract',
+    'Conversation',
+    'ConversationMessage',
     'CustomerUiSettings',
     'Document',
     'DownloadLink',
@@ -55,10 +56,10 @@ __all__ = [
     'Renewal',
     'ServerErrorResponse',
     'Template',
-    'Tier',
+    'TierAccount',
+    'TierAccounts',
     'TierConfig',
     'TierConfigRequest',
-    'Tiers',
     'UsageFile',
     'UsageListing',
     'UsageRecord',
