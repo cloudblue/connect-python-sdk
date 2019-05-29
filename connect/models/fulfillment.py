@@ -114,7 +114,7 @@ class Fulfillment(BaseModel):
         :rtype: bool
         """
         param = self.asset.get_param_by_id(migration_key)
-        return param is not None and param.value
+        return param is not None and bool(param.value)
 
     def get_conversation(self, config=None):
         """
