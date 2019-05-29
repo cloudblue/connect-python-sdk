@@ -1,45 +1,44 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
-from marshmallow import fields, post_load
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
+import datetime
 from typing import Optional
 
-from connect.models.base import BaseModel, BaseSchema
-from connect.models.company import CompanySchema, Company
+from .base import BaseModel
+from .company import User
+from connect.models.schemas import EventInfoSchema, EventsSchema
 
 
 class EventInfo(BaseModel):
-    at = None  # type: Optional[str]
-    by = None  # type: Optional[Company]
+    """ Represents the date and user that caused an event. """
 
+    _schema = EventInfoSchema()
 
-class EventInfoSchema(BaseSchema):
-    at = fields.Str(allow_none=True)
-    by = fields.Nested(CompanySchema, allow_none=True)
+    at = None  # type: Optional[datetime.datetime]
+    """ (datetime.datetime|None) Date when the event occurred. """
 
-    @post_load
-    def make_object(self, data):
-        return EventInfo(**data)
+    by = None  # type: Optional[User]
+    """ (:py:class:`.User`) User that caused the event. """
 
 
 class Events(BaseModel):
+    """ Represents a set of events that can take place on an object. """
+
+    _schema = EventsSchema()
+
     created = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Creation event. """
+
     inquired = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Inquire event. """
+
     pended = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Pending event. """
+
     validated = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Validation event. """
+
     updated = None  # type: EventInfo
-
-
-class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema)
-    pended = fields.Nested(EventInfoSchema)
-    validated = fields.Nested(EventInfoSchema)
-    updated = fields.Nested(EventInfoSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Events(**data)
+    """ (:py:class:`.EventInfo`) Update event. """

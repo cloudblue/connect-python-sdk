@@ -1,26 +1,20 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import os
+from datetime import datetime
 
 import pytest
 from mock import MagicMock, patch
 from typing import Union
 
-from connect import TierConfigAutomation
-from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse
-from connect.models.base import BaseModel
-from connect.models.company import Company
-from connect.models.connection import Connection
-from connect.models.event import EventInfo
-from connect.models.exception import FulfillmentInquire, FulfillmentFail, Skip
-from connect.models.hub import Hub
-from connect.models.product import Product
-from connect.models.tier_config import TierConfigRequest, TierConfig, Events, Template, \
-    Activation, Account
+from connect.exceptions import FailRequest, InquireRequest, SkipRequest
+from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
+    Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
+    Template, Activation, User, TierAccount
+from connect.resources import TierConfigAutomation
 from .common import Response, load_str
 
 
@@ -61,7 +55,7 @@ def test_create_resource():
     assert configuration.tier_level == 1
 
     account = configuration.account
-    assert isinstance(account, Account)
+    assert isinstance(account, TierAccount)
     assert account.id == 'TA-1-000-000-000'
 
     product = configuration.product
@@ -92,14 +86,16 @@ def test_create_resource():
     events = configuration.events
     assert isinstance(events, Events)
     assert isinstance(events.created, EventInfo)
-    assert events.created.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.created.at, datetime)
+    assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
     assert not events.inquired
     assert not events.pended
     assert not events.validated
     assert isinstance(events.updated, EventInfo)
-    assert events.updated.at == '2018-11-21T11:10:29+00:00'
-    assert isinstance(events.updated.by, Company)
+    assert isinstance(events.updated.at, datetime)
+    assert str(events.updated.at) == '2018-11-21 11:10:29'
+    assert isinstance(events.updated.by, User)
     assert events.updated.by.id == 'PA-000-000'
     assert events.updated.by.name == 'Username'
 
@@ -122,16 +118,19 @@ def test_create_resource():
     events = request.events
     assert isinstance(events, Events)
     assert isinstance(events.created, EventInfo)
-    assert events.created.at == '2018-11-21T11:10:29+00:00'
+    assert isinstance(events.created.at, datetime)
+    assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
     assert isinstance(events.inquired, EventInfo)
-    assert events.inquired.at == '2018-11-21T11:10:29+00:00'
-    assert isinstance(events.inquired.by, Company)
+    assert isinstance(events.inquired.at, datetime)
+    assert str(events.inquired.at) == '2018-11-21 11:10:29'
+    assert isinstance(events.inquired.by, User)
     assert events.inquired.by.id == 'PA-000-000'
     assert events.inquired.by.name == 'Username'
     assert isinstance(events.pended, EventInfo)
-    assert events.pended.at == '2018-11-21T11:10:29+00:00'
-    assert isinstance(events.pended.by, Company)
+    assert isinstance(events.pended.at, datetime)
+    assert str(events.pended.at) == '2018-11-21 11:10:29'
+    assert isinstance(events.pended.by, User)
     assert events.pended.by.id == 'PA-000-001'
     assert events.pended.by.name == 'Username1'
     assert not events.validated
@@ -145,7 +144,7 @@ def test_create_resource():
     assert request.params[0].value == 'param_a_value'
 
     assignee = request.assignee
-    assert isinstance(assignee, Company)
+    assert isinstance(assignee, User)
     assert assignee.id == 'PA-000-000'
     assert assignee.name == 'Username'
 
@@ -196,7 +195,7 @@ def test_process_with_activation_template():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_inquire():
-    automation = TierConfigAutomationHelper(exception_class=FulfillmentInquire)
+    automation = TierConfigAutomationHelper(exception_class=InquireRequest)
     automation.process()
 
 
@@ -204,7 +203,7 @@ def test_process_raise_inquire():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_fail():
-    automation = TierConfigAutomationHelper(exception_class=FulfillmentFail)
+    automation = TierConfigAutomationHelper(exception_class=FailRequest)
     automation.process()
 
 
@@ -212,7 +211,7 @@ def test_process_raise_fail():
 @patch('requests.post', MagicMock(return_value=_get_response_ok()))
 @patch('requests.put', MagicMock(return_value=_get_response_ok()))
 def test_process_raise_skip():
-    automation = TierConfigAutomationHelper(exception_class=Skip)
+    automation = TierConfigAutomationHelper(exception_class=SkipRequest)
     automation.process()
 
 

@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 from abc import ABCMeta
 
+from connect.exceptions import SkipRequest, UsageFileAction
 from connect.logger import logger
-from connect.models.base import BaseModel
-from connect.models.exception import UsageFileAction, Skip
-from connect.models.usage import FileSchema, File
-from connect.resource import AutomationResource
+from connect.models import BaseModel, UsageFile
+from .automation_engine import AutomationEngine
 
 
-class UsageFileAutomation(AutomationResource):
+class UsageFileAutomation(AutomationEngine):
+    """ Automates workflow of Usage Files.
+
+    For an example on how to use this class, see :ref:`usage_file_example`.
+    """
+
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=True)
+    model_class = UsageFile
 
     def dispatch(self, request):
-        # type: (File) -> str
+        # type: (UsageFile) -> str
         try:
             # Validate product
             if self.config.products \
@@ -32,8 +35,8 @@ class UsageFileAutomation(AutomationResource):
             result = self.process_request(request)
 
             # Report that expected exception was not raised
-            processing_result = 'UsageFileAutomation.process_request returned {} ' \
-                                'while is expected to raise UsageFileAction or Skip exception' \
+            processing_result = 'UsageFileAutomation.process_request returned {} while ' \
+                                'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
             logger.warning(processing_result)
             raise UserWarning(processing_result)
@@ -48,7 +51,7 @@ class UsageFileAutomation(AutomationResource):
             processing_result = usage.code
 
         # Catch skip
-        except Skip:
+        except SkipRequest:
             processing_result = 'skip'
 
         logger.info('Finished processing of usage file with ID {} with result {}'

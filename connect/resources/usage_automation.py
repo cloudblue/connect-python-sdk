@@ -1,38 +1,46 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+
 import json
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
 import openpyxl
 import requests
-from typing import Dict, Any, List, Optional
+from typing import List, Optional
 
+from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.logger import logger
-from connect.models.exception import FileCreationError, FileRetrievalError
-from connect.models.product import Product
-from connect.models.usage import FileSchema, Listing, File, FileUsageRecord
-from connect.resource import AutomationResource
+from connect.models import UsageListing, UsageFile, UsageRecord
+from .automation_engine import AutomationEngine
 
 
-class UsageAutomation(AutomationResource):
+class UsageAutomation(AutomationEngine):
+    """ Automates reporting of Usage Files.
+
+    For an example on how to use this class, see :ref:`usage_example`.
+    """
+
     __metaclass__ = ABCMeta
     resource = 'usage/files'
-    schema = FileSchema(many=True)
+    model_class = UsageFile
 
     def filters(self, status='listed', **kwargs):
-        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        """
+        :param str status: Status of the requests. Default: ``'listed'``.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :return: The set of filters for this resource.
+        :rtype: dict[str,Any]
+        """
         filters = super(UsageAutomation, self).filters(status, **kwargs)
         if self.config.products:
             filters['product__id'] = ','.join(self.config.products)
         return filters
 
     def dispatch(self, request):
-        # type: (Listing) -> str
+        # type: (UsageListing) -> str
 
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
@@ -59,19 +67,78 @@ class UsageAutomation(AutomationResource):
                     .format(request.product.id, result))
         return 'success'
 
-    def create_usage_file(self, usage_file):
-        # type: (File) -> File
+    def get_usage_template(self, product):
+        """ Returns the template file contents for a specified product.
+
+        :param Product product: Specific product.
+        :return: The template file contents.
+        :rtype: bytes
+        :raises FileRetrievalError: Raised if the file contents could not be retrieved.
+        """
+        location = self._get_usage_template_download_location(product.id)
+        if not location:
+            msg = 'Error obtaining template usage file location'
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+
+        contents = self._retrieve_usage_template(location) if location else None
+        if not contents:
+            msg = 'Error obtaining template usage file from `{}`'.format(location)
+            logger.error(msg)
+            raise FileRetrievalError(msg)
+        return contents
+
+    def submit_usage(self, usage_file, usage_records):
+        """ Submit a usage file.
+
+        :param UsageFile usage_file: Usage file.
+        :param list[UsageRecord] usage_records: Records.
+        :return: Usage file.
+        :rtype: UsageFile
+        :raises FileCreationError: Raised if creation or uploading of the file fails.
+        """
+        usage_file = self._create_usage_file(usage_file)
+        self._upload_usage_records(usage_file, usage_records)
+        return usage_file
+
+    def _get_usage_template_download_location(self, product_id):
+        # type: (str) -> str
+        try:
+            response, _ = self._api.get(url='{}/usage/products/{}/template/'
+                                        .format(self.config.api_url, product_id))
+            response_dict = json.loads(response)
+            return response_dict['template_link']
+        except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
+            return ''
+
+    @staticmethod
+    def _retrieve_usage_template(location):
+        # type: (str) -> Optional[bytes]
+        try:
+            response = requests.get(location)
+            return response.content
+        except requests.exceptions.RequestException:
+            return None
+
+    def _create_usage_file(self, usage_file):
+        # type: (UsageFile) -> UsageFile
         if not usage_file.name or not usage_file.product.id or not usage_file.contract.id:
             raise FileCreationError('Usage File Creation requires name, product id, contract id')
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
         response, _ = self._api.post(json=usage_file.json)
-        return self._load_schema(response, many=False)
+        return self.model_class.deserialize(response)
+
+    def _upload_usage_records(self, usage_file, usage_records):
+        # type: (UsageFile, List[UsageRecord]) -> None
+        # TODO: Using xslx mechanism till usage records json api is available
+        book = self._create_spreadsheet(usage_records)
+        self._upload_spreadsheet(usage_file, book)
 
     @staticmethod
-    def create_spreadsheet(usage_records):
-        # type: (List[FileUsageRecord]) -> openpyxl.Workbook
+    def _create_spreadsheet(usage_records):
+        # type: (List[UsageRecord]) -> openpyxl.Workbook
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
@@ -95,8 +162,8 @@ class UsageAutomation(AutomationResource):
             sheet['H' + row] = record.asset_search_value
         return book
 
-    def upload_spreadsheet(self, usage_file, spreadsheet):
-        # type: (File, openpyxl.Workbook) -> None
+    def _upload_spreadsheet(self, usage_file, spreadsheet):
+        # type: (UsageFile, openpyxl.Workbook) -> None
 
         # Generate spreadsheet file
         with NamedTemporaryFile() as tmp:
@@ -125,49 +192,3 @@ class UsageAutomation(AutomationResource):
             msg = 'Unexpected server response, returned code {}'.format(status)
             logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
-
-    def upload_usage_records(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> None
-        # TODO: Using xslx mechanism till usage records json api is available
-        book = self.create_spreadsheet(usage_records)
-        self.upload_spreadsheet(usage_file, book)
-
-    def get_usage_template(self, product):
-        # type: (Product) -> bytes
-        location = self._get_usage_template_download_location(product.id)
-        if not location:
-            msg = 'Error obtaining template usage file location'
-            logger.error(msg)
-            raise FileRetrievalError(msg)
-
-        contents = self._retrieve_usage_template(location) if location else None
-        if not contents:
-            msg = 'Error obtaining template usage file from `{}`'.format(location)
-            logger.error(msg)
-            raise FileRetrievalError(msg)
-        return contents
-
-    def submit_usage(self, usage_file, usage_records):
-        # type: (File, List[FileUsageRecord]) -> File
-        usage_file = self.create_usage_file(usage_file)
-        self.upload_usage_records(usage_file, usage_records)
-        return usage_file
-
-    def _get_usage_template_download_location(self, product_id):
-        # type: (str) -> str
-        try:
-            response, _ = self._api.get(url='{}/usage/products/{}/template/'
-                                        .format(self.config.api_url, product_id))
-            response_dict = json.loads(response)
-            return response_dict['template_link']
-        except (requests.exceptions.RequestException, KeyError, TypeError, ValueError):
-            return ''
-
-    @staticmethod
-    def _retrieve_usage_template(location):
-        # type: (str) -> Optional[bytes]
-        try:
-            response = requests.get(location)
-            return response.content
-        except requests.exceptions.RequestException:
-            return None

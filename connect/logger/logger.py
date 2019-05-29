@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+from functools import wraps
 import json
 import logging
 import os
@@ -18,6 +17,7 @@ logger = logging.getLogger()
 
 
 def function_log(func):
+    @wraps(func)
     def decorator(self, *args, **kwargs):
         logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))

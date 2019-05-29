@@ -1,71 +1,72 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file is part of the Ingram Micro Cloud Blue Connect SDK.
-Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-"""
+# This file is part of the Ingram Micro Cloud Blue Connect SDK.
+# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from marshmallow import fields, post_load
 from typing import Optional
 
-from .base import BaseModel, BaseSchema
+from .base import BaseModel
+from connect.models.schemas import PhoneNumberSchema, ContactSchema, ContactInfoSchema
 
 
 class PhoneNumber(BaseModel):
-    country_code = None  # type: str
-    area_code = None  # type: str
-    phone_number = None  # type: str
-    extension = None  # type: str
+    """ Phone number. """
 
+    _schema = PhoneNumberSchema()
 
-class PhoneNumberSchema(BaseSchema):
-    country_code = fields.Str()
-    area_code = fields.Str()
-    phone_number = fields.Str()
-    extension = fields.Str()
+    country_code = None  # type: Optional[str]
+    """ (str|None) Country code. """
 
-    @post_load
-    def make_object(self, data):
-        return PhoneNumber(**data)
+    area_code = None  # type: Optional[str]
+    """ (str|None) Area code. """
+
+    phone_number = None  # type: Optional[str]
+    """ (str|None) Phone number. """
+
+    extension = None  # type: Optional[str]
+    """ (str|None) Phone extension. """
 
 
 class Contact(BaseModel):
-    email = None  # type: str
+    """ Person of contact. """
+
+    _schema = ContactSchema()
+
     first_name = None  # type: Optional[str]
+    """ (str|None) First name. """
+
     last_name = None  # type: Optional[str]
+    """ (str|None) Last name. """
+
+    email = None  # type: str
+    """ (str) Email address. """
+
     phone_number = None  # type: PhoneNumber
-
-
-class ContactSchema(BaseSchema):
-    email = fields.Str()
-    first_name = fields.Str(allow_none=True)
-    last_name = fields.Str(allow_none=True)
-    phone_number = fields.Nested(PhoneNumberSchema)
-
-    @post_load
-    def make_object(self, data):
-        return Contact(**data)
+    """ (:py:class:`.PhoneNumber`) Phone number."""
 
 
 class ContactInfo(BaseModel):
+    """ Represents the information of a contact. """
+
+    _schema = ContactInfoSchema()
+
     address_line1 = None  # type: str
+    """ (str) Street address, first line. """
+
     address_line2 = None  # type: Optional[str]
-    city = None  # type: str
-    contact = None  # type: Contact
+    """ (str|None) Street address, second line. """
+
     country = None  # type: str
-    postal_code = None  # type: str
+    """ (str) Country code. """
+
     state = None  # type: str
+    """ (str) State name. """
 
+    city = None  # type: str
+    """ (str) City name. """
 
-class ContactInfoSchema(BaseSchema):
-    address_line1 = fields.Str()
-    address_line2 = fields.Str(allow_none=True)
-    city = fields.Str()
-    contact = fields.Nested(ContactSchema)
-    country = fields.Str()
-    postal_code = fields.Str()
-    state = fields.Str()
+    postal_code = None  # type: str
+    """ (str) Postal ZIP code. """
 
-    @post_load
-    def make_object(self, data):
-        return ContactInfo(**data)
+    contact = None  # type: Contact
+    """ (:py:class:`.Contact`) Person of contact. """
