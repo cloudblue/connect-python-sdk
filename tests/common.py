@@ -6,7 +6,8 @@
 from collections import namedtuple
 from typing import Optional
 
-Response = namedtuple('Response', ('ok', 'content', 'status_code'))
+Response = namedtuple('Response', ('ok', 'text', 'status_code'))
+BinaryResponse = namedtuple('BinaryResponse', ('ok', 'content', 'status_code'))
 
 
 def load_str(filename):

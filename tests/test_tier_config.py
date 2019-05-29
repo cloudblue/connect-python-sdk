@@ -21,7 +21,7 @@ from .common import Response, load_str
 def _get_response_ok():
     return Response(
         ok=True,
-        content=load_str(os.path.join(
+        text=load_str(os.path.join(
             os.path.dirname(__file__),
             'data',
             'response_tier_config_request.json')),
@@ -32,7 +32,7 @@ def _get_response_ok_invalid_product():
     response_ok = _get_response_ok()
     return Response(
         ok=response_ok.ok,
-        content=response_ok.content.replace('CN-631-322-000', 'PRD-000-000-000'),
+        text=response_ok.text.replace('CN-631-322-000', 'PRD-000-000-000'),
         status_code=response_ok.status_code)
 
 

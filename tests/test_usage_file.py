@@ -19,11 +19,11 @@ current_action = ''
 
 # noinspection PyUnusedLocal
 def _get_response_ok(*args, **kwargs):
-    content = load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage_file.json'))
+    text = load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage_file.json'))
     if current_action:
-        content = content.replace('UF-2018-11-9878764342',
-                                  'UF-2018-11-9878764342-' + current_action)
-    return Response(ok=True, content=content, status_code=200)
+        text = text.replace('UF-2018-11-9878764342',
+                            'UF-2018-11-9878764342-' + current_action)
+    return Response(ok=True, text=text, status_code=200)
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
