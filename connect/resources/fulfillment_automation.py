@@ -87,31 +87,34 @@ class FulfillmentAutomation(AutomationEngine):
         except InquireRequest as inquire:
             self.update_parameters(request.id, inquire.params)
             inquired = self.inquire(request.id)
-            try:
-                conversation.add_message(str(inquire))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
+            if conversation:
+                try:
+                    conversation.add_message(str(inquire))
+                except TypeError as ex:
+                    logger.error('Error updating conversation for request {}: {}'
+                                 .format(request.id, ex))
             return inquired
 
         except FailRequest as fail:
             # PyCharm incorrectly detects unreachable code here, so disable
             # noinspection PyUnreachableCode
             failed = self.fail(request.id, reason=str(fail))
-            try:
-                conversation.add_message(str(fail))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
+            if conversation:
+                try:
+                    conversation.add_message(str(fail))
+                except TypeError as ex:
+                    logger.error('Error updating conversation for request {}: {}'
+                                 .format(request.id, ex))
             return failed
 
         except SkipRequest as skip:
             skipped = skip.code
-            try:
-                conversation.add_message(str(skip))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
+            if conversation:
+                try:
+                    conversation.add_message(str(skip))
+                except TypeError as ex:
+                    logger.error('Error updating conversation for request {}: {}'
+                                 .format(request.id, ex))
             return skipped
 
     @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
