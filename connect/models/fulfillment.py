@@ -113,7 +113,8 @@ class Fulfillment(BaseModel):
         :return: Whether the request needs migrating.
         :rtype: bool
         """
-        return self.asset.get_param_by_id(migration_key) is not None
+        param = self.asset.get_param_by_id(migration_key)
+        return param is not None and bool(param.value)
 
     def get_conversation(self, config=None):
         """

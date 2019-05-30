@@ -7,7 +7,6 @@ Connect Python SDK allows an easy and fast integration with Connect fulfillment 
 Please check the documentation available [here](https://connect-python-sdk.readthedocs.io), which contains information on how to install and use the library, and a complete API reference guide.
 
 ### Main Features
----
 
 This library may be consumed in your project in order to automate the fulfillment of requests, this class once imported into your project will allow you to:
 
