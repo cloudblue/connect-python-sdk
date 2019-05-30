@@ -93,19 +93,20 @@ class ApiClient(object):
     @staticmethod
     def _check_and_pack_response(response):
         # type: (requests.Response) -> Tuple[str, int]
-        request_attrs = ('content', 'status_code', 'ok')
+        request_attrs = ('text', 'status_code', 'ok')
         for attr in request_attrs:
             if not hasattr(response, attr):
                 raise AttributeError(
                     'Response does not have attribute `{}`. Check your request params. '
                     'Response status - {}'.format(attr, response.status_code),
                 )
+
         if not response.ok:
-            data, error = ServerErrorResponse.deserialize(response.content)
+            data, error = ServerErrorResponse.deserialize(response.text)
             if data:
                 raise ServerError(data)
 
-        return response.content, response.status_code
+        return response.text, response.status_code
 
 
 class BaseResource(object):

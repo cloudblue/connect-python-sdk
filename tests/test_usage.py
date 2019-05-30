@@ -13,20 +13,20 @@ from mock import patch, MagicMock, call
 from connect.exceptions import FileRetrievalError
 from connect.models import Contract, Product, UsageRecord, UsageFile
 from connect.resources import UsageAutomation
-from .common import Response, load_str
+from .common import Response, load_str, BinaryResponse
 
 
 def _get_response_ok():
     return Response(
         ok=True,
-        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage.json')),
+        text=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage.json')),
         status_code=200)
 
 
 def _get_response_ok2():
     return Response(
         ok=True,
-        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage2.json')),
+        text=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response_usage2.json')),
         status_code=201)
 
 
@@ -47,10 +47,10 @@ def test_process():
 @patch('requests.get')
 def test_get_usage_template_ok(get_mock):
     get_mock.side_effect = [
-        Response(ok=True, content='{"template_link": "..."}', status_code=200),
-        Response(ok=True, content='template_contents', status_code=200)]
+        Response(ok=True, text='{"template_link": "..."}', status_code=200),
+        BinaryResponse(ok=True, content=b'template_contents', status_code=200)]
     resource = UsageAutomation()
-    assert resource.get_usage_template(Product(id='PRD-638-321-603')) == 'template_contents'
+    assert resource.get_usage_template(Product(id='PRD-638-321-603')) == b'template_contents'
     get_mock.assert_has_calls([
         call(
             url='http://localhost:8080/api/public/v1//usage/products/PRD-638-321-603/template/',
@@ -60,7 +60,7 @@ def test_get_usage_template_ok(get_mock):
 
 
 @patch('requests.get', MagicMock(return_value=Response(
-    ok=True, content='{}', status_code=200)))
+    ok=True, text='{}', status_code=200)))
 def test_get_usage_template_no_link():
     resource = UsageAutomation()
     with pytest.raises(FileRetrievalError):
@@ -68,8 +68,8 @@ def test_get_usage_template_no_link():
 
 
 @patch('requests.get', MagicMock(side_effect=[
-    Response(ok=True, content='{"template_link": "..."}', status_code=200),
-    Response(ok=True, content=None, status_code=200)]))
+    Response(ok=True, text='{"template_link": "..."}', status_code=200),
+    BinaryResponse(ok=True, content=None, status_code=200)]))
 def test_get_usage_template_no_file():
     resource = UsageAutomation()
     with pytest.raises(FileRetrievalError):

@@ -17,20 +17,20 @@ from .common import Response, load_str
 def _get_response_ok():
     return Response(
         ok=True,
-        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response.json')),
+        text=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response.json')),
         status_code=200)
 
 
 def _get_response_ok2():
     return Response(
         ok=True,
-        content=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response2.json')),
+        text=load_str(os.path.join(os.path.dirname(__file__), 'data', 'response2.json')),
         status_code=200)
 
 
 def _get_response_tier_config_ok():
     return Response(ok=True,
-                    content=load_str(os.path.join(
+                    text=load_str(os.path.join(
                         os.path.dirname(__file__),
                         'data',
                         'response_tier_config_request.json')),
@@ -40,7 +40,7 @@ def _get_response_tier_config_ok():
 def _get_response_migration():
     return Response(
         ok=True,
-        content=load_str(os.path.join(
+        text=load_str(os.path.join(
             os.path.dirname(__file__),
             'data',
             'response_migration.json')),
@@ -62,7 +62,7 @@ def test_resource_urljoin():
 @patch('requests.get', MagicMock(return_value=_get_response_ok()))
 def test_create_model_from_response():
     # Parse JSON data from response file
-    content = json.loads(_get_response_ok().content)[0]
+    content = json.loads(_get_response_ok().text)[0]
 
     # Get requests from response
     resource = FulfillmentAutomation()
@@ -171,7 +171,7 @@ def test_get_tier_config(get_mock):
             'configuration.account.id': 'tier_id'})
 
 
-@patch('requests.get', MagicMock(return_value=Response(ok=True, content='[]', status_code=200)))
+@patch('requests.get', MagicMock(return_value=Response(ok=True, text='[]', status_code=200)))
 def test_get_tier_config_empty():
     config = FulfillmentAutomation().get_tier_config('', '')
     assert not config
