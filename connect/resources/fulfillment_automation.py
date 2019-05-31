@@ -6,11 +6,12 @@
 from abc import ABCMeta
 
 from deprecation import deprecated
+from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, TierConfigRequest
+    Fulfillment, TierConfigRequest, Conversation
 from .automation_engine import AutomationEngine
 
 
@@ -76,43 +77,25 @@ class FulfillmentAutomation(AutomationEngine):
                 message = ''
                 approved = ''
 
-            if conversation:
-                try:
-                    conversation.add_message(message)
-                except TypeError as ex:
-                    logger.error('Error updating conversation for request {}: {}'
-                                 .format(request.id, ex))
+            self._update_conversation_if_exists(conversation, request.id, message)
             return approved
 
         except InquireRequest as inquire:
             self.update_parameters(request.id, inquire.params)
             inquired = self.inquire(request.id)
-            try:
-                conversation.add_message(str(inquire))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
+            self._update_conversation_if_exists(conversation, request.id, inquire)
             return inquired
 
         except FailRequest as fail:
             # PyCharm incorrectly detects unreachable code here, so disable
             # noinspection PyUnreachableCode
             failed = self.fail(request.id, reason=str(fail))
-            try:
-                conversation.add_message(str(fail))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
+            self._update_conversation_if_exists(conversation, request.id, fail)
             return failed
 
         except SkipRequest as skip:
-            skipped = skip.code
-            try:
-                conversation.add_message(str(skip))
-            except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request.id, ex))
-            return skipped
+            self._update_conversation_if_exists(conversation, request.id, skip)
+            return skip.code
 
     @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):
@@ -158,3 +141,13 @@ class FulfillmentAutomation(AutomationEngine):
             path=pk,
             json={'asset': {'params': list_dict}},
         )[0]
+
+    @staticmethod
+    def _update_conversation_if_exists(conversation, request_id, obj):
+        # type: (Optional[Conversation], str, object) -> None
+        if conversation:
+            try:
+                conversation.add_message(str(obj))
+            except TypeError as ex:
+                logger.error('Error updating conversation for request {}: {}'
+                             .format(request_id, ex))
