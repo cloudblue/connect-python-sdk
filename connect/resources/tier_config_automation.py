@@ -16,14 +16,14 @@ class TierConfigAutomation(AutomationEngine):
     """ This is the automation engine for the Tier Config Request API.  If you want to process
     Tier Config requests, subclass this and implement the ``process_request`` method,
     which receives a :py:class:`connect.models.TierConfigRequest` request as argument and must
-    return an :py:class:`ActivationTemplateResponse` or :py:class:`ActivationTileResponse` object
-    in case the request has to be approved.
+    return an :py:class:`connect.models.ActivationTemplateResponse` or
+    :py:class:`connect.models.ActivationTileResponse` object in case the request has to be approved.
 
     In other case, you must raise one of these exceptions:
 
-    - :py:class:`connect.models.InquireRequest`: Inquire for more information.
-    - :py:class:`connect.models.FailRequest`: Causes the request to fail.
-    - :py:class:`connect.models.SkipRequest`: Skips processing the request.
+    - :py:class:`connect.exceptions.InquireRequest`: Inquire for more information.
+    - :py:class:`connect.exceptions.FailRequest`: Causes the request to fail.
+    - :py:class:`connect.exceptions.SkipRequest`: Skips processing the request.
 
     Create an instance of your subclass and call its ``process`` method to begin processing.
 
