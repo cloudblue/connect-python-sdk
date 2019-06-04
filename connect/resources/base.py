@@ -102,9 +102,8 @@ class ApiClient(object):
                 )
 
         if not response.ok:
-            data, error = ServerErrorResponse.deserialize(response.text)
-            if data:
-                raise ServerError(data)
+            error = ServerErrorResponse.deserialize(response.text)
+            raise ServerError(error)
 
         return response.text, response.status_code
 
