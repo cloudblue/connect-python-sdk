@@ -50,8 +50,8 @@ class Param(BaseModel):
     type = None  # type: str
     """ (str) Type of parameter. """
 
-    value = None  # type: str
-    """ (str) Value of parameter. """
+    value = None  # type: Optional[str]
+    """ (str|None) Value of parameter. """
 
     value_error = None  # type: Optional[str]
     """ (str|None) Error indicated for parameter. """

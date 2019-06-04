@@ -334,7 +334,7 @@ class ParamSchema(BaseSchema):
     name = fields.Str()
     description = fields.Str()
     type = fields.Str()
-    value = fields.Str()
+    value = fields.Str(allow_none=True)
     value_error = fields.Str(allow_none=True)
     value_choice = fields.Str(many=True, allow_none=True)
 
