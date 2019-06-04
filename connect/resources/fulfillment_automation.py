@@ -97,7 +97,7 @@ class FulfillmentAutomation(AutomationEngine):
             self._update_conversation_if_exists(conversation, request.id, skip)
             return skip.code
 
-    @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
+    @deprecated(deprecated_in='16.0', details='Use ``TierAccount.get_config`` instead.')
     def get_tier_config(self, tier_id, product_id):
         """
         Gets the specified tier config data. For example, to get Tier 1 configuration data
