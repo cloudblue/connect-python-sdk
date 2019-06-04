@@ -5,7 +5,6 @@
 
 from abc import ABCMeta
 
-from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
@@ -97,15 +96,15 @@ class FulfillmentAutomation(AutomationEngine):
             self._update_conversation_if_exists(conversation, request.id, skip)
             return skip.code
 
-    @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
-    def get_tier_config(self, tier_id, product_id):
+    def get_tier_config(self, account_id, product_id):
         """
         Gets the specified tier config data. For example, to get Tier 1 configuration data
         for one request, within the FulfillmentAutomation instance, we can do: ::
 
             self.get_tier_config(request.asset.tiers.tier1.id, request.asset.product.id)
 
-        :param str tier_id: Id of the requested Tier Config.
+        :param str account_id: Account id of the requested TierConfig
+            (an id beginning with ``TA-``).
         :param str product_id: Id of the product.
         :return: The requested Tier Config, or ``None`` if it was not found.
         :rtype: Optional[TierConfig]
@@ -114,7 +113,7 @@ class FulfillmentAutomation(AutomationEngine):
         params = {
             'status': 'approved',
             'configuration__product__id': product_id,
-            'configuration__account__id': tier_id,
+            'configuration__account__id': account_id,
         }
         response, _ = self._api.get(url=url, params=params)
         objects = TierConfigRequest.deserialize(response)

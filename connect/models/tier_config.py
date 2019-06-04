@@ -95,46 +95,6 @@ class TierConfig(BaseModel):
     open_request = None  # type: Optional[BaseModel]
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
 
-    @classmethod
-    def get(cls, account_id=None, product_id=None, tier_id=None, config=None, **custom_filters):
-        """ Gets the specified TierConfig (which by default must have been approved).
-        For example: ::
-
-            TierConfig.get(account_id=request.asset.tiers.tier1.id)
-
-        If you want to provide custom filters you can, like ``status`` in this case: ::
-
-            TierConfig.get(account_id=request.asset.tiers.tier1.id, status='pending')
-
-        :param Optional[str] account_id: Account id of the requested TierConfig
-            (an id beginning with ``TA-``).
-        :param Optional[str] product_id: Optional id of the product.
-        :param Optional[str] tier_id: Optional id of the requested TierConfig
-            (an id beginning with ``TC-``).
-        :param Config config: Config to use, or ``None`` to use environment config (default).
-        :param custom_filters: Additional filters to pass to the request.
-        :return: The requested TierConfig, or ``None`` if it was not found.
-        :rtype: Optional[TierConfig]
-        """
-        from connect.resources.base import ApiClient
-
-        filters = {'status': 'approved'}
-        if account_id:
-            filters['configuration__account__id'] = account_id
-        if product_id:
-            filters['configuration__product__id'] = product_id
-        if tier_id:
-            filters['configuration__id'] = tier_id
-        filters.update(custom_filters)
-
-        response, _ = ApiClient(config, base_path='tier/config-requests').get(params=filters)
-        objects = TierConfigRequest.deserialize(response)
-
-        if isinstance(objects, list) and len(objects) > 0:
-            return objects[0].configuration
-        else:
-            return None
-
     def get_param_by_id(self, id_):
         """ Get a Tier Config parameter.
 
