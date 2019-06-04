@@ -9,8 +9,7 @@ import os
 import six
 from mock import MagicMock, patch
 
-from connect.models import Asset, Param, Fulfillment, Item, TierConfig, TierAccount, \
-    TierConfigRequest
+from connect.models import Asset, Param, Fulfillment, Item, TierConfig
 from connect.resources import FulfillmentAutomation
 from .common import Response, load_str
 
@@ -157,9 +156,9 @@ def test_asset_methods():
 
 
 @patch('requests.get')
-def test_tier_account_get_config(get_mock):
+def test_tier_config_get_with_account(get_mock):
     get_mock.return_value = _get_response_tier_config_ok()
-    config = TierAccount.get_config('account_id', 'product_id')
+    config = TierConfig.get(account_id='account_id', product_id='product_id')
     assert isinstance(config, TierConfig)
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/tier/config-requests/',
@@ -171,27 +170,10 @@ def test_tier_account_get_config(get_mock):
             'configuration__account__id': 'account_id',
             'configuration__product__id': 'product_id'})
 
-
 @patch('requests.get')
-def test_tier_account_get_request(get_mock):
+def test_tier_config_get_with_tier(get_mock):
     get_mock.return_value = _get_response_tier_config_ok()
-    request = TierAccount.get_request('account_id', 'product_id')
-    assert isinstance(request, TierConfigRequest)
-    get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/tier/config-requests/',
-        headers={
-            'Content-Type': 'application/json',
-            'Authorization': 'ApiKey XXXX:YYYYY'},
-        params={
-            'status': 'approved',
-            'configuration__account__id': 'account_id',
-            'configuration__product__id': 'product_id'})
-
-
-@patch('requests.get')
-def test_tier_config_get(get_mock):
-    get_mock.return_value = _get_response_tier_config_ok()
-    config = TierConfig.get('tier_id', 'product_id')
+    config = TierConfig.get(tier_id='tier_id', product_id='product_id')
     assert isinstance(config, TierConfig)
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/tier/config-requests/',
@@ -205,18 +187,21 @@ def test_tier_config_get(get_mock):
 
 
 @patch('requests.get')
-def test_tier_config_request_get(get_mock):
+def test_tier_config_get_with_custom_filter(get_mock):
     get_mock.return_value = _get_response_tier_config_ok()
-    request = TierConfigRequest.get('request_id', 'product_id')
-    assert isinstance(request, TierConfigRequest)
+    config = TierConfig.get(tier_id='tier_id', product_id='product_id', limit=100)
+    assert isinstance(config, TierConfig)
     get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/tier/config-requests/request_id',
+        url='http://localhost:8080/api/public/v1/tier/config-requests/',
         headers={
             'Content-Type': 'application/json',
             'Authorization': 'ApiKey XXXX:YYYYY'},
         params={
             'status': 'approved',
-            'configuration__product__id': 'product_id'})
+            'configuration__id': 'tier_id',
+            'configuration__product__id': 'product_id',
+            'limit': 100
+        })
 
 
 @patch('requests.get', MagicMock(return_value=Response(ok=True, text='[]', status_code=200)))
