@@ -35,7 +35,7 @@ class TierAccount(BaseModel):
     """ (str|None) Only in case of filtering by this field. """
 
     @classmethod
-    def get_config(cls, account_id, product_id, config=None):
+    def get_config(cls, account_id, product_id=None, config=None):
         """
         Gets the specified TierConfig for the specified account. For example, to get Tier 1
         configuration data for one request we can do: ::
@@ -43,7 +43,7 @@ class TierAccount(BaseModel):
             TierAccount.get_config(request.asset.tiers.tier1.id, request.asset.product.id)
 
         :param str account_id: TierAccount id (an id beginning with ``TA-``).
-        :param str product_id: Id of the product.
+        :param Optional[str] product_id: Optional id of the product.
         :param Config config: Config to use, or ``None`` to use environment config (default).
         :return: The requested TierConfig, or ``None`` if it was not found.
         :rtype: Optional[TierConfig]
@@ -52,7 +52,7 @@ class TierAccount(BaseModel):
         return request.configuration if request else None
 
     @classmethod
-    def get_request(cls, account_id, product_id, config=None):
+    def get_request(cls, account_id, product_id=None, config=None):
         """
         Gets the specified TierConfigRequest for the specified account. For example, to get Tier 1
         configuration request for one request we can do: ::
@@ -60,19 +60,22 @@ class TierAccount(BaseModel):
             TierAccount.get_request(request.asset.tiers.tier1.id, request.asset.product.id)
 
         :param str account_id: TierAccount id (an id beginning with ``TA-``).
-        :param str product_id: Id of the product.
+        :param Optional[str] product_id: Optional id of the product.
         :param Config config: Config to use, or ``None`` to use environment config (default).
         :return: The requested TierConfigRequest, or ``None`` if it was not found.
         :rtype: Optional[TierConfigRequest]
         """
         from connect.resources.base import ApiClient
 
+        params = {
+            'status': 'approved',
+            'configuration__account__id': account_id,
+        }
+        if product_id:
+            params['configuration__product__id'] = product_id
+
         response, _ = ApiClient(config, base_path='tier/config-requests').get(
-            params={
-                'status': 'approved',
-                'configuration.product.id': product_id,
-                'configuration.account.id': account_id,
-            }
+            params=params
         )
         objects = TierConfigRequest.deserialize(response)
 
@@ -143,7 +146,7 @@ class TierConfig(BaseModel):
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
 
     @classmethod
-    def get(cls, tier_id, product_id, config=None):
+    def get(cls, tier_id, product_id=None, config=None):
         """
         Gets the specified TierConfig by its id, which must have been approved. For example: ::
 
@@ -153,19 +156,22 @@ class TierConfig(BaseModel):
         asset's ``tiers`` attribute), use ``TierAccount.get_config`` instead.
 
         :param str tier_id: Id of the requested TierConfig (an id beginning with ``TC-``).
-        :param str product_id: Id of the product.
+        :param Optional[str] product_id: Optional id of the product.
         :param Config config: Config to use, or ``None`` to use environment config (default).
         :return: The requested TierConfig, or ``None`` if it was not found.
         :rtype: Optional[TierConfig]
         """
         from connect.resources.base import ApiClient
 
+        params = {
+            'status': 'approved',
+            'configuration__id': tier_id,
+        }
+        if product_id:
+            params['configuration__product__id'] = product_id
+
         response, _ = ApiClient(config, base_path='tier/config-requests').get(
-            params={
-                'status': 'approved',
-                'configuration.product.id': product_id,
-                'configuration.id': tier_id,
-            }
+            params=params
         )
         objects = TierConfigRequest.deserialize(response)
 
@@ -225,7 +231,7 @@ class TierConfigRequest(BaseModel):
     """ (str) TCR pending notes. Notes can be modified only in Pending state. """
 
     @classmethod
-    def get(cls, request_id, product_id, config=None):
+    def get(cls, request_id, product_id=None, config=None):
         """
         Gets the specified TierConfigRequest by its id, which must have been approved.
         For example: ::
@@ -237,19 +243,22 @@ class TierConfigRequest(BaseModel):
 
         :param str request_id: Id of the requested TierConfigRequest
             (an id beginning with ``TCR-``).
-        :param str product_id: Id of the product.
+        :param Optional[str] product_id: Optional id of the product.
         :param Config config: Config to use, or ``None`` to use environment config (default).
         :return: The requested TierConfigRequest, or ``None`` if it was not found.
         :rtype: Optional[TierConfigRequest]
         """
         from connect.resources.base import ApiClient
 
+        params = {
+            'status': 'approved',
+        }
+        if product_id:
+            params['configuration__product__id'] = product_id
+
         response, _ = ApiClient(config, base_path='tier/config-requests').get(
             path=request_id,
-            params={
-                'status': 'approved',
-                'configuration.product.id': product_id
-            }
+            params=params
         )
         objects = TierConfigRequest.deserialize(response)
 
