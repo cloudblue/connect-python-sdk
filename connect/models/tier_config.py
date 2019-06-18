@@ -96,14 +96,14 @@ class TierConfig(BaseModel):
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
 
     @classmethod
-    def get(cls, tier_id, product_id, config=None):
+    def get(cls, account_id, product_id, config=None):
         """
         Gets the specified tier config data. For example, to get Tier 1 configuration data
         for one request we can do: ::
 
             TierConfig.get(request.asset.tiers.tier1.id, request.asset.product.id)
 
-        :param str tier_id: Id of the requested Tier Config.
+        :param str account_id: Account Id of the requested Tier Config (id with TA prefix).
         :param str product_id: Id of the product.
         :param Config config: Config to use, or ``None`` to use environment config (default).
         :return: The requested Tier Config, or ``None`` if it was not found.
@@ -114,8 +114,8 @@ class TierConfig(BaseModel):
         response, _ = ApiClient(config, base_path='tier/config-requests').get(
             params={
                 'status': 'approved',
-                'configuration.product.id': product_id,
-                'configuration.account.id': tier_id,
+                'configuration__product__id': product_id,
+                'configuration__account__id': account_id,
             }
         )
         objects = TierConfigRequest.deserialize(response)

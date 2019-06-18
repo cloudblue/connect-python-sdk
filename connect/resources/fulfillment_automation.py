@@ -105,7 +105,7 @@ class FulfillmentAutomation(AutomationEngine):
 
             self.get_tier_config(request.asset.tiers.tier1.id, request.asset.product.id)
 
-        :param str tier_id: Id of the requested Tier Config.
+        :param str tier_id: Account Id of the requested Tier Config (id with TA prefix).
         :param str product_id: Id of the product.
         :return: The requested Tier Config, or ``None`` if it was not found.
         :rtype: Optional[TierConfig]
