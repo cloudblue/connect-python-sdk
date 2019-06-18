@@ -67,6 +67,14 @@ class TierConfigAutomation(AutomationEngine):
         except SkipRequest as skip:
             return skip.code
 
+        except NotImplementedError:
+            raise
+
+        except Exception as ex:
+            logger.warning('Skipping request {} because an exception was raised: {}'
+                           .format(request.id, ex))
+            return ''
+
         return ''
 
     @function_log

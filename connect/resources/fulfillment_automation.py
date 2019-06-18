@@ -97,6 +97,14 @@ class FulfillmentAutomation(AutomationEngine):
             self._update_conversation_if_exists(conversation, request.id, skip)
             return skip.code
 
+        except NotImplementedError:
+            raise
+
+        except Exception as ex:
+            logger.warning('Skipping request {} because an exception was raised: {}'
+                           .format(request.id, ex))
+            return ''
+
     @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):
         """
