@@ -337,6 +337,7 @@ class ParamSchema(BaseSchema):
     value = fields.Str(allow_none=True)
     value_error = fields.Str(allow_none=True)
     value_choice = fields.Str(many=True, allow_none=True)
+    value_choices = fields.Nested(ValueChoiceSchema, many=True, allow_none=True)
 
     # Undocumented fields (they appear in PHP SDK)
     title = fields.Str(allow_none=True)

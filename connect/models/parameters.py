@@ -59,6 +59,9 @@ class Param(BaseModel):
     value_choice = None  # type: Optional[List[str]]
     """ (List[str]|None) Available choices for parameter. """
 
+    value_choices = None  # type: Optional[List[ValueChoice]]
+    """ (List[str]|None) Available dropdown choices for parameter. """
+
     # Undocumented fields (they appear in PHP SDK)
     title = None  # type: Optional[str]
     """ (str|None) Title for parameter. """
