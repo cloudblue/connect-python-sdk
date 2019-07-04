@@ -22,6 +22,7 @@ def function_log(func):
     def decorator(self, *args, **kwargs):
         if isinstance(args[0], BaseModel):
             global logger
+            logger = logging.LoggerAdapter(logger, {"req_id": args[0].id})
         logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
         result = func(self, *args, **kwargs)
