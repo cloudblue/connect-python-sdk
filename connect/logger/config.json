@@ -6,7 +6,7 @@
       "single-line": {
         "class": "logging.Formatter",
         "datefmt": "%I:%M:%S",
-        "format": "%(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
+        "format": "%(levelname)-6s; %(asctime)s; %(name)-6s; REQUEST:%(req_id); %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
       }
     },
     "handlers": {
@@ -18,7 +18,9 @@
       }
     },
     "root": {
-      "handlers": ["console"],
+      "handlers": [
+        "console"
+      ],
       "level": "ERROR"
     }
   }

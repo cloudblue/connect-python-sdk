@@ -8,6 +8,7 @@ import json
 import logging
 import os
 from logging.config import dictConfig
+from connect.models import BaseModel
 
 with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
     config = json.load(config_file)
@@ -19,9 +20,10 @@ logger = logging.getLogger()
 def function_log(func):
     @wraps(func)
     def decorator(self, *args, **kwargs):
+        if isinstance(args[0], BaseModel):
+            global logger
         logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
-
         result = func(self, *args, **kwargs)
 
         logger.debug(
