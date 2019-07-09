@@ -16,13 +16,14 @@ with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file
 dictConfig(config['logging'])
 logger = logging.getLogger()
 
+
 def function_log(func):
     @wraps(func)
     def decorator(self, *args, **kwargs):
-
         if len(args) and isinstance(args[0], BaseModel):
+            sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
             global logger
-            [handler.setFormatter(logging.Formatter(args[0].id+" %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s","%I:%M:%S")) for handler in logger.handlers]
+            [handler.setFormatter(logging.Formatter(args[0].id + sformat, "%I:%M:%S")) for handler in logger.handlers]
             logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
         result = func(self, *args, **kwargs)
@@ -32,5 +33,3 @@ def function_log(func):
         return result
 
     return decorator
-
-
