@@ -22,7 +22,6 @@ def function_log(func):
 
         if len(args) and isinstance(args[0], BaseModel):
             global logger
-            logger.addHandler(logging.FileHandler("testLog.log"))
             [handler.setFormatter(logging.Formatter(args[0].id+" %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s","%I:%M:%S")) for handler in logger.handlers]
             logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
