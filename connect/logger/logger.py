@@ -24,7 +24,7 @@ def function_log(func):
             sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
             global logger
             [handler.setFormatter(logging.Formatter(args[0].id + sformat, "%I:%M:%S")) for handler in logger.handlers]
-            logger.info('Entering: %s', func.__name__)
+        logger.info('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
         result = func(self, *args, **kwargs)
 
