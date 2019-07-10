@@ -23,7 +23,7 @@ def log_request_data(args):
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
         sformat = args[0].id + base
         if isinstance(args[0], Fulfillment):
-            sformat = args[0].asset.id + "/" + sformat
+            sformat = args[0].asset.id + "  " + sformat
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S")) for handler in logger.handlers]
 
 
