@@ -49,6 +49,7 @@ class FulfillmentAutomation(AutomationEngine):
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
+    @function_log
     def dispatch(self, request):
         # type: (Fulfillment) -> str
 

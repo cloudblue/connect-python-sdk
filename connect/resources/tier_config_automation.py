@@ -34,6 +34,7 @@ class TierConfigAutomation(AutomationEngine):
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
 
+    @function_log
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
