@@ -20,11 +20,13 @@ logger = logging.getLogger()
 def log_request_data(args):
     if len(args) and isinstance(args[0], BaseModel):
         global logger
-        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s"
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line"\
+               "-%(lineno)d: %(message)s"
         sformat = args[0].id + base
         if isinstance(args[0], Fulfillment):
             sformat = args[0].asset.id + "  " + sformat
-        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S")) for handler in logger.handlers]
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in logger.handlers]
 
 
 def function_log(func):
