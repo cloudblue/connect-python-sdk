@@ -18,7 +18,9 @@
       }
     },
     "root": {
-      "handlers": ["console"],
+      "handlers": [
+        "console"
+      ],
       "level": "ERROR"
     }
   }
