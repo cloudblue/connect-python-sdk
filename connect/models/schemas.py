@@ -240,6 +240,7 @@ class ItemSchema(BaseSchema):
     old_quantity = QuantityField(allow_none=True)
     renewal = fields.Nested(RenewalSchema, allow_none=True)
     global_id = fields.Str()
+    period = fields.Str()
 
     @post_load
     def make_object(self, data):

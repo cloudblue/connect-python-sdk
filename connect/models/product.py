@@ -140,3 +140,8 @@ class Item(BaseModel):
 
     global_id = None  # type: str
     """ (str) Global id. """
+
+    # Undocumented fields (they appear in PHP SDK)
+
+    period = None  # type: str
+    """ (str) Period. """
