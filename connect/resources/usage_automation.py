@@ -27,9 +27,9 @@ class UsageAutomation(AutomationEngine):
     resource = 'usage/files'
     model_class = UsageFile
 
-    def filters(self, status='listed', **kwargs):
+    def filters(self, status='draft', **kwargs):
         """
-        :param str status: Status of the requests. Default: ``'listed'``.
+        :param str status: Status of the requests. Default: ``'draft'``.
         :param dict[str,Any] kwargs: Additional filters to add to the default ones.
         :return: The set of filters for this resource.
         :rtype: dict[str,Any]
