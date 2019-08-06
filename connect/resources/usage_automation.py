@@ -142,7 +142,7 @@ class UsageAutomation(AutomationEngine):
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
-        sheet['A1'] = 'record_id'
+        sheet['A1'] = 'usage_record_id'
         sheet['B1'] = 'item_search_criteria'
         sheet['C1'] = 'item_search_value'
         sheet['D1'] = 'quantity'
