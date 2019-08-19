@@ -53,7 +53,7 @@ def test_get_usage_template_ok(get_mock):
     assert resource.get_usage_template(Product(id='PRD-638-321-603')) == b'template_contents'
     get_mock.assert_has_calls([
         call(
-            url='http://localhost:8080/api/public/v1//usage/products/PRD-638-321-603/template/',
+            url='http://localhost:8080/api/public/v1/usage/products/PRD-638-321-603/template/',
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'}),
         call('...')
     ])

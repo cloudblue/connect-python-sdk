@@ -104,7 +104,7 @@ class UsageAutomation(AutomationEngine):
     def _get_usage_template_download_location(self, product_id):
         # type: (str) -> str
         try:
-            response, _ = self._api.get(url='{}/usage/products/{}/template/'
+            response, _ = self._api.get(url='{}usage/products/{}/template/'
                                         .format(self.config.api_url, product_id))
             response_dict = json.loads(response)
             return response_dict['template_link']
@@ -127,7 +127,7 @@ class UsageAutomation(AutomationEngine):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response, _ = self._api.post(url='{}/usage/files/'.format(self.config.api_url))
+        response, _ = self._api.post(url='{}usage/files/'.format(self.config.api_url))
         return self.model_class.deserialize(response)
 
     def _upload_usage_records(self, usage_file, usage_records):
@@ -172,7 +172,7 @@ class UsageAutomation(AutomationEngine):
             file_contents = tmp.read()
 
         # Setup request
-        url = '{}/usage/files/{}/upload/'.format(self.config.api_url, usage_file.id)
+        url = '{}usage/files/{}/upload/'.format(self.config.api_url, usage_file.id)
         headers = self._api.headers
         headers['Accept'] = 'application/json'
         del headers['Content-Type']  # This must NOT be set for multipart post requests
