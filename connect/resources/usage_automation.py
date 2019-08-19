@@ -127,7 +127,8 @@ class UsageAutomation(AutomationEngine):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response, _ = self._api.post(url='{}usage/files/'.format(self.config.api_url), json=usage_file.json)
+        response, _ = self._api.post(url='{}usage/files/'
+                                     .format(self.config.api_url), json=usage_file.json)
         return self.model_class.deserialize(response)
 
     def _upload_usage_records(self, usage_file, usage_records):
