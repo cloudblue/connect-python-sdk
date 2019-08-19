@@ -368,7 +368,7 @@ class ProductSchema(BaseSchema):
 
 class ServerErrorResponseSchema(Schema):
     error_code = fields.Str()
-    params = fields.Dict()
+    params = fields.Dict(allow_none=True)
     errors = fields.List(fields.Str())
 
     @post_load
@@ -556,7 +556,7 @@ class UsageListingSchema(BaseSchema):
 
 
 class UsageRecordSchema(BaseSchema):
-    record_id = fields.Str()
+    usage_record_id = fields.Str()
     item_search_criteria = fields.Str()
     item_search_value = fields.Str()
     quantity = fields.Int()

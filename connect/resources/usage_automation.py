@@ -127,7 +127,7 @@ class UsageAutomation(AutomationEngine):
         if not usage_file.description:
             # Could be because description is empty or None, so make sure it is empty
             usage_file.description = ''
-        response, _ = self._api.post(url='{}usage/files/'.format(self.config.api_url))
+        response, _ = self._api.post(url='{}usage/files/'.format(self.config.api_url), json=usage_file.json)
         return self.model_class.deserialize(response)
 
     def _upload_usage_records(self, usage_file, usage_records):
@@ -142,7 +142,7 @@ class UsageAutomation(AutomationEngine):
         book = openpyxl.Workbook()
         sheet = book.active
         sheet.title = 'usage_records'
-        sheet['A1'] = 'record_id'
+        sheet['A1'] = 'usage_record_id'
         sheet['B1'] = 'item_search_criteria'
         sheet['C1'] = 'item_search_value'
         sheet['D1'] = 'quantity'
@@ -152,7 +152,7 @@ class UsageAutomation(AutomationEngine):
         sheet['H1'] = 'asset_search_value'
         for index, record in enumerate(usage_records):
             row = str(index + 2)
-            sheet['A' + row] = record.record_id
+            sheet['A' + row] = record.usage_record_id
             sheet['B' + row] = record.item_search_criteria
             sheet['C' + row] = record.item_search_value
             sheet['D' + row] = record.quantity

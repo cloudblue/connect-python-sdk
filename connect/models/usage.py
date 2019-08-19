@@ -149,7 +149,7 @@ class UsageRecord(BaseModel):
 
     _schema = UsageRecordSchema()
 
-    record_id = None  # type: str
+    usage_record_id = None  # type: str
     """ (str) Record id. """
 
     item_search_criteria = None  # type: str
