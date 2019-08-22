@@ -21,6 +21,18 @@ class UsageFileAutomation(AutomationEngine):
     resource = 'usage/files'
     model_class = UsageFile
 
+    def filters(self, status='ready', **kwargs):
+        """
+        :param str status: Status of the requests. Default: ``'ready'``.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :return: The set of filters for this resource.
+        :rtype: dict[str,Any]
+        """
+        filters = super(UsageFileAutomation, self).filters(status, **kwargs)
+        if self.config.products:
+            filters['product__id'] = ','.join(self.config.products)
+        return filters
+
     def dispatch(self, request):
         # type: (UsageFile) -> str
         try:

@@ -39,6 +39,26 @@ class FulfillmentAutomation(AutomationEngine):
 
     def filters(self, status='pending', **kwargs):
         """
+        Returns the default set of filters for Fulfillment request, plus any others that you might
+        specify. The allowed filters are:
+
+        - status
+        - created
+        - id (List support)
+        - type (purchase|renew|change|cancel)
+        - asset.id (asset_id) - (List support)
+        - asset.product.id (product_id)
+        - asset.product.name - (List support)
+        - asset.hub.id
+        - asset.connection.hub.name - (List support)
+        - asset.connection.provider.id
+        - asset.connection.provider.name - (List support)
+        - asset.connection.vendor.name - (List support)
+        - asset.tiers.customer.id (Customer ID)
+        - asset.tiers.tier1.id
+        - asset.tiers.tier2.id
+        - asset.connection.type (test|production|preview)
+
         :param str status: Status of the requests. Default: ``'pending'``.
         :param dict[str,Any] kwargs: Additional filters to add to the default ones.
         :return: The set of filters for this resource.

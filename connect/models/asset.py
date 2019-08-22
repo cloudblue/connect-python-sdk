@@ -47,7 +47,7 @@ class Asset(BaseModel):
     - new: First purchase requested.
     - processing: Until first purchase request is either completed or rejected.
     - active: After the first purchase request is completed.
-       NOTE: Asset stays active regardless of any other requests except cancel.
+      NOTE: Asset stays active regardless of any other requests except cancel.
     - rejected: Asset becomes rejected once the first purchase request is rejected.
     - terminated: Asset becomes terminated once the 'cancel' request type is fulfilled.
     - suspended: Asset becomes suspended once 'suspend' request type is fulfilled.

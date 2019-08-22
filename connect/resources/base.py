@@ -102,7 +102,12 @@ class ApiClient(object):
                 )
 
         if not response.ok:
-            error = ServerErrorResponse.deserialize(response.text)
+            try:
+                error = ServerErrorResponse.deserialize(response.text)
+            except ValueError:
+                error = None
+            if not error or not error.error_code:
+                error = ServerErrorResponse(errors=[response.text])
             raise ServerError(error)
 
         return response.text, response.status_code

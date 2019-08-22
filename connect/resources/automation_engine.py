@@ -18,9 +18,9 @@ class AutomationEngine(BaseResource):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
         return super(AutomationEngine, self).filters(status=status, **kwargs)
 
-    def process(self):
-        # type: () -> None
-        for request in self.list():
+    def process(self, filters=None):
+        # type: (Dict[str, Any]) -> None
+        for request in self.list(filters):
             self.dispatch(request)
 
     def dispatch(self, request):
