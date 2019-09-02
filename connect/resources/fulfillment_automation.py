@@ -38,9 +38,8 @@ class FulfillmentAutomation(AutomationEngine):
     model_class = Fulfillment
 
     def filters(self, status='pending', **kwargs):
-        """
-        Returns the default set of filters for Fulfillment request, plus any others that you might
-        specify. The allowed filters are:
+        """ Returns the default set of filters for Fulfillment request, plus any others that you
+        might specify. The allowed filters are:
 
         - status
         - created

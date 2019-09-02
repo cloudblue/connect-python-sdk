@@ -1,0 +1,63 @@
+{
+  "id": "TC-000-000-000",
+  "name": "Configuration of Reseller",
+  "account": {
+    "id": "TA-1-000-000-000"
+  },
+  "product": {
+    "id": "PRD-000-000-000",
+    "icon": "https://provider.connect.cloud.im/media/dapper-lynxes-35/mj301/media/mj301-logo.png",
+    "name": "Product"
+  },
+  "tier_level": 1,
+  "connection": {
+    "id": "CT-9861-7949-8492",
+    "type": "production",
+    "hub": {
+      "id": "HB-12345-12345",
+      "name": "Provider Production Hub"
+    },
+    "provider": {
+      "name": "Ingram Micro Prod DA",
+      "id": "PA-9861-7949"
+    },
+    "vendor": {
+      "name": "Large Largo and Co",
+      "id": "VA-9861-7949"
+    }
+  },
+  "events": {
+    "created": {
+      "at": "2018-11-21T11:10:29+00:00"
+    },
+    "updated": {
+      "at": "2018-11-21T11:10:29+00:00",
+      "by": {
+        "id": "PA-000-000",
+        "name": "Username"
+      }
+    }
+  },
+  "params": [
+    {
+      "id": "param_a",
+      "value": "param_a_value"
+    }
+  ],
+  "open_request": {
+    "id": "TCR-000-000-000"
+  },
+  "template": {
+    "id": "TP-000-000-000",
+    "representation": "Render text is here......"
+  },
+  "contract": {
+    "id": "CRD-00000-00000-00000",
+    "name": "ACME Distribution Contract"
+  },
+  "marketplace": {
+    "icon": "/media/PA-239-689/marketplaces/MP-54865/icon.png",
+    "id": "MP-54865",
+    "name": "Germany"
+  }
+}

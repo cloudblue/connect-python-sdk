@@ -55,7 +55,7 @@ class ApiClient(object):
     def urljoin(*args):
         # type: (str) -> str
         return functools.reduce(
-            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b),
+            lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b) if b else a,
             args)
 
     @function_log
