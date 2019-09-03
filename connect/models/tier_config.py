@@ -5,6 +5,7 @@
 
 from typing import Optional, List
 
+import connect.models
 from .base import BaseModel
 from .company import User
 from .connection import Connection
@@ -14,7 +15,7 @@ from .marketplace import Activation
 from .parameters import Param
 from .product import Product
 from connect.models.schemas import TemplateSchema, TierAccountSchema, \
-    TierAccountsSchema, TierConfigSchema, TierConfigRequestSchema
+    TierAccountsSchema, TierConfigSchema, TierConfigRequestSchema, ConfigurationSchema
 
 
 class TierAccount(BaseModel):
@@ -55,8 +56,28 @@ class Template(BaseModel):
 
     _schema = TemplateSchema()
 
+    name = None  # type: str
+    """ (str) Template name. """
+
     representation = None  # type: str
     """ (str) Template representation. """
+
+
+class Configuration(BaseModel):
+    """ Configuration Phase Parameter Context-Bound Data Object.
+
+    To be used in parameter contexts:
+
+    - Asset.
+    - Fulfillment Request.
+    - TierConfig.
+    - TierConfig Requests.
+    """
+
+    _schema = ConfigurationSchema()
+
+    params = None  # type: List[Param]
+    """ (List[:py:class:`.Param`])  """
 
 
 class TierConfig(BaseModel):
@@ -78,22 +99,33 @@ class TierConfig(BaseModel):
     tier_level = None  # type: int
     """ (int) Tier level for product from customer perspective. """
 
-    connection = None  # type: Connection
-    """ (:py:class:`.Connection`) Reference to Connection Object. """
-
-    events = None  # type: Optional[Events]
-    """ (:py:class:`.Events` | None) Tier Config events. """
-
     params = None  # type: List[Param]
     """ (List[:py:class:`.Param`]) List of TC parameter data objects as in Asset Object
     extended with unfilled parameters from product.
     """
 
-    template = None  # type: Template
-    """ (:py:class:`.Template`) Template Object.  """
+    connection = None  # type: Connection
+    """ (:py:class:`.Connection`) Reference to Connection Object. """
 
     open_request = None  # type: Optional[BaseModel]
     """ (:py:class:`.BaseModel` | None) Reference to TCR. """
+
+    template = None  # type: Template
+    """ (:py:class:`.Template`) Template Object.  """
+
+    contract = None  # type: connect.models.Contract
+    """ (:py:class:`.Contract`) Contract Object reference. """
+
+    marketplace = None  # type: connect.models.Marketplace
+    """ (:py:class:`.Marketplace`) Marketplace Object reference. """
+
+    configuration = None  # type: Configuration
+    """ (:py:class:`.Configuration`) List of Product and Marketplace Configuration Phase Parameter
+    Context-Bound Object.
+    """
+
+    events = None  # type: Optional[Events]
+    """ (:py:class:`.Events` | None) Tier Config events. """
 
     @classmethod
     def get(cls, account_id, product_id, config=None):
@@ -148,15 +180,27 @@ class TierConfigRequest(BaseModel):
     """ (str) TCR current status. One of: tiers_setup, pending, inquiring, approved, failed. """
 
     configuration = None  # type: TierConfig
-    """ (:py:class:`.TierConfig`) Full representation of Tier Configuration Object. """
+    """ (:py:class:`.TierConfig`) Full representation of TierConfig Object. """
 
-    events = None  # type: Optional[Events]
-    """ (:py:class:`.Events` | None) Tier Config request Events. """
+    parent_configuration = None  # type: Optional[TierConfig]
+    """ (:py:class:`.TierConfig` | None) Full representation of parent TierConfig. """
+
+    account = None  # type: TierAccount
+    """ (:py:class:`.TierAccount`) Reference object to TierAccount. """
+
+    product = None  # type: Product
+    """ (:py:class:`.Product`) Reference object to product (application). """
+
+    tier_level = None  # type: int
+    """ (int) Tier level for product from customer perspective (1 or 2). """
 
     params = None  # type: List[Param]
     """ (List[:py:class:`.Param`]) List of parameter data objects as in Asset Object.
     Params can be modified only in Pending state.
     """
+
+    environment = None  # type: str
+    """ (str) TCR environment (test, prod or preview) """
 
     assignee = None  # type: Optional[User]
     """ (:py:class:`.User` | None) TCR environment. One of: test, prod, preview. """
@@ -174,6 +218,9 @@ class TierConfigRequest(BaseModel):
 
     notes = None  # type: Optional[str]
     """ (str) TCR pending notes. Notes can be modified only in Pending state. """
+
+    events = None  # type: Optional[Events]
+    """ (:py:class:`.Events` | None) Tier Config request Events. """
 
     def get_param_by_id(self, id_):
         """ Get a Tier Config Request parameter.

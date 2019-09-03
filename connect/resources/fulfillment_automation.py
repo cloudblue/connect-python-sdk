@@ -126,6 +126,17 @@ class FulfillmentAutomation(AutomationEngine):
                            .format(request.id, ex))
             return ''
 
+    def create_request(self, request):
+        """ Creates a new request. Using this method requires a provider token used as api_key
+        in the Config.
+
+        :param Fulfillment request:
+        :return: The created request.
+        :rtype: Fulfillment
+        """
+        response, _ = self._api.post(json=request.json)
+        return Fulfillment.deserialize(response)
+
     @deprecated(deprecated_in='16.0', details='Use ``TierConfig.get`` instead.')
     def get_tier_config(self, tier_id, product_id):
         """

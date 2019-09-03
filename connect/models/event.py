@@ -42,3 +42,21 @@ class Events(BaseModel):
 
     updated = None  # type: EventInfo
     """ (:py:class:`.EventInfo`) Update event. """
+
+    approved = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Approve event. """
+
+    uploaded = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Uploaded event. """
+
+    submitted = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Submit event. """
+
+    accepted = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Accept event. """
+
+    rejected = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Reject event. """
+
+    closed = None  # type: EventInfo
+    """ (:py:class:`.EventInfo`) Close event. """
