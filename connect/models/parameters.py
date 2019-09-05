@@ -5,6 +5,7 @@
 
 from typing import List, Optional
 
+import connect.models
 from .base import BaseModel
 from connect.models.schemas import ValueChoiceSchema, ConstraintsSchema, ParamSchema
 
@@ -35,6 +36,9 @@ class Constraints(BaseModel):
     choices = None  # type: List[ValueChoice]
     """ (List[:py:class:`.ValueChoice`]) Parameter value choices. """
 
+    unique = None  # type: bool
+    """ (bool) Is the constraint unique? """
+
 
 class Param(BaseModel):
     """ Parameters are used in product and asset definitions. """
@@ -59,10 +63,8 @@ class Param(BaseModel):
     value_choice = None  # type: Optional[List[str]]
     """ (List[str]|None) Available choices for parameter. """
 
-    value_choices = None  # type: Optional[List[ValueChoice]]
-    """ (List[str]|None) Available dropdown choices for parameter. """
-
     # Undocumented fields (they appear in PHP SDK)
+
     title = None  # type: Optional[str]
     """ (str|None) Title for parameter. """
 
@@ -71,3 +73,15 @@ class Param(BaseModel):
 
     constraints = None  # type: Optional[Constraints]
     """ (:py:class:`.Constraints` | None) Parameter constraints. """
+
+    value_choices = None  # type: Optional[List[ValueChoice]]
+    """ (List[str]|None) Available dropdown choices for parameter. """
+
+    phase = None  # type: Optional[str]
+    """ (str|None) Param phase. """
+
+    events = None  # type: Optional[connect.models.Events]
+    """ (:py:class:`.Events` | None) Events. """
+
+    marketplace = None  # type: Optional[connect.models.Marketplace]
+    """ (:py:class:`.Marketplace` | None) Marketplace. """

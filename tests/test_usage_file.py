@@ -4,6 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import os
+from datetime import datetime
 
 import pytest
 from mock import patch, MagicMock
@@ -80,16 +81,16 @@ def test_create_resource():
     assert records.valid == 56
     assert records.invalid == 0
 
-    assert request.uploaded_by == 'rahul.mondal@ingrammicro.com'
-    assert request.uploaded_at == '2018-11-21T11:10:29+00:00'
-    assert request.submitted_by == 'rahul.mondal@ingrammicro.com'
-    assert request.submitted_at == '2018-11-21T11:10:29+00:00'
-    assert request.accepted_by == 'admin@a1provider.com'
-    assert request.accepted_at == '2018-11-21T11:10:29+00:00'
-    assert request.rejected_by == 'admin@a1provider.com'
-    assert request.rejected_at == '2018-11-21T11:10:29+00:00'
-    assert request.closed_by == 'admin@a1provider.com'
-    assert request.closed_at == '2018-11-21T11:10:29+00:00'
+    assert request.events.uploaded.by.name == 'rahul.mondal@ingrammicro.com'
+    assert request.events.uploaded.at == datetime(2018, 11, 21, 11, 10, 29)
+    assert request.events.submitted.by.name == 'rahul.mondal@ingrammicro.com'
+    assert request.events.submitted.at == datetime(2018, 11, 21, 11, 10, 29)
+    assert request.events.accepted.by.name == 'admin@a1provider.com'
+    assert request.events.accepted.at == datetime(2018, 11, 21, 11, 10, 29)
+    assert request.events.rejected.by.name == 'admin@a1provider.com'
+    assert request.events.rejected.at == datetime(2018, 11, 21, 11, 10, 29)
+    assert request.events.closed.by.name == 'admin@a1provider.com'
+    assert request.events.closed.at == datetime(2018, 11, 21, 11, 10, 29)
 
 
 @patch('requests.get', MagicMock(side_effect=_get_response_ok))

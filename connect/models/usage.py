@@ -2,7 +2,7 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-
+from connect.models import Events
 from .base import BaseModel
 from .company import Company
 from .marketplace import Contract, Marketplace
@@ -88,35 +88,8 @@ class UsageFile(BaseModel):
     records = None  # type: UsageRecords
     """ (:py:class:`.UsageRecords`) UsageRecords Object. """
 
-    uploaded_by = None  # type: str
-    """ (str) User Id who uploaded the file. """
-
-    uploaded_at = None  # type: str
-    """ (str) Usage file upload time. """
-
-    submitted_by = None  # type: str
-    """ (str) User Id, who submitted the usage record to Provider. """
-
-    submitted_at = None  # type: str
-    """ (str) User Id, who submitted the usage record to Provider. """
-
-    accepted_by = None  # type: str
-    """ (str) User Id, who accepted the usage file as provider. """
-
-    accepted_at = None  # type: str
-    """ (str) Usage file acceptance time. """
-
-    rejected_by = None  # type: str
-    """ (str) User Id, who rejected the usage file as provider. """
-
-    rejected_at = None  # type: str
-    """ (str) Usage file rejection time. """
-
-    closed_by = None  # type: str
-    """ (str) User Id, who billed the usage file as provider. """
-
-    closed_at = None  # type: str
-    """ (str) Usage file billing time. """
+    events = None  # type: Events
+    """ (:py:class:`.Events`) Events occured on file. """
 
 
 class UsageListing(BaseModel):
