@@ -38,15 +38,37 @@
       "valid": 56,
       "invalid": 0
     },
-    "uploaded_by": "rahul.mondal@ingrammicro.com",
-    "uploaded_at": "2018-11-21T11:10:29+00:00",
-    "submitted_by": "rahul.mondal@ingrammicro.com",
-    "submitted_at": "2018-11-21T11:10:29+00:00",
-    "accepted_by": "admin@a1provider.com",
-    "accepted_at": "2018-11-21T11:10:29+00:00",
-    "rejected_by": "admin@a1provider.com",
-    "rejected_at": "2018-11-21T11:10:29+00:00",
-    "closed_by": "admin@a1provider.com",
-    "closed_at": "2018-11-21T11:10:29+00:00"
+    "events": {
+      "uploaded": {
+        "by": {
+          "name": "rahul.mondal@ingrammicro.com"
+        },
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "submitted": {
+        "by": {
+          "name": "rahul.mondal@ingrammicro.com"
+        },
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "accepted": {
+        "by": {
+          "name": "admin@a1provider.com"
+        },
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "rejected": {
+        "by": {
+          "name": "admin@a1provider.com"
+        },
+        "at": "2018-11-21T11:10:29+00:00"
+      },
+      "closed": {
+        "by": {
+          "name": "admin@a1provider.com"
+        },
+        "at": "2018-11-21T11:10:29+00:00"
+      }
+    }
   }
 ]

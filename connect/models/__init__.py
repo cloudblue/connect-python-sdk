@@ -16,9 +16,10 @@ from .hub import Hub, HubInstance, ExtIdHub, HubStats
 from .marketplace import Activation, Agreement, AgreementStats, Contract, Marketplace
 from .parameters import Constraints, Param, ValueChoice
 from .product import CustomerUiSettings, Document, DownloadLink, Item, Product, \
-    ProductConfiguration, Renewal
+    ProductCategory, ProductConfiguration, ProductFamily, ProductStats, ProductStatsInfo, Renewal
 from .server_error_response import ServerErrorResponse
-from .tier_config import Template, TierAccount, TierAccounts, TierConfig, TierConfigRequest
+from .tier_config import Configuration, Template, TierAccount, TierAccounts, TierConfig, \
+    TierConfigRequest
 from .usage import UsageFile, UsageListing, UsageRecord, UsageRecords
 
 __all__ = [
@@ -30,6 +31,7 @@ __all__ = [
     'Asset',
     'BaseModel',
     'Company',
+    'Configuration',
     'Connection',
     'Constraints',
     'Contact',
@@ -52,7 +54,11 @@ __all__ = [
     'Param',
     'PhoneNumber',
     'Product',
+    'ProductCategory',
     'ProductConfiguration',
+    'ProductFamily',
+    'ProductStats',
+    'ProductStatsInfo',
     'Renewal',
     'ServerErrorResponse',
     'Template',
