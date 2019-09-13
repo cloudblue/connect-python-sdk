@@ -1,0 +1,50 @@
+{
+  "id": "CN-783-317-575",
+  "name": "Test Product",
+  "icon": "https://provider.connect.cloud.im/media/dapper-lynxes-35/mj301/media/mj301-logo.png",
+  "short_description": "",
+  "detailed_description": "",
+  "version": 2,
+  "published_at": "2018-09-03T10:28:18.472670+00:00",
+  "configurations": {
+    "suspend_resume_supported": true,
+    "requires_reseller_information": true
+  },
+  "customer_ui_settings": {
+    "description": "description",
+    "getting_started": "short description",
+    "download_links": [
+      {
+        "title": "Windows",
+        "url": "https://fallball.io/download/windows"
+      },
+      {
+        "title": "macOS",
+        "url": "https://fallball.io/download/macos"
+      }
+    ],
+    "documents": [
+      {
+        "title": "Admin Manual",
+        "url": "https://fallball.io/manual/admin",
+        "visible_for": "admin"
+      },
+      {
+        "title": "User Manual",
+        "url": "https://fallball.io/manual/user",
+        "visible_for": "user"
+      }
+    ],
+    "languages": [
+      {
+        "id": "en_EN",
+        "name": "English"
+      },
+      {
+        "id": "de_DE",
+        "name": "German"
+      }
+    ]
+  }
+}
+

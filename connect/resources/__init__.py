@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+from .directory import Directory
 from .fulfillment_automation import FulfillmentAutomation
 from .template import TemplateResource
 from .tier_config_automation import TierConfigAutomation
@@ -11,6 +12,7 @@ from .usage_file_automation import UsageFileAutomation
 
 
 __all__ = [
+    'Directory',
     'FulfillmentAutomation',
     'TemplateResource',
     'TierConfigAutomation',

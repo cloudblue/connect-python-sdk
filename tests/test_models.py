@@ -49,7 +49,7 @@ def _get_response_migration():
 
 def test_resource_url():
     resource = FulfillmentAutomation()
-    assert resource._api.get_url() == resource.config.api_url + resource.resource + '/'
+    assert resource._api.get_url() == resource.config.api_url + resource.resource
 
 
 def test_resource_urljoin():
@@ -161,7 +161,7 @@ def test_get_tier_config(get_mock):
     config = TierConfig.get('account_id', 'product_id')
     assert isinstance(config, TierConfig)
     get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/tier/config-requests/',
+        url='http://localhost:8080/api/public/v1/tier/config-requests',
         headers={
             'Content-Type': 'application/json',
             'Authorization': 'ApiKey XXXX:YYYYY'},

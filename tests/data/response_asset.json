@@ -1,0 +1,78 @@
+{
+  "id": "AS-9861-7949-8492",
+  "status": "active",
+  "events": {
+    "created": {
+      "at": "2018-06-04T13:19:10+00:00"
+    },
+    "updated": {
+      "at": "2018-06-04T13:19:10+00:00"
+    }
+  },
+  "external_id": "12345",
+  "external_uid": "12435,518e10e8-3b1b-49b5-a480-b67675af4ae5",
+  "external_name": "Fallball 498c84b1-d53318a6",
+  "product": {
+    "id": "CN-9861-7949-8492",
+    "icon": "https://provider.connect.cloud.im/media/dapper-lynxes-35/mj301/media/mj301-logo.png",
+    "name": "Fallball Awesome"
+  },
+  "connection": {
+    "id": "CT-9861-7949-8492",
+    "type": "production",
+    "hub": {
+      "id": "HB-12345-12345",
+      "name": "Provider Production Hub",
+      "account_id": "PA-9861-7949",
+      "instance_id": "c106b775-7155-4b94-810d-a0c597fe801f"
+    },
+    "provider": {
+      "name": "Ingram Micro Prod DA",
+      "id": "PA-9861-7949"
+    },
+    "vendor": {
+      "name": "Large Largo and Co",
+      "id": "VA-9861-7949"
+    }
+  },
+  "items": [
+    {
+      "id": "SKU-9861-7949-8492-0001",
+      "mpn": "TEAM-ST3L2TAC1M",
+      "quantity": "3"
+    },
+    {
+      "id": "SKU-9861-7949-8492-0002",
+      "mpn": "USR-FFFAC1M",
+      "quantity": "1"
+    }
+  ],
+  "params": [
+    {
+      "id": "PM-9861-7949-8492-0001 #AUTOGEN #PRODUCT",
+      "name": "Secondary email",
+      "description": "This is a backup email for emergency",
+      "type": "text",
+      "value": "daniel.lark@gmail.com"
+    }
+  ],
+  "tiers": {
+    "customer": {
+      "id": "TA-0-9861-7949-8492"
+    },
+    "tier1": {
+      "id": "TA-1-9861-7949-8492"
+    },
+    "tier2": {
+      "id": "TA-2-9861-7949-8492"
+    }
+  },
+  "marketplace": {
+    "id": "MP-12345",
+    "name": "France and territories"
+  },
+  "contract": {
+    "id": "CRP-00000-00000-00000",
+    "name": "Contract of Program Agreement"
+  }
+}
