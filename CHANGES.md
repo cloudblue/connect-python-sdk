@@ -1,5 +1,11 @@
 # Connect SDK Changes History
 
+## v17.0
+
+* Fixed bugs when listing and working with usage files.
+* Directory module.
+* Models updated with new fields from v17.
+
 ## v16.2
 
 * Catch generic `Exception` on dispatch and skip request instead of aborting execution.
