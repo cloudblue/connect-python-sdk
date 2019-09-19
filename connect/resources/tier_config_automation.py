@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import logging
 from abc import ABCMeta
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
@@ -33,11 +34,18 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
+    logger = logging.getLogger('UsageFile.logger')
 
     @function_log
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
+            base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+                   "-%(lineno)d: %(message)s"
+            sformat = request.id + base
+            [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+             for handler in self.logger.handlers]
+
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'

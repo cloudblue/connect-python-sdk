@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import logging
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
@@ -20,6 +21,7 @@ class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     model_class = UsageFile
+    logger = logging.getLogger('UsageFile.logger')
 
     def filters(self, status='ready', **kwargs):
         """
@@ -35,6 +37,13 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
+
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+               "-%(lineno)d: %(message)s"
+        sformat = request.marketplace.id + "  " + request.id + base
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in self.logger.handlers]
+
         try:
             # Validate product
             if self.config.products \

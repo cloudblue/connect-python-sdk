@@ -4,7 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from typing import Any, Dict
-
+import logging
 from connect.logger import function_log
 from connect.models import ActivationTileResponse, BaseModel
 from .base import BaseResource
@@ -13,6 +13,7 @@ from .template import TemplateResource
 
 class AutomationEngine(BaseResource):
     limit = 1000  # type: int
+    logger = logging.getLogger()
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]

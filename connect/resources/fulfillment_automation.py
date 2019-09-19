@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import logging
 from abc import ABCMeta
 
 from deprecation import deprecated
@@ -36,6 +37,7 @@ class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     model_class = Fulfillment
+    logger = logging.getLogger('Fullfilment.logger')
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Fulfillment request, plus any others that you
@@ -71,6 +73,12 @@ class FulfillmentAutomation(AutomationEngine):
     @function_log
     def dispatch(self, request):
         # type: (Fulfillment) -> str
+
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+               "-%(lineno)d: %(message)s"
+        sformat = request.asset.id + "  " + request.id + base
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in self.logger.handlers]
 
         conversation = request.get_conversation(self.config)
 

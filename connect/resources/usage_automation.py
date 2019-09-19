@@ -4,6 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
+import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
@@ -26,6 +27,7 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'listings'
     model_class = UsageFile
+    logger = logging.getLogger('Usage.logger')
 
     def filters(self, status='listed', **kwargs):
         """
@@ -42,7 +44,14 @@ class UsageAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (UsageListing) -> str
 
-        # TODO Shouldn't this raise an exception on ALL automation classes?
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+               "-%(lineno)d: %(message)s"
+        sformat = request.contract.marketplace.id + "  " + request.id + base
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in self.logger.handlers]
+
+
+    # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
