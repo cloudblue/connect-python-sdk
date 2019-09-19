@@ -50,12 +50,12 @@ class TierConfigAutomation(AutomationEngine):
                     and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'
 
-            logger.info(
+            self.logger.info(
                 'Start tier config request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
-                logger.info('Method `process_request` did not return result')
+                self.logger.info('Method `process_request` did not return result')
                 return ''
 
             params = {}
@@ -80,7 +80,7 @@ class TierConfigAutomation(AutomationEngine):
             raise
 
         except Exception as ex:
-            logger.warning('Skipping request {} because an exception was raised: {}'
+            self.logger.warning('Skipping request {} because an exception was raised: {}'
                            .format(request.id, ex))
             return ''
 

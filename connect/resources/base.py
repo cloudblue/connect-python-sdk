@@ -6,7 +6,7 @@
 import functools
 from typing import Any, List, Dict, Tuple
 
-import requests
+import requests, logging
 from requests import compat
 
 from connect.config import Config
@@ -122,6 +122,7 @@ class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
     model_class = BaseModel
+    logger = logging.getLogger()
 
     def __init__(self, config=None):
         # Set client
@@ -155,6 +156,6 @@ class BaseResource(object):
     def list(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
         filters = filters or self.filters()
-        logger.info('Get list request with filters - {}'.format(filters))
+        self.logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)

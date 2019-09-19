@@ -16,7 +16,6 @@ with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file
 dictConfig(config['logging'])
 
 
-
 def function_log(func, custom_logger=None):
     if not custom_logger:
         custom_logger = logging.getLogger()

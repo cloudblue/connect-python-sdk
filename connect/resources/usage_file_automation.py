@@ -51,7 +51,7 @@ class UsageFileAutomation(AutomationEngine):
                 return 'Invalid product'
 
             # Process request
-            logger.info(
+            self.logger.info(
                 'Start usage file request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
@@ -59,7 +59,7 @@ class UsageFileAutomation(AutomationEngine):
             processing_result = 'UsageFileAutomation.process_request returned {} while ' \
                                 'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
-            logger.warning(processing_result)
+            self.logger.warning(processing_result)
             raise UserWarning(processing_result)
 
         # Catch action
@@ -75,6 +75,6 @@ class UsageFileAutomation(AutomationEngine):
         except SkipRequest:
             processing_result = 'skip'
 
-        logger.info('Finished processing of usage file with ID {} with result {}'
+        self.logger.info('Finished processing of usage file with ID {} with result {}'
                     .format(request.id, processing_result))
         return processing_result

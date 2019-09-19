@@ -87,11 +87,11 @@ class FulfillmentAutomation(AutomationEngine):
                     and request.asset.product.id not in self.config.products:
                 return 'Invalid product'
 
-            logger.info('Start request process / ID request - {}'.format(request.id))
+            self.logger.info('Start request process / ID request - {}'.format(request.id))
             process_result = self.process_request(request)
 
             if not process_result:
-                logger.info('Method `process_request` did not return result')
+                self.logger.info('Method `process_request` did not return result')
                 return ''
 
             if isinstance(process_result, ActivationTileResponse):
@@ -129,7 +129,7 @@ class FulfillmentAutomation(AutomationEngine):
             raise
 
         except Exception as ex:
-            logger.warning('Skipping request {} because an exception was raised: {}'
+            self.logger.warning('Skipping request {} because an exception was raised: {}'
                            .format(request.id, ex))
             return ''
 
@@ -196,5 +196,5 @@ class FulfillmentAutomation(AutomationEngine):
             try:
                 conversation.add_message(str(obj))
             except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
+                self.logger.error('Error updating conversation for request {}: {}'
                              .format(request_id, ex))
