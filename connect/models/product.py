@@ -6,11 +6,31 @@
 import datetime
 from typing import List, Optional, Union
 
-import connect.models
+from connect.config import Config
 from .base import BaseModel
+"""
+from .company import Company
+from .event import Events
+from .marketplace import Marketplace
+from .parameters import Constraints, Param
+"""
+from connect.resources.base import ApiClient
 from connect.models.schemas import ProductConfigurationSchema, DownloadLinkSchema, DocumentSchema, \
     CustomerUiSettingsSchema, ProductSchema, RenewalSchema, ItemSchema, ProductFamilySchema, \
-    ProductCategorySchema, ProductStatsInfoSchema, ProductStatsSchema
+    ProductCategorySchema, ProductStatsInfoSchema, ProductStatsSchema, \
+    ProductConfigurationParameterSchema, TemplateSchema
+
+
+class Template(BaseModel):
+    """ Tier Template """
+
+    _schema = TemplateSchema()
+
+    name = None  # type: str
+    """ (str) Template name. """
+
+    representation = None  # type: str
+    """ (str) Template representation. """
 
 
 class ProductConfiguration(BaseModel):
@@ -122,6 +142,32 @@ class ProductStats(BaseModel):
     """ (:py:class:`.ProductStatsInfo`) Contracts related to the product """
 
 
+class ProductConfigurationParameter(BaseModel):
+    """ Representation of Configuration Phase Parameter (CPP) Data object """
+
+    _schema = ProductConfigurationParameterSchema()
+
+    value = None  # type: str
+    """ (str|None) Configuration parameter value. """
+
+    parameter = None  # type: Param
+    """ (:py:class:`.Param`) Full representation of parameter. """
+
+    marketplace = None  # type: Marketplace
+    """ (:py:class:`.Marketplace` | None) Reference to Marketplace. """
+
+    item = None  # type: Item
+    """ (:py:class:`.Item` | None) Reference to Item. """
+
+    events = None  # type: Events
+    """ (:py:class:`.Events`) Product events. """
+
+    # Undocumented fields (they appear in PHP SDK)
+
+    constraints = None  # type: Constraints
+    """ (:py:class:`.Constraints`) Constraints. """
+
+
 class Product(BaseModel):
     """ Represents basic marketing information about salable items, parameters, configurations,
     latest published version and connections.
@@ -160,7 +206,7 @@ class Product(BaseModel):
     category = None  # type: Optional[ProductCategory]
     """ (:py:class:`.ProductCategory` | None) Reference to ProductCategory Object. """
 
-    owner = None  # type: Optional[connect.models.Company]
+    owner = None  # type: Optional[Company]
     """ (:py:class:`.Company` | None)  """
 
     latest = None  # type: Optional[bool]
@@ -170,6 +216,35 @@ class Product(BaseModel):
 
     stats = None  # type: Optional[ProductStats]
     """ (:py:class:``.ProductStats) Statistics of product use, depends on account of callee. """
+
+    def get_templates(self, config=None):
+        """
+        :param Config config: Configuration to use, or None for environment config.
+        :return: List of all templates associated with the product.
+        :rtype: List[Template]
+        """
+        text, _ = ApiClient(config or Config.get_instance(),
+                            'products/' + self.id + '/templates').get()
+        return Template.deserialize(text)
+
+    def get_product_configurations(self, filters=None, config=None):
+        """
+        :param Dict[str, Any] filters: Filters for the requests. Supported filters are:
+          - ``parameter.id``
+          - ``parameter.title``
+          - ``parameter.scope``
+          - ``marketplace.id``
+          - ``marketplace.name``
+          - ``item.id``
+          - ``item.name``
+          - ``value``
+        :param Config config: Configuration to use, or None for environment config.
+        :return: A list with the product configuration parameter data.
+        :rtype: List[ProductConfigurationParameter]
+        """
+        text, _ = ApiClient(config or Config.get_instance(),
+                            'products/' + self.id + '/configurations').get(params=filters)
+        return ProductConfigurationParameter.deserialize(text)
 
 
 class Renewal(BaseModel):
@@ -233,3 +308,14 @@ class Item(BaseModel):
 
     name = None  # type: str
     """ (str) Name. """
+
+    def get_param_by_id(self, param_id):
+        """
+        :param str param_id: Id of the parameter.
+        :return: A Param by ID, or None if it was not found.
+        :rtype: Param
+        """
+        try:
+            return list(filter(lambda p: p.id == param_id, self.params))[0]
+        except IndexError:
+            return None

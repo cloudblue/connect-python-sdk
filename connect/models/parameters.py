@@ -5,8 +5,9 @@
 
 from typing import List, Optional
 
-import connect.models
 from .base import BaseModel
+from .event import Events
+from .marketplace import Marketplace
 from connect.models.schemas import ValueChoiceSchema, ConstraintsSchema, ParamSchema
 
 
@@ -80,8 +81,8 @@ class Param(BaseModel):
     phase = None  # type: Optional[str]
     """ (str|None) Param phase. """
 
-    events = None  # type: Optional[connect.models.Events]
+    events = None  # type: Optional[Events]
     """ (:py:class:`.Events` | None) Events. """
 
-    marketplace = None  # type: Optional[connect.models.Marketplace]
+    marketplace = None  # type: Optional[Marketplace]
     """ (:py:class:`.Marketplace` | None) Marketplace. """

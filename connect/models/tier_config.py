@@ -13,9 +13,9 @@ from .contact import ContactInfo
 from .event import Events
 from .marketplace import Activation
 from .parameters import Param
-from .product import Product
-from connect.models.schemas import TemplateSchema, TierAccountSchema, \
-    TierAccountsSchema, TierConfigSchema, TierConfigRequestSchema, ConfigurationSchema
+from .product import Product, Template
+from connect.models.schemas import TierAccountSchema, TierAccountsSchema, TierConfigSchema, \
+    TierConfigRequestSchema, ConfigurationSchema
 
 
 class TierAccount(BaseModel):
@@ -49,18 +49,6 @@ class TierAccounts(BaseModel):
 
     tier2 = None  # type: TierAccount
     """ (:py:class:`.TierAccount`) Level 2 TierAccount Object. """
-
-
-class Template(BaseModel):
-    """ Tier Template """
-
-    _schema = TemplateSchema()
-
-    name = None  # type: str
-    """ (str) Template name. """
-
-    representation = None  # type: str
-    """ (str) Template representation. """
 
 
 class Configuration(BaseModel):

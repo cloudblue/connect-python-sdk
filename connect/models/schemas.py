@@ -408,6 +408,15 @@ class ProductStatsSchema(BaseSchema):
         return ProductStats(**data)
 
 
+class ProductConfigurationParameterSchema(BaseSchema):
+    value = fields.Str(allow_none=True)
+    parameter = fields.Nested(ParamSchema)
+    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
+    item = fields.Nested(ItemSchema, allow_none=True)
+    events = fields.Nested(EventsSchema)
+    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
+
+
 class ProductSchema(BaseSchema):
     name = fields.Str()
     icon = fields.Str()
