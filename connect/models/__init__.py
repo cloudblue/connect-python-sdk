@@ -36,6 +36,7 @@ from .phone_number import PhoneNumber
 from .product import Product
 from .product_category import ProductCategory
 from .product_configuration import ProductConfiguration
+from .product_configuration_parameter import ProductConfigurationParameter
 from .product_family import ProductFamily
 from .product_stats import ProductStats
 from .product_stats_info import ProductStatsInfo
