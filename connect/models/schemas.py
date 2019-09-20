@@ -416,6 +416,11 @@ class ProductConfigurationParameterSchema(BaseSchema):
     events = fields.Nested(EventsSchema)
     constraints = fields.Nested(ConstraintsSchema, allow_none=True)
 
+    @post_load
+    def make_object(self, data):
+        from connect.models import ProductConfigurationParameter
+        return ProductConfigurationParameter(**data)
+
 
 class ProductSchema(BaseSchema):
     name = fields.Str()
