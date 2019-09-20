@@ -137,28 +137,28 @@ class UserSchema(BaseSchema):
         return User(**data)
 
 
-class EventInfoSchema(BaseSchema):
+class EventSchema(BaseSchema):
     at = fields.DateTime(allow_none=True)
     by = fields.Nested(UserSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
-        from connect.models import EventInfo
-        return EventInfo(**data)
+        from connect.models import Event
+        return Event(**data)
 
 
 class EventsSchema(BaseSchema):
-    created = fields.Nested(EventInfoSchema)
-    inquired = fields.Nested(EventInfoSchema)
-    pended = fields.Nested(EventInfoSchema)
-    validated = fields.Nested(EventInfoSchema)
-    updated = fields.Nested(EventInfoSchema)
-    approved = fields.Nested(EventInfoSchema)
-    uploaded = fields.Nested(EventInfoSchema)
-    submitted = fields.Nested(EventInfoSchema)
-    accepted = fields.Nested(EventInfoSchema)
-    rejected = fields.Nested(EventInfoSchema)
-    closed = fields.Nested(EventInfoSchema)
+    created = fields.Nested(EventSchema)
+    inquired = fields.Nested(EventSchema)
+    pended = fields.Nested(EventSchema)
+    validated = fields.Nested(EventSchema)
+    updated = fields.Nested(EventSchema)
+    approved = fields.Nested(EventSchema)
+    uploaded = fields.Nested(EventSchema)
+    submitted = fields.Nested(EventSchema)
+    accepted = fields.Nested(EventSchema)
+    rejected = fields.Nested(EventSchema)
+    closed = fields.Nested(EventSchema)
 
     @post_load
     def make_object(self, data):
