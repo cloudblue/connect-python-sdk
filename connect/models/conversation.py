@@ -8,26 +8,9 @@ import datetime
 from typing import List
 
 from .base import BaseModel
-from .company import User
-from connect.models.schemas import ConversationMessageSchema, ConversationSchema
-
-
-class ConversationMessage(BaseModel):
-    """ Message in a :py:class:`.Conversation`. """
-
-    _schema = ConversationMessageSchema()
-
-    conversation = None  # type: str
-    """ (str) Primary ID of Conversation object. """
-
-    created = None  # type: datetime.datetime
-    """ (datetime.datetime) Date of the Message creation. """
-
-    creator = None  # type: User
-    """ (:py:class:`.User`) :py:class:`.User` that created the message. """
-
-    text = None  # type: str
-    """ (str) Actual message. """
+from .conversation_message import ConversationMessage
+from .user import User
+from .schemas import ConversationSchema
 
 
 class Conversation(BaseModel):
