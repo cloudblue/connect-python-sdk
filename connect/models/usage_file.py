@@ -2,26 +2,15 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
-from connect.models import Events
+
 from .base import BaseModel
 from .company import Company
-from .marketplace import Contract, Marketplace
+from .contract import Contract
+from .events import Events
+from .marketplace import Marketplace
 from .product import Product
-from connect.models.schemas import UsageRecordsSchema, UsageFileSchema, UsageListingSchema, \
-    UsageRecordSchema
-
-
-class UsageRecords(BaseModel):
-    """ Usage Records Object. """
-    # TODO: Verify that this data is correct.
-
-    _schema = UsageRecordsSchema()
-
-    valid = None  # type: int
-    """ (int) Valid. """
-
-    invalid = None  # type: int
-    """ (int) Invalid. """
+from .usage_records import UsageRecords
+from .schemas import UsageFileSchema
 
 
 class UsageFile(BaseModel):
@@ -90,58 +79,3 @@ class UsageFile(BaseModel):
 
     events = None  # type: Events
     """ (:py:class:`.Events`) Events occured on file. """
-
-
-class UsageListing(BaseModel):
-    """ Usage Listing Object. """
-
-    _schema = UsageListingSchema()
-
-    status = None  # type: str
-    """ (str) Status. """
-
-    contract = None  # type: Contract
-    """ (:py:class:`.Contract`) Contract Object. """
-
-    product = None  # type: Product
-    """ (:py:class:`.Product`) Product Object. """
-
-    created = None  # type: str
-    """ (str) Creation time. """
-
-    # Undocumented fields (they appear in PHP SDK)
-    vendor = None  # type: Company
-    """ (:py:class:`.Company`) Vendor Object. """
-
-    provider = None  # type: Company
-    """ (:py:class:`.Company`) Provider Object. """
-
-
-class UsageRecord(BaseModel):
-    """ Usage Record Object. """
-
-    _schema = UsageRecordSchema()
-
-    usage_record_id = None  # type: str
-    """ (str) Usage record id. """
-
-    item_search_criteria = None  # type: str
-    """ (str) Item search criteria. """
-
-    item_search_value = None  # type: str
-    """ (str) Item search value. """
-
-    quantity = None  # type: int
-    """ (int) Quantity. """
-
-    start_time_utc = None  # type: str
-    """ (str) Start Time in UTC. """
-
-    end_time_utc = None  # type: str
-    """ (str) End Time in UTC. """
-
-    asset_search_criteria = None  # type: str
-    """ (str) Asset search criteria. """
-
-    asset_search_value = None  # type: str
-    """ (str) Asset search value. """

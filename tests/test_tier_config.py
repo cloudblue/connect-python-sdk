@@ -12,7 +12,7 @@ from typing import Union
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.models import Param, ActivationTileResponse, ActivationTemplateResponse, BaseModel, \
-    Company, Connection, EventInfo, Hub, Product, TierConfigRequest, TierConfig, Events, \
+    Company, Connection, Event, Hub, Product, TierConfigRequest, TierConfig, Events, \
     Template, Activation, User, TierAccount
 from connect.resources import TierConfigAutomation
 from .common import Response, load_str
@@ -85,14 +85,14 @@ def test_create_resource():
 
     events = configuration.events
     assert isinstance(events, Events)
-    assert isinstance(events.created, EventInfo)
+    assert isinstance(events.created, Event)
     assert isinstance(events.created.at, datetime)
     assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
     assert not events.inquired
     assert not events.pended
     assert not events.validated
-    assert isinstance(events.updated, EventInfo)
+    assert isinstance(events.updated, Event)
     assert isinstance(events.updated.at, datetime)
     assert str(events.updated.at) == '2018-11-21 11:10:29'
     assert isinstance(events.updated.by, User)
@@ -117,17 +117,17 @@ def test_create_resource():
 
     events = request.events
     assert isinstance(events, Events)
-    assert isinstance(events.created, EventInfo)
+    assert isinstance(events.created, Event)
     assert isinstance(events.created.at, datetime)
     assert str(events.created.at) == '2018-11-21 11:10:29'
     assert not events.created.by
-    assert isinstance(events.inquired, EventInfo)
+    assert isinstance(events.inquired, Event)
     assert isinstance(events.inquired.at, datetime)
     assert str(events.inquired.at) == '2018-11-21 11:10:29'
     assert isinstance(events.inquired.by, User)
     assert events.inquired.by.id == 'PA-000-000'
     assert events.inquired.by.name == 'Username'
-    assert isinstance(events.pended, EventInfo)
+    assert isinstance(events.pended, Event)
     assert isinstance(events.pended.at, datetime)
     assert str(events.pended.at) == '2018-11-21 11:10:29'
     assert isinstance(events.pended.by, User)

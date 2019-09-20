@@ -7,7 +7,7 @@ from .base import BaseModel
 from .company import Company
 from .hub import Hub
 from .product import Product
-from connect.models.schemas import ConnectionSchema
+from .schemas import ConnectionSchema
 
 
 class Connection(BaseModel):
