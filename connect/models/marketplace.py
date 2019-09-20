@@ -7,6 +7,7 @@ from typing import List
 
 from .base import BaseModel
 from .company import Company
+from .country import Country
 from .ext_id_hub import ExtIdHub
 from .schemas import MarketplaceSchema
 
@@ -44,3 +45,9 @@ class Marketplace(BaseModel):
     zone = None  # type: str
     """ (str) Zone where the marketplace is located, there can be following zones:
     AF, NA, OC, AS, EU, SA (It is continents). """
+
+    countries = None  # type: List[Country]
+    """ List[:py:class:`.Country`] 	List of country objects associated with marketplace. """
+
+    sourcing = None  # type: bool
+    """ (bool) Is marketplace available for sourcing. """

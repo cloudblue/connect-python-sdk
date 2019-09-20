@@ -130,6 +130,7 @@ class DownloadLinkSchema(BaseSchema):
 
 class UserSchema(BaseSchema):
     name = fields.Str()
+    email = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -256,6 +257,17 @@ class MarketplaceSchema(BaseSchema):
         return Marketplace(**data)
 
 
+class CountrySchema(BaseSchema):
+    name = fields.Str()
+    icon = fields.Str()
+    zone = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Country
+        return Country(**data)
+
+
 class ParamSchema(BaseSchema):
     name = fields.Str()
     description = fields.Str()
@@ -272,6 +284,7 @@ class ParamSchema(BaseSchema):
     phase = fields.Str(allow_none=True)
     events = fields.Nested(EventsSchema, allow_none=True)
     marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
+    countries = fields.Nested(CountrySchema, many=True, allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -315,6 +328,7 @@ class AgreementSchema(BaseSchema):
     agreements = fields.Nested('AgreementSchema', many=True)
     parent = fields.Nested('AgreementSchema', only=('id', 'name'), allow_none=True)
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
+    name = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -456,6 +470,7 @@ class ServerErrorResponseSchema(Schema):
 class TemplateSchema(BaseSchema):
     name = fields.Str()
     representation = fields.Str()
+    body = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -512,13 +527,17 @@ class AssetSchema(BaseSchema):
     status = fields.Str()
     external_id = fields.Str()
     external_uid = fields.Str(allow_none=True)
+    external_name = fields.Str(allow_none=True)
     product = fields.Nested(ProductSchema, only=('id', 'name'))
     connection = fields.Nested(
         ConnectionSchema, only=('id', 'type', 'provider', 'vendor'),
     )
-    items = fields.Nested(ItemSchema, many=True)
+    contract = fields.Nested(ContractSchema, allow_none=True)
+    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
     params = fields.Nested(ParamSchema, many=True)
     tiers = fields.Nested(TierAccountsSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    configuration = fields.Nested(ConfigurationSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -527,17 +546,18 @@ class AssetSchema(BaseSchema):
 
 
 class FulfillmentSchema(BaseSchema):
-    activation_key = fields.Str()
-    asset = fields.Nested(AssetSchema)
-    status = fields.Str()
     type = fields.Str()
-    updated = fields.DateTime()
     created = fields.DateTime()
+    updated = fields.DateTime()
+    status = fields.Str()
+    params_form_url = fields.Str()
+    activation_key = fields.Str()
     reason = fields.Str()
     note = fields.Str()
-    params_form_url = fields.Str()
+    asset = fields.Nested(AssetSchema)
     contract = fields.Nested(ContractSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    assignee = fields.Nested(UserSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -558,6 +578,7 @@ class TierConfigSchema(BaseSchema):
     marketplace = fields.Nested(MarketplaceSchema)
     configuration = fields.Nested(ConfigurationSchema, allow_none=True)
     events = fields.Nested(EventsSchema, allow_none=True)
+    status = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
@@ -581,6 +602,9 @@ class TierConfigRequestSchema(BaseSchema):
     activation = fields.Nested(ActivationSchema, allow_none=True)
     notes = fields.Str(allow_none=True)
     events = fields.Nested(EventsSchema, allow_none=True)
+    tiers = fields.Nested(TierAccountsSchema, allow_none=True)
+    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
+    contract = fields.Nested(ContractSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):

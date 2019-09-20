@@ -73,6 +73,7 @@ class UsageFile(BaseModel):
 
     error_details = None  # type: str
     """ (str) In case of invalid file, this field will contain errors related to the file. """
+    # TODO: In the docs it is error_details, on PHP SDK it appears as error_detail
 
     records = None  # type: UsageRecords
     """ (:py:class:`.UsageRecords`) UsageRecords Object. """

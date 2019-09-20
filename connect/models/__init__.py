@@ -17,6 +17,7 @@ from .constraints import Constraints
 from .contact import Contact
 from .contact_info import ContactInfo
 from .contract import Contract
+from .country import Country
 from .conversation import Conversation
 from .conversation_message import ConversationMessage
 from .customer_ui_settings import CustomerUiSettings
@@ -69,6 +70,7 @@ __all__ = [
     'Contact',
     'ContactInfo',
     'Contract',
+    'Country',
     'Conversation',
     'ConversationMessage',
     'CustomerUiSettings',

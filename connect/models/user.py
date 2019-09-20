@@ -14,3 +14,6 @@ class User(BaseModel):
 
     name = None  # type: str
     """ (str) User name. """
+
+    email = None  # type: str
+    """ (str) User email. """
