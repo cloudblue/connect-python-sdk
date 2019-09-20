@@ -8,7 +8,6 @@ import json
 import logging
 import os
 from logging.config import dictConfig
-from connect.models import BaseModel, Fulfillment
 
 with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
     config = json.load(config_file)
