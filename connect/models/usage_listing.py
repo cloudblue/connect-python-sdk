@@ -28,7 +28,7 @@ class UsageListing(BaseModel):
     """ (str) Creation time. """
 
     # Undocumented fields (they appear in PHP SDK)
-    
+
     vendor = None  # type: Company
     """ (:py:class:`.Company`) Vendor Object. """
 

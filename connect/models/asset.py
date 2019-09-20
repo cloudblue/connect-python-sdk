@@ -9,7 +9,6 @@ from .base import BaseModel
 from .configuration import Configuration
 from .connection import Connection
 from .contract import Contract
-from .fulfillment import Fulfillment
 from .item import Item
 from .marketplace import Marketplace
 from .param import Param
@@ -149,6 +148,7 @@ class Asset(BaseModel):
         """
         from connect.config import Config
         from connect.resources.base import ApiClient
+        from .fulfillment import Fulfillment
         text, _ = ApiClient(
             config or Config.get_instance(),
             'assets/' + self.id + '/requests').get()
