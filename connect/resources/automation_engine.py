@@ -33,22 +33,22 @@ class AutomationEngine(BaseResource):
         raise NotImplementedError('Please implement `{}.process_request` method'
                                   .format(self.__class__.__name__))
 
-    @function_log
+    @function_log(custom_logger=logger)
     def approve(self, pk, data):
         # type: (str, dict) -> str
         return self._api.post(path=pk + '/approve/', json=data)[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def inquire(self, pk):
         # type: (str) -> str
         return self._api.post(path=pk + '/inquire/', json={})[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def fail(self, pk, reason):
         # type: (str, str) -> str
         return self._api.post(path=pk + '/fail/', json={'reason': reason})[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def render_template(self, pk, template_id):
         # type: (str, str) -> ActivationTileResponse
         return TemplateResource(self.config).render(template_id, pk)

@@ -36,7 +36,7 @@ class TierConfigAutomation(AutomationEngine):
     model_class = TierConfigRequest
     logger = logging.getLogger('UsageFile.logger')
 
-    @function_log
+    @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
@@ -86,7 +86,7 @@ class TierConfigAutomation(AutomationEngine):
 
         return ''
 
-    @function_log
+    @function_log(custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 

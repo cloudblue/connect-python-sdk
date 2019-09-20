@@ -15,8 +15,10 @@ with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file
 
 dictConfig(config['logging'])
 
+logger = logging.getLogger("Generic.logger")
 
-def function_log(func, custom_logger=None):
+
+def function_log(custom_logger=None):
     if not custom_logger:
         custom_logger = logging.getLogger()
         sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
@@ -24,13 +26,14 @@ def function_log(func, custom_logger=None):
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
          for handler in custom_logger.handlers]
 
-    @wraps(func)
-    def decorator(self, *args, **kwargs):
-        custom_logger.info('Entering: %s', func.__name__)
-        custom_logger.debug('Function params: {} {}'.format(args, kwargs))
-        result = func(self, *args, **kwargs)
-        custom_logger.debug(
-            'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
-        return result
+    def real_function_log(func):
+        @wraps(func)
+        def decorator(self, *args, **kwargs):
+            custom_logger.info('Entering: %s', func.__name__)
+            custom_logger.debug('Function params: {} {}'.format(args, kwargs))
+            result = func(self, *args, **kwargs)
+            custom_logger.debug(
+                'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
+            return result
 
-    return decorator
+        return decorator

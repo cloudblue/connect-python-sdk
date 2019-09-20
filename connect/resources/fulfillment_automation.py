@@ -70,7 +70,7 @@ class FulfillmentAutomation(AutomationEngine):
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
-    @function_log
+    @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (Fulfillment) -> str
 
@@ -130,7 +130,7 @@ class FulfillmentAutomation(AutomationEngine):
 
         except Exception as ex:
             self.logger.warning('Skipping request {} because an exception was raised: {}'
-                           .format(request.id, ex))
+                                .format(request.id, ex))
             return ''
 
     def create_request(self, request):
@@ -171,7 +171,7 @@ class FulfillmentAutomation(AutomationEngine):
         else:
             return None
 
-    @function_log
+    @function_log(custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 
@@ -183,18 +183,16 @@ class FulfillmentAutomation(AutomationEngine):
         list_dict = []
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
-
         return self._api.put(
             path=pk,
             json={'asset': {'params': list_dict}},
         )[0]
 
-    @staticmethod
-    def _update_conversation_if_exists(conversation, request_id, obj):
+    def _update_conversation_if_exists(self, conversation, request_id, obj):
         # type: (Optional[Conversation], str, object) -> None
         if conversation:
             try:
                 conversation.add_message(str(obj))
             except TypeError as ex:
                 self.logger.error('Error updating conversation for request {}: {}'
-                             .format(request_id, ex))
+                                  .format(request_id, ex))
