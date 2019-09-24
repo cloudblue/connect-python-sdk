@@ -5,6 +5,7 @@
 
 import sys
 import logging
+import copy
 from abc import ABCMeta
 
 from deprecation import deprecated
@@ -74,7 +75,7 @@ class FulfillmentAutomation(AutomationEngine):
     @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (Fulfillment) -> str
-        handlers = global_logger.handlers
+        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
         handlers.append(logging.StreamHandler(sys.stdout))
         log_level = global_logger.level
         self.__class__.logger.setLevel(log_level)

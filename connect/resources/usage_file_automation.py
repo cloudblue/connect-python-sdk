@@ -5,6 +5,7 @@
 
 import sys
 import logging
+import copy
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
@@ -38,7 +39,7 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
-        handlers = global_logger.handlers
+        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
         handlers.append(logging.StreamHandler(sys.stdout))
         log_level = global_logger.level
         self.__class__.logger.setLevel(log_level)

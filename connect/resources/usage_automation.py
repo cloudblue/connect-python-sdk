@@ -5,6 +5,7 @@
 
 import sys
 import json
+import copy
 import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
@@ -44,7 +45,7 @@ class UsageAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageListing) -> str
-        handlers = global_logger.handlers
+        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
         handlers.append(logging.StreamHandler(sys.stdout))
         log_level = global_logger.level
         self.__class__.logger.setLevel(log_level)

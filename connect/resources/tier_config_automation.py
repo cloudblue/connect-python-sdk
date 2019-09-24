@@ -5,6 +5,7 @@
 
 import sys
 import logging
+import copy
 from abc import ABCMeta
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
@@ -35,13 +36,13 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
-    logger = logging.getLogger('UsageFile.logger')
+    logger = logging.getLogger('Tier.logger')
 
     @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
-            handlers = global_logger.handlers
+            handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
             handlers.append(logging.StreamHandler(sys.stdout))
             log_level = global_logger.level
             self.__class__.logger.setLevel(log_level)
