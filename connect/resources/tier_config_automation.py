@@ -7,7 +7,7 @@ import logging
 from abc import ABCMeta
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import logger, function_log
+from connect.logger import logger as global_logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
     TierConfigRequest
 from .automation_engine import AutomationEngine
@@ -40,6 +40,10 @@ class TierConfigAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
+            handlers = global_logger.handlers
+            log_level = global_logger.level
+            self.__class__.logger.setLevel(log_level)
+            [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
             base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                    "-%(lineno)d: %(message)s"
             sformat = request.id + base
@@ -81,7 +85,7 @@ class TierConfigAutomation(AutomationEngine):
 
         except Exception as ex:
             self.logger.warning('Skipping request {} because an exception was raised: {}'
-                           .format(request.id, ex))
+                                .format(request.id, ex))
             return ''
 
         return ''

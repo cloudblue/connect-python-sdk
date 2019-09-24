@@ -7,7 +7,7 @@ import logging
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.logger import logger
+from connect.logger import logger as global_logger
 from connect.models import BaseModel, UsageFile
 from .automation_engine import AutomationEngine
 
@@ -37,7 +37,10 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
-
+        handlers = global_logger.handlers
+        log_level = global_logger.level
+        self.__class__.logger.setLevel(log_level)
+        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = request.marketplace.id + "  " + request.id + base

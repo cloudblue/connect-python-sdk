@@ -13,7 +13,7 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
-from connect.logger import logger
+from connect.logger import logger as global_logger
 from connect.models import UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
@@ -43,15 +43,17 @@ class UsageAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageListing) -> str
-
+        handlers = global_logger.handlers
+        log_level = global_logger.level
+        self.__class__.logger.setLevel(log_level)
+        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = request.contract.marketplace.id + "  " + request.id + base
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
          for handler in self.logger.handlers]
 
-
-    # TODO Shouldn't this raise an exception on ALL automation classes?
+        # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'

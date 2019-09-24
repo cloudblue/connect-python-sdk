@@ -10,7 +10,7 @@ from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import logger, function_log
+from connect.logger import logger as global_logger, function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
     Fulfillment, TierConfigRequest, Conversation
 from .automation_engine import AutomationEngine
@@ -73,7 +73,10 @@ class FulfillmentAutomation(AutomationEngine):
     @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (Fulfillment) -> str
-
+        handlers = global_logger.handlers
+        log_level = global_logger.level
+        self.__class__.logger.setLevel(log_level)
+        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = request.asset.id + "  " + request.id + base
