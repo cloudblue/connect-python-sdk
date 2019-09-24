@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import sys
 import logging
 from abc import ABCMeta
 
@@ -74,6 +75,7 @@ class FulfillmentAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (Fulfillment) -> str
         handlers = global_logger.handlers
+        handlers.append(logging.StreamHandler(sys.stdout))
         log_level = global_logger.level
         self.__class__.logger.setLevel(log_level)
         [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
