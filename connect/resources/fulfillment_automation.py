@@ -3,7 +3,6 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-import sys
 import logging
 import copy
 from abc import ABCMeta
@@ -76,15 +75,15 @@ class FulfillmentAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (Fulfillment) -> str
         handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
-        handlers.append(logging.StreamHandler(sys.stdout))
         log_level = global_logger.level
+        self.__class__.logger.propagate = False
         self.__class__.logger.setLevel(log_level)
         [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = request.asset.id + "  " + request.id + base
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
-         for handler in self.logger.handlers]
+         for handler in self.__class__.logger.handlers]
 
         conversation = request.get_conversation(self.config)
 

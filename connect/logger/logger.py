@@ -14,7 +14,7 @@ with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file
 
 dictConfig(config['logging'])
 
-logger = logging.getLogger("Generic.logger")
+logger = logging.getLogger()
 
 
 def function_log(custom_logger=None):
