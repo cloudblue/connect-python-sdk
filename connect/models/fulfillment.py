@@ -7,9 +7,10 @@ import datetime
 
 from .asset import Asset
 from .base import BaseModel
+from .contract import Contract
 from .conversation import Conversation
-from .marketplace import Contract, Marketplace
-from connect.models.schemas import FulfillmentSchema
+from .marketplace import Marketplace
+from .schemas import FulfillmentSchema
 
 
 class Fulfillment(BaseModel):

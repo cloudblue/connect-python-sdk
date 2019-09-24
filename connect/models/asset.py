@@ -7,10 +7,11 @@ from typing import List, Optional
 
 from .base import BaseModel
 from .connection import Connection
-from .parameters import Param
-from .product import Item, Product
-from .tier_config import TierAccounts
-from connect.models.schemas import AssetSchema
+from .item import Item
+from .param import Param
+from .product import Product
+from .tier_accounts import TierAccounts
+from .schemas import AssetSchema
 
 
 class Asset(BaseModel):

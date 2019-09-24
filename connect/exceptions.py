@@ -8,7 +8,7 @@ from typing import List
 from deprecation import deprecated
 import six
 
-from .models.parameters import Param
+from .models.param import Param
 
 
 class Message(Exception):

@@ -7,29 +7,10 @@ from typing import Optional
 
 from .base import BaseModel
 from .company import Company
-from .event import Events
-from connect.models.schemas import HubInstanceSchema, HubStatsSchema, HubSchema, ExtIdHubSchema
-
-
-class HubInstance(BaseModel):
-    """ An instance of a hub. """
-
-    _schema = HubInstanceSchema()
-
-    type = None  # type: str
-    """ (str) E-Commerce system type. """
-
-
-class HubStats(BaseModel):
-    """ Hub stats. """
-
-    _schema = HubStatsSchema()
-
-    connections = None  # type: int
-    """ (int) Number of connections active for this Hub. """
-
-    marketplaces = None  # type: int
-    """ (int) Number of marketplaces for this Hub. """
+from .events import Events
+from .hub_instance import HubInstance
+from .hub_stats import HubStats
+from .schemas import HubSchema
 
 
 class Hub(BaseModel):
@@ -54,15 +35,3 @@ class Hub(BaseModel):
 
     stats = None  # type: HubStats
     """ (:py:class:`.HubStats`) Hub stats. """
-
-
-class ExtIdHub(BaseModel):
-    """ Associates a :py:class:`.Hub` with an external id. """
-
-    _schema = ExtIdHubSchema()
-
-    hub = None  # type: Hub
-    """ (:py:class:`.Hub`) Hub. """
-
-    external_id = None  # type: str
-    """ (str) External id. """
