@@ -20,7 +20,66 @@
           "id": "TEAM_ST3L2T1Y",
           "mpn": "TEAM-ST3L2T1Y",
           "old_quantity": "0",
-          "quantity": "100"
+          "quantity": "100",
+          "global_id": "XXX",
+          "params": [
+                  {
+                    "value": "Value 1",
+                    "events": {
+                      "updated": {
+                        "at": "2019-08-27T14:21:23+00:00",
+                        "by": {
+                          "id": "UR-841-574-187",
+                          "name": "Marc Serrat"
+                        }
+                      },
+                      "created": {
+                        "at": "2019-08-26T10:42:56+00:00",
+                        "by": {
+                          "id": "UR-841-574-187",
+                          "name": "Marc Serrat"
+                        }
+                      }
+                    },
+                    "id": "item_parameter",
+                    "title": "item_parameter",
+                    "description": "item_parameter",
+                    "type": "text",
+                    "scope": "item",
+                    "phase": "configuration",
+                    "constraints": {
+                      "hidden": false,
+                      "required": false,
+                      "unique": false
+                    }
+                  },
+                  {
+                    "value": "item",
+                    "events": {
+                      "updated": {
+                        "at": "2019-08-26T10:44:10+00:00"
+                      },
+                      "created": {
+                        "at": "2019-08-26T10:44:10+00:00",
+                        "by": {
+                          "id": "UR-841-574-187",
+                          "name": "Marc Serrat"
+                        }
+                      }
+                    },
+                    "id": "item_per_marketplace",
+                    "title": "item_per_marketplace",
+                    "description": "item_per_marketplace",
+                    "type": "text",
+                    "scope": "item_marketplace",
+                    "phase": "configuration",
+                    "constraints": {
+                      "hidden": false,
+                      "required": true,
+                      "unique": false
+                    }
+                  }
+                ]
         },
         {
           "id": "TEAM_ST3L2TAC1M",
@@ -134,6 +193,62 @@
           "name": "ACME Reseller"
         },
         "tier2": {}
+      },
+      "configuration": {
+        "params": [
+          {
+            "value": "product_value",
+            "events": {
+              "updated": {
+                "at": "2019-08-26T10:42:49+00:00"
+              },
+              "created": {
+                "at": "2019-08-26T10:42:49+00:00",
+                "by": {
+                  "id": "UR-841-574-187",
+                  "name": "Marc Serrat"
+                }
+              }
+            },
+            "id": "product_configuration",
+            "title": "product_configuration",
+            "description": "product_configuration",
+            "type": "text",
+            "scope": "product",
+            "phase": "configuration",
+            "constraints": {
+              "hidden": false,
+              "required": true,
+              "unique": false
+            }
+          },
+          {
+            "value": "product_marketplace_config",
+            "events": {
+              "updated": {
+                "at": "2019-08-26T10:43:27+00:00"
+              },
+              "created": {
+                "at": "2019-08-26T10:43:27+00:00",
+                "by": {
+                  "id": "UR-841-574-187",
+                  "name": "Marc Serrat"
+                }
+              }
+            },
+            "id": "product_Marketplace_configuration",
+            "title": "product_Marketplace_configuration",
+            "description": "product_Marketplace_configuration",
+            "type": "text",
+            "scope": "marketplace",
+            "phase": "configuration",
+            "constraints": {
+              "hidden": false,
+              "required": true,
+              "unique": false
+            }
+          }
+        ]
       }
     },
     "created": "2018-09-03T10:28:18.472670+00:00",
