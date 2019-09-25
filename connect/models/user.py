@@ -4,13 +4,13 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from .base import BaseModel
-from .schemas import CompanySchema
+from .schemas import UserSchema
 
 
-class Company(BaseModel):
-    """ Represents a company within the platform. """
+class User(BaseModel):
+    """ Represents a user within the platform. """
 
-    _schema = CompanySchema()
+    _schema = UserSchema()
 
     name = None  # type: str
-    """ (str) Company name. """
+    """ (str) User name. """

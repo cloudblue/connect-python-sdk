@@ -4,13 +4,13 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from .base import BaseModel
-from .schemas import CompanySchema
+from .schemas import ProductFamilySchema
 
 
-class Company(BaseModel):
-    """ Represents a company within the platform. """
+class ProductFamily(BaseModel):
+    """ Represents a family of products """
 
-    _schema = CompanySchema()
+    _schema = ProductFamilySchema()
 
     name = None  # type: str
-    """ (str) Company name. """
+    """ (str) Family name. """

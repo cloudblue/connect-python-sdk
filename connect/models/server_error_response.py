@@ -6,7 +6,7 @@
 from typing import List
 
 from .base import BaseModel
-from connect.models.schemas import ServerErrorResponseSchema
+from .schemas import ServerErrorResponseSchema
 
 
 class ServerErrorResponse(BaseModel):

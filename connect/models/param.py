@@ -5,39 +5,12 @@
 
 from typing import List, Optional
 
-import connect.models
 from .base import BaseModel
-from connect.models.schemas import ValueChoiceSchema, ConstraintsSchema, ParamSchema
-
-
-class ValueChoice(BaseModel):
-    """ A value choice for a parameter. """
-
-    _schema = ValueChoiceSchema()
-
-    value = None  # type: str
-    """ (str) Value. """
-
-    label = None  # type: str
-    """ (str) Label. """
-
-
-class Constraints(BaseModel):
-    """ Parameter constraints. """
-
-    _schema = ConstraintsSchema()
-
-    hidden = None  # type: bool
-    """ (bool) Is the parameter hidden? """
-
-    required = None  # type: bool
-    """ (bool) Is the parameter required? """
-
-    choices = None  # type: List[ValueChoice]
-    """ (List[:py:class:`.ValueChoice`]) Parameter value choices. """
-
-    unique = None  # type: bool
-    """ (bool) Is the constraint unique? """
+from .constraints import Constraints
+from .events import Events
+from .marketplace import Marketplace
+from .value_choice import ValueChoice
+from .schemas import ParamSchema
 
 
 class Param(BaseModel):
@@ -80,8 +53,8 @@ class Param(BaseModel):
     phase = None  # type: Optional[str]
     """ (str|None) Param phase. """
 
-    events = None  # type: Optional[connect.models.Events]
+    events = None  # type: Optional[Events]
     """ (:py:class:`.Events` | None) Events. """
 
-    marketplace = None  # type: Optional[connect.models.Marketplace]
+    marketplace = None  # type: Optional[Marketplace]
     """ (:py:class:`.Marketplace` | None) Marketplace. """
