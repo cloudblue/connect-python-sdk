@@ -77,7 +77,7 @@ class ContactInfoSchema(BaseSchema):
     contact = fields.Nested(ContactSchema)
     country = fields.Str()
     postal_code = fields.Str()
-    state = fields.Str()
+    state = fields.Str(allow_none=True)
 
     @post_load
     def make_object(self, data):
