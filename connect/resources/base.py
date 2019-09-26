@@ -6,12 +6,13 @@
 import functools
 from typing import Any, List, Dict, Tuple
 
-import requests, logging
+import logging
+import requests
 from requests import compat
 
 from connect.config import Config
 from connect.exceptions import ServerError
-from connect.logger import function_log, logger
+from connect.logger import function_log
 from connect.models import BaseModel, ServerErrorResponse
 
 
