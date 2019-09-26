@@ -25,7 +25,7 @@ def function_log(custom_logger=None):
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
          for handler in custom_logger.handlers]
 
-    def decorator(func,**kwargs):
+    def decorator(func, **kwargs):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             custom_logger.info('Entering: %s', func.__name__)
@@ -34,5 +34,7 @@ def function_log(custom_logger=None):
             custom_logger.debug(
                 'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
             return result
+
         return wrapper
+
     return decorator
