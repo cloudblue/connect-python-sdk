@@ -51,7 +51,7 @@ class UsageAutomation(AutomationEngine):
         [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
-        sformat = request.contract.marketplace.id + "  " + request.id + base
+        sformat = request.id + "  " + request.contract.marketplace.id + base
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
          for handler in self.__class__.logger.handlers]
 
