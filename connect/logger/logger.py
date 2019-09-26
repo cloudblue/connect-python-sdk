@@ -8,36 +8,33 @@ import json
 import logging
 import os
 from logging.config import dictConfig
-from connect.models import BaseModel, Fulfillment
 
 with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
     config = json.load(config_file)
 
 dictConfig(config['logging'])
+
 logger = logging.getLogger()
 
 
-def log_request_data(args):
-    if len(args) and isinstance(args[0], BaseModel):
-        global logger
-        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line"\
-               "-%(lineno)d: %(message)s"
-        sformat = args[0].id + base
-        if isinstance(args[0], Fulfillment):
-            sformat = args[0].asset.id + "  " + sformat
+def function_log(custom_logger=None):
+    if not custom_logger:
+        custom_logger = logging.getLogger()
+        sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+                  "-%(lineno)d: %(message)s"
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
-         for handler in logger.handlers]
+         for handler in custom_logger.handlers]
 
+    def decorator(func, **kwargs):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            custom_logger.info('Entering: %s', func.__name__)
+            custom_logger.debug('Function params: {} {}'.format(args, kwargs))
+            result = func(self, *args, **kwargs)
+            custom_logger.debug(
+                'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
+            return result
 
-def function_log(func):
-    @wraps(func)
-    def decorator(self, *args, **kwargs):
-        log_request_data(args)
-        logger.info('Entering: %s', func.__name__)
-        logger.debug('Function params: {} {}'.format(args, kwargs))
-        result = func(self, *args, **kwargs)
-        logger.debug(
-            'Function `{}.{}` return: {}'.format(self.__class__.__name__, func.__name__, result))
-        return result
+        return wrapper
 
     return decorator

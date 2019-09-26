@@ -4,7 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from typing import Any, Dict
-
+import logging
 from connect.logger import function_log
 from connect.models import ActivationTileResponse, BaseModel
 from .base import BaseResource
@@ -13,6 +13,7 @@ from .template import TemplateResource
 
 class AutomationEngine(BaseResource):
     limit = 1000  # type: int
+    logger = logging.getLogger()
 
     def filters(self, status='pending', **kwargs):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
@@ -32,22 +33,22 @@ class AutomationEngine(BaseResource):
         raise NotImplementedError('Please implement `{}.process_request` method'
                                   .format(self.__class__.__name__))
 
-    @function_log
+    @function_log(custom_logger=logger)
     def approve(self, pk, data):
         # type: (str, dict) -> str
         return self._api.post(path=pk + '/approve/', json=data)[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def inquire(self, pk):
         # type: (str) -> str
         return self._api.post(path=pk + '/inquire/', json={})[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def fail(self, pk, reason):
         # type: (str, str) -> str
         return self._api.post(path=pk + '/fail/', json={'reason': reason})[0]
 
-    @function_log
+    @function_log(custom_logger=logger)
     def render_template(self, pk, template_id):
         # type: (str, str) -> ActivationTileResponse
         return TemplateResource(self.config).render(template_id, pk)

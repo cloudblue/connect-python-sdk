@@ -3,10 +3,12 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import logging
+import copy
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.logger import logger
+from connect.logger import logger as global_logger
 from connect.models import BaseModel, UsageFile
 from .automation_engine import AutomationEngine
 
@@ -20,6 +22,7 @@ class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     model_class = UsageFile
+    logger = logging.getLogger('UsageFile.logger')
 
     def filters(self, status='ready', **kwargs):
         """
@@ -35,6 +38,17 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
+        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
+        log_level = global_logger.level
+        self.__class__.logger.propagate = False
+        self.__class__.logger.setLevel(log_level)
+        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+               "-%(lineno)d: %(message)s"
+        sformat = request.id + "  " + request.name + base
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in self.__class__.logger.handlers]
+
         try:
             # Validate product
             if self.config.products \
@@ -42,7 +56,7 @@ class UsageFileAutomation(AutomationEngine):
                 return 'Invalid product'
 
             # Process request
-            logger.info(
+            self.logger.info(
                 'Start usage file request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
@@ -50,7 +64,7 @@ class UsageFileAutomation(AutomationEngine):
             processing_result = 'UsageFileAutomation.process_request returned {} while ' \
                                 'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
-            logger.warning(processing_result)
+            self.logger.warning(processing_result)
             raise UserWarning(processing_result)
 
         # Catch action
@@ -66,6 +80,6 @@ class UsageFileAutomation(AutomationEngine):
         except SkipRequest:
             processing_result = 'skip'
 
-        logger.info('Finished processing of usage file with ID {} with result {}'
-                    .format(request.id, processing_result))
+        self.logger.info('Finished processing of usage file with ID {} with result {}'
+                         .format(request.id, processing_result))
         return processing_result
