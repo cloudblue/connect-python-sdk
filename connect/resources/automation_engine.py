@@ -4,8 +4,9 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from typing import Any, Dict
+import copy
 import logging
-from connect.logger import function_log
+from connect.logger import function_log, logger as global_logger
 from connect.models import ActivationTileResponse, BaseModel
 from .base import BaseResource
 from .template import TemplateResource
@@ -52,3 +53,15 @@ class AutomationEngine(BaseResource):
     def render_template(self, pk, template_id):
         # type: (str, str) -> ActivationTileResponse
         return TemplateResource(self.config).render(template_id, pk)
+
+    def _set_custom_logger(self, *args):
+        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
+        log_level = global_logger.level
+        self.__class__.logger.setLevel(log_level)
+        self.__class__.logger.propagate = False
+        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
+        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
+               "-%(lineno)d: %(message)s"
+        sformat = " ".join(args) + base
+        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+         for handler in self.__class__.logger.handlers]
