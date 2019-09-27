@@ -8,7 +8,6 @@ import copy
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.logger import logger as global_logger
 from connect.models import BaseModel, UsageFile
 from .automation_engine import AutomationEngine
 

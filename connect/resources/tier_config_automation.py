@@ -4,11 +4,10 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import logging
-import copy
 from abc import ABCMeta
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import logger as global_logger, function_log
+from connect.logger import function_log
 from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
     TierConfigRequest
 from .automation_engine import AutomationEngine
