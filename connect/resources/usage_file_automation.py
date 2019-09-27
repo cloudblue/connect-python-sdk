@@ -4,7 +4,6 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import logging
-import copy
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
