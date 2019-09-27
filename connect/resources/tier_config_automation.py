@@ -41,7 +41,7 @@ class TierConfigAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
-            self._set_custom_logger(request.id, request.configuration.id, request.account.id)
+            self._set_custom_logger(request.id, request.configuration.id, request.configuration.account.id)
 
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
