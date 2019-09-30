@@ -11,9 +11,12 @@ from .company import Company
 from .customer_ui_settings import CustomerUiSettings
 from .product_category import ProductCategory
 from .product_configuration import ProductConfiguration
+from .product_configuration_parameter import ProductConfigurationParameter
 from .product_stats import ProductStats
 from .schemas import ProductSchema
+from .template import Template
 from connect.config import Config
+from connect.resources.base import ApiClient
 
 
 class Product(BaseModel):
@@ -72,7 +75,6 @@ class Product(BaseModel):
         :rtype: List[Template]
         """
         from connect.resources.base import ApiClient
-        from .template import Template
         text, _ = ApiClient(config or Config.get_instance(),
                             'products/' + self.id + '/templates').get()
         return Template.deserialize(text)
@@ -92,8 +94,6 @@ class Product(BaseModel):
         :return: A list with the product configuration parameter data.
         :rtype: List[ProductConfigurationParameter]
         """
-        from connect.resources.base import ApiClient
-        from .product_configuration_parameter import ProductConfigurationParameter
         text, _ = ApiClient(config or Config.get_instance(),
                             'products/' + self.id + '/configurations').get(params=filters)
         return ProductConfigurationParameter.deserialize(text)
