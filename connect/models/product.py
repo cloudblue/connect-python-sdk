@@ -11,8 +11,12 @@ from .company import Company
 from .customer_ui_settings import CustomerUiSettings
 from .product_category import ProductCategory
 from .product_configuration import ProductConfiguration
+from .product_configuration_parameter import ProductConfigurationParameter
 from .product_stats import ProductStats
 from .schemas import ProductSchema
+from .template import Template
+from connect.config import Config
+from connect.resources.base import ApiClient
 
 
 class Product(BaseModel):
@@ -63,3 +67,32 @@ class Product(BaseModel):
 
     stats = None  # type: Optional[ProductStats]
     """ (:py:class:``.ProductStats) Statistics of product use, depends on account of callee. """
+
+    def get_templates(self, config=None):
+        """
+        :param Config config: Configuration to use, or None for environment config.
+        :return: List of all templates associated with the product.
+        :rtype: List[Template]
+        """
+        text, _ = ApiClient(config or Config.get_instance(),
+                            'products/' + self.id + '/templates').get()
+        return Template.deserialize(text)
+
+    def get_product_configurations(self, filters=None, config=None):
+        """
+        :param Dict[str, Any] filters: Filters for the requests. Supported filters are:
+          - ``parameter.id``
+          - ``parameter.title``
+          - ``parameter.scope``
+          - ``marketplace.id``
+          - ``marketplace.name``
+          - ``item.id``
+          - ``item.name``
+          - ``value``
+        :param Config config: Configuration to use, or None for environment config.
+        :return: A list with the product configuration parameter data.
+        :rtype: List[ProductConfigurationParameter]
+        """
+        text, _ = ApiClient(config or Config.get_instance(),
+                            'products/' + self.id + '/configurations').get(params=filters)
+        return ProductConfigurationParameter.deserialize(text)

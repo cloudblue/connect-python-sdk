@@ -74,3 +74,8 @@ class Agreement(BaseModel):
     """ (:py:class:`.Marketplace` | None) Reference to marketplace object
     (for distribution agreement).
     """
+
+    # Undocumented fields (they appear in PHP SDK)
+
+    name = None  # type: str
+    """ (str) Name of Agreement. """

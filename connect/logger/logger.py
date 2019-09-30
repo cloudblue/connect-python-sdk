@@ -7,8 +7,9 @@ from functools import wraps
 import json
 import logging
 import os
+
 from logging.config import dictConfig
-from connect.models import BaseModel, Fulfillment
+from connect.models.base import BaseModel
 
 with open(os.path.join(os.path.dirname(__file__), 'config.json')) as config_file:
     config = json.load(config_file)
@@ -23,7 +24,7 @@ def log_request_data(args):
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line"\
                "-%(lineno)d: %(message)s"
         sformat = args[0].id + base
-        if isinstance(args[0], Fulfillment):
+        if hasattr(args[0], 'asset') and hasattr(args[0].asset, 'id'):
             sformat = args[0].asset.id + "  " + sformat
         [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
          for handler in logger.handlers]

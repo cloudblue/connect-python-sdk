@@ -17,6 +17,7 @@ from .constraints import Constraints
 from .contact import Contact
 from .contact_info import ContactInfo
 from .contract import Contract
+from .country import Country
 from .conversation import Conversation
 from .conversation_message import ConversationMessage
 from .customer_ui_settings import CustomerUiSettings
@@ -36,6 +37,7 @@ from .phone_number import PhoneNumber
 from .product import Product
 from .product_category import ProductCategory
 from .product_configuration import ProductConfiguration
+from .product_configuration_parameter import ProductConfigurationParameter
 from .product_family import ProductFamily
 from .product_stats import ProductStats
 from .product_stats_info import ProductStatsInfo
@@ -68,6 +70,7 @@ __all__ = [
     'Contact',
     'ContactInfo',
     'Contract',
+    'Country',
     'Conversation',
     'ConversationMessage',
     'CustomerUiSettings',
@@ -87,6 +90,7 @@ __all__ = [
     'Product',
     'ProductCategory',
     'ProductConfiguration',
+    'ProductConfigurationParameter',
     'ProductFamily',
     'ProductStats',
     'ProductStatsInfo',

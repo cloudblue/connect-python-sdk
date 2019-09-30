@@ -7,8 +7,10 @@ from abc import ABCMeta
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    TierConfigRequest
+from connect.models.activation_template_response import ActivationTemplateResponse
+from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.param import Param
+from connect.models.tier_config_request import TierConfigRequest
 from .automation_engine import AutomationEngine
 
 

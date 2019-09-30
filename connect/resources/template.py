@@ -5,7 +5,8 @@
 
 from typing import List, Any, Dict
 
-from connect.models import ActivationTemplateResponse, ActivationTileResponse
+from connect.models.activation_template_response import ActivationTemplateResponse
+from connect.models.activation_tile_response import ActivationTileResponse
 from .base import BaseResource
 
 
