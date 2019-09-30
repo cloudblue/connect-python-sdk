@@ -74,7 +74,6 @@ class Product(BaseModel):
         :return: List of all templates associated with the product.
         :rtype: List[Template]
         """
-        from connect.resources.base import ApiClient
         text, _ = ApiClient(config or Config.get_instance(),
                             'products/' + self.id + '/templates').get()
         return Template.deserialize(text)
