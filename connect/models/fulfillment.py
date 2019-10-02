@@ -10,6 +10,7 @@ from .base import BaseModel
 from .contract import Contract
 from .conversation import Conversation
 from .marketplace import Marketplace
+from .user import User
 from .schemas import FulfillmentSchema
 
 
@@ -71,6 +72,9 @@ class Fulfillment(BaseModel):
 
     marketplace = None  # type: Marketplace
     """ (:py:class:`.Marketplace`) Marketplace object. """
+
+    assignee = None  # type: User
+    """ (:py:class:`.User`) Details of the user assigned to the request. """
 
     @property
     def new_items(self):

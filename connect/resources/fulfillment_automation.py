@@ -3,16 +3,20 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-import logging
 from abc import ABCMeta
+import logging
 
 from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, TierConfigRequest, Conversation
+from connect.models.activation_template_response import ActivationTemplateResponse
+from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.param import Param
+from connect.models.fulfillment import Fulfillment
+from connect.models.tier_config_request import TierConfigRequest
+from connect.models.conversation import Conversation
 from .automation_engine import AutomationEngine
 
 

@@ -7,7 +7,8 @@ import logging
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.models import BaseModel, UsageFile
+from connect.models.base import BaseModel
+from connect.models.usage_file import UsageFile
 from .automation_engine import AutomationEngine
 
 

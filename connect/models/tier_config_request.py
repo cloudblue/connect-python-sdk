@@ -7,11 +7,14 @@ from typing import Optional, List
 
 from .activation import Activation
 from .base import BaseModel
+from .contract import Contract
 from .events import Events
+from .marketplace import Marketplace
 from .param import Param
 from .product import Product
 from .template import Template
 from .tier_account import TierAccount
+from .tier_accounts import TierAccounts
 from .tier_config import TierConfig
 from .user import User
 from .schemas import TierConfigRequestSchema
@@ -68,6 +71,17 @@ class TierConfigRequest(BaseModel):
 
     events = None  # type: Optional[Events]
     """ (:py:class:`.Events` | None) Tier Config request Events. """
+
+    # Undocumented fields (they appear in PHP SDK)
+
+    tiers = None  # type: Optional[TierAccounts]
+    """ (:py:class:`.TierAccounts` | None) TierConfig tier accounts. """
+
+    marketplace = None  # type: Optional[Marketplace]
+    """ (:py:class:`.Marketplace` | None) TierConfig marketplace. """
+
+    contract = None  # type: Optional[Contract]
+    """ (:py:class:`.Contract` | None) TierConfig contract. """
 
     def get_param_by_id(self, id_):
         """ Get a Tier Config Request parameter.

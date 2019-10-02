@@ -65,6 +65,11 @@ class TierConfig(BaseModel):
     events = None  # type: Optional[Events]
     """ (:py:class:`.Events` | None) Tier Config events. """
 
+    # Undocumented fields (they appear in PHP SDK)
+
+    status = None  # type: str
+    """ (str) TierConfig status. """
+
     @classmethod
     def get(cls, account_id, product_id, config=None):
         """

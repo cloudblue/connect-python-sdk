@@ -25,3 +25,15 @@ class Configuration(BaseModel):
 
     params = None  # type: List[Param]
     """ (List[:py:class:`.Param`])  """
+
+    def get_param_by_id(self, param_id):
+        """ Get a parameter of the configuration.
+
+        :param str param_id: Id of the the parameter to get.
+        :return: The parameter with the given id, or ``None`` if it was not found.
+        :rtype: :py:class:`.Param` | None
+        """
+        try:
+            return list(filter(lambda param: param.id == param_id, self.params))[0]
+        except IndexError:
+            return None

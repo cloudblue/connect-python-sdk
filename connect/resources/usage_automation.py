@@ -13,7 +13,9 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
-from connect.models import UsageListing, UsageFile, UsageRecord
+from connect.models.usage_listing import UsageListing
+from connect.models.usage_file import UsageFile
+from connect.models.usage_record import UsageRecord
 from .automation_engine import AutomationEngine
 
 

@@ -3,11 +3,13 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from typing import Any, Dict
 import copy
 import logging
+from typing import Any, Dict
+
 from connect.logger import function_log, logger as global_logger
-from connect.models import ActivationTileResponse, BaseModel
+from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.base import BaseModel
 from .base import BaseResource
 from .template import TemplateResource
 
