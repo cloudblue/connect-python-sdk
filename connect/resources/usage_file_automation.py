@@ -4,11 +4,9 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import logging
-import copy
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.logger import logger as global_logger
 from connect.models import BaseModel, UsageFile
 from .automation_engine import AutomationEngine
 
@@ -38,16 +36,8 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
-        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
-        log_level = global_logger.level
-        self.__class__.logger.propagate = False
-        self.__class__.logger.setLevel(log_level)
-        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
-        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
-               "-%(lineno)d: %(message)s"
-        sformat = request.id + "  " + request.name + base
-        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
-         for handler in self.__class__.logger.handlers]
+
+        self._set_custom_logger(request.id, request.name)
 
         try:
             # Validate product

@@ -4,7 +4,6 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
-import copy
 import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
@@ -14,7 +13,6 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
-from connect.logger import logger as global_logger
 from connect.models import UsageListing, UsageFile, UsageRecord
 from .automation_engine import AutomationEngine
 
@@ -44,16 +42,8 @@ class UsageAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageListing) -> str
-        handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
-        log_level = global_logger.level
-        self.__class__.logger.propagate = False
-        self.__class__.logger.setLevel(log_level)
-        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
-        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
-               "-%(lineno)d: %(message)s"
-        sformat = request.id + "  " + request.contract.marketplace.id + base
-        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
-         for handler in self.__class__.logger.handlers]
+
+        self._set_custom_logger(request.id, request.contract.marketplace.id)
 
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
