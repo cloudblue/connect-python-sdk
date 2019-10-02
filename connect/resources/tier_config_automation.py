@@ -58,7 +58,7 @@ class TierConfigAutomation(AutomationEngine):
         """
         filters = super(TierConfigAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
-            filters['asset.product.id__in'] = ','.join(self.config.products)
+            filters['configuration__product__id'] = ','.join(self.config.products)
         return filters
 
     @function_log

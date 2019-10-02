@@ -502,7 +502,7 @@ class TierAccountSchema(BaseSchema):
 class TierAccountsSchema(Schema):
     customer = fields.Nested(TierAccountSchema)
     tier1 = fields.Nested(TierAccountSchema)
-    tier2 = fields.Nested(TierAccountSchema)
+    tier2 = fields.Nested(TierAccountSchema, allow_none=True)
 
     @post_load
     def make_object(self, data):
