@@ -57,8 +57,7 @@ class BaseModel(object):
         if error:
             raise TypeError(
                 'Invalid structure for initialization of `{type}`. \n'
-                'Error: {error}. \nJSON data: {data}'
-                .format(
+                'Error: {error}. \nJSON data: {data}'.format(
                     type=cls.__name__,
                     error=error,
                     data=json_data),

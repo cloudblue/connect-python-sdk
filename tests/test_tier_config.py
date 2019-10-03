@@ -6,7 +6,6 @@
 import os
 from datetime import datetime
 
-import pytest
 from mock import MagicMock, patch
 from typing import Union
 
@@ -162,13 +161,6 @@ def test_create_resource():
 def test_process_no_result():
     automation = TierConfigAutomationHelper()
     automation.process()
-
-
-@patch('requests.get', MagicMock(return_value=_get_response_ok()))
-def test_process_not_implemented():
-    with pytest.raises(NotImplementedError):
-        automation = TierConfigAutomation()
-        automation.process()
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok_invalid_product()))

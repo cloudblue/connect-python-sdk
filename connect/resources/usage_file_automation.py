@@ -3,10 +3,10 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import logging
 from abc import ABCMeta
 
 from connect.exceptions import SkipRequest, UsageFileAction
-from connect.logger import logger
 from connect.models.base import BaseModel
 from connect.models.usage_file import UsageFile
 from .automation_engine import AutomationEngine
@@ -21,6 +21,7 @@ class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     model_class = UsageFile
+    logger = logging.getLogger('UsageFile.logger')
 
     def filters(self, status='ready', **kwargs):
         """
@@ -36,6 +37,9 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
+
+        self._set_custom_logger(request.id, request.name)
+
         try:
             # Validate product
             if self.config.products \
@@ -43,7 +47,7 @@ class UsageFileAutomation(AutomationEngine):
                 return 'Invalid product'
 
             # Process request
-            logger.info(
+            self.logger.info(
                 'Start usage file request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
@@ -51,7 +55,7 @@ class UsageFileAutomation(AutomationEngine):
             processing_result = 'UsageFileAutomation.process_request returned {} while ' \
                                 'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
-            logger.warning(processing_result)
+            self.logger.warning(processing_result)
             raise UserWarning(processing_result)
 
         # Catch action
@@ -67,6 +71,6 @@ class UsageFileAutomation(AutomationEngine):
         except SkipRequest:
             processing_result = 'skip'
 
-        logger.info('Finished processing of usage file with ID {} with result {}'
-                    .format(request.id, processing_result))
+        self.logger.info('Finished processing of usage file with ID {} with result {}'
+                         .format(request.id, processing_result))
         return processing_result
