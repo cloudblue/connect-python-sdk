@@ -38,6 +38,31 @@ class TierConfigAutomation(AutomationEngine):
     model_class = TierConfigRequest
     logger = logging.getLogger('Tier.logger')
 
+    def filters(self, status='pending', **kwargs):
+        """ Returns the default set of filters for Tier Config request, plus any others that you
+        might specify. The allowed filters are:
+
+        - type
+        - status
+        - id
+        - configuration__id
+        - configuration__tier_level
+        - configuration__account__id
+        - configuration__product__id
+        - assignee__id
+        - unassigned (bool)
+        - configuration__account__external_uid
+
+        :param str status: Status of the requests. Default: ``'pending'``.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :return: The set of filters for this resource.
+        :rtype: dict[str,Any]
+        """
+        filters = super(TierConfigAutomation, self).filters(status=status, **kwargs)
+        if self.config.products:
+            filters['configuration__product__id'] = ','.join(self.config.products)
+        return filters
+
     @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
