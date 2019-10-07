@@ -8,12 +8,12 @@ from .schemas import CountrySchema
 
 
 class Country(BaseModel):
-    """ An instance of a hub. """
+    """ Country data. """
 
     _schema = CountrySchema()
 
     name = None  # type: str
-    """ (str) Country name """
+    """ (str) Country name. """
 
     icon = None  # type: str
     """ (str) Icon path. """

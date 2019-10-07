@@ -105,6 +105,7 @@
     "reason": "",
     "status": "approved",
     "type": "purchase",
-    "updated": "2019-02-19T19:28:11.053922+00:00"
+    "updated": "2019-02-19T19:28:11.053922+00:00",
+    "assignee": ""
   }
 ]

@@ -255,6 +255,9 @@
     "id": "PR-5620-6510-8214",
     "status": "approved",
     "type": "purchase",
-    "updated": "2018-09-04T10:38:58.045330+00:00"
+    "updated": "2018-09-04T10:38:58.045330+00:00",
+    "assignee": {
+      "id": "Assignee"
+    }
   }
 ]

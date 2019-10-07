@@ -9,7 +9,7 @@ import os
 import six
 from mock import MagicMock, patch
 
-from connect.models import Asset, Param, Fulfillment, Item, TierConfig, Configuration
+from connect.models import Asset, Param, Fulfillment, Item, TierConfig, Configuration, User
 from connect.resources import FulfillmentAutomation
 from .common import Response, load_str
 
@@ -102,6 +102,7 @@ def test_create_model_from_response():
     assert request_obj.asset.id == content['asset']['id']
     assert request_obj.asset.product.id == content['asset']['product']['id']
     assert isinstance(request_obj.asset.external_id, six.string_types)
+    assert request_obj.assignee == ''
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok2()))
@@ -112,6 +113,8 @@ def test_fulfillment_items():
     assert len(requests) == 1
     request = requests[0]
     assert isinstance(request, Fulfillment)
+    assert isinstance(request.assignee, User)
+    assert request.assignee.id == 'Assignee'
 
     # Test new items
     new_items = request.new_items
