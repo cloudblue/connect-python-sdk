@@ -90,6 +90,8 @@ class ApiClient(object):
             fixed_kwargs['url'] = self.get_url(path)
         if 'headers' not in fixed_kwargs:
             fixed_kwargs['headers'] = self.headers
+        if 'timeout' not in fixed_kwargs:
+            fixed_kwargs['timeout'] = 300
         return fixed_kwargs
 
     @staticmethod
