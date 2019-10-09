@@ -20,4 +20,4 @@ class ProductStats(BaseModel):
     """ (:py:class:`.ProductStatsInfo`) Agreements related to the product. """
 
     contracts = None  # type: ProductStatsInfo
-    """ (:py:class:`.ProductStatsInfo`) Contracts related to the product """
+    """ (:py:class:`.ProductStatsInfo`) Contracts related to the product. """

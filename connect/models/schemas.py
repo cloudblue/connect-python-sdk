@@ -545,6 +545,15 @@ class AssetSchema(BaseSchema):
         return Asset(**data)
 
 
+class AssigneeField(fields.Field):
+    def _deserialize(self, value, attr, obj, **kwargs):
+        from connect.models.user import User
+        if isinstance(value, six.string_types):
+            return value
+        else:
+            return User.deserialize_json(value)
+
+
 class FulfillmentSchema(BaseSchema):
     type = fields.Str()
     created = fields.DateTime()
@@ -557,7 +566,7 @@ class FulfillmentSchema(BaseSchema):
     asset = fields.Nested(AssetSchema)
     contract = fields.Nested(ContractSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
-    assignee = fields.Nested(UserSchema, allow_none=True)
+    assignee = AssigneeField(allow_none=True)
 
     @post_load
     def make_object(self, data):
