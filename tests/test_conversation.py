@@ -57,6 +57,7 @@ def test_add_message(post_mock):
     post_mock.assert_called_with(
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
         json={'text': text},
+        timeout=300,
         url='http://localhost:8080/api/public/v1/conversations/CO-750-033-356/messages')
 
     assert isinstance(message, ConversationMessage)
@@ -85,9 +86,11 @@ def test_get_conversation_ok(get_mock):
         call(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             params={'instance_id': request.id},
+            timeout=300,
             url='http://localhost:8080/api/public/v1/conversations'),
         call(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+            timeout=300,
             url='http://localhost:8080/api/public/v1/conversations/' + conversation.id)
     ])
 
@@ -107,6 +110,7 @@ def test_get_conversation_empty(get_mock):
         call(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             params={'instance_id': request.id},
+            timeout=300,
             url='http://localhost:8080/api/public/v1/conversations')
     ])
 
@@ -129,9 +133,11 @@ def test_get_conversation_bad_deserialize(get_mock):
         call(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             params={'instance_id': request.id},
+            timeout=300,
             url='http://localhost:8080/api/public/v1/conversations'),
         call(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+            timeout=300,
             url='http://localhost:8080/api/public/v1/conversations/CO-750-033-356')
     ])
 
