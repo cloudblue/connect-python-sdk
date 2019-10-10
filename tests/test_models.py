@@ -221,6 +221,7 @@ def test_get_tier_config(get_mock):
         headers={
             'Content-Type': 'application/json',
             'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300,
         params={
             'status': 'approved',
             'configuration__product__id': 'product_id',
