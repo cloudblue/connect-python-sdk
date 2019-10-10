@@ -200,9 +200,19 @@ class HubSchema(BaseSchema):
         return Hub(**data)
 
 
+class ExternalIdField(fields.Field):
+    def _deserialize(self, value, attr, obj, **kwargs):
+        if isinstance(value, six.string_types):
+            return value
+        elif isinstance(value, int):
+            return str(value)
+        else:
+            raise ValueError({attr: [u'Not a valid int or string.']})
+
+
 class ExtIdHubSchema(Schema):
     hub = fields.Nested(HubSchema, only=('id', 'name'))
-    external_id = fields.Str()
+    external_id = ExternalIdField()
 
     @post_load
     def make_object(self, data):
@@ -490,7 +500,7 @@ class ConfigurationSchema(BaseSchema):
 class TierAccountSchema(BaseSchema):
     name = fields.Str()
     contact_info = fields.Nested(ContactInfoSchema)
-    external_id = fields.Str()
+    external_id = ExternalIdField()
     external_uid = fields.Str()
 
     @post_load
@@ -525,7 +535,7 @@ class ConnectionSchema(BaseSchema):
 
 class AssetSchema(BaseSchema):
     status = fields.Str()
-    external_id = fields.Str()
+    external_id = ExternalIdField()
     external_uid = fields.Str(allow_none=True)
     external_name = fields.Str(allow_none=True)
     product = fields.Nested(ProductSchema, only=('id', 'name'))
