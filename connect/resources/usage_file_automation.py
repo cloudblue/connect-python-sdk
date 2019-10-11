@@ -32,7 +32,7 @@ class UsageFileAutomation(AutomationEngine):
         """
         filters = super(UsageFileAutomation, self).filters(status, **kwargs)
         if self.config.products:
-            filters['product__id'] = ','.join(self.config.products)
+            filters['product_id'] = ','.join(self.config.products)
         return filters
 
     def dispatch(self, request):
