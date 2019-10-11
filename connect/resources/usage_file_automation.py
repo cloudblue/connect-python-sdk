@@ -65,7 +65,7 @@ class UsageFileAutomation(AutomationEngine):
                 path='{}/{}'.format(request.id, usage.code),
                 data=json.dumps(usage.obj.json
                                 if isinstance(usage.obj, BaseModel)
-                                else getattr(usage.obj, '__dict__', str(usage.obj))))
+                                else usage.obj))
             processing_result = usage.code
 
         # Catch skip
