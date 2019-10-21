@@ -536,6 +536,7 @@ class ConnectionSchema(BaseSchema):
 class AssetSchema(BaseSchema):
     status = fields.Str()
     external_id = ExternalIdField()
+    events = fields.Nested(EventsSchema, allow_none=True)
     external_uid = fields.Str(allow_none=True)
     external_name = fields.Str(allow_none=True)
     product = fields.Nested(ProductSchema, only=('id', 'name'))

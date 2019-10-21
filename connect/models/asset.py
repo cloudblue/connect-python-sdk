@@ -57,6 +57,9 @@ class Asset(BaseModel):
     - suspended: Asset becomes suspended once 'suspend' request type is fulfilled.
     """
 
+    events = None  # type: Events
+    """ (:py:class:`.Events`) Events occurred on this asset. """
+
     external_id = None  # type: str
     """ (str) Identification for asset object on eCommerce. """
 
