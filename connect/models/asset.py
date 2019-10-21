@@ -9,6 +9,7 @@ from .base import BaseModel
 from .configuration import Configuration
 from .connection import Connection
 from .contract import Contract
+from .events import Events
 from .item import Item
 from .marketplace import Marketplace
 from .param import Param

@@ -5,6 +5,7 @@
 * HTTP timeout request to Connect platform should be not less than 300 seconds.
 * Accept Usage File is sending wrong parameter in post request.
 * Usage processor filter "product__id" is not filtering by product id.
+* All fields accept null to avoid parsing errors.
 
 ## v17.2
 

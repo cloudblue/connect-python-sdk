@@ -17,17 +17,6 @@ from .template import Template
 from .tier_account import TierAccount
 from .schemas import TierConfigSchema
 
-    def get_param_by_id(self, param_id):
-        """
-        :param str param_id: Id of the parameter.
-        :return: A Param by ID, or None if it was not found.
-        :rtype: Param
-        """
-        try:
-            return list(filter(lambda p: p.id == param_id, self.params))[0]
-        except IndexError:
-            return None
-
 
 class TierConfig(BaseModel):
     """ Full representation of Tier object. """
