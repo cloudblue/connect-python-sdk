@@ -64,6 +64,7 @@ def test_list_assets(get_mock):
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/assets?in(product.id,(CN-631-322-000))',
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300,
         params=None)
 
 
@@ -76,7 +77,8 @@ def test_get_asset(get_mock):
 
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/assets/AS-9861-7949-8492',
-        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'})
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
 
 
 @patch('requests.get', MagicMock(return_value=_get_bad_response()))
@@ -96,7 +98,8 @@ def test_list_products(get_mock):
 
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/products',
-        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'})
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
 
 
 @patch('requests.get')
@@ -108,7 +111,8 @@ def test_get_product(get_mock):
 
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/products/CN-783-317-575',
-        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'})
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
 
 
 @patch('requests.get', MagicMock(return_value=_get_bad_response()))
@@ -129,6 +133,7 @@ def test_list_tier_configs(get_mock):
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/tier/configs',
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300,
         params={'product.id': 'CN-631-322-000'})
 
 
@@ -141,7 +146,8 @@ def test_get_tier_config(get_mock):
 
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/tier/configs/TC-000-000-000',
-        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'})
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
 
 
 @patch('requests.get', MagicMock(return_value=_get_bad_response()))
