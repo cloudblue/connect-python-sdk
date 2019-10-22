@@ -10,6 +10,11 @@ import six
 class BaseSchema(Schema):
     id = fields.Str()
 
+    # Set allow_none to True in all fields
+    def on_bind_field(self, field_name, field_obj):
+        super(BaseSchema, self).on_bind_field(field_name, field_obj)
+        field_obj.allow_none = True
+
     @post_load
     def make_object(self, data):
         from connect.models import BaseModel
@@ -17,9 +22,9 @@ class BaseSchema(Schema):
 
 
 class ActivationSchema(BaseSchema):
-    link = fields.Str(allow_none=True)
-    message = fields.Str(allow_none=True)
-    date = fields.DateTime(allow_none=True)
+    link = fields.Str()
+    message = fields.Str()
+    date = fields.DateTime()
 
     @post_load
     def make_object(self, data):
@@ -28,8 +33,8 @@ class ActivationSchema(BaseSchema):
 
 
 class AgreementStatsSchema(BaseSchema):
-    contracts = fields.Int(allow_none=True)
-    versions = fields.Int(allow_none=True)
+    contracts = fields.Int()
+    versions = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -38,7 +43,7 @@ class AgreementStatsSchema(BaseSchema):
 
 
 class CompanySchema(BaseSchema):
-    name = fields.Str(allow_none=True)
+    name = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -47,10 +52,10 @@ class CompanySchema(BaseSchema):
 
 
 class PhoneNumberSchema(BaseSchema):
-    country_code = fields.Str(allow_none=True)
-    area_code = fields.Str(allow_none=True)
-    phone_number = fields.Str(allow_none=True)
-    extension = fields.Str(allow_none=True)
+    country_code = fields.Str()
+    area_code = fields.Str()
+    phone_number = fields.Str()
+    extension = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -59,10 +64,10 @@ class PhoneNumberSchema(BaseSchema):
 
 
 class ContactSchema(BaseSchema):
-    email = fields.Str(allow_none=True)
-    first_name = fields.Str(allow_none=True)
-    last_name = fields.Str(allow_none=True)
-    phone_number = fields.Nested(PhoneNumberSchema, allow_none=True)
+    email = fields.Str()
+    first_name = fields.Str()
+    last_name = fields.Str()
+    phone_number = fields.Nested(PhoneNumberSchema)
 
     @post_load
     def make_object(self, data):
@@ -71,13 +76,13 @@ class ContactSchema(BaseSchema):
 
 
 class ContactInfoSchema(BaseSchema):
-    address_line1 = fields.Str(allow_none=True)
-    address_line2 = fields.Str(allow_none=True)
-    city = fields.Str(allow_none=True)
-    contact = fields.Nested(ContactSchema, allow_none=True)
-    country = fields.Str(allow_none=True)
-    postal_code = fields.Str(allow_none=True)
-    state = fields.Str(allow_none=True)
+    address_line1 = fields.Str()
+    address_line2 = fields.Str()
+    city = fields.Str()
+    contact = fields.Nested(ContactSchema)
+    country = fields.Str()
+    postal_code = fields.Str()
+    state = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -86,8 +91,8 @@ class ContactInfoSchema(BaseSchema):
 
 
 class ValueChoiceSchema(Schema):
-    value = fields.Str(allow_none=True)
-    label = fields.Str(allow_none=True)
+    value = fields.Str()
+    label = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -96,10 +101,10 @@ class ValueChoiceSchema(Schema):
 
 
 class ConstraintsSchema(BaseSchema):
-    hidden = fields.Bool(allow_none=True)
-    required = fields.Bool(allow_none=True)
-    choices = fields.Nested(ValueChoiceSchema, many=True, allow_none=True)
-    unique = fields.Bool(allow_none=True)
+    hidden = fields.Bool()
+    required = fields.Bool()
+    choices = fields.Nested(ValueChoiceSchema, many=True)
+    unique = fields.Bool()
 
     @post_load
     def make_object(self, data):
@@ -108,8 +113,8 @@ class ConstraintsSchema(BaseSchema):
 
 
 class DocumentSchema(BaseSchema):
-    title = fields.Str(allow_none=True)
-    url = fields.Str(allow_none=True)
+    title = fields.Str()
+    url = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -118,9 +123,9 @@ class DocumentSchema(BaseSchema):
 
 
 class DownloadLinkSchema(BaseSchema):
-    title = fields.Str(allow_none=True)
-    url = fields.Str(allow_none=True)
-    visible_for = fields.Str(allow_none=True)
+    title = fields.Str()
+    url = fields.Str()
+    visible_for = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -129,8 +134,8 @@ class DownloadLinkSchema(BaseSchema):
 
 
 class UserSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    email = fields.Str(allow_none=True)
+    name = fields.Str()
+    email = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -139,8 +144,8 @@ class UserSchema(BaseSchema):
 
 
 class EventSchema(BaseSchema):
-    at = fields.DateTime(allow_none=True)
-    by = fields.Nested(UserSchema, allow_none=True)
+    at = fields.DateTime()
+    by = fields.Nested(UserSchema)
 
     @post_load
     def make_object(self, data):
@@ -149,17 +154,17 @@ class EventSchema(BaseSchema):
 
 
 class EventsSchema(BaseSchema):
-    created = fields.Nested(EventSchema, allow_none=True)
-    inquired = fields.Nested(EventSchema, allow_none=True)
-    pended = fields.Nested(EventSchema, allow_none=True)
-    validated = fields.Nested(EventSchema, allow_none=True)
-    updated = fields.Nested(EventSchema, allow_none=True)
-    approved = fields.Nested(EventSchema, allow_none=True)
-    uploaded = fields.Nested(EventSchema, allow_none=True)
-    submitted = fields.Nested(EventSchema, allow_none=True)
-    accepted = fields.Nested(EventSchema, allow_none=True)
-    rejected = fields.Nested(EventSchema, allow_none=True)
-    closed = fields.Nested(EventSchema, allow_none=True)
+    created = fields.Nested(EventSchema)
+    inquired = fields.Nested(EventSchema)
+    pended = fields.Nested(EventSchema)
+    validated = fields.Nested(EventSchema)
+    updated = fields.Nested(EventSchema)
+    approved = fields.Nested(EventSchema)
+    uploaded = fields.Nested(EventSchema)
+    submitted = fields.Nested(EventSchema)
+    accepted = fields.Nested(EventSchema)
+    rejected = fields.Nested(EventSchema)
+    closed = fields.Nested(EventSchema)
 
     @post_load
     def make_object(self, data):
@@ -168,7 +173,7 @@ class EventsSchema(BaseSchema):
 
 
 class HubInstanceSchema(BaseSchema):
-    type = fields.Str(allow_none=True)
+    type = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -177,8 +182,8 @@ class HubInstanceSchema(BaseSchema):
 
 
 class HubStatsSchema(BaseSchema):
-    connections = fields.Int(allow_none=True)
-    marketplaces = fields.Int(allow_none=True)
+    connections = fields.Int()
+    marketplaces = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -187,12 +192,12 @@ class HubStatsSchema(BaseSchema):
 
 
 class HubSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    company = fields.Nested(CompanySchema, allow_none=True)
-    description = fields.Str(allow_none=True)
-    instance = fields.Nested(HubInstanceSchema, allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    stats = fields.Nested(HubStatsSchema, allow_none=True)
+    name = fields.Str()
+    company = fields.Nested(CompanySchema)
+    description = fields.Str()
+    instance = fields.Nested(HubInstanceSchema)
+    events = fields.Nested(EventsSchema)
+    stats = fields.Nested(HubStatsSchema)
 
     @post_load
     def make_object(self, data):
@@ -211,8 +216,8 @@ class ExternalIdField(fields.Field):
 
 
 class ExtIdHubSchema(Schema):
-    hub = fields.Nested(HubSchema, only=('id', 'name'), allow_none=True)
-    external_id = ExternalIdField(allow_none=True)
+    hub = fields.Nested(HubSchema, only=('id', 'name'))
+    external_id = ExternalIdField()
 
     @post_load
     def make_object(self, data):
@@ -221,10 +226,10 @@ class ExtIdHubSchema(Schema):
 
 
 class RenewalSchema(BaseSchema):
-    from_ = fields.DateTime(load_from='from', allow_none=True)
-    to = fields.DateTime(allow_none=True)
-    period_delta = fields.Int(allow_none=True)
-    period_uom = fields.Str(allow_none=True)
+    from_ = fields.DateTime(load_from='from')
+    to = fields.DateTime()
+    period_delta = fields.Int()
+    period_uom = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -253,13 +258,13 @@ class QuantityField(fields.Field):
 
 
 class MarketplaceSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
-    active_contracts = fields.Int(allow_none=True)
-    icon = fields.Str(allow_none=True)
-    owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    hubs = fields.Nested(ExtIdHubSchema, many=True, allow_none=True)
-    zone = fields.Str(allow_none=True)
+    name = fields.Str()
+    description = fields.Str()
+    active_contracts = fields.Int()
+    icon = fields.Str()
+    owner = fields.Nested(CompanySchema, only=('id', 'name'))
+    hubs = fields.Nested(ExtIdHubSchema, many=True)
+    zone = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -268,9 +273,9 @@ class MarketplaceSchema(BaseSchema):
 
 
 class CountrySchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    icon = fields.Str(allow_none=True)
-    zone = fields.Str(allow_none=True)
+    name = fields.Str()
+    icon = fields.Str()
+    zone = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -279,22 +284,22 @@ class CountrySchema(BaseSchema):
 
 
 class ParamSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
-    type = fields.Str(allow_none=True)
-    value = fields.Str(allow_none=True)
-    value_error = fields.Str(allow_none=True)
-    value_choice = fields.Str(many=True, allow_none=True)
+    name = fields.Str()
+    description = fields.Str()
+    type = fields.Str()
+    value = fields.Str()
+    value_error = fields.Str()
+    value_choice = fields.Str(many=True)
 
     # Undocumented fields (they appear in PHP SDK)
-    title = fields.Str(allow_none=True)
-    scope = fields.Str(allow_none=True)
-    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
-    value_choices = fields.Nested(ValueChoiceSchema, many=True, allow_none=True)
-    phase = fields.Str(allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    countries = fields.Nested(CountrySchema, many=True, allow_none=True)
+    title = fields.Str()
+    scope = fields.Str()
+    constraints = fields.Nested(ConstraintsSchema)
+    value_choices = fields.Nested(ValueChoiceSchema, many=True)
+    phase = fields.Str()
+    events = fields.Nested(EventsSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    countries = fields.Nested(CountrySchema, many=True)
 
     @post_load
     def make_object(self, data):
@@ -303,17 +308,17 @@ class ParamSchema(BaseSchema):
 
 
 class ItemSchema(BaseSchema):
-    mpn = fields.Str(allow_none=True)
-    quantity = QuantityField(allow_none=True)
-    old_quantity = QuantityField(allow_none=True)
-    renewal = fields.Nested(RenewalSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True, allow_none=True)
-    display_name = fields.Str(allow_none=True)
-    global_id = fields.Str(allow_none=True)
-    item_type = fields.Str(allow_none=True)
-    period = fields.Str(allow_none=True)
-    type = fields.Str(allow_none=True)
-    name = fields.Str(allow_none=True)
+    mpn = fields.Str()
+    quantity = QuantityField()
+    old_quantity = QuantityField()
+    renewal = fields.Nested(RenewalSchema)
+    params = fields.Nested(ParamSchema, many=True)
+    display_name = fields.Str()
+    global_id = fields.Str()
+    item_type = fields.Str()
+    period = fields.Str()
+    type = fields.Str()
+    name = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -322,23 +327,23 @@ class ItemSchema(BaseSchema):
 
 
 class AgreementSchema(BaseSchema):
-    type = fields.Str(allow_none=True)
-    title = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
-    created = fields.DateTime(allow_none=True)
-    updated = fields.DateTime(allow_none=True)
-    owner = fields.Nested(CompanySchema, allow_none=True)
-    stats = fields.Nested(AgreementStatsSchema, allow_none=True)
-    author = fields.Nested(UserSchema, allow_none=True)
-    version = fields.Int(allow_none=True)
-    active = fields.Bool(allow_none=True)
-    link = fields.Str(allow_none=True)
-    version_created = fields.DateTime(allow_none=True)
-    version_contracts = fields.Int(allow_none=True)
-    agreements = fields.Nested('AgreementSchema', many=True, allow_none=True)
-    parent = fields.Nested('AgreementSchema', only=('id', 'name'), allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
-    name = fields.Str(allow_none=True)
+    type = fields.Str()
+    title = fields.Str()
+    description = fields.Str()
+    created = fields.DateTime()
+    updated = fields.DateTime()
+    owner = fields.Nested(CompanySchema)
+    stats = fields.Nested(AgreementStatsSchema)
+    author = fields.Nested(UserSchema)
+    version = fields.Int()
+    active = fields.Bool()
+    link = fields.Str()
+    version_created = fields.DateTime()
+    version_contracts = fields.Int()
+    agreements = fields.Nested('AgreementSchema', many=True)
+    parent = fields.Nested('AgreementSchema', only=('id', 'name'))
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    name = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -347,20 +352,20 @@ class AgreementSchema(BaseSchema):
 
 
 class ContractSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    version = fields.Int(allow_none=True)
-    type = fields.Str(allow_none=True)
-    status = fields.Str(allow_none=True)
-    agreement = fields.Nested(AgreementSchema, only=('id', 'name'), allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
-    owner = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    creator = fields.Nested(UserSchema, only=('id', 'name'), allow_none=True)
-    created = fields.DateTime(allow_none=True)
-    updated = fields.DateTime(allow_none=True)
-    enrolled = fields.DateTime(allow_none=True)
-    version_created = fields.DateTime(allow_none=True)
-    activation = fields.Nested(ActivationSchema, allow_none=True)
-    signee = fields.Nested(UserSchema, only=('id', 'name'), allow_none=True)
+    name = fields.Str()
+    version = fields.Int()
+    type = fields.Str()
+    status = fields.Str()
+    agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    owner = fields.Nested(CompanySchema, only=('id', 'name'))
+    creator = fields.Nested(UserSchema, only=('id', 'name'))
+    created = fields.DateTime()
+    updated = fields.DateTime()
+    enrolled = fields.DateTime()
+    version_created = fields.DateTime()
+    activation = fields.Nested(ActivationSchema)
+    signee = fields.Nested(UserSchema, only=('id', 'name'))
 
     @post_load
     def make_object(self, data):
@@ -369,8 +374,8 @@ class ContractSchema(BaseSchema):
 
 
 class ProductConfigurationSchema(BaseSchema):
-    suspend_resume_supported = fields.Bool(allow_none=True)
-    requires_reseller_information = fields.Bool(allow_none=True)
+    suspend_resume_supported = fields.Bool()
+    requires_reseller_information = fields.Bool()
 
     @post_load
     def make_object(self, data):
@@ -379,10 +384,10 @@ class ProductConfigurationSchema(BaseSchema):
 
 
 class CustomerUiSettingsSchema(BaseSchema):
-    description = fields.Str(allow_none=True)
-    getting_started = fields.Str(allow_none=True)
-    download_links = fields.Nested(DownloadLinkSchema, many=True, allow_none=True)
-    documents = fields.Nested(DocumentSchema, many=True, allow_none=True)
+    description = fields.Str()
+    getting_started = fields.Str()
+    download_links = fields.Nested(DownloadLinkSchema, many=True)
+    documents = fields.Nested(DocumentSchema, many=True)
 
     @post_load
     def make_object(self, data):
@@ -391,7 +396,7 @@ class CustomerUiSettingsSchema(BaseSchema):
 
 
 class ProductFamilySchema(BaseSchema):
-    name = fields.Str(allow_none=True)
+    name = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -400,10 +405,10 @@ class ProductFamilySchema(BaseSchema):
 
 
 class ProductCategorySchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    parent = fields.Nested('ProductCategorySchema', allow_none=True)
-    children = fields.Nested('ProductCategorySchema', many=True, allow_none=True)
-    family = fields.Nested(ProductFamilySchema, allow_none=True)
+    name = fields.Str()
+    parent = fields.Nested('ProductCategorySchema')
+    children = fields.Nested('ProductCategorySchema', many=True)
+    family = fields.Nested(ProductFamilySchema)
 
     @post_load
     def make_object(self, data):
@@ -412,8 +417,8 @@ class ProductCategorySchema(BaseSchema):
 
 
 class ProductStatsInfoSchema(BaseSchema):
-    distribution = fields.Int(allow_none=True)
-    sourcing = fields.Int(allow_none=True)
+    distribution = fields.Int()
+    sourcing = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -422,9 +427,9 @@ class ProductStatsInfoSchema(BaseSchema):
 
 
 class ProductStatsSchema(BaseSchema):
-    listing = fields.Int(allow_none=True)
-    agreements = fields.Nested(ProductStatsInfoSchema, allow_none=True)
-    contracts = fields.Nested(ProductStatsInfoSchema, allow_none=True)
+    listing = fields.Int()
+    agreements = fields.Nested(ProductStatsInfoSchema)
+    contracts = fields.Nested(ProductStatsInfoSchema)
 
     @post_load
     def make_object(self, data):
@@ -433,12 +438,12 @@ class ProductStatsSchema(BaseSchema):
 
 
 class ProductConfigurationParameterSchema(BaseSchema):
-    value = fields.Str(allow_none=True)
-    parameter = fields.Nested(ParamSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    item = fields.Nested(ItemSchema, allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    constraints = fields.Nested(ConstraintsSchema, allow_none=True)
+    value = fields.Str()
+    parameter = fields.Nested(ParamSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    item = fields.Nested(ItemSchema)
+    events = fields.Nested(EventsSchema)
+    constraints = fields.Nested(ConstraintsSchema)
 
     @post_load
     def make_object(self, data):
@@ -447,18 +452,18 @@ class ProductConfigurationParameterSchema(BaseSchema):
 
 
 class ProductSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    icon = fields.Str(allow_none=True)
-    short_description = fields.Str(allow_none=True)
-    detailed_description = fields.Str(allow_none=True)
-    version = fields.Int(allow_none=True)
-    published_at = fields.DateTime(allow_none=True)
-    configurations = fields.Nested(ProductConfigurationSchema, allow_none=True)
-    customer_ui_settings = fields.Nested(CustomerUiSettingsSchema, allow_none=True)
-    category = fields.Nested(ProductCategorySchema, allow_none=True)
-    owner = fields.Nested(CompanySchema, allow_none=True)
-    latest = fields.Bool(allow_none=True)
-    stats = fields.Nested(ProductStatsSchema, allow_none=True)
+    name = fields.Str()
+    icon = fields.Str()
+    short_description = fields.Str()
+    detailed_description = fields.Str()
+    version = fields.Int()
+    published_at = fields.DateTime()
+    configurations = fields.Nested(ProductConfigurationSchema)
+    customer_ui_settings = fields.Nested(CustomerUiSettingsSchema)
+    category = fields.Nested(ProductCategorySchema)
+    owner = fields.Nested(CompanySchema)
+    latest = fields.Bool()
+    stats = fields.Nested(ProductStatsSchema)
 
     @post_load
     def make_object(self, data):
@@ -467,9 +472,9 @@ class ProductSchema(BaseSchema):
 
 
 class ServerErrorResponseSchema(Schema):
-    error_code = fields.Str(allow_none=True)
-    params = fields.Dict(allow_none=True)
-    errors = fields.Str(many=True, allow_none=True)
+    error_code = fields.Str()
+    params = fields.Dict()
+    errors = fields.Str(many=True)
 
     @post_load
     def make_object(self, data):
@@ -478,9 +483,9 @@ class ServerErrorResponseSchema(Schema):
 
 
 class TemplateSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    representation = fields.Str(allow_none=True)
-    body = fields.Str(allow_none=True)
+    name = fields.Str()
+    representation = fields.Str()
+    body = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -489,7 +494,7 @@ class TemplateSchema(BaseSchema):
 
 
 class ConfigurationSchema(BaseSchema):
-    params = fields.Nested(ParamSchema, many=True, allow_none=True)
+    params = fields.Nested(ParamSchema, many=True)
 
     @post_load
     def make_object(self, data):
@@ -498,10 +503,10 @@ class ConfigurationSchema(BaseSchema):
 
 
 class TierAccountSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    contact_info = fields.Nested(ContactInfoSchema, allow_none=True)
-    external_id = ExternalIdField(allow_none=True)
-    external_uid = fields.Str(allow_none=True)
+    name = fields.Str()
+    contact_info = fields.Nested(ContactInfoSchema)
+    external_id = ExternalIdField()
+    external_uid = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -510,9 +515,9 @@ class TierAccountSchema(BaseSchema):
 
 
 class TierAccountsSchema(Schema):
-    customer = fields.Nested(TierAccountSchema, allow_none=True)
-    tier1 = fields.Nested(TierAccountSchema, allow_none=True)
-    tier2 = fields.Nested(TierAccountSchema, allow_none=True)
+    customer = fields.Nested(TierAccountSchema)
+    tier1 = fields.Nested(TierAccountSchema)
+    tier2 = fields.Nested(TierAccountSchema)
 
     @post_load
     def make_object(self, data):
@@ -521,11 +526,11 @@ class TierAccountsSchema(Schema):
 
 
 class ConnectionSchema(BaseSchema):
-    type = fields.Str(allow_none=True)
-    provider = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    vendor = fields.Nested(CompanySchema, only=('id', 'name'), allow_none=True)
-    product = fields.Nested(ProductSchema, allow_none=True)
-    hub = fields.Nested(HubSchema, allow_none=True)
+    type = fields.Str()
+    provider = fields.Nested(CompanySchema, only=('id', 'name'))
+    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
+    product = fields.Nested(ProductSchema)
+    hub = fields.Nested(HubSchema)
 
     @post_load
     def make_object(self, data):
@@ -534,21 +539,21 @@ class ConnectionSchema(BaseSchema):
 
 
 class AssetSchema(BaseSchema):
-    status = fields.Str(allow_none=True)
-    external_id = ExternalIdField(allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    external_uid = fields.Str(allow_none=True)
-    external_name = fields.Str(allow_none=True)
-    product = fields.Nested(ProductSchema, only=('id', 'name'), allow_none=True)
+    status = fields.Str()
+    external_id = ExternalIdField()
+    events = fields.Nested(EventsSchema)
+    external_uid = fields.Str()
+    external_name = fields.Str()
+    product = fields.Nested(ProductSchema, only=('id', 'name'))
     connection = fields.Nested(
-        ConnectionSchema, only=('id', 'type', 'provider', 'vendor'), allow_none=True
+        ConnectionSchema, only=('id', 'type', 'provider', 'vendor')
     )
-    contract = fields.Nested(ContractSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    params = fields.Nested(ParamSchema, many=True, allow_none=True)
-    tiers = fields.Nested(TierAccountsSchema, allow_none=True)
-    items = fields.Nested(ItemSchema, many=True, allow_none=True)
-    configuration = fields.Nested(ConfigurationSchema, allow_none=True)
+    contract = fields.Nested(ContractSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    params = fields.Nested(ParamSchema, many=True)
+    tiers = fields.Nested(TierAccountsSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    configuration = fields.Nested(ConfigurationSchema)
 
     @post_load
     def make_object(self, data):
@@ -566,18 +571,18 @@ class AssigneeField(fields.Field):
 
 
 class FulfillmentSchema(BaseSchema):
-    type = fields.Str(allow_none=True)
-    created = fields.DateTime(allow_none=True)
-    updated = fields.DateTime(allow_none=True)
-    status = fields.Str(allow_none=True)
-    params_form_url = fields.Str(allow_none=True)
-    activation_key = fields.Str(allow_none=True)
-    reason = fields.Str(allow_none=True)
-    note = fields.Str(allow_none=True)
-    asset = fields.Nested(AssetSchema, allow_none=True)
-    contract = fields.Nested(ContractSchema, only=('id', 'name'), allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'), allow_none=True)
-    assignee = AssigneeField(allow_none=True)
+    type = fields.Str()
+    created = fields.DateTime()
+    updated = fields.DateTime()
+    status = fields.Str()
+    params_form_url = fields.Str()
+    activation_key = fields.Str()
+    reason = fields.Str()
+    note = fields.Str()
+    asset = fields.Nested(AssetSchema)
+    contract = fields.Nested(ContractSchema, only=('id', 'name'))
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    assignee = AssigneeField()
 
     @post_load
     def make_object(self, data):
@@ -586,19 +591,19 @@ class FulfillmentSchema(BaseSchema):
 
 
 class TierConfigSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    account = fields.Nested(TierAccountSchema, allow_none=True)
-    product = fields.Nested(ProductSchema, allow_none=True)
-    tier_level = fields.Int(allow_none=True)
-    params = fields.Nested(ParamSchema, many=True, allow_none=True)
-    connection = fields.Nested(ConnectionSchema, allow_none=True)
-    open_request = fields.Nested(BaseSchema, allow_none=True)
-    template = fields.Nested(TemplateSchema, allow_none=True)
-    contract = fields.Nested(ContractSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    configuration = fields.Nested(ConfigurationSchema, allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    status = fields.Str(allow_none=True)
+    name = fields.Str()
+    account = fields.Nested(TierAccountSchema)
+    product = fields.Nested(ProductSchema)
+    tier_level = fields.Int()
+    params = fields.Nested(ParamSchema, many=True)
+    connection = fields.Nested(ConnectionSchema)
+    open_request = fields.Nested(BaseSchema)
+    template = fields.Nested(TemplateSchema)
+    contract = fields.Nested(ContractSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    configuration = fields.Nested(ConfigurationSchema)
+    events = fields.Nested(EventsSchema)
+    status = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -607,24 +612,24 @@ class TierConfigSchema(BaseSchema):
 
 
 class TierConfigRequestSchema(BaseSchema):
-    type = fields.Str(allow_none=True)
-    status = fields.Str(allow_none=True)
-    configuration = fields.Nested(TierConfigSchema, allow_none=True)
-    parent_configuration = fields.Nested(TierConfigSchema, allow_none=True)
-    account = fields.Nested(TierAccountSchema, allow_none=True)
-    product = fields.Nested(ProductSchema, allow_none=True)
-    tier_level = fields.Int(allow_none=True)
-    params = fields.Nested(ParamSchema, many=True, allow_none=True)
-    environment = fields.Str(allow_none=True)
-    assignee = fields.Nested(UserSchema, allow_none=True)
-    template = fields.Nested(TemplateSchema, allow_none=True)
-    reason = fields.Str(allow_none=True)
-    activation = fields.Nested(ActivationSchema, allow_none=True)
-    notes = fields.Str(allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
-    tiers = fields.Nested(TierAccountsSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    contract = fields.Nested(ContractSchema, allow_none=True)
+    type = fields.Str()
+    status = fields.Str()
+    configuration = fields.Nested(TierConfigSchema)
+    parent_configuration = fields.Nested(TierConfigSchema)
+    account = fields.Nested(TierAccountSchema)
+    product = fields.Nested(ProductSchema)
+    tier_level = fields.Int()
+    params = fields.Nested(ParamSchema, many=True)
+    environment = fields.Str()
+    assignee = fields.Nested(UserSchema)
+    template = fields.Nested(TemplateSchema)
+    reason = fields.Str()
+    activation = fields.Nested(ActivationSchema)
+    notes = fields.Str()
+    events = fields.Nested(EventsSchema)
+    tiers = fields.Nested(TierAccountsSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    contract = fields.Nested(ContractSchema)
 
     @post_load
     def make_object(self, data):
@@ -633,8 +638,8 @@ class TierConfigRequestSchema(BaseSchema):
 
 
 class UsageRecordsSchema(BaseSchema):
-    valid = fields.Int(allow_none=True)
-    invalid = fields.Int(allow_none=True)
+    valid = fields.Int()
+    invalid = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -643,24 +648,24 @@ class UsageRecordsSchema(BaseSchema):
 
 
 class UsageFileSchema(BaseSchema):
-    name = fields.Str(allow_none=True)
-    description = fields.Str(allow_none=True)
-    note = fields.Str(allow_none=True)
-    status = fields.Str(allow_none=True)
-    created_by = fields.Str(allow_none=True)
-    created_at = fields.Str(allow_none=True)
-    upload_file_uri = fields.Str(allow_none=True)
-    processed_file_uri = fields.Str(allow_none=True)
-    product = fields.Nested(ProductSchema, allow_none=True)
-    contract = fields.Nested(ContractSchema, allow_none=True)
-    marketplace = fields.Nested(MarketplaceSchema, allow_none=True)
-    vendor = fields.Nested(CompanySchema, allow_none=True)
-    provider = fields.Nested(CompanySchema, allow_none=True)
-    acceptance_note = fields.Str(allow_none=True)
-    rejection_note = fields.Str(allow_none=True)
-    error_details = fields.Str(allow_none=True)
-    records = fields.Nested(UsageRecordsSchema, allow_none=True)
-    events = fields.Nested(EventsSchema, allow_none=True)
+    name = fields.Str()
+    description = fields.Str()
+    note = fields.Str()
+    status = fields.Str()
+    created_by = fields.Str()
+    created_at = fields.Str()
+    upload_file_uri = fields.Str()
+    processed_file_uri = fields.Str()
+    product = fields.Nested(ProductSchema)
+    contract = fields.Nested(ContractSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    vendor = fields.Nested(CompanySchema)
+    provider = fields.Nested(CompanySchema)
+    acceptance_note = fields.Str()
+    rejection_note = fields.Str()
+    error_details = fields.Str()
+    records = fields.Nested(UsageRecordsSchema)
+    events = fields.Nested(EventsSchema)
 
     @post_load
     def make_object(self, data):
@@ -669,14 +674,14 @@ class UsageFileSchema(BaseSchema):
 
 
 class UsageListingSchema(BaseSchema):
-    status = fields.Str(allow_none=True)
-    contract = fields.Nested(ContractSchema, allow_none=True)
-    product = fields.Nested(ProductSchema, allow_none=True)
-    created = fields.Str(allow_none=True)
+    status = fields.Str()
+    contract = fields.Nested(ContractSchema)
+    product = fields.Nested(ProductSchema)
+    created = fields.Str()
 
     # Undocumented fields (they appear in PHP SDK)
-    vendor = fields.Nested(CompanySchema, allow_none=True)
-    provider = fields.Nested(CompanySchema, allow_none=True)
+    vendor = fields.Nested(CompanySchema)
+    provider = fields.Nested(CompanySchema)
 
     @post_load
     def make_object(self, data):
@@ -685,14 +690,14 @@ class UsageListingSchema(BaseSchema):
 
 
 class UsageRecordSchema(BaseSchema):
-    usage_record_id = fields.Str(allow_none=True)
-    item_search_criteria = fields.Str(allow_none=True)
-    item_search_value = fields.Str(allow_none=True)
-    quantity = fields.Int(allow_none=True)
-    start_time_utc = fields.Str(allow_none=True)
-    end_time_utc = fields.Str(allow_none=True)
-    asset_search_criteria = fields.Str(allow_none=True)
-    asset_search_value = fields.Str(allow_none=True)
+    usage_record_id = fields.Str()
+    item_search_criteria = fields.Str()
+    item_search_value = fields.Str()
+    quantity = fields.Int()
+    start_time_utc = fields.Str()
+    end_time_utc = fields.Str()
+    asset_search_criteria = fields.Str()
+    asset_search_value = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -701,10 +706,10 @@ class UsageRecordSchema(BaseSchema):
 
 
 class ConversationMessageSchema(BaseSchema):
-    conversation = fields.Str(allow_none=True)
-    created = fields.DateTime(allow_none=True)
-    creator = fields.Nested(UserSchema, allow_none=True)
-    text = fields.Str(allow_none=True)
+    conversation = fields.Str()
+    created = fields.DateTime()
+    creator = fields.Nested(UserSchema)
+    text = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -713,11 +718,11 @@ class ConversationMessageSchema(BaseSchema):
 
 
 class ConversationSchema(BaseSchema):
-    instance_id = fields.Str(allow_none=True)
-    created = fields.DateTime(allow_none=True)
-    topic = fields.Str(allow_none=True)
-    messages = fields.Nested(ConversationMessageSchema, many=True, allow_none=True)
-    creator = fields.Nested(UserSchema, allow_none=True)
+    instance_id = fields.Str()
+    created = fields.DateTime()
+    topic = fields.Str()
+    messages = fields.Nested(ConversationMessageSchema, many=True)
+    creator = fields.Nested(UserSchema)
 
     @post_load
     def make_object(self, data):
