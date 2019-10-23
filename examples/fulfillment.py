@@ -41,8 +41,7 @@ class FulfillmentExample(FulfillmentAutomation):
             if request.type == 'purchase':
                 for item in request.asset.items:
                     if item.quantity > 100000:
-                        raise FailRequest(
-                            message='Is Not possible to purchase product')
+                        raise FailRequest('Is not possible to purchase product in such quantities')
 
                 for param in request.asset.params:
                     if param.name == 'email' and not param.value:
@@ -50,16 +49,24 @@ class FulfillmentExample(FulfillmentAutomation):
                                             'please provide one'
                         raise InquireRequest(params=[param])
 
-                # Approve by ActivationTile
-                return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
-                                              'to have an account in our amazing service!')
-                # Or
-                # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
+                # Find a param by its id
+                param = request.asset.get_param_by_id('purchase_id')
+                if param:
+                    param.value = '...'  # We can assign the id given by the external service here
+                    self.update_parameters(request.id, [param])  # Update param on the platform
+                else:
+                    raise FailRequest('The asset is expected to have a "purchase_id" param.')
 
                 # Approve by Template
-                # return ActivationTemplateResponse('TL-497-535-242')
+                return ActivationTemplateResponse('TL-497-535-242')
                 # Or
                 # return TemplateResource().get(pk='TEMPLATE_ID')
+
+                # Approve by ActivationTile
+                # return ActivationTileResponse('\n  # Welcome to Fallball!\n\nYes, you decided '
+                #                              'to have an account in our amazing service!')
+                # Or
+                # return TemplateResource().render(pk='TEMPLATE_ID', request_id=request.id)
 
             elif request.type == 'change':
                 # Fail

@@ -1,5 +1,24 @@
 # Connect SDK Changes History
 
+## v17.3
+
+* HTTP timeout request to Connect platform should be not less than 300 seconds.
+* Accept Usage File is sending wrong parameter in post request.
+* Usage processor filter "product__id" is not filtering by product id.
+* All fields accept null to avoid parsing errors.
+
+## v17.2
+
+* external_id is sometimes returned as an integer by Connect API, which breaks Python SDK parsing.
+
+## v17.1
+
+* Add custom loggers to the automation classes, that automatically add relevant info of the request being processed. Legacy global logger still working in order to have a context-independent logger.
+* Get product templates and configuration params.
+* Put each model in its own Python file, to reduce the chance of having circular references on imports.
+* Tier requests are not filtering by product id by default.
+* Fulfillment assignee not receiving the right type.
+
 ## v17.0
 
 * Fixed bugs when listing and working with usage files.

@@ -9,6 +9,7 @@ from .base import BaseModel
 from .configuration import Configuration
 from .connection import Connection
 from .contract import Contract
+from .events import Events
 from .item import Item
 from .marketplace import Marketplace
 from .param import Param
@@ -56,6 +57,9 @@ class Asset(BaseModel):
     - terminated: Asset becomes terminated once the 'cancel' request type is fulfilled.
     - suspended: Asset becomes suspended once 'suspend' request type is fulfilled.
     """
+
+    events = None  # type: Events
+    """ (:py:class:`.Events`) Events occurred on this asset. """
 
     external_id = None  # type: str
     """ (str) Identification for asset object on eCommerce. """
