@@ -90,7 +90,7 @@ class ContactInfoSchema(BaseSchema):
         return ContactInfo(**data)
 
 
-class ValueChoiceSchema(Schema):
+class ValueChoiceSchema(BaseSchema):
     value = fields.Str()
     label = fields.Str()
 
@@ -215,7 +215,7 @@ class ExternalIdField(fields.Field):
             raise ValueError({attr: [u'Not a valid int or string.']})
 
 
-class ExtIdHubSchema(Schema):
+class ExtIdHubSchema(BaseSchema):
     hub = fields.Nested(HubSchema, only=('id', 'name'))
     external_id = ExternalIdField()
 
@@ -471,7 +471,7 @@ class ProductSchema(BaseSchema):
         return Product(**data)
 
 
-class ServerErrorResponseSchema(Schema):
+class ServerErrorResponseSchema(BaseSchema):
     error_code = fields.Str()
     params = fields.Dict()
     errors = fields.Str(many=True)
@@ -514,7 +514,7 @@ class TierAccountSchema(BaseSchema):
         return TierAccount(**data)
 
 
-class TierAccountsSchema(Schema):
+class TierAccountsSchema(BaseSchema):
     customer = fields.Nested(TierAccountSchema)
     tier1 = fields.Nested(TierAccountSchema)
     tier2 = fields.Nested(TierAccountSchema)
