@@ -61,7 +61,7 @@ class AutomationEngine(BaseResource):
         log_level = global_logger.level
         self.__class__.logger.setLevel(log_level)
         self.__class__.logger.propagate = False
-        [self.__class__.logger.addHandler(hdlr) for hdlr in handlers]
+        self.__class__.logger.handlers = handlers
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = " ".join(args) + base
