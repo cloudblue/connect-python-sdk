@@ -4,6 +4,7 @@
 
 * Fix: Due to a bug the log handler was being added for every request, causing log messages being printed twice on the 2nd requests, thrice on the third request, etc.
 * Fix: Some fields cannot be properly parsed because their schemas inherit from Schema instead of BaseSchema.
+* Fix: A Conversation should not add a message when it is the same as the latest one added.
 
 ## v17.3
 
