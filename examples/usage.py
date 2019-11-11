@@ -3,8 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
-from datetime import date, timedelta
-import time
+from datetime import datetime, timedelta
 import warnings
 
 from connect.config import Config
@@ -36,9 +35,12 @@ class UsageExample(UsageAutomation):
                 contract=Contract(id=request.contract.id)
             )
 
+            today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+            yesterday = today - timedelta(days=1)
+
             usages = [
                 UsageRecord(
-                    record_id='unique record value',
+                    usage_record_id='unique record value',
 
                     item_search_criteria='item.mpn',
                     # Possible values are item.mpn or item.local_id.
@@ -49,10 +51,10 @@ class UsageExample(UsageAutomation):
                     quantity=1,
                     # Quantity to be reported.
 
-                    start_time_utc=(date.today() - timedelta(1)).strftime('%Y-%m-%d'),
+                    start_time_utc=yesterday.strftime('%Y-%m-%d %H:%M:%S'),
                     # From when to report.
 
-                    end_time_utc=time.strftime('%Y-%m-%d %H:%M:%S'),
+                    end_time_utc=today.strftime('%Y-%m-%d %H:%M:%S'),
                     # Till when to report.
 
                     asset_search_criteria='parameter.param_b',
