@@ -30,7 +30,7 @@ class UsageFileExample(UsageFileAutomation):
             raise DeleteUsageFile('Not needed anymore')
         elif request.status == 'ready':
             # Vendor may submit file to provider
-            raise SubmitUsageFile('Ready for provider')
+            raise SubmitUsageFile()
         elif request.status == 'pending':
             # Provider use case, needs to be reviewed and accepted
             raise AcceptUsageFile('File looks good')

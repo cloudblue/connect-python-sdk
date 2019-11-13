@@ -1,5 +1,9 @@
 # Connect SDK Changes History
 
+## v17.5
+
+* Fix: UsageFileAction's subclass SubmitUsageFile has a rejection note, a parameter which should go in RejectUsageFile instead.
+
 ## v17.4
 
 * Fix: Due to a bug the log handler was being added for every request, causing log messages being printed twice on the 2nd requests, thrice on the third request, etc.
