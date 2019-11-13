@@ -122,6 +122,6 @@ class UsageFileAutomationTester(UsageFileAutomation):
         elif request.id == 'UF-2018-11-9878764342-reject':
             raise RejectUsageFile('Rejecting the file as a test')
         elif request.id == 'UF-2018-11-9878764342-submit':
-            raise SubmitUsageFile('Submitting file')
+            raise SubmitUsageFile()
         elif request.id == 'UF-2018-11-9878764342-skip':
             raise SkipRequest('Skipping')
