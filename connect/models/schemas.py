@@ -474,7 +474,7 @@ class ProductSchema(BaseSchema):
 class ServerErrorResponseSchema(BaseSchema):
     error_code = fields.Str()
     params = fields.Dict()
-    errors = fields.Str(many=True)
+    errors = fields.List(fields.Str())
 
     @post_load
     def make_object(self, data):

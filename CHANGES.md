@@ -1,5 +1,10 @@
 # Connect SDK Changes History
 
+## v17.6
+
+* Fix: `ServerErrorResponseSchema` has a wrong errors field definition, it must be a list of strings.
+* Fix: `function_log` decorator use list comprehension to set a custom formatter for each logging handler configured for the current logger. Changed to a for loop.
+
 ## v17.5
 
 * Fix: UsageFileAction's subclass SubmitUsageFile has a rejection note, a parameter which should go in RejectUsageFile instead.

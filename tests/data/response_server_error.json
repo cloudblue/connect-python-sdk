@@ -1,0 +1,16 @@
+{
+    "errors": [
+        "error_str_1",
+        "error_str_2"
+    ], 
+    "error_code": "ERR_000", 
+    "params": {
+        "param1": "value",
+        "param2": false,
+        "param3": ["a", "b", "c"],
+        "param4": {
+            "key": "value"
+        },
+        "param5": 10
+    }
+}
