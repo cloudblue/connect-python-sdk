@@ -53,7 +53,7 @@ class TierConfigRequest(BaseModel):
     """ (str) TCR environment (test, prod or preview) """
 
     assignee = None  # type: Optional[User]
-    """ (:py:class:`.User` | None) TCR environment. One of: test, prod, preview. """
+    """ (:py:class:`.User` | None) User assigned to this TCR. """
 
     template = None  # type: Optional[Template]
     """ (:py:class:`.Template` | None) Template Object. This is filled only if TCR is approved. """
