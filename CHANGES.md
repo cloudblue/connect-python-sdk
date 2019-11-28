@@ -1,5 +1,39 @@
 # Connect SDK Changes History
 
+## v17.6
+
+* Fix: `ServerErrorResponseSchema` has a wrong errors field definition, it must be a list of strings.
+* Fix: `function_log` decorator use list comprehension to set a custom formatter for each logging handler configured for the current logger. Changed to a for loop.
+
+## v17.5
+
+* Fix: UsageFileAction's subclass SubmitUsageFile has a rejection note, a parameter which should go in RejectUsageFile instead.
+
+## v17.4
+
+* Fix: Due to a bug the log handler was being added for every request, causing log messages being printed twice on the 2nd requests, thrice on the third request, etc.
+* Fix: Some fields cannot be properly parsed because their schemas inherit from Schema instead of BaseSchema.
+* Fix: A Conversation should not add a message when it is the same as the latest one added.
+
+## v17.3
+
+* HTTP timeout request to Connect platform should be not less than 300 seconds.
+* Accept Usage File is sending wrong parameter in post request.
+* Usage processor filter "product__id" is not filtering by product id.
+* All fields accept null to avoid parsing errors.
+
+## v17.2
+
+* external_id is sometimes returned as an integer by Connect API, which breaks Python SDK parsing.
+
+## v17.1
+
+* Add custom loggers to the automation classes, that automatically add relevant info of the request being processed. Legacy global logger still working in order to have a context-independent logger.
+* Get product templates and configuration params.
+* Put each model in its own Python file, to reduce the chance of having circular references on imports.
+* Tier requests are not filtering by product id by default.
+* Fulfillment assignee not receiving the right type.
+
 ## v17.0
 
 * Fixed bugs when listing and working with usage files.

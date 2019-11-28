@@ -17,3 +17,6 @@ class Template(BaseModel):
 
     representation = None  # type: str
     """ (str) Template representation. """
+
+    body = None  # type: str
+    """ (str) Template body. """

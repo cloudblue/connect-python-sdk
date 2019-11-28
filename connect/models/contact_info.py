@@ -24,7 +24,7 @@ class ContactInfo(BaseModel):
     country = None  # type: str
     """ (str) Country code. """
 
-    state = None  # type: str
+    state = None  # type: Optional[str]
     """ (str) State name. """
 
     city = None  # type: str

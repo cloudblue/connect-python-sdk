@@ -4,11 +4,14 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
+import logging
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    TierConfigRequest
+from connect.logger import function_log
+from connect.models.activation_template_response import ActivationTemplateResponse
+from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.param import Param
+from connect.models.tier_config_request import TierConfigRequest
 from .automation_engine import AutomationEngine
 
 
@@ -33,21 +36,50 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
+    logger = logging.getLogger('Tier.logger')
 
-    @function_log
+    def filters(self, status='pending', **kwargs):
+        """ Returns the default set of filters for Tier Config request, plus any others that you
+        might specify. The allowed filters are:
+
+        - type
+        - status
+        - id
+        - configuration__id
+        - configuration__tier_level
+        - configuration__account__id
+        - configuration__product__id
+        - assignee__id
+        - unassigned (bool)
+        - configuration__account__external_uid
+
+        :param str status: Status of the requests. Default: ``'pending'``.
+        :param dict[str,Any] kwargs: Additional filters to add to the default ones.
+        :return: The set of filters for this resource.
+        :rtype: dict[str,Any]
+        """
+        filters = super(TierConfigAutomation, self).filters(status=status, **kwargs)
+        if self.config.products:
+            filters['configuration__product__id'] = ','.join(self.config.products)
+        return filters
+
+    @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
+            self._set_custom_logger(request.id, request.configuration.id,
+                                    request.configuration.account.id)
+
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'
 
-            logger.info(
+            self.logger.info(
                 'Start tier config request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
-                logger.info('Method `process_request` did not return result')
+                self.logger.info('Method `process_request` did not return result')
                 return ''
 
             params = {}
@@ -72,13 +104,13 @@ class TierConfigAutomation(AutomationEngine):
             raise
 
         except Exception as ex:
-            logger.warning('Skipping request {} because an exception was raised: {}'
-                           .format(request.id, ex))
+            self.logger.warning('Skipping request {} because an exception was raised: {}'
+                                .format(request.id, ex))
             return ''
 
         return ''
 
-    @function_log
+    @function_log(custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 

@@ -54,7 +54,8 @@ def test_get_usage_template_ok(get_mock):
     get_mock.assert_has_calls([
         call(
             url='http://localhost:8080/api/public/v1/usage/products/PRD-638-321-603/template/',
-            headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'}),
+            headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+            timeout=300),
         call('...')
     ])
 

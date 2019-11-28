@@ -4,7 +4,9 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from connect.config import Config
-from connect.models import Asset, Product, TierConfig
+from connect.models.asset import Asset
+from connect.models.product import Product
+from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient
 
 

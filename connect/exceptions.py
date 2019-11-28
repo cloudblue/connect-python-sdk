@@ -121,18 +121,18 @@ class DeleteUsageFile(UsageFileAction):
 
 
 class RejectUsageFile(UsageFileAction):
-    def __init__(self, message=None):
+    def __init__(self, rejection_note):
         # type: (str) -> None
-        super(RejectUsageFile, self).__init__(message or 'Accept Response is required', 'reject')
+        super(RejectUsageFile, self).__init__(
+            'Reject Response is required',
+            'reject',
+            {'rejection_note': rejection_note})
 
 
 class SubmitUsageFile(UsageFileAction):
-    def __init__(self, rejection_note):
-        # type: (str) -> None
-        super(SubmitUsageFile, self).__init__(
-            'Usage File Submitted',
-            'submit',
-            {'rejection_note': rejection_note})
+    def __init__(self):
+        # type: () -> None
+        super(SubmitUsageFile, self).__init__('Usage File Submitted', 'submit')
 
 
 class FileCreationError(Message):

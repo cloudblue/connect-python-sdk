@@ -4,14 +4,19 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
+import logging
 
 from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import logger, function_log
-from connect.models import ActivationTemplateResponse, ActivationTileResponse, Param, \
-    Fulfillment, TierConfigRequest, Conversation
+from connect.logger import function_log
+from connect.models.activation_template_response import ActivationTemplateResponse
+from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.param import Param
+from connect.models.fulfillment import Fulfillment
+from connect.models.tier_config_request import TierConfigRequest
+from connect.models.conversation import Conversation
 from .automation_engine import AutomationEngine
 
 
@@ -36,6 +41,7 @@ class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     model_class = Fulfillment
+    logger = logging.getLogger('Fullfilment.logger')
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Fulfillment request, plus any others that you
@@ -68,9 +74,10 @@ class FulfillmentAutomation(AutomationEngine):
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
-    @function_log
+    @function_log(custom_logger=logger)
     def dispatch(self, request):
         # type: (Fulfillment) -> str
+        self._set_custom_logger(request.asset.id, request.id)
 
         conversation = request.get_conversation(self.config)
 
@@ -79,11 +86,11 @@ class FulfillmentAutomation(AutomationEngine):
                     and request.asset.product.id not in self.config.products:
                 return 'Invalid product'
 
-            logger.info('Start request process / ID request - {}'.format(request.id))
+            self.logger.info('Start request process / ID request - {}'.format(request.id))
             process_result = self.process_request(request)
 
             if not process_result:
-                logger.info('Method `process_request` did not return result')
+                self.logger.info('Method `process_request` did not return result')
                 return ''
 
             if isinstance(process_result, ActivationTileResponse):
@@ -121,8 +128,8 @@ class FulfillmentAutomation(AutomationEngine):
             raise
 
         except Exception as ex:
-            logger.warning('Skipping request {} because an exception was raised: {}'
-                           .format(request.id, ex))
+            self.logger.warning('Skipping request {} because an exception was raised: {}'
+                                .format(request.id, ex))
             return ''
 
     def create_request(self, request):
@@ -163,7 +170,7 @@ class FulfillmentAutomation(AutomationEngine):
         else:
             return None
 
-    @function_log
+    @function_log(custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 
@@ -175,18 +182,16 @@ class FulfillmentAutomation(AutomationEngine):
         list_dict = []
         for _ in params:
             list_dict.append(_.__dict__ if isinstance(_, Param) else _)
-
         return self._api.put(
             path=pk,
             json={'asset': {'params': list_dict}},
         )[0]
 
-    @staticmethod
-    def _update_conversation_if_exists(conversation, request_id, obj):
+    def _update_conversation_if_exists(self, conversation, request_id, obj):
         # type: (Optional[Conversation], str, object) -> None
         if conversation:
             try:
                 conversation.add_message(str(obj))
             except TypeError as ex:
-                logger.error('Error updating conversation for request {}: {}'
-                             .format(request_id, ex))
+                self.logger.error('Error updating conversation for request {}: {}'
+                                  .format(request_id, ex))

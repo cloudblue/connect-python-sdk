@@ -6,8 +6,12 @@
 from typing import List, Optional
 
 from .base import BaseModel
+from .configuration import Configuration
 from .connection import Connection
+from .contract import Contract
+from .events import Events
 from .item import Item
+from .marketplace import Marketplace
 from .param import Param
 from .product import Product
 from .tier_accounts import TierAccounts
@@ -54,11 +58,17 @@ class Asset(BaseModel):
     - suspended: Asset becomes suspended once 'suspend' request type is fulfilled.
     """
 
+    events = None  # type: Events
+    """ (:py:class:`.Events`) Events occurred on this asset. """
+
     external_id = None  # type: str
     """ (str) Identification for asset object on eCommerce. """
 
     external_uid = None  # type: Optional[str]
-    """ (str|None) Id of asset in eCommerce system """
+    """ (str|None) Id of asset in eCommerce system. """
+
+    external_name = None  # type: Optional[str]
+    """ (str|None) Name of asset. """
 
     product = None  # type: Product
     """ (:py:class:`.Product`) Product object reference. """
@@ -66,8 +76,11 @@ class Asset(BaseModel):
     connection = None  # type: Connection
     """ (:py:class:`.Connection`) Connection object. """
 
-    items = None  # type: List[Item]
-    """ (List[:py:class:`.Item`]) List of asset product items. """
+    contract = None  # type: Contract
+    """ (:py:class:`.Contract`) Contract Object reference. """
+
+    marketplace = None  # type: Marketplace
+    """ (:py:class:`.Marketplace`) Marketplace Object reference. """
 
     params = None  # type: List[Param]
     """ (List[:py:class:`.Param`]) List of product parameter objects. """
@@ -75,15 +88,34 @@ class Asset(BaseModel):
     tiers = None  # type: TierAccounts
     """ (:py:class:`.TierAccounts`) Supply chain accounts. """
 
-    def get_param_by_id(self, id_):
+    items = None  # type: List[Item]
+    """ (List[:py:class:`.Item`]) List of asset product items. """
+
+    configuration = None  # type: Configuration
+    """ (:py:class:`.Configuration`) List of Product and Marketplace Configuration Phase Parameter
+    Context-Bound Object. """
+
+    def get_param_by_id(self, param_id):
         """ Get a parameter of the asset.
 
-        :param str id_: Id of the the parameter to get.
+        :param str param_id: Id of the the parameter to get.
         :return: The parameter with the given id, or ``None`` if it was not found.
         :rtype: :py:class:`.Param` | None
         """
         try:
-            return list(filter(lambda param: param.id == id_, self.params))[0]
+            return list(filter(lambda param: param.id == param_id, self.params))[0]
+        except IndexError:
+            return None
+
+    def get_item_by_id(self, item_id):
+        """ Get an item of the asset.
+
+        :param str item_id: Id of the item to get.
+        :return: The item with the given id, or ``None`` if it was not found.
+        :rtype: :py:class:`.Item` | None
+        """
+        try:
+            return list(filter(lambda item: item.id == item_id, self.items))[0]
         except IndexError:
             return None
 
@@ -98,3 +130,30 @@ class Asset(BaseModel):
             return list(filter(lambda item: item.mpn == mpn, self.items))[0]
         except IndexError:
             return None
+
+    def get_item_by_global_id(self, global_id):
+        """ Get an item of the asset.
+
+        :param str global_id: Global id of the item to get.
+        :return: The item with the given global id, or ``None`` if it was not found.
+        :rtype: :py:class:`.Item` | None
+        """
+        try:
+            return list(filter(lambda item: item.global_id == global_id, self.items))[0]
+        except IndexError:
+            return None
+
+    def get_requests(self, config=None):
+        """ Get the requests for this asset.
+
+        :param Config config: Config object or ``None`` to use environment config (default).
+        :return: The requests for this asset.
+        :rtype: List[Fulfillment]
+        """
+        from connect.config import Config
+        from connect.resources.base import ApiClient
+        from .fulfillment import Fulfillment
+        text, _ = ApiClient(
+            config or Config.get_instance(),
+            'assets/' + self.id + '/requests').get()
+        return Fulfillment.deserialize(text)

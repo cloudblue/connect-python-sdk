@@ -59,7 +59,7 @@ class Config(object):
         self._api_key = api_key
         self._api_url = api_url if api_url.endswith('/') else api_url + '/'
         self._products = [products] \
-            if isinstance(products, str) \
+            if isinstance(products, str) and products \
             else products or []
 
         # Store first created instance

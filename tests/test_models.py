@@ -9,7 +9,7 @@ import os
 import six
 from mock import MagicMock, patch
 
-from connect.models import Asset, Param, Fulfillment, Item, TierConfig
+from connect.models import Asset, Param, Fulfillment, Item, TierConfig, Configuration, User
 from connect.resources import FulfillmentAutomation
 from .common import Response, load_str
 
@@ -102,6 +102,7 @@ def test_create_model_from_response():
     assert request_obj.asset.id == content['asset']['id']
     assert request_obj.asset.product.id == content['asset']['product']['id']
     assert isinstance(request_obj.asset.external_id, six.string_types)
+    assert request_obj.assignee == ''
 
 
 @patch('requests.get', MagicMock(return_value=_get_response_ok2()))
@@ -112,6 +113,8 @@ def test_fulfillment_items():
     assert len(requests) == 1
     request = requests[0]
     assert isinstance(request, Fulfillment)
+    assert isinstance(request.assignee, User)
+    assert request.assignee.id == 'Assignee'
 
     # Test new items
     new_items = request.new_items
@@ -150,9 +153,62 @@ def test_asset_methods():
     assert not asset.get_param_by_id('invalid-id')
 
     # Get item by id
+    assert isinstance(asset.get_item_by_id('TEAM_ST3L2T1Y'), Item)
+    assert asset.get_item_by_id('TEAM_ST3L2T1Y').mpn == 'TEAM-ST3L2T1Y'
+    assert not asset.get_item_by_id('invalid_id')
+
+    # Get item by mpn
     assert isinstance(asset.get_item_by_mpn('TEAM-ST3L2T1Y'), Item)
     assert asset.get_item_by_mpn('TEAM-ST3L2T1Y').mpn == 'TEAM-ST3L2T1Y'
     assert not asset.get_item_by_mpn('invalid-mpn')
+
+    # Get item by global id
+    assert isinstance(asset.get_item_by_global_id('XXX'), Item)
+    assert asset.get_item_by_global_id('XXX').mpn == 'TEAM-ST3L2T1Y'
+    assert not asset.get_item_by_mpn('invalid_id')
+
+    # Get requests
+    requests = asset.get_requests()
+    assert isinstance(requests, list)
+    assert len(requests) == 1
+    assert requests[0].id == 'PR-5620-6510-8214'
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok2()))
+def test_asset_configuration():
+    # Get asset
+    requests = FulfillmentAutomation().list()
+    assert len(requests) == 1
+    assert isinstance(requests[0], Fulfillment)
+    asset = requests[0].asset
+    assert isinstance(asset, Asset)
+
+    assert isinstance(asset.configuration, Configuration)
+    assert len(asset.configuration.params) == 2
+
+    product_param = asset.configuration.get_param_by_id('product_configuration')
+    assert isinstance(product_param, Param)
+    assert product_param.id == 'product_configuration'
+    assert product_param.scope == 'product'
+
+    marketplace_param = asset.configuration.get_param_by_id('product_Marketplace_configuration')
+    assert isinstance(marketplace_param, Param)
+    assert marketplace_param.id == 'product_Marketplace_configuration'
+    assert marketplace_param.scope == 'marketplace'
+
+
+@patch('requests.get', MagicMock(return_value=_get_response_ok2()))
+def test_asset_item():
+    # Get asset
+    requests = FulfillmentAutomation().list()
+    assert len(requests) == 1
+    assert isinstance(requests[0], Fulfillment)
+    asset = requests[0].asset
+    assert isinstance(asset, Asset)
+
+    item = asset.get_item_by_mpn('TEAM-ST3L2T1Y')
+    param = item.get_param_by_id('item_parameter')
+    assert isinstance(param, Param)
 
 
 @patch('requests.get')
@@ -165,6 +221,7 @@ def test_get_tier_config(get_mock):
         headers={
             'Content-Type': 'application/json',
             'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300,
         params={
             'status': 'approved',
             'configuration__product__id': 'product_id',

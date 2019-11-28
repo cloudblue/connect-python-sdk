@@ -4,12 +4,14 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import datetime
+from typing import Union
 
 from .asset import Asset
 from .base import BaseModel
 from .contract import Contract
 from .conversation import Conversation
 from .marketplace import Marketplace
+from .user import User
 from .schemas import FulfillmentSchema
 
 
@@ -71,6 +73,9 @@ class Fulfillment(BaseModel):
 
     marketplace = None  # type: Marketplace
     """ (:py:class:`.Marketplace`) Marketplace object. """
+
+    assignee = None  # type: Union[User, str, None]
+    """ (:py:class:`.User` | None) Details of the user assigned to the request. """
 
     @property
     def new_items(self):

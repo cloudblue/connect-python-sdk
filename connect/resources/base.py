@@ -4,6 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import functools
+import logging
 from typing import Any, List, Dict, Tuple
 
 import requests
@@ -11,8 +12,9 @@ from requests import compat
 
 from connect.config import Config
 from connect.exceptions import ServerError
-from connect.logger import function_log, logger
-from connect.models import BaseModel, ServerErrorResponse
+from connect.logger import function_log
+from connect.models.base import BaseModel
+from connect.models.server_error_response import ServerErrorResponse
 
 
 class ApiClient(object):
@@ -58,21 +60,21 @@ class ApiClient(object):
             lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b) if b else a,
             args)
 
-    @function_log
+    @function_log()
     def get(self, path='', **kwargs):
         # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.get(**kwargs)
         return self._check_and_pack_response(response)
 
-    @function_log
+    @function_log()
     def post(self, path='', **kwargs):
         # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.post(**kwargs)
         return self._check_and_pack_response(response)
 
-    @function_log
+    @function_log()
     def put(self, path='', **kwargs):
         # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
@@ -88,6 +90,8 @@ class ApiClient(object):
             fixed_kwargs['url'] = self.get_url(path)
         if 'headers' not in fixed_kwargs:
             fixed_kwargs['headers'] = self.headers
+        if 'timeout' not in fixed_kwargs:
+            fixed_kwargs['timeout'] = 300
         return fixed_kwargs
 
     @staticmethod
@@ -122,6 +126,7 @@ class BaseResource(object):
     resource = None  # type: str
     limit = 100  # type: int
     model_class = BaseModel
+    logger = logging.getLogger()
 
     def __init__(self, config=None):
         # Set client
@@ -155,6 +160,6 @@ class BaseResource(object):
     def list(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
         filters = filters or self.filters()
-        logger.info('Get list request with filters - {}'.format(filters))
+        self.logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)

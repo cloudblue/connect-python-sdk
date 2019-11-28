@@ -4,6 +4,7 @@
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
 import json
+import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
@@ -12,8 +13,9 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
-from connect.logger import logger
-from connect.models import UsageListing, UsageFile, UsageRecord
+from connect.models.usage_listing import UsageListing
+from connect.models.usage_file import UsageFile
+from connect.models.usage_record import UsageRecord
 from .automation_engine import AutomationEngine
 
 
@@ -26,6 +28,7 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'listings'
     model_class = UsageFile
+    logger = logging.getLogger('Usage.logger')
 
     def filters(self, status='listed', **kwargs):
         """
@@ -42,12 +45,14 @@ class UsageAutomation(AutomationEngine):
     def dispatch(self, request):
         # type: (UsageListing) -> str
 
+        self._set_custom_logger(request.id, request.contract.marketplace.id)
+
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
 
-        logger.info(
+        self.logger.info(
             'Processing Usage for Product {} ({}) '.format(request.product.id,
                                                            request.product.name) +
             'on Contract {} '.format(request.contract.id) +
@@ -56,15 +61,15 @@ class UsageAutomation(AutomationEngine):
         try:
             result = self.process_request(request)
         except FileCreationError:
-            logger.info(
+            self.logger.info(
                 'Error processing Usage for Product {} ({}) '.format(request.product.id,
                                                                      request.product.name) +
                 'on Contract {} '.format(request.contract.id) +
                 'and provider {}({})'.format(request.provider.id, request.provider.name))
             return 'failure'
 
-        logger.info('Processing result for usage on listing {}: {}'
-                    .format(request.product.id, result))
+        self.logger.info('Processing result for usage on listing {}: {}'
+                         .format(request.product.id, result))
         return 'success'
 
     def get_usage_template(self, product):
@@ -78,13 +83,13 @@ class UsageAutomation(AutomationEngine):
         location = self._get_usage_template_download_location(product.id)
         if not location:
             msg = 'Error obtaining template usage file location'
-            logger.error(msg)
+            self.logger.error(msg)
             raise FileRetrievalError(msg)
 
         contents = self._retrieve_usage_template(location) if location else None
         if not contents:
             msg = 'Error obtaining template usage file from `{}`'.format(location)
-            logger.error(msg)
+            self.logger.error(msg)
             raise FileRetrievalError(msg)
         return contents
 
@@ -178,7 +183,7 @@ class UsageAutomation(AutomationEngine):
         headers['Accept'] = 'application/json'
         del headers['Content-Type']  # This must NOT be set for multipart post requests
         multipart = {'usage_file': ('usage_file.xlsx', file_contents)}
-        logger.info('HTTP Request: {} - {} - {}'.format(url, headers, multipart))
+        self.logger.info('HTTP Request: {} - {} - {}'.format(url, headers, multipart))
 
         # Post request
         try:
@@ -188,8 +193,8 @@ class UsageAutomation(AutomationEngine):
                 files=multipart)
         except requests.RequestException as ex:
             raise FileCreationError('Error uploading file: {}'.format(ex))
-        logger.info('HTTP Code: {}'.format(status))
+        self.logger.info('HTTP Code: {}'.format(status))
         if status != 201:
             msg = 'Unexpected server response, returned code {}'.format(status)
-            logger.error('{} -- Raw response: {}'.format(msg, content))
+            self.logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
