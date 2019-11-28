@@ -64,8 +64,7 @@ def test_list_assets(get_mock):
     get_mock.assert_called_with(
         url='http://localhost:8080/api/public/v1/assets?in(product.id,(CN-631-322-000))',
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
-        timeout=300,
-        params=None)
+        timeout=300)
 
 
 @patch('requests.get')
@@ -131,10 +130,9 @@ def test_list_tier_configs(get_mock):
     assert tier_configs[0].id == 'TC-000-000-000'
 
     get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/tier/configs',
+        url='http://localhost:8080/api/public/v1/tier/configs?in(product.id,(CN-631-322-000))',
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
-        timeout=300,
-        params={'product.id': 'CN-631-322-000'})
+        timeout=300)
 
 
 @patch('requests.get')
