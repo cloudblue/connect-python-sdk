@@ -42,6 +42,7 @@ __all__ = [
     'logger',
     'models',
     'resources',
+    'rql',
     'FulfillmentAutomation',
     'TierConfigAutomation',
 ]
