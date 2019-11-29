@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+from copy import copy
 import datetime
 from typing import Optional
 
@@ -17,6 +18,7 @@ from .schemas import ProductSchema
 from .template import Template
 from connect.config import Config
 from connect.resources.base import ApiClient
+from connect.rql import Query
 
 
 class Product(BaseModel):
@@ -80,7 +82,7 @@ class Product(BaseModel):
 
     def get_product_configurations(self, filters=None, config=None):
         """
-        :param Dict[str, Any] filters: Filters for the requests. Supported filters are:
+        :param dict|Query filters: Filters for the requests. Supported filters are:
           - ``parameter.id``
           - ``parameter.title``
           - ``parameter.scope``
@@ -93,6 +95,7 @@ class Product(BaseModel):
         :return: A list with the product configuration parameter data.
         :rtype: List[ProductConfigurationParameter]
         """
+        query = copy(filters) if isinstance(filters, Query) else Query(filters)
         text, _ = ApiClient(config or Config.get_instance(),
-                            'products/' + self.id + '/configurations').get(params=filters)
+                            'products/' + self.id + '/configurations' + query.compile()).get()
         return ProductConfigurationParameter.deserialize(text)

@@ -24,3 +24,9 @@ resources
 
 .. automodule:: connect.resources
    :members:
+
+rql
+===
+
+.. automodule:: connect.rql
+   :members:

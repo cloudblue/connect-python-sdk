@@ -3,11 +3,14 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+from copy import copy
+
 from connect.config import Config
 from connect.models.asset import Asset
 from connect.models.product import Product
 from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient
+from connect.rql import Query
 
 
 class Directory(object):
@@ -24,15 +27,12 @@ class Directory(object):
     def list_assets(self, filters=None):
         """ List the assets.
 
-        :param (dict[str, Any] filters: Filters to pass to the request.
+        :param dict|Query filters: Filters to pass to the request.
         :return: A list with the assets that match the given filters.
         :rtype: list[Asset]
         """
-        products = ','.join(self._config.products) if self._config.products else None
-        url = self._config.api_url + 'assets?in(product.id,(' + products + '))' \
-            if products \
-            else 'assets'
-        text, code = ApiClient(self._config, url).get(params=filters)
+        query = self._get_filters_query(filters, True)
+        text, code = ApiClient(self._config, 'assets' + query.compile()).get()
         return Asset.deserialize(text)
 
     def get_asset(self, asset_id):
@@ -45,13 +45,15 @@ class Directory(object):
         text, code = ApiClient(self._config, 'assets/' + asset_id).get()
         return Asset.deserialize(text)
 
-    def list_products(self):
-        """ List the products. Filtering is not possible at the moment.
+    def list_products(self, filters=None):
+        """ List the products.
 
+        :param dict|Query filters: Filters to pass to the request.
         :return: A list with all products.
         :rtype: list[Product]
         """
-        text, code = ApiClient(self._config, 'products').get()
+        query = self._get_filters_query(filters, False)
+        text, code = ApiClient(self._config, 'products' + query.compile()).get()
         return Product.deserialize(text)
 
     def get_product(self, product_id):
@@ -71,11 +73,8 @@ class Directory(object):
         :return: A list with the tier configs that match the given filters.
         :rtype: list[TierConfig]
         """
-        filters = filters or {}
-        products_key = 'product.id'
-        if products_key not in filters and self._config.products:
-            filters[products_key] = ','.join(self._config.products)
-        text, code = ApiClient(self._config, 'tier/configs').get(params=filters)
+        query = self._get_filters_query(filters, True)
+        text, code = ApiClient(self._config, 'tier/configs' + query.compile()).get()
         return TierConfig.deserialize(text)
 
     def get_tier_config(self, tier_config_id):
@@ -87,3 +86,15 @@ class Directory(object):
         """
         text, code = ApiClient(self._config, 'tier/configs/' + tier_config_id).get()
         return TierConfig.deserialize(text)
+
+    def _get_filters_query(self, filters, add_product):
+        """
+        :param dict|Query filters: Filters to return as query (with product.id field).
+        :param bool add_product: Whether to add a product.id field to the query.
+        :return: The query.
+        :rtype: Query
+        """
+        query = copy(filters) if isinstance(filters, Query) else Query(filters)
+        if add_product and self._config.products:
+            query.in_('product.id', self._config.products)
+        return query
