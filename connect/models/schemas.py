@@ -464,6 +464,7 @@ class ProductSchema(BaseSchema):
     owner = fields.Nested(CompanySchema)
     latest = fields.Bool()
     stats = fields.Nested(ProductStatsSchema)
+    status = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -531,6 +532,8 @@ class ConnectionSchema(BaseSchema):
     vendor = fields.Nested(CompanySchema, only=('id', 'name'))
     product = fields.Nested(ProductSchema)
     hub = fields.Nested(HubSchema)
+    status = fields.Str()
+    created_at = fields.DateTime()
 
     @post_load
     def make_object(self, data):

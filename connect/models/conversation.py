@@ -49,15 +49,6 @@ class Conversation(BaseModel):
 
         from connect.resources.base import ApiClient
 
-        if self._is_different_to_last_message(message):
-            response, _ = ApiClient(config, base_path='conversations/' + self.id + '/messages')\
-                .post(json={'text': message})
-            return ConversationMessage.deserialize(response)
-        else:
-            return None
-
-    def _is_different_to_last_message(self, msg):
-        if len(self.messages) > 0 and self.messages[-1].text == msg:
-            return False
-        else:
-            return True
+        response, _ = ApiClient(config, base_path='conversations/' + self.id + '/messages')\
+            .post(json={'text': message})
+        return ConversationMessage.deserialize(response)

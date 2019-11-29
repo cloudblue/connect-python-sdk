@@ -3,6 +3,8 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019 Ingram Micro. All Rights Reserved.
 
+import datetime
+
 from .base import BaseModel
 from .company import Company
 from .hub import Hub
@@ -33,3 +35,11 @@ class Connection(BaseModel):
 
     hub = None  # type: Hub
     """ (:py:class:`.Hub`) Hub Reference. """
+
+    # Undocumented fields (they appear in PHP SDK)
+
+    status = None  # type: str
+    """ (str) Status. """
+
+    created_at = None  # type: datetime.datetime
+    """ (datetime.datetime) Creation date. """

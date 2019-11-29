@@ -70,6 +70,11 @@ class Product(BaseModel):
     stats = None  # type: Optional[ProductStats]
     """ (:py:class:``.ProductStats) Statistics of product use, depends on account of callee. """
 
+    # Undocumented fields (they appear in PHP SDK)
+
+    status = None  # type: str
+    """ (str) Product status. """
+
     def get_templates(self, config=None):
         """
         :param Config config: Configuration to use, or None for environment config.
