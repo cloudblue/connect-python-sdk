@@ -8,12 +8,14 @@ from typing import Dict, List, Optional
 
 
 class Query(object):
+    """
+    The Query class allows you to specify filters using the
+    `Resource Query Language <https://github.com/persvr/rql>`_ syntax.
+
+    :param dict properties: Initial list of input properties
+    """
+
     def __init__(self, properties=None):
-        """
-        The Query class allows you to specify filters using the
-        `Resource Query Language <https://github.com/persvr/rql>`_ syntax.
-        :param dict properties: Initial list of input properties
-        """
         super(Query, self).__init__()
         self._in = {}  # type: Dict[str, List[str]]
         self._out = {}  # type: Dict[str, List[str]]
@@ -38,6 +40,7 @@ class Query(object):
     def in_(self, prop, values):
         """
         Select objects where the specified property value is in the provided array.
+
         :param str prop: Property
         :param list values: Values
         :return: The Query object to provide a fluent interface (chaining method calls).
@@ -49,6 +52,7 @@ class Query(object):
     def out(self, prop, values):
         """
         Select objects where the specified property value is not in the provided array.
+
         :param str prop: Property
         :param list values: Values
         :return: The Query object to provide a fluent interface (chaining method calls).
@@ -60,6 +64,7 @@ class Query(object):
     def limit(self, amount):
         """
         Indicates the given number of objects from the start position.
+
         :param int amount: Amount of objects to return.
         :return: The Query object to provide a fluent interface (chaining method calls).
         :rtype: :py:class:`.Query`
@@ -70,6 +75,7 @@ class Query(object):
     def order_by(self, prop):
         """
         Order list by given property.
+
         :param str prop: Property.
         :return: The Query object to provide a fluent interface (chaining method calls).
         :rtype: :py:class:`.Query`
@@ -80,6 +86,7 @@ class Query(object):
     def offset(self, page):
         """
         Offset (page) to return on paged queries.
+
         :param int page: Offset.
         :return: The Query object to provide a fluent interface (chaining method calls).
         :rtype: :py:class:`.Query`
@@ -92,6 +99,7 @@ class Query(object):
         Order list of objects by the given properties (unlimited number of properties).
         The list is ordered first by the first specified property, then by the second, and
         so on. The order is specified by the prefix: + ascending order, - descending.
+
         :param list props: Properties.
         :return: The Query object to provide a fluent interface (chaining method calls).
         :rtype: :py:class:`.Query`
@@ -106,6 +114,7 @@ class Query(object):
         a pattern the * symbol itself, it must be percent-encoded, that is, you need to specify
         %2A instead of *, see the usage examples below. In addition, it is possible to use the
         ? wildcard in the pattern to specify that any symbol will be valid in this position.
+
         :param str prop: Property.
         :param str pattern: Pattern.
         :return: The Query object to provide a fluent interface (chaining method calls).
@@ -117,6 +126,7 @@ class Query(object):
     def ilike(self, prop, pattern):
         """
         Same as like but case unsensitive.
+
         :param str prop: Property.
         :param str pattern: Pattern.
         :return: The Query object to provide a fluent interface (chaining method calls).
@@ -133,6 +143,7 @@ class Query(object):
         resources. The output is the list of objects presenting the selected properties and related
         (linked) resources. Normally, when relations are selected, the base resource properties are
         also presented in the output.
+
         :param list attributes: Attributes.
         :return: The Query object to provide a fluent interface (chaining method calls).
         :rtype: :py:class:`.Query`
