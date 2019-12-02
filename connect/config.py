@@ -13,6 +13,7 @@ class Config(object):
     :param str api_url: Public api url.
     :param str api_key: Service user ApiKey.
     :param str|list[str] products: Optional product ids.
+    :param list[str] hidden_fields: Optional log hidden fields
     :param str file: Config file name.
     :raises ValueError: Raised if either ``file`` or one of ``api_url`` or ``api_key`` are missing.
     :raises TypeError: Raised if ``products`` is not a string or list of strings, or if config file
@@ -24,7 +25,7 @@ class Config(object):
     _instance = None  # type: Config
 
     # noinspection PyShadowingBuiltins
-    def __init__(self, api_url=None, api_key=None, products=None, file=None):
+    def __init__(self, api_url=None, api_key=None, products=None, file=None, hidden_fields=None):
         # Check arguments
         if not file and not any([api_key, api_url]):
             raise ValueError('Expected file or api_key and api_url in Config initialization')
@@ -49,6 +50,7 @@ class Config(object):
             (api_url, api_key, products) = (configs.get('apiEndpoint', ''),
                                             configs.get('apiKey', ''),
                                             configs.get('products', ''))
+            hidden_fields = configs.get('hidden_fields', '') if "hidden_fields" in configs else None
             api_url = api_url.encode('utf-8') if not isinstance(api_url, str) else api_url
             api_key = api_key.encode('utf-8') if not isinstance(api_key, str) else api_key
             products = products.encode('utf-8') \
@@ -57,6 +59,7 @@ class Config(object):
 
         # Initialize
         self._api_key = api_key
+        self._hidden_fields = hidden_fields
         self._api_url = api_url if api_url.endswith('/') else api_url + '/'
         self._products = [products] \
             if isinstance(products, str) and products \
@@ -99,3 +102,11 @@ class Config(object):
         :rtype: list[str]
         """
         return self._products
+
+    @property
+    def hidden_fields(self):
+        """
+        :return: Valid list of hidden words in logs.
+        :rtype: list[str]
+        """
+        return self._hidden_fields

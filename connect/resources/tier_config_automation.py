@@ -5,7 +5,7 @@
 
 from abc import ABCMeta
 import logging
-
+from connect.config import Config
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log
 from connect.models.activation_template_response import ActivationTemplateResponse
@@ -63,7 +63,7 @@ class TierConfigAutomation(AutomationEngine):
             filters['configuration__product__id'] = ','.join(self.config.products)
         return filters
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
@@ -110,7 +110,7 @@ class TierConfigAutomation(AutomationEngine):
 
         return ''
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 

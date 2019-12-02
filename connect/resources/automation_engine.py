@@ -10,6 +10,7 @@ from typing import Any, Dict
 from connect.logger import function_log, logger as global_logger
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.base import BaseModel
+from connect.config import Config
 from .base import BaseResource
 from .template import TemplateResource
 
@@ -36,22 +37,22 @@ class AutomationEngine(BaseResource):
         raise NotImplementedError('Please implement `{}.process_request` method'
                                   .format(self.__class__.__name__))
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def approve(self, pk, data):
         # type: (str, dict) -> str
         return self._api.post(path=pk + '/approve/', json=data)[0]
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def inquire(self, pk):
         # type: (str) -> str
         return self._api.post(path=pk + '/inquire/', json={})[0]
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def fail(self, pk, reason):
         # type: (str, str) -> str
         return self._api.post(path=pk + '/fail/', json={'reason': reason})[0]
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def render_template(self, pk, template_id):
         # type: (str, str) -> ActivationTileResponse
         return TemplateResource(self.config).render(template_id, pk)

@@ -11,12 +11,14 @@ from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log
+from connect.config import Config
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.param import Param
 from connect.models.fulfillment import Fulfillment
 from connect.models.tier_config_request import TierConfigRequest
 from connect.models.conversation import Conversation
+from connect.config import Config
 from .automation_engine import AutomationEngine
 
 
@@ -74,7 +76,7 @@ class FulfillmentAutomation(AutomationEngine):
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def dispatch(self, request):
         # type: (Fulfillment) -> str
         self._set_custom_logger(request.asset.id, request.id)
@@ -170,7 +172,7 @@ class FulfillmentAutomation(AutomationEngine):
         else:
             return None
 
-    @function_log(custom_logger=logger)
+    @function_log(config=Config.get_instance(), custom_logger=logger)
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 
