@@ -28,7 +28,7 @@ def replace_dict_sensitive_data(elements, hidden_fields):
         elements[key] = unpack_string_responses(value, hidden_fields) or elements[key]
 
         if key in hidden_fields:
-            elements[key] = DEFAULT_HIDDEN_REPLACEMENT
+            elements[key] = "".ljust(len(str(value)), "*")
     return elements
 
 
