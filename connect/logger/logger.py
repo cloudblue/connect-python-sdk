@@ -73,8 +73,12 @@ def function_log(config=None, custom_logger=None):
                 replace_list_sensitive_data(copy.deepcopy(args), hidden_fields),
                 replace_dict_sensitive_data({k: copy.deepcopy(v) for k, v in kwargs.items()}, hidden_fields)))
             result = func(self, *args, **kwargs)
-            shown_result = replace_dict_sensitive_data(copy.deepcopy(result), hidden_fields) if isinstance(result, dict) \
-                else replace_list_sensitive_data(copy.deepcopy(result), hidden_fields)
+            shown_result = copy.deepcopy(result)
+            if isinstance(result, dict):
+                shown_result = replace_dict_sensitive_data(shown_result, hidden_fields)
+
+            if isinstance(result, tuple) or isinstance(result, list):
+                shown_result = replace_list_sensitive_data(shown_result, hidden_fields)
             custom_logger.debug(
                 'Function `{}.{}` return: {}'.format(
                     self.__class__.__name__, func.__name__,
