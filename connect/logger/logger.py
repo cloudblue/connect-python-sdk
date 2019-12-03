@@ -24,15 +24,26 @@ def replace_dict_sensitive_data(elements, hidden_fields):
     for key, value in elements.items():
         if isinstance(value, dict):
             replace_dict_sensitive_data(value, hidden_fields)
-        if key in hidden_fields:
-            elements[key] = DEFAULT_HIDDEN_REPLACEMENT
+        if isinstance(value, list):
+            replace_list_sensitive_data(value, hidden_fields)
+        try:
+            parsed_value = json.loads(value)
+            elements[key] = json.dumps(replace_dict_sensitive_data(parsed_value, hidden_fields))
+        except ValueError:
+            if key in hidden_fields:
+                elements[key] = DEFAULT_HIDDEN_REPLACEMENT
     return elements
 
 
-def replace_args_sensitive_data(elements, hidden_fields):
-    for value in elements:
+def replace_list_sensitive_data(elements, hidden_fields):
+    for key, value in elements:
         if isinstance(value, dict):
             replace_dict_sensitive_data(value, hidden_fields)
+        try:
+            parsed_value = json.loads(value)
+            elements[key] = json.dumps(replace_dict_sensitive_data(parsed_value, hidden_fields))
+        except ValueError:
+            pass
 
 
 def function_log(config=None, custom_logger=None):
@@ -42,7 +53,7 @@ def function_log(config=None, custom_logger=None):
                   "-%(lineno)d: %(message)s"
         for handler in custom_logger.handlers:
             handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
-    hidden_fields = config.hidden_fields if config else None
+    hidden_fields = config.hidden_fields if config else []
 
     # noinspection PyUnusedLocal
     def decorator(func, **kwargs):
@@ -51,7 +62,7 @@ def function_log(config=None, custom_logger=None):
         def wrapper(self, *args, **kwargs):
             custom_logger.info('Entering: %s', func.__name__)
             custom_logger.debug('Function params: {} {}'.format(
-                replace_args_sensitive_data(copy.deepcopy(args), hidden_fields),
+                replace_list_sensitive_data(copy.deepcopy(args), hidden_fields),
                 replace_dict_sensitive_data({k: copy.deepcopy(v) for k, v in kwargs.items()}, hidden_fields)))
             result = func(self, *args, **kwargs)
             custom_logger.debug(
