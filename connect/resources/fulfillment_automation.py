@@ -11,7 +11,6 @@ from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log
-from connect.config import Config
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.param import Param

@@ -71,7 +71,8 @@ def function_log(config=None, custom_logger=None):
             custom_logger.info('Entering: %s', func.__name__)
             custom_logger.debug('Function params: {} {}'.format(
                 replace_list_sensitive_data(copy.deepcopy(args), hidden_fields),
-                replace_dict_sensitive_data({k: copy.deepcopy(v) for k, v in kwargs.items()}, hidden_fields)))
+                replace_dict_sensitive_data({k: copy.deepcopy(v) for k, v in kwargs.items()},
+                                            hidden_fields)))
             result = func(self, *args, **kwargs)
             shown_result = copy.deepcopy(result)
             if isinstance(result, dict):

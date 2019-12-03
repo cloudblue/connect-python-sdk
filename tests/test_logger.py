@@ -21,7 +21,9 @@ def test_hidden_logger(debug_mock):
     assert debug_mock.call_count == 2
     debug_mock.assert_has_calls([
         call(
-            "Function params: ({'apiEndpoint': 'www.ingrammicro.com', 'apiKey': '*****************', 'products': 'fakeProduct'},) {}"),
+            "Function params: ({'apiEndpoint': 'www.ingrammicro.com', "
+            "'apiKey': '*****************', 'products': 'fakeProduct'},) {}"),
         call(
-            "Function `int.hidden_logger` return: (1, {'apiEndpoint': 'www.ingrammicro.com', 'apiKey': '*****************', 'products': 'fakeProduct'})")
+            "Function `int.hidden_logger` return: (1, {'apiEndpoint':"
+            " 'www.ingrammicro.com', 'apiKey': '*****************', 'products': 'fakeProduct'})")
     ])
