@@ -1,3 +1,5 @@
+dist: trusty
+
 language: python
 matrix:
   include:
@@ -24,10 +26,16 @@ script:
 - flake8 connect
 - pytest --cov-report=xml --cov=./connect
 - sed -i "s/version='0.0.0'/version='${TRAVIS_TAG}'/g" setup.py
+- sonar-scanner
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
+addons:
+  sonarcloud:
+    organization: "cloudbluesonarcube"
+    token:
+      secure: rLMrKhQitMly/RhNQp0ixxQwVIuRpFY1ruKprZ2LSmE+RD3guFxtZ+EMX12gSdOBd3vV4qUfPKAcFThFDjNAscP6W3rcxip85pPWV8QiCjm0mszIlQiU7GjyMq0gOf5pLDTQk67gTBDkpXBVpPv4BgEfG2ms5BLMvkGmCba+4iRa8QQ2J0OaRV69DuOnOftc4YZZnJeVNxfm+OrRInDfmcdJfOAChWzmjsriHATu4KbV9r1G7zMkU0ovvLavS8pqg6PEu5lYbFAYa2O1wG/sRTufIPqCSbQvK6gwzsFbwFtfshWHz1MAMhVub0cVWj+umXab3o+Av1bqNMC3xrzzL05PJSpCExBXrHhdsS/I7ucXSmOiJZhu69HZvoaujbaYmTFGHz/BUdvFrNNIEXKAQOo/N2bnlGpzOora1QFJRX05yx9y5/Z6T+qOJ1uVp3JyoOtw4xkrbeU2AWQko04whN6FJ6ljHlfoubGwdme7Sz7JsGkEFxBHSLyZX9QNtUKnq6vAZEMJmiVtiCNes+f7gCH8h92Jyw0zD5tNxYrvZJS5w235CV88G1FLLG1Kl6eegj+EompH4vlf2kXDEEVzGzzDHjROC6LzUMuxABmeJ/lkxzrfKi5P7R5JbQzWKBjyzMRLneD0pwJWePLmMr2zGA9f75S1th4yqvr+NzjbQrA=
 deploy:
   skip_cleanup: true
   provider: pypi
