@@ -23,7 +23,7 @@ def function_log(custom_logger=None):
         sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                   "-%(lineno)d: %(message)s"
         for handler in custom_logger.handlers:
-            handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+            handler.setFormatter(logging.Formatter(sformat))
 
     # noinspection PyUnusedLocal
     def decorator(func, **kwargs):
