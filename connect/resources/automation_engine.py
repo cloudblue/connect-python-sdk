@@ -65,5 +65,5 @@ class AutomationEngine(BaseResource):
         base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
                "-%(lineno)d: %(message)s"
         sformat = " ".join(args) + base
-        [handler.setFormatter(logging.Formatter(sformat, "%I:%M:%S"))
+        [handler.setFormatter(logging.Formatter(sformat))
          for handler in self.__class__.logger.handlers]
