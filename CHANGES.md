@@ -1,5 +1,17 @@
 # Connect SDK Changes History
 
+## v18.1
+
+* Feature: Allow masking of specified log fields.
+* Change: Upgrade pytest to version 4.6.9.
+* Fix: Added date to log formatter.
+
+## v18.0
+
+* Feature: Updated models for v18.
+* Feature: Add RQL filter support.
+* Fix: UsageFileAction's subclass SubmitUsageFile had a rejection note, a parameter which should go in RejectUsageFile instead. 
+
 ## v17.6
 
 * Fix: `ServerErrorResponseSchema` has a wrong errors field definition, it must be a list of strings.
