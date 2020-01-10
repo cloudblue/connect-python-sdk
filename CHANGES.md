@@ -3,7 +3,7 @@
 ## v18.1
 
 * Feature: Allow masking of specified log fields.
-* Change: Upgrade pytest to version 4.6.9.
+* Change: Upgrade pytest to version 4.6.8.
 * Fix: Added date to log formatter.
 
 ## v18.0
