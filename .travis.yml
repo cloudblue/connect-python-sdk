@@ -26,7 +26,7 @@ script:
 - flake8 connect
 - pytest --cov-report=xml --cov=./connect
 - sed -i "s/version='0.0.0'/version='${TRAVIS_TAG}'/g" setup.py
-- sonar-scanner
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi'
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
