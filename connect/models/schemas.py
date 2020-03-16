@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 from marshmallow import Schema, fields, post_load
 import six
@@ -206,7 +206,7 @@ class HubSchema(BaseSchema):
 
 
 class ExternalIdField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         if isinstance(value, six.string_types):
             return value
         elif isinstance(value, int):
@@ -238,7 +238,7 @@ class RenewalSchema(BaseSchema):
 
 
 class QuantityField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         if isinstance(value, six.string_types):
             if value == 'unlimited':
                 return -1
@@ -508,6 +508,13 @@ class TierAccountSchema(BaseSchema):
     contact_info = fields.Nested(ContactInfoSchema)
     external_id = ExternalIdField()
     external_uid = fields.Str()
+    environment = fields.Str()
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
+    hub = fields.Nested(HubSchema, only=('id', 'name'))
+    version = fields.Int()
+
+    events = fields.Nested(EventsSchema)
+    scopes = fields.List(fields.Str())
 
     @post_load
     def make_object(self, data):
@@ -524,6 +531,26 @@ class TierAccountsSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import TierAccounts
         return TierAccounts(**data)
+
+
+class TierAccountRequestSchema(BaseSchema):
+    type = fields.Str()
+    status = fields.Str()
+    account = fields.Nested(TierAccountSchema)
+    provider = fields.Nested(CompanySchema, only=('id', 'name'))
+    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
+    product = fields.Nested(ProductSchema, only=('id', 'icon', 'name', 'status'))
+    reason = fields.Str()
+    contact_info = fields.Nested(ContactInfoSchema)
+    external_id = ExternalIdField()
+    external_uid = fields.Str()
+    events = fields.Nested(EventsSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import TierAccountRequest
+        return TierAccountRequest(**data)
+
 
 
 class ConnectionSchema(BaseSchema):
@@ -565,7 +592,7 @@ class AssetSchema(BaseSchema):
 
 
 class AssigneeField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         from connect.models.user import User
         if isinstance(value, six.string_types):
             return value

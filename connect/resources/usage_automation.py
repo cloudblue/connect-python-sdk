@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 import json
 import logging
@@ -16,7 +16,7 @@ from connect.exceptions import FileCreationError, FileRetrievalError
 from connect.models.usage_listing import UsageListing
 from connect.models.usage_file import UsageFile
 from connect.models.usage_record import UsageRecord
-from .automation_engine import AutomationEngine
+from connect.resources.automation_engine import AutomationEngine
 
 
 class UsageAutomation(AutomationEngine):
@@ -52,11 +52,19 @@ class UsageAutomation(AutomationEngine):
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
 
-        self.logger.info(
-            'Processing Usage for Product {} ({}) '.format(request.product.id,
-                                                           request.product.name) +
-            'on Contract {} '.format(request.contract.id) +
-            'and provider {}({})'.format(request.provider.id, request.provider.name))
+        ''
+
+        self.logger.info((
+            'Processing Usage for Product {product_id} ({product_name}) '
+            'on Contract {contract_id} '
+            'and provider {provider_id}({provider_name})').format(
+                product_id=request.product.id,
+                product_name=request.product.name,
+                contract_id=request.contract.id,
+                provider_id=request.provider.id,
+                provider_name=request.provider.name,
+            )
+        )
 
         try:
             result = self.process_request(request)

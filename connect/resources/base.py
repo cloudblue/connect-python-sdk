@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 import functools
 import logging
@@ -51,7 +51,9 @@ class ApiClient(object):
 
     def get_url(self, path=''):
         # type: (str) -> str
-        return self.urljoin(self.config.api_url, self.base_path, path)
+        url = self.urljoin(self.config.api_url, self.base_path, path)
+        print(url)
+        return url
 
     @staticmethod
     def urljoin(*args):
@@ -118,7 +120,7 @@ class ApiClient(object):
 
 
 class BaseResource(object):
-    """ Base class of all resources.
+    """ Base class of ∫all resources.
 
     :param Config config: Config object or ``None`` to use environment config (default).
     """
@@ -147,6 +149,8 @@ class BaseResource(object):
         objects = self.model_class.deserialize(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
+        return objects
+
 
     def filters(self, **kwargs):
         # type: (Dict[str, Any]) -> Dict[str, Any]
@@ -157,9 +161,24 @@ class BaseResource(object):
             filters[key] = val
         return filters
 
-    def list(self, filters=None):
+    def search(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
         filters = filters or self.filters()
         self.logger.info('Get list request with filters - {}'.format(filters))
         response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
+
+
+    def create(self, obj):
+        response, _ = self._api.post(json=obj)
+        objects = self.model_class.deserialize(response)
+        return objects
+
+    def update(self, pk, obj):
+        pass
+
+    def delete(self, pk):
+        pass
+
+    def list(self, filters=None):
+        return self.search(filters)

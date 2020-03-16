@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 import copy
 import logging
@@ -22,8 +22,12 @@ class AutomationEngine(BaseResource):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
         return super(AutomationEngine, self).filters(status=status, **kwargs)
 
+    @function_log(custom_logger=logger)
     def process(self, filters=None):
+        self.logger.info('We are here!!!!')
+        '''
         # type: (Dict[str, Any]) -> None
+        '''
         for request in self.list(filters):
             self.dispatch(request)
 

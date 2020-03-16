@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 from .activation import Activation
 from .activation_template_response import ActivationTemplateResponse
@@ -46,6 +46,7 @@ from .server_error_response import ServerErrorResponse
 from .template import Template
 from .tier_account import TierAccount
 from .tier_accounts import TierAccounts
+from .tier_account_request import TierAccountRequest
 from .tier_config import TierConfig
 from .tier_config_request import TierConfigRequest
 from .usage_file import UsageFile

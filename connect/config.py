@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 import json
 import os
@@ -99,3 +99,8 @@ class Config(object):
         :rtype: list[str]
         """
         return self._products
+
+    def __str__(self):
+        return '<Configuration {}>'.format(
+            self.api_url
+        )

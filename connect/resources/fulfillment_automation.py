@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
 import logging
@@ -17,7 +17,7 @@ from connect.models.param import Param
 from connect.models.fulfillment import Fulfillment
 from connect.models.tier_config_request import TierConfigRequest
 from connect.models.conversation import Conversation
-from .automation_engine import AutomationEngine
+from connect.resources.automation_engine import AutomationEngine
 
 
 class FulfillmentAutomation(AutomationEngine):

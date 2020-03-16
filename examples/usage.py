@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 from datetime import datetime, timedelta
 import warnings
@@ -26,7 +26,7 @@ class UsageExample(UsageAutomation):
         # type: (UsageListing) -> None
 
         # Detect specific provider contract
-        if request.contract.id == 'CRD-41560-05399-123':
+        if request.contract.id == 'CRD-00000-00000-00000':
             # Can also be seen from request.provider.id and parametrized further
             # via marketplace available at request.marketplace.id
             usage_file = UsageFile(
