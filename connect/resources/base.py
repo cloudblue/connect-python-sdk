@@ -5,7 +5,7 @@
 
 import functools
 import logging
-from typing import Any, List, Dict, Tuple
+from typing import Any, List, Dict, Tuple, Union
 
 import requests
 from requests import compat
@@ -15,6 +15,7 @@ from connect.exceptions import ServerError
 from connect.logger import function_log
 from connect.models.base import BaseModel
 from connect.models.server_error_response import ServerErrorResponse
+from connect.rql import Query
 
 
 class ApiClient(object):
@@ -158,8 +159,13 @@ class BaseResource(object):
         return filters
 
     def list(self, filters=None):
-        # type: (Dict[str, Any]) -> List[Any]
+        # type: (Union[Query, Dict[str, Any]]) -> List[Any]
         filters = filters or self.filters()
-        self.logger.info('Get list request with filters - {}'.format(filters))
-        response, _ = self._api.get(params=filters)
+        if isinstance(filters, Query):
+            compiled = filters.compile()
+            self.logger.info('Get list request with Query - {}'.format(compiled))
+            response, _ = ApiClient(self._api.config, self._api.base_path + compiled).get()
+        else:
+            self.logger.info('Get list request with filters - {}'.format(filters))
+            response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
