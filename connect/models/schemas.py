@@ -31,7 +31,6 @@ class ActivationSchema(BaseSchema):
         from connect.models import Activation
         return Activation(**data)
 
-
 class AgreementStatsSchema(BaseSchema):
     contracts = fields.Int()
     versions = fields.Int()
@@ -41,9 +40,30 @@ class AgreementStatsSchema(BaseSchema):
         from connect.models import AgreementStats
         return AgreementStats(**data)
 
+class PeriodSchema(BaseSchema):
+    period_from = fields.DateTime(data_key='from')
+    period_to = fields.DateTime(data_key='to')
+    delta = fields.Decimal()
+    uom = fields.Str()
+    
+    @post_load
+    def make_object(self, data):
+        from connect.models import Period
+        return Period(**data)
+
+class LastRequestSchema(BaseSchema):
+    type = fields.String()
+    period = fields.Nested(PeriodSchema)
+    
+    @post_load
+    def make_object(self, data):
+        from connect.models import LastRequest
+        return LastRequest(**data)
 
 class CompanySchema(BaseSchema):
     name = fields.Str()
+    last_request = fields.Nested(LastRequestSchema, many=True)
+    count = fields.Integer()
 
     @post_load
     def make_object(self, data):
@@ -327,9 +347,9 @@ class ItemSchema(BaseSchema):
 
 
 class AgreementSchema(BaseSchema):
-    type = fields.Str()
+    type = fields.String()
     title = fields.Str()
-    description = fields.Str()
+    description = fields.String()
     created = fields.DateTime()
     updated = fields.DateTime()
     owner = fields.Nested(CompanySchema)
@@ -343,7 +363,7 @@ class AgreementSchema(BaseSchema):
     agreements = fields.Nested('AgreementSchema', many=True)
     parent = fields.Nested('AgreementSchema', only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
-    name = fields.Str()
+    name = fields.String()
 
     @post_load
     def make_object(self, data):
@@ -352,10 +372,10 @@ class AgreementSchema(BaseSchema):
 
 
 class ContractSchema(BaseSchema):
-    name = fields.Str()
+    name = fields.String()
     version = fields.Int()
-    type = fields.Str()
-    status = fields.Str()
+    type = fields.String()
+    status = fields.String()
     agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
     owner = fields.Nested(CompanySchema, only=('id', 'name'))
@@ -758,3 +778,88 @@ class ConversationSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import Conversation
         return Conversation(**data)
+
+class AttributesSchema(BaseSchema):
+    provider = fields.Nested(CompanySchema, only=('external_id'))
+    vendor = fields.Nested(CompanySchema, only=('external_id'))
+    
+    @post_load
+    def make_object(self, data):
+        from connect.models import Attributes
+        return Attributes(**data)
+
+class AniversarySchema(BaseSchema):
+    day = fields.Integer()
+    month = fields.Integer()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Aniversary
+        return Aniversary(**data)
+
+class StatSchema(BaseSchema):
+    count = fields.Integer()
+    last_request = fields.Nested(LastRequestSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Stat
+        return Stat(**data)
+
+
+class StatsSchema(BaseSchema):
+    provider = fields.Nested(StatSchema)
+    vendor = fields.Nested(StatSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Stats
+        return Stats(**data)
+
+class BillingSchema(BaseSchema):
+    stats = fields.Nested(StatsSchema)
+    period = fields.Nested(PeriodSchema)
+    next_date = fields.DateTime()
+    aniversary = fields.Nested(AniversarySchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Billing
+        return Billing(**data)
+
+class BillingRequestSchema(BaseSchema):
+    type = fields.String()
+    events = fields.Nested(EventsSchema, only=('created', 'updated'))
+    asset = fields.Nested(AssetSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    attributes = fields.Nested(AttributesSchema)
+    period = fields.Nested(PeriodSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import BillingRequest
+        return BillingRequest(**data)
+
+class RecurringAssetSchema(BaseSchema):
+    id = fields.String()
+    status = fields.String()
+    events = fields.Nested(EventsSchema, only=('created', 'updated'))
+    external_id = fields.String()
+    external_uuid = fields.String()
+    product = fields.Nested(ProductSchema, only=('id', 'name', 'status', 'icon'))
+    connection = fields.Nested(ConnectionSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    params = fields.Nested(ParamSchema, many=True)
+    tiers = fields.Nested(TierAccountSchema)
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
+    contract = fields.Nested(ContractSchema, only=('id', 'name'))
+    billing = fields.Nested(BillingSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import RecurringAsset
+        return RecurringAsset(**data)
+
+
+
+

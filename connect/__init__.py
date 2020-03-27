@@ -45,4 +45,5 @@ __all__ = [
     'rql',
     'FulfillmentAutomation',
     'TierConfigAutomation',
+    'TierRequestAutomation',
 ]

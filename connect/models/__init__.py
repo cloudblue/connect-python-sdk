@@ -8,8 +8,10 @@ from .activation_template_response import ActivationTemplateResponse
 from .activation_tile_response import ActivationTileResponse
 from .agreement import Agreement
 from .agreement_stats import AgreementStats
+from .aniversary import Aniversary
 from .asset import Asset
 from .base import BaseModel
+from .billing import Billing
 from .company import Company
 from .configuration import Configuration
 from .connection import Connection
@@ -31,6 +33,7 @@ from .hub import Hub
 from .hub_instance import HubInstance
 from .hub_stats import HubStats
 from .item import Item
+from .last_request import LastRequest
 from .marketplace import Marketplace
 from .param import Param
 from .phone_number import PhoneNumber
@@ -43,6 +46,8 @@ from .product_stats import ProductStats
 from .product_stats_info import ProductStatsInfo
 from .renewal import Renewal
 from .server_error_response import ServerErrorResponse
+from .stat import Stat
+from .stats import Stats
 from .template import Template
 from .tier_account import TierAccount
 from .tier_accounts import TierAccounts
@@ -55,6 +60,11 @@ from .usage_record import UsageRecord
 from .usage_records import UsageRecords
 from .user import User
 from .value_choice import ValueChoice
+from .billing_request import BillingRequest
+from .period import Period
+from .attributes import Attributes
+from .recurring_asset import RecurringAsset
+
 
 __all__ = [
     'Activation',
@@ -64,6 +74,8 @@ __all__ = [
     'AgreementStats',
     'Asset',
     'BaseModel',
+    'Billing',
+    'BillingRequest',
     'Company',
     'Configuration',
     'Connection',
@@ -85,6 +97,7 @@ __all__ = [
     'HubInstance',
     'HubStats',
     'Item',
+    'LastRequest',
     'Marketplace',
     'Param',
     'PhoneNumber',
@@ -95,8 +108,11 @@ __all__ = [
     'ProductFamily',
     'ProductStats',
     'ProductStatsInfo',
+    'RecurringAsset',
     'Renewal',
     'ServerErrorResponse',
+    'Stat',
+    'Stats',
     'Template',
     'TierAccount',
     'TierAccounts',

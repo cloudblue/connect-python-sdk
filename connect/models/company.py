@@ -14,3 +14,9 @@ class Company(BaseModel):
 
     name = None  # type: str
     """ (str) Company name. """
+
+    last_request = None # type: LastRequest
+    """ (:py:class:`.LastRequest`) Last Request of companySchema. """
+
+    count = None  # type: integer
+    """ (integer) Count. """

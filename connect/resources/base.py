@@ -120,7 +120,7 @@ class ApiClient(object):
 
 
 class BaseResource(object):
-    """ Base class of ∫all resources.
+    """ Base class of all resources.
 
     :param Config config: Config object or ``None`` to use environment config (default).
     """
