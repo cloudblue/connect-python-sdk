@@ -1,0 +1,161 @@
+{
+    "id": "AS-3110-7077-0368",
+    "status": "active",
+    "events": {
+        "created": {
+            "at": "2020-03-09T14:31:17+00:00"
+        },
+        "updated": {
+            "at": "2020-03-09T15:50:42+00:00"
+        }
+    },
+    "external_id": "BSM4FJZ7U3",
+    "external_uid": "054922da-ceae-47de-8e5d-7a2950acbfe1",
+    "product": {
+        "id": "PRD-226-811-341",
+        "name": "Bender01",
+        "status": "published",
+        "icon": "/media/VA-111-016/PRD-226-811-341/media/PRD-226-811-341-logo.png"
+    },
+    "connection": {
+        "id": "CT-0000-0000-0000",
+        "hub": {
+            "id": "HB-0000-0000",
+            "name": "ACME Hub"
+        },
+        "provider": {
+            "id": "PA-687-574",
+            "name": "Ergonomic even-keeled complexity"
+        },
+        "vendor": {
+            "id": "VA-111-016",
+            "name": "Ingram Micro Cloud"
+        },
+        "type": "preview"
+    },
+    "items": [
+        {
+            "id": "SKU_A",
+            "global_id": "PRD-226-811-341-0001",
+            "display_name": "Sku A",
+            "mpn": "MPN-A",
+            "item_type": "reservation",
+            "period": "monthly",
+            "quantity": 50.0,
+            "type": "Gb",
+            "billing": {
+                "stats": {
+                    "provider": {
+                        "last_request": {
+                            "id": "BRP-3110-7077-0368-0001",
+                            "type": "provider",
+                            "period": {
+                                "from": "2019-01-01T00:00:00+00:00",
+                                "to": "2019-10-01T00:00:00+00:00",
+                                "delta": 1.0,
+                                "uom": "monthly"
+                            }
+                        },
+                        "count": 1
+                    }
+                }
+            }
+        }
+    ],
+    "params": [
+        {
+            "id": "param_a",
+            "name": "Color",
+            "description": "Choose your color",
+            "type": "text",
+            "value": "pepe"
+        },
+        {
+            "id": "param_b",
+            "name": "Coupon",
+            "description": "Unique activation coupon code",
+            "type": "text",
+            "value": "toto"
+        }
+    ],
+    "tiers": {
+        "customer": {
+            "id": "TA-1208-1373-1762",
+            "external_id": "75851",
+            "external_uid": "6a2f37e8-9ad3-4b7c-bed3-601f425d15fa",
+            "name": "Ratke Group",
+            "contact_info": {
+                "address_line1": "Crona Causeway",
+                "address_line2": "Miles Place",
+                "city": "Ceuta",
+                "state": "Ceuta",
+                "postal_code": "51004",
+                "country": "ES",
+                "contact": {
+                    "first_name": "Buford",
+                    "last_name": "Hackett",
+                    "email": "martin.constante++Buford_Hackett@gmail.com",
+                    "phone_number": {}
+                }
+            }
+        },
+        "tier1": {
+            "id": "TA-6458-9737-0065",
+            "external_id": "13110",
+            "external_uid": "ef57c2ba-25f8-49ce-ae81-5d17584ec596",
+            "name": "string",
+            "contact_info": {
+                "address_line1": "Yaaalı Mahallesi",
+                "address_line2": "",
+                "city": "Erdek",
+                "state": "string",
+                "postal_code": "10www500",
+                "country": "tr",
+                "contact": {
+                    "first_name": "Quickstart",
+                    "last_name": "Long Running Operation",
+                    "email": "qlro@softcom.com",
+                    "phone_number": {
+                        "country_code": "90",
+                        "area_code": "546",
+                        "phone_number": "6317546"
+                    }
+                }
+            }
+        }
+    },
+    "marketplace": {
+        "id": "MP-93255",
+        "name": "Market01",
+        "icon": ""
+    },
+    "contract": {
+        "id": "CRD-00000-00000-00000",
+        "name": "ACME Distribution Contract"
+    },
+    "billing": {
+        "period": {
+            "delta": 1.0,
+            "uom": "monthly"
+        },
+        "next_date": "2020-04-09T15:50:42+00:00",
+        "anniversary": {
+            "day": 9
+        },
+        "stats": {
+            "provider": {
+                "last_request": {
+                    "id": "BRP-3110-7077-0368-0001",
+                    "type": "provider",
+                    "period": {
+                        "from": "2019-01-01T00:00:00+00:00",
+                        "to": "2019-10-01T00:00:00+00:00",
+                        "delta": 1.0,
+                        "uom": "monthly"
+                    }
+                },
+                "count": 1
+            }
+        }
+    }
+}

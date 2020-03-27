@@ -1,0 +1,109 @@
+{
+  "id": "BRP-3110-7077-0368-0001",
+  "type": "provider",
+  "events": {
+      "created": {
+          "at": "2020-03-18T10:30:27.742389+00:00"
+      },
+      "updated": {
+          "at": "2020-03-18T10:30:27.742412+00:00"
+      }
+  },
+  "asset": {
+      "id": "AS-3110-7077-0368",
+      "status": "active",
+      "events": {
+          "created": {
+              "at": "2020-03-09T14:31:17+00:00"
+          },
+          "updated": {
+              "at": "2020-03-09T15:50:42+00:00"
+          }
+      },
+      "external_id": "BSM4FJZ7U3",
+      "external_uid": "054922da-ceae-47de-8e5d-7a2950acbfe1",
+      "product": {
+          "id": "PRD-226-811-341",
+          "name": "Bender01",
+          "status": "published",
+          "icon": "/media/VA-111-016/PRD-226-811-341/media/PRD-226-811-341-logo.png"
+      },
+      "connection": {
+          "id": "CT-0000-0000-0000",
+          "hub": {
+              "id": "HB-0000-0000",
+              "name": "ACME Hub"
+          },
+          "provider": {
+              "id": "PA-687-574",
+              "name": "Ergonomic even-keeled complexity"
+          },
+          "vendor": {
+              "id": "VA-111-016",
+              "name": "Ingram Micro Cloud"
+          },
+          "type": "preview"
+      },
+      "params": [
+          {
+              "id": "param_b",
+              "name": "Coupon",
+              "description": "Unique activation coupon code",
+              "type": "text",
+              "value": "toto"
+          },
+          {
+              "id": "param_a",
+              "name": "Color",
+              "description": "Choose your color",
+              "type": "text",
+              "value": "pepe"
+          }
+      ],
+      "tiers": {
+          "customer": {},
+          "tier1": {}
+      },
+      "marketplace": {
+          "id": "MP-93255",
+          "name": "Market01",
+          "icon": ""
+      },
+      "contract": {
+          "id": "CRD-00000-00000-00000",
+          "name": "ACME Distribution Contract"
+      },
+      "billing": {
+          "period": {
+              "delta": 1.0,
+              "uom": "monthly"
+          },
+          "next_date": "2020-04-09T15:50:42+00:00",
+          "anniversary": {
+              "day": 9
+          }
+      }
+  },
+  "items": [
+      {
+          "id": "SKU_A",
+          "global_id": "PRD-226-811-341-0001",
+          "display_name": "Sku A",
+          "mpn": "MPN-A",
+          "item_type": "reservation",
+          "period": "monthly",
+          "quantity": 50.0,
+          "type": "Gb",
+          "billing": {
+              "cycle_number": 1
+          }
+      }
+  ],
+  "attributes": {},
+  "period": {
+      "from": "2019-01-01T00:00:00+00:00",
+      "to": "2019-10-01T00:00:00+00:00",
+      "delta": 1.0,
+      "uom": "monthly"
+  }
+}
