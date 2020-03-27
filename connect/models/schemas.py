@@ -216,7 +216,7 @@ class ExternalIdField(fields.Field):
 
 
 class ExtIdHubSchema(BaseSchema):
-    hub = fields.Nested(HubSchema, only=('id', 'name'))
+    hub = fields.Nested(HubSchema)
     external_id = ExternalIdField()
 
     @post_load
@@ -262,7 +262,7 @@ class MarketplaceSchema(BaseSchema):
     description = fields.Str()
     active_contracts = fields.Int()
     icon = fields.Str()
-    owner = fields.Nested(CompanySchema, only=('id', 'name'))
+    owner = fields.Nested(CompanySchema)
     hubs = fields.Nested(ExtIdHubSchema, many=True)
     zone = fields.Str()
 
@@ -341,8 +341,8 @@ class AgreementSchema(BaseSchema):
     version_created = fields.DateTime()
     version_contracts = fields.Int()
     agreements = fields.Nested('AgreementSchema', many=True)
-    parent = fields.Nested('AgreementSchema', only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    parent = fields.Nested('AgreementSchema')
+    marketplace = fields.Nested(MarketplaceSchema)
     name = fields.Str()
 
     @post_load
@@ -356,16 +356,16 @@ class ContractSchema(BaseSchema):
     version = fields.Int()
     type = fields.Str()
     status = fields.Str()
-    agreement = fields.Nested(AgreementSchema, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
-    owner = fields.Nested(CompanySchema, only=('id', 'name'))
-    creator = fields.Nested(UserSchema, only=('id', 'name'))
+    agreement = fields.Nested(AgreementSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
+    owner = fields.Nested(CompanySchema)
+    creator = fields.Nested(UserSchema)
     created = fields.DateTime()
     updated = fields.DateTime()
     enrolled = fields.DateTime()
     version_created = fields.DateTime()
     activation = fields.Nested(ActivationSchema)
-    signee = fields.Nested(UserSchema, only=('id', 'name'))
+    signee = fields.Nested(UserSchema)
 
     @post_load
     def make_object(self, data):
@@ -528,8 +528,8 @@ class TierAccountsSchema(BaseSchema):
 
 class ConnectionSchema(BaseSchema):
     type = fields.Str()
-    provider = fields.Nested(CompanySchema, only=('id', 'name'))
-    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
+    provider = fields.Nested(CompanySchema)
+    vendor = fields.Nested(CompanySchema)
     product = fields.Nested(ProductSchema)
     hub = fields.Nested(HubSchema)
     status = fields.Str()
@@ -547,10 +547,8 @@ class AssetSchema(BaseSchema):
     events = fields.Nested(EventsSchema)
     external_uid = fields.Str()
     external_name = fields.Str()
-    product = fields.Nested(ProductSchema, only=('id', 'name'))
-    connection = fields.Nested(
-        ConnectionSchema, only=('id', 'type', 'provider', 'vendor')
-    )
+    product = fields.Nested(ProductSchema)
+    connection = fields.Nested(ConnectionSchema)
     contract = fields.Nested(ContractSchema)
     marketplace = fields.Nested(MarketplaceSchema)
     params = fields.Nested(ParamSchema, many=True)
@@ -583,8 +581,8 @@ class FulfillmentSchema(BaseSchema):
     reason = fields.Str()
     note = fields.Str()
     asset = fields.Nested(AssetSchema)
-    contract = fields.Nested(ContractSchema, only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
+    contract = fields.Nested(ContractSchema)
+    marketplace = fields.Nested(MarketplaceSchema)
     assignee = AssigneeField()
 
     @post_load
