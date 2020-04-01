@@ -58,7 +58,7 @@ class TestTierConfigRequest(unittest.TestCase):
                 timeout=300,
                 url='http://localhost:8080/api/public/v1/tier/config-requests')
         ])
-        self.assertEqual(len(tier_config_request), 3, msg=None)
+        self.assertEqual(len(tier_config_request), 2, msg=None)
     '''
     @patch('requests.post')
     def test_create_tier_config_request(self, post_mock):
