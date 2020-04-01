@@ -1,0 +1,17 @@
+{
+    "asset": {
+        "external_uid": "ec34665f-9322-403f-b01b-a54dedc6cde4"
+    },
+    "type": "provider",
+    "items": [
+        {
+            "id": "SKU_A"
+        }
+    ],
+    "period": {
+        "from": "2019-01-01T00:00:00Z",
+        "to": "2019-10-01T00:00:00Z",
+        "delta": 1.0,
+        "uom": "monthly"
+    }
+}

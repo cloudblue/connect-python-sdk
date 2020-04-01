@@ -2,7 +2,6 @@ from connect.config import Config
 from connect.resources.billing_request import BillingRequestResource
 from connect.resources.recurring_asset import RecurringAssetResource
 
-
 class Subscription(object):
     """ Allows listing and obtaining several types of objects.
 
@@ -19,5 +18,5 @@ class Subscription(object):
     def create_billing_request(self, obj):
         return self._billing_request.create(obj)
 
-    def update_billing_request(self, pk, body):
-        return self._billing_request.update_billing_request(pk,body)
+    def update_billing_request(self, id_br, body):
+        return self._billing_request.update_billing_request(id_br, body)

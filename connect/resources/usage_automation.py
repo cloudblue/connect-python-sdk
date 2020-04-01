@@ -52,8 +52,6 @@ class UsageAutomation(AutomationEngine):
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
 
-        ''
-
         self.logger.info((
             'Processing Usage for Product {product_id} ({product_name}) '
             'on Contract {contract_id} '
@@ -65,7 +63,6 @@ class UsageAutomation(AutomationEngine):
                 provider_name=request.provider.name,
             )
         )
-
         try:
             result = self.process_request(request)
         except FileCreationError:

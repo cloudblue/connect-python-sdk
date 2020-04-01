@@ -6,7 +6,6 @@
 from .base import BaseModel
 from .schemas import RecurringAssetSchema
 
-
 class RecurringAsset(BaseModel):
     """ RecurringAsset object. """
 

@@ -62,7 +62,7 @@ class TierConfigRequestResource(BaseResource):
     def fail(self, id_tcr, reason):
         """ Set fail a Tier Configuration Request
         :param str id_tar: Primary key of the tier configuration request to ignore.
-        :param str reason: Reason of the fail.        
+        :param str reason: Reason of the fail.
         :return: ActivationTileResponse object with tile contents.
         :rtype: ActivationTileResponse
         """
@@ -85,7 +85,7 @@ class TierConfigRequestResource(BaseResource):
             raise ValueError('Tier Configuration Request not exist')
         response = self._api.post(path='{}/assign'.format(id_tcr))
         return response
-    
+
     def unassign(self, id_tcr):
         """ Unassign a Tier Configuration Request.
         :param str id_tar: Primary key of the tier configuration request to set.
@@ -96,3 +96,4 @@ class TierConfigRequestResource(BaseResource):
             raise ValueError('Tier Configuration Request not exist')
         response = self._api.post(path='{}/unassign'.format(id_tcr))
         return response
+        

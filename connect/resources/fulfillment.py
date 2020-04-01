@@ -1,5 +1,7 @@
 from connect.config import Config
 from connect.resources.tier_account import TierAccountRequestResource
+from connect.resources.tier_config_request import TierConfigRequestResource
+
 
 class Fulfillment(object):
     """ Allows listing and obtaining several types of objects.
@@ -12,18 +14,20 @@ class Fulfillment(object):
     def __init__(self, config=None):
         self._config = config or Config.get_instance()
         self._tier_account_requests = TierAccountRequestResource(config=self._config)
+        self._tier_config_requests = TierConfigRequestResource(config=self._config)
 
     def create_tier_account_request(self, obj):
         return self._tier_account_requests.create(obj)
 
-    def accept_tier_account_request(self, pk):
-        return self._tier_account_requests.accept(pk)
+    def accept_tier_account_request(self, id_tar):
+        return self._tier_account_requests.accept(id_tar)
 
-    def ignore_tier_account_request(self, pk, reason):
-        return self._tier_account_requests.ignore(pk, reason)
+    def ignore_tier_account_request(self, id_tar, reason):
+        return self._tier_account_requests.ignore(id_tar, reason)
 
     def get_pending_tier_account_requests(self):
         return self._tier_account_requests.search(dict(status='pending'))
 
     def create_purchase_request(self, obj):
         pass
+    

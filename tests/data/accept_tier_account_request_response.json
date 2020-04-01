@@ -1,0 +1,82 @@
+{
+    "id": "TAR-6458-9737-0065-004-001",
+    "type": "update",
+    "status": "accepted",
+    "account": {
+        "id": "TA-6458-9737-0065",
+        "environment": "preview",
+        "name": "string",
+        "external_id": "13110",
+        "external_uid": "ef57c2ba-25f8-49ce-ae81-5d17584ec596",
+        "events": {
+            "created": {
+                "at": "2020-03-09T14:31:17+00:00",
+                "by": {
+                    "id": "UR-232-867-185",
+                    "name": "Martin"
+                }
+            },
+            "updated": {
+                "at": "2020-03-09T14:31:17+00:00"
+            }
+        },
+        "scopes": [
+            "customer",
+            "tier1"
+        ],
+        "marketplace": {
+            "id": "MP-93255",
+            "name": "Market01"
+        },
+        "hub": {
+            "id": "HB-0000-0000",
+            "name": "ACME Hub"
+        },
+        "version": 5,
+        "contact_info": {
+            "address_line1": "Yalı Mahallesi",
+            "address_line2": "",
+            "city": "Erdek",
+            "state": "string",
+            "postal_code": "10500",
+            "country": "tr",
+            "contact": {
+                "first_name": "Pirulo",
+                "last_name": "Long Running Operation",
+                "email": "qlro@softcom.com",
+                "phone_number": {
+                    "country_code": "+90",
+                    "area_code": "546",
+                    "phone_number": "6317546",
+                    "extension": ""
+                }
+            }
+        }
+    },
+    "vendor": {
+        "id": "VA-111-016",
+        "name": "Ingram Micro Cloud"
+    },
+    "provider": {
+        "id": "PA-687-574",
+        "name": "Ergonomic even-keeled complexity"
+    },
+    "product": {
+        "id": "PRD-226-811-341",
+        "icon": "/media/VA-111-016/PRD-226-811-341/media/PRD-226-811-341-logo.png",
+        "name": "Bender01",
+        "status": "published"
+    },
+    "events": {
+        "created": {
+            "at": "2020-03-11T16:08:39+00:00",
+            "by": {
+                "id": "SU-771-994-269",
+                "name": "mconstante_provider"
+            }
+        },
+        "updated": {
+            "at": "2020-03-31T11:45:11+00:00"
+        }
+    }
+}

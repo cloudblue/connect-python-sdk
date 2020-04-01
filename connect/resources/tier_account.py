@@ -19,7 +19,7 @@ class TierAccountRequestResource(BaseResource):
     """ Tier Account Request Resource. """
     resource = 'tier/account-requests'
     model_class = TierAccountRequest
-    
+
     def accept(self, id_tar):
         """ Accept a Tier Configuration Request.
         :param str id_tar: Primary key of the tier configuration request to accept.
@@ -28,8 +28,8 @@ class TierAccountRequestResource(BaseResource):
         """
         if not id_tar:
             raise ValueError('Tier Configuration Request not exist')
-        response = self._api.post(path='{}/accept'.format(id_tar))
-        return response
+        response, _ = self._api.post(path='{}/accept'.format(id_tar))
+        return self.model_class.deserialize(response)
 
     def ignore(self, id_tar, reason):
         """ Ignore a Tier Configuration Request
@@ -39,9 +39,9 @@ class TierAccountRequestResource(BaseResource):
         """
         if not id_tar:
             raise ValueError('Tier Configuration Request not exist')
-        response = self._api.post(
+        response, _ = self._api.post(
             path='{}/ignore'.format(id_tar),
             json={
                 'reason': reason,
             })
-        return response
+        return self.model_class.deserialize(response)

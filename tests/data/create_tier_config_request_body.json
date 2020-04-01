@@ -1,0 +1,12 @@
+{
+    "configuration": {
+      "product": {
+        "id": "PRD-418-056-738"
+      },
+      "account": { 
+        "id": "TA-1208-1373-1762",
+        "external_uid": "6a2f37e8-9ad3-4b7c-bed3-601f425d15fa"
+      },
+      "tier_level": 1
+    }
+  }

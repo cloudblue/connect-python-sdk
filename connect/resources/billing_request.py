@@ -25,3 +25,4 @@ class BillingRequestResource(BaseResource):
             json=body
             )
         return response
+        

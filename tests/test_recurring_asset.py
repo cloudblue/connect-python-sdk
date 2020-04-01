@@ -3,12 +3,12 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
-import datetime
 import os
 import unittest
 from mock import patch, call, Mock
 from connect.models import RecurringAsset
 from connect.resources.subscription import RecurringAssetResource
+from connect.config import Config
 from .common import Response, load_str
 
 get_recurring_asset_contents = load_str(
@@ -16,7 +16,9 @@ get_recurring_asset_contents = load_str(
 list_recurring_asset_contents = load_str(
     os.path.join(os.path.dirname(__file__), 'data', 'response_list_recurring_asset.json'))
 
-class testRecurringAsset(unittest.TestCase):
+class TestRecurringAsset(unittest.TestCase):
+    def setUp(self):
+        self.config = Config(file='tests/config.json')
 
     @patch('requests.get')
     def test_get_recurring_asset_ok(self, get_mock):
@@ -26,13 +28,11 @@ class testRecurringAsset(unittest.TestCase):
             Response(True, get_recurring_asset_contents, 200)
         ]
 
-        request = RecurringAssetResource()
+        request = RecurringAssetResource(config=self.config)
         recurring_asset = request.get('AS-3110-7077-0368')
         assert get_mock.call_count == 1
         self.assertEqual(recurring_asset.external_id, 'BSM4FJZ7U3', msg=None)
         # 054922da-ceae-47de-8e5d-7a2950acbfe1
-
-
         get_mock.assert_has_calls([
             call(
                 headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
@@ -46,7 +46,7 @@ class testRecurringAsset(unittest.TestCase):
         # type: (Mock) -> None
         get_mock.return_value = Response(True, '[]', 200)
 
-        request = RecurringAssetResource()
+        request = RecurringAssetResource(config=self.config)
         recurring_asset = request.get('AS-0000-0000-0000')
         assert get_mock.call_count == 1
 
@@ -66,7 +66,7 @@ class testRecurringAsset(unittest.TestCase):
             Response(True, list_recurring_asset_contents, 200)
         ]
 
-        request = RecurringAssetResource()
+        request = RecurringAssetResource(config=self.config)
         recurring_asset = request.list()
         assert get_mock.call_count == 1
 
