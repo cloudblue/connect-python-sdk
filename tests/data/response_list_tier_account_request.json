@@ -44,7 +44,7 @@
                 "city": "Erdek",
                 "state": "string",
                 "postal_code": "10500",
-                "country": "tr",
+                "country": "ES",
                 "contact": {
                     "first_name": "Pirulo",
                     "last_name": "Long Running Operation",
@@ -130,7 +130,7 @@
                 "city": "Erdek",
                 "state": "string",
                 "postal_code": "10500",
-                "country": "tr",
+                "country": "AR",
                 "contact": {
                     "first_name": "Quickstart",
                     "last_name": "Long Running Operation",
@@ -216,7 +216,7 @@
                 "city": "Erdek",
                 "state": "string",
                 "postal_code": "10www500",
-                "country": "tr",
+                "country": "IT",
                 "contact": {
                     "first_name": "Quickstart",
                     "last_name": "Long Running Operation",

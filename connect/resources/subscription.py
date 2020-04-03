@@ -19,4 +19,4 @@ class Subscription(object):
         return self._billing_request.create(obj)
 
     def update_billing_request(self, id_br, body):
-        return self._billing_request.update_billing_request(id_br, body)
+        return self._billing_request.update(id_br, body)

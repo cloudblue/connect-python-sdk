@@ -3,55 +3,65 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
-from abc import ABCMeta
 import logging
 
-from deprecation import deprecated
-from typing import Optional
-
 from connect.logger import function_log
-from connect.models.tier_account import TierAccount
-from connect.models.tier_account_request import TierAccountRequest
-from connect.resources.automation_engine import AutomationEngine
 from connect.resources.fulfillment import Fulfillment
 
-class TierAccountRequestAutomation(AutomationEngine):
-    """ This is the automation engine for the Tier Account Request API. If you want to process
-    tier account request, subclass this and implement the ``process_request`` method, which receives a
-    :py:class:`connect.models.tierAccountRequest` request as argument and must return an
-    :py:class:`connect.models.ActivationTemplateResponse` or
-    :py:class:`connect.models.ActivationTileResponse` object in case the request has to be approved.
 
-    In other case, you must raise one of these exceptions:
-
-    - :py:class:`connect.exceptions.InquireRequest`: Inquire for more information.
-    - :py:class:`connect.exceptions.FailRequest`: Causes the request to fail.
-    - :py:class:`connect.exceptions.SkipRequest`: Skips processing the request.
-
+class TierAccountRequestAction:
+    """ This is the automation engine for the Tier Account Request API.  If you want to process
+    Tier Account requests, subclass this and implement the ``process_request`` method,
+    which receives a :py:class:`connect.models.TierAccountRequest` request as argument and returns 
+    a collection of Tier Account Request Object, this is processed calling to method dispatch and 
+    redirect to proccess_request.
+    
     Create an instance of your subclass and call its ``process`` method to begin processing.
 
-    For an example on how to use this class, see :ref:`fulfillment_example`.
+    For an example on how to use this class, see :ref:`tier_account_example`.
     """
+    ACCEPT = 'accept'
+    IGNORE = 'ignore'
+    SKIP = 'skip'
 
-    __metaclass__ = ABCMeta
-    resource = 'tier/account-requests'
-    model_class = TierAccountRequest
-    logger = logging.getLogger('TierAccountRequest.logger')
+    def __init__(self, action, data=None):
+        if action not in ('accept', 'ignore', 'skip'):
+            raise Exception("Action no valid")
+        self._action = action
+        self._data = data
+
+    @property
+    def action(self):
+        return self._action
+
+    @property
+    def data(self):
+        return self._data
+
+class TierAccountRequestAutomation:
+    logger = logging.getLogger(__name__)
+
+    def __init__(self, config):
+        self.config = config
+        self.fulfillment = Fulfillment(config=self.config)
+
+    
+    def process(self, filters=None):
+        for request in self.fulfillment.search_tier_account_requests(
+                filters or dict(status='pending')
+        ):
+            self.dispatch(request)
 
     @function_log(custom_logger=logger)
     def dispatch(self, request):
-        tier = Fulfillment(config=self.configuration)
-        print('==============================')
-        print(self.config.products)
-        print('==============================')
-        # print(tier.get_pending_tier_account_requests())
-        print('==============================')
+        result = self.process_request(request)
+        if result.action == TierAccountRequestAction.ACCEPT:
+            self.fulfillment.accept_tier_account_request(request.id)
+        if result.action == TierAccountRequestAction.IGNORE:
+            self.fulfillment.ignore_tier_account_request(request.id, result.data)
+        if result.action == TierAccountRequestAction.SKIP:
+            pass
 
-
-        '''
-        if self.config.products \
-            and request.asset.product.id not in self.config.products:
-            self.logger.info('Invalid Product')
-            return 'Invalid product'
-        '''
-        
+    def process_request(self, request):
+        raise NotImplementedError('Please implement `{}.process_request` method'
+                                  .format(self.__class__.__name__))

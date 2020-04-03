@@ -23,12 +23,13 @@ def main():
     with open('./tests/data/tier_configuration_request.json') as json_file:
         data = json.load(json_file)
     # tier_account_example.create_tier_account_request(data)
+
     ''' List example '''
     billing_request = billing_request_example.list_billing_request()
     print(billing_request[0].id)
 
-
-    ''' Get example 
+    '''
+    Get example
     billing_request = billing_request_example.get_billing_request('BRP-7986-6756-4144-0001')
     print(billing_request.type)
     '''

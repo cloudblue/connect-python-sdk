@@ -2,29 +2,29 @@
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
-# -*- coding: utf-8 -*-
-
-# This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2020 Ingram Micro. All Rights Reserved.
-import json
+from connect.resources.tier_account_request_automation import (
+    TierAccountRequestAutomation,
+    TierAccountRequestAction,
+)
 from connect.config import Config
-from connect.resources.fulfillment import Fulfillment
-from connect.resources.directory import Directory
-from connect.resources import TierAccountRequestAutomation
 
-class TierAccountRequestExample(TierAccountRequestAutomation):
-    configuration = Config(file='examples/config.json')
-
+class MyExampleTARAutomation(TierAccountRequestAutomation):
     def process_request(self, request):
-        pass
-        # return TierAccountRequestAutomation.dispatch(self, request)
+        if request.account.contact_info.country == 'AR':
+            stat = TierAccountRequestAction(TierAccountRequestAction.ACCEPT)
+            print(stat)
+            return stat
+        elif request.account.contact_info.country == 'IT':
+            stat = TierAccountRequestAction(TierAccountRequestAction.IGNORE, 'No data')
+            print(stat)
+            return stat
+        else:
+            stat = TierAccountRequestAction(TierAccountRequestAction.SKIP)
+            # print(stat)
+            return stat
 
-def main():
-    tier_account_example = TierAccountRequestExample()
-    with open('./tests/data/tier_configuration_request.json') as json_file:
-        data = json.load(json_file)
-    # tier_account_example.create_tier_account_request(data)
-    print(tier_account_example.process())
 
 if __name__ == '__main__':
-    main()
+    configuration = Config(file='examples/config.json')
+    tier_account_example = MyExampleTARAutomation(config=configuration)
+    tier_account_example.process()

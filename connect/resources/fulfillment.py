@@ -28,6 +28,10 @@ class Fulfillment(object):
     def get_pending_tier_account_requests(self):
         return self._tier_account_requests.search(dict(status='pending'))
 
+    def search_tier_account_requests(self,filters):
+        return self._tier_account_requests.search(filters)
+
+
     def create_purchase_request(self, obj):
         pass
     

@@ -119,12 +119,12 @@ class testBillingRequest(unittest.TestCase):
         request = BillingRequestResource(config=self.config)
         billing_request = request.update_billing_request(pk, body)
         print(billing_request)
-
+        url='http://localhost:8080/api/public/v1/subscriptions/requests/BRP-6750-9514-7931-0001/attributes'
         put_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             json=body,
             timeout=300,
-            url='http://localhost:8080/api/public/v1/subscriptions/requests/BRP-6750-9514-7931-0001/attributes')
+            url=url)
 
         assert billing_request == ({'provider': {'external_id': '321-123'}}, 200)
 

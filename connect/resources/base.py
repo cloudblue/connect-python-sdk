@@ -180,11 +180,20 @@ class BaseResource(object):
         objects = self.model_class.deserialize(response)
         return objects
 
-    def update(self, pk, obj):
-        pass
-
-    def delete(self, pk):
-        pass
+    def update(self, id_obj, body):
+        """ Update Object
+        :param str id_item: Primary key of the object request to update.
+        :param str body: Object to update.
+        :return: ActivationTileResponse object with tile contents.
+        :rtype: ActivationTileResponse
+        """
+        if not id_obj:
+            raise ValueError('Object Request not exist')
+        response = self._api.put(
+            path='{}/attributes'.format(id_obj),
+            json=body
+            )
+        return response
 
     def list(self, filters=None):
         return self.search(filters)

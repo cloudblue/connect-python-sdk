@@ -5,11 +5,14 @@
 
 import os
 import unittest
+
+from mock import call, patch
+
+from connect.config import Config
 from connect.models import TierConfigRequest
 from connect.resources.fulfillment import TierConfigRequestResource
-from connect.config import Config
+
 from .common import Response, load_str
-from mock import patch, call
 
 get_tier_config_request_contents = load_str(
     os.path.join(os.path.dirname(__file__), 'data', 'get_tier_config_request_response.json'))
@@ -34,11 +37,13 @@ class TestTierConfigRequest(unittest.TestCase):
         assert get_mock.call_count == 1
         self.assertEqual(tier_config_request.status, 'pending', msg=None)
         # 054922da-ceae-47de-8e5d-7a2950acbfe1
+        url = 'http://localhost:8080/api/public/v1/tier/config-requests/TCR-6458-9737-0065-004-001'
         get_mock.assert_has_calls([
             call(
                 headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
                 timeout=300,
-                url='http://localhost:8080/api/public/v1/tier/config-requests/TCR-6458-9737-0065-004-001')
+                url=url
+            )
         ])
         assert isinstance(tier_config_request, TierConfigRequest)
     
@@ -59,15 +64,12 @@ class TestTierConfigRequest(unittest.TestCase):
                 url='http://localhost:8080/api/public/v1/tier/config-requests')
         ])
         self.assertEqual(len(tier_config_request), 2, msg=None)
-    '''
+
     @patch('requests.post')
     def test_create_tier_config_request(self, post_mock):
         # type: (Mock) -> None
-        body_return = {
-            "error_code": "VAL_001",
-            "errors": ["errors: ['Tier Configuration with this Tier level, Tier and Product already exists.']"]
-        }
-        post_mock.return_value = Response(True, body_return, 200)
+        body_return = get_tier_config_request_contents
+        post_mock.return_value = Response(True, body_return, 201)
         # print(body)
         request = TierConfigRequestResource(config=self.config)
         tier_config_request = request.create(create_tier_config_request_body)
@@ -76,9 +78,9 @@ class TestTierConfigRequest(unittest.TestCase):
             json=create_tier_config_request_body,
             timeout=300,
             url='http://localhost:8080/api/public/v1/tier/config-requests')
-        assert tier_config_request[0].id == 'TAR-6458-9737-0065-004-001'
+        assert tier_config_request.id == 'TCR-195-110-021-001'
 
-    '''
+    
     @patch('requests.post')
     def test_inquire_tier_account_request(self, post_mock):
         # type: (Mock) -> None
