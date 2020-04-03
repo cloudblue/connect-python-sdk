@@ -361,10 +361,10 @@ class AgreementSchema(BaseSchema):
     version_created = fields.DateTime()
     version_contracts = fields.Int()
     agreements = fields.Nested('AgreementSchema', many=True)
-    parent = fields.Nested('AgreementSchema', only=('id', 'name'))
-    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name'))
-    name = fields.String()
-
+    parent = fields.Nested('AgreementSchema')
+    marketplace = fields.Nested(MarketplaceSchema)
+    name = fields.Str()
+    
     @post_load
     def make_object(self, data):
         from connect.models import Agreement
