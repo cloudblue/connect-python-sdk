@@ -1,5 +1,10 @@
 # Connect SDK Changes History
 
+## v18.2
+
+* Fix: Accept rql.Query in resources list method.
+* Fix: Bug causing some schemas not parsing all the fields.
+
 ## v18.1
 
 * Feature: Allow masking of specified log fields.
