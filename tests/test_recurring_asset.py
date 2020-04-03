@@ -16,6 +16,7 @@ get_recurring_asset_contents = load_str(
 list_recurring_asset_contents = load_str(
     os.path.join(os.path.dirname(__file__), 'data', 'response_list_recurring_asset.json'))
 
+
 class TestRecurringAsset(unittest.TestCase):
     def setUp(self):
         self.config = Config(file='tests/config.json')
@@ -78,6 +79,7 @@ class TestRecurringAsset(unittest.TestCase):
                 url='http://localhost:8080/api/public/v1/subscriptions/assets')
         ])
         self.assertEqual(len(recurring_asset), 2, msg=None)
+
 
 if __name__ == "__main__":
     unittest.main()

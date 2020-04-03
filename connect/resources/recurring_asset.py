@@ -6,6 +6,7 @@
 from connect.models.recurring_asset import RecurringAsset
 from .base import BaseResource
 
+
 class RecurringAssetResource(BaseResource):
     """ Recurring Asset Request Resource. """
     resource = 'subscriptions/assets'

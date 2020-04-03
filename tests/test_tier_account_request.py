@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
 import os
 import unittest
-from mock import patch, call, mock
+from mock import patch, call
 from connect.models import TierAccountRequest
 from connect.resources.fulfillment import TierAccountRequestResource
 from connect.config import Config
-from .common import Response, load_str, load_json
+from .common import Response, load_str
 
 get_tier_account_request_contents = load_str(
     os.path.join(os.path.dirname(__file__), 'data', 'response_get_tier_account_request.json'))
@@ -31,7 +30,6 @@ class TestTierAccountRequest(unittest.TestCase):
 
     @patch('requests.get')
     def test_get_tier_account_request_ok(self, get_mock):
-        # type: (Mock) -> None
         get_mock.side_effect = [
             Response(True, '[' + get_tier_account_request_contents + ']', 200),
             Response(True, get_tier_account_request_contents, 200)
@@ -46,13 +44,13 @@ class TestTierAccountRequest(unittest.TestCase):
             call(
                 headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
                 timeout=300,
-                url='http://localhost:8080/api/public/v1/tier/account-requests/TAR-6458-9737-0065-004-001')
+                url=('http://localhost:8080/api/public/'
+                     'v1/tier/account-requests/TAR-6458-9737-0065-004-001'))
         ])
         assert isinstance(tier_account_request, TierAccountRequest)
 
     @patch('requests.get')
     def test_get_tier_account_request_empty(self, get_mock):
-        # type: (Mock) -> None
         get_mock.return_value = Response(True, '[]', 200)
 
         request = TierAccountRequestResource(config=self.config)
@@ -63,13 +61,13 @@ class TestTierAccountRequest(unittest.TestCase):
             call(
                 headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
                 timeout=300,
-                url='http://localhost:8080/api/public/v1/tier/account-requests/TAR-0000-0000-0000-000-000')
+                url=('http://localhost:8080/api/public/v1/'
+                     'tier/account-requests/TAR-0000-0000-0000-000-000'))
         ])
         self.assertEqual(tier_account_request, [], msg=None)
 
     @patch('requests.get')
     def test_list_tier_account_request_ok(self, get_mock):
-        # type: (Mock) -> None
         get_mock.side_effect = [
             Response(True, list_tier_account_request_contents, 200)
         ]
@@ -87,10 +85,8 @@ class TestTierAccountRequest(unittest.TestCase):
 
     @patch('requests.post')
     def test_create_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, create_tier_account_request_response, 200)
         body = create_tier_account_request_body
-        # print(body)
         request = TierAccountRequestResource(config=self.config)
         tier_account_request = request.create(body)
         post_mock.assert_called_with(
@@ -102,7 +98,6 @@ class TestTierAccountRequest(unittest.TestCase):
 
     @patch('requests.post')
     def test_accept_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, accept_tier_account_request_response, 200)
         request = TierAccountRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -111,13 +106,12 @@ class TestTierAccountRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            url='http://localhost:8080/api/public/v1/tier/account-requests/TAR-6458-9737-0065-004-001/accept')
-        # print(tier_account_request) 
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/account-requests/TAR-6458-9737-0065-004-001/accept'))
         assert tier_account_request.id == 'TAR-6458-9737-0065-004-001'
 
     @patch('requests.post')
     def test_ignore_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, ignore_tier_account_request_response, 200)
         request = TierAccountRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-005-001'
@@ -127,7 +121,8 @@ class TestTierAccountRequest(unittest.TestCase):
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
             json={'reason': 'some reason'},
-            url='http://localhost:8080/api/public/v1/tier/account-requests/TAR-6458-9737-0065-005-001/ignore')
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/account-requests/TAR-6458-9737-0065-005-001/ignore'))
         assert tier_account_request.id == 'TAR-6458-9737-0065-005-001'
 
 

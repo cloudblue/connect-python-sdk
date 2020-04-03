@@ -3,9 +3,6 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
-import datetime
-from typing import Optional
-
 from .base import BaseModel
 from .schemas import StatsSchema
 
@@ -15,8 +12,8 @@ class Stats(BaseModel):
 
     _schema = StatsSchema()
 
-    vendor = None # type: Company
+    vendor = None  # type: object
     """ (:py:class:`.Company`) Vendor. """
 
-    provider = None # type: Company
+    provider = None  # type: object
     """ (:py:class:`.Company`) Provider. """

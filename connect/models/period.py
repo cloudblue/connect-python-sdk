@@ -15,14 +15,14 @@ class Period(BaseModel):
 
     _schema = PeriodSchema()
 
-    period_from = None  # type: date
-    """ (date) Period From. """
+    period_from = None  # type: Optional[datetime.date]
+    """ (datetime.date) Period From. """
 
-    period_to = None  # type: date
-    """ (date) Period To. """
+    period_to = None  # type: Optional[datetime.date]
+    """ (datetime.date) Period To. """
 
-    delta = None  # type: string
+    delta = None  # type: str
     """ (string) Period Delta. """
 
-    uom = None  # type: string
+    uom = None  # type: str
     """ (string) Period uom. """

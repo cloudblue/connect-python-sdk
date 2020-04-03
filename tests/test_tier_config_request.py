@@ -21,13 +21,14 @@ list_tier_config_request_contents = load_str(
 create_tier_config_request_body = load_str(
     os.path.join(os.path.dirname(__file__), 'data', 'create_tier_config_request_body.json'))
 
+
 class TestTierConfigRequest(unittest.TestCase):
     def setUp(self):
         self.config = Config(file='tests/config.json')
-   
+
     @patch('requests.get')
     def test_get_tier_config_request_ok(self, get_mock):
-        # type: (Mock) -> None
+
         get_mock.side_effect = [
             Response(True, '[' + get_tier_config_request_contents + ']', 200),
             Response(True, get_tier_config_request_contents, 200)
@@ -46,10 +47,9 @@ class TestTierConfigRequest(unittest.TestCase):
             )
         ])
         assert isinstance(tier_config_request, TierConfigRequest)
-    
+
     @patch('requests.get')
     def test_list_tier_config_request_ok(self, get_mock):
-        # type: (Mock) -> None
         get_mock.side_effect = [
             Response(True, list_tier_config_request_contents, 200)
         ]
@@ -67,10 +67,8 @@ class TestTierConfigRequest(unittest.TestCase):
 
     @patch('requests.post')
     def test_create_tier_config_request(self, post_mock):
-        # type: (Mock) -> None
         body_return = get_tier_config_request_contents
         post_mock.return_value = Response(True, body_return, 201)
-        # print(body)
         request = TierConfigRequestResource(config=self.config)
         tier_config_request = request.create(create_tier_config_request_body)
         post_mock.assert_called_with(
@@ -80,10 +78,8 @@ class TestTierConfigRequest(unittest.TestCase):
             url='http://localhost:8080/api/public/v1/tier/config-requests')
         assert tier_config_request.id == 'TCR-195-110-021-001'
 
-    
     @patch('requests.post')
     def test_inquire_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, '', 204)
         request = TierConfigRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -92,12 +88,12 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/inquire')
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/inquire'))
         assert tier_config_request == ('', 204)
 
     @patch('requests.post')
     def test_pending_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, '', 200)
         request = TierConfigRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -106,12 +102,12 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/pend')
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/pend'))
         assert tier_config_request == ('', 200)
 
     @patch('requests.post')
     def test_assign_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, '', 200)
         request = TierConfigRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -120,12 +116,12 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/assign')
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/assign'))
         assert tier_config_request == ('', 200)
 
     @patch('requests.post')
     def test_unassign_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         post_mock.return_value = Response(True, '', 200)
         request = TierConfigRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -134,14 +130,14 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/unassign')
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/unassign'))
         assert tier_config_request == ('', 200)
 
     @patch('requests.post')
     def test_approve_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         body_request = {"template": {"id": "TP-1234-123-123"}}
-        body_response = {"template": {"id": "TP-123-123-123", "representation": "Rendered template" }}
+        body_response = {"template": {"id": "TP-123-123-123", "representation": "Rendered"}}
         post_mock.return_value = Response(True, body_response, 200)
         request = TierConfigRequestResource(config=self.config)
         id_tar = 'TAR-6458-9737-0065-004-001'
@@ -150,13 +146,13 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            json=body_request, 
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/approve')
+            json=body_request,
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/approve'))
         assert tier_config_request == (body_response, 200)
 
     @patch('requests.post')
     def test_fail_tier_account_request(self, post_mock):
-        # type: (Mock) -> None
         body_request = {"reason": "some reason"}
         post_mock.return_value = Response(True, '', 204)
         request = TierConfigRequestResource(config=self.config)
@@ -166,9 +162,11 @@ class TestTierConfigRequest(unittest.TestCase):
         post_mock.assert_called_with(
             headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
             timeout=300,
-            json=body_request, 
-            url='http://localhost:8080/api/public/v1/tier/config-requests/TAR-6458-9737-0065-004-001/fail')
+            json=body_request,
+            url=('http://localhost:8080/api/public/v1/'
+                 'tier/config-requests/TAR-6458-9737-0065-004-001/fail'))
         assert tier_config_request == ('', 204)
+
 
 if __name__ == "__main__":
     unittest.main()

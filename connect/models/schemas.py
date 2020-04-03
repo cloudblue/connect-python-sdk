@@ -31,6 +31,7 @@ class ActivationSchema(BaseSchema):
         from connect.models import Activation
         return Activation(**data)
 
+
 class AgreementStatsSchema(BaseSchema):
     contracts = fields.Int()
     versions = fields.Int()
@@ -40,25 +41,28 @@ class AgreementStatsSchema(BaseSchema):
         from connect.models import AgreementStats
         return AgreementStats(**data)
 
+
 class PeriodSchema(BaseSchema):
     period_from = fields.DateTime(data_key='from')
     period_to = fields.DateTime(data_key='to')
     delta = fields.Decimal()
     uom = fields.Str()
-    
+
     @post_load
     def make_object(self, data):
         from connect.models import Period
         return Period(**data)
 
+
 class LastRequestSchema(BaseSchema):
     type = fields.String()
     period = fields.Nested(PeriodSchema)
-    
+
     @post_load
     def make_object(self, data):
         from connect.models import LastRequest
         return LastRequest(**data)
+
 
 class CompanySchema(BaseSchema):
     name = fields.Str()
@@ -364,7 +368,7 @@ class AgreementSchema(BaseSchema):
     parent = fields.Nested('AgreementSchema')
     marketplace = fields.Nested(MarketplaceSchema)
     name = fields.Str()
-    
+
     @post_load
     def make_object(self, data):
         from connect.models import Agreement
@@ -570,7 +574,6 @@ class TierAccountRequestSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import TierAccountRequest
         return TierAccountRequest(**data)
-
 
 
 class ConnectionSchema(BaseSchema):
@@ -779,14 +782,16 @@ class ConversationSchema(BaseSchema):
         from connect.models import Conversation
         return Conversation(**data)
 
+
 class AttributesSchema(BaseSchema):
     provider = fields.Nested(CompanySchema, only=('external_id'))
     vendor = fields.Nested(CompanySchema, only=('external_id'))
-    
+
     @post_load
     def make_object(self, data):
         from connect.models import Attributes
         return Attributes(**data)
+
 
 class AniversarySchema(BaseSchema):
     day = fields.Integer()
@@ -796,6 +801,7 @@ class AniversarySchema(BaseSchema):
     def make_object(self, data):
         from connect.models import Aniversary
         return Aniversary(**data)
+
 
 class StatSchema(BaseSchema):
     count = fields.Integer()
@@ -816,6 +822,7 @@ class StatsSchema(BaseSchema):
         from connect.models import Stats
         return Stats(**data)
 
+
 class BillingSchema(BaseSchema):
     stats = fields.Nested(StatsSchema)
     period = fields.Nested(PeriodSchema)
@@ -826,6 +833,7 @@ class BillingSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import Billing
         return Billing(**data)
+
 
 class BillingRequestSchema(BaseSchema):
     type = fields.String()
@@ -839,6 +847,7 @@ class BillingRequestSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import BillingRequest
         return BillingRequest(**data)
+
 
 class RecurringAssetSchema(BaseSchema):
     id = fields.String()
@@ -859,7 +868,3 @@ class RecurringAssetSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import RecurringAsset
         return RecurringAsset(**data)
-
-
-
-

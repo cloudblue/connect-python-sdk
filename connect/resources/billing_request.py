@@ -6,6 +6,7 @@
 from connect.models.billing_request import BillingRequest
 from .base import BaseResource
 
+
 class BillingRequestResource(BaseResource):
     """ Billing Request Request Resource. """
     resource = 'subscriptions/requests'
@@ -25,4 +26,3 @@ class BillingRequestResource(BaseResource):
             json=body
             )
         return response
-        

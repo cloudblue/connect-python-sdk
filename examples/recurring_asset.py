@@ -5,7 +5,7 @@
 import json
 from connect.config import Config
 from connect.resources.subscription import Subscription
-# from connect.resources.directory import Directory
+
 
 class RecurringAsset():
     configuration = Config(file='examples/config.json')
@@ -23,11 +23,10 @@ def main():
     recurring_asset_example = RecurringAsset()
     with open('./tests/data/tier_configuration_request.json') as json_file:
         data = json.load(json_file)
-    # tier_account_example.create_tier_account_request(data)
+    recurring_asset_example.create_tier_account_request(data)
     result = recurring_asset_example.get_recurring_asset('AS-3110-7077-0368')
     print(result.status)
-    
-    # for element in result
-    #     print(element.status)
+
+
 if __name__ == '__main__':
     main()

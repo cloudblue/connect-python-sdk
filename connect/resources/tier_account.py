@@ -15,6 +15,7 @@ class TierAccountResource(BaseResource):
     resource = 'tier/accounts'
     model_class = TierAccount
 
+
 class TierAccountRequestResource(BaseResource):
     """ Tier Account Request Resource. """
     resource = 'tier/account-requests'

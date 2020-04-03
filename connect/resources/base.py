@@ -5,7 +5,7 @@
 
 import functools
 import logging
-from typing import Any, List, Dict, Tuple, Union
+from typing import Any, List, Dict, Tuple
 
 import requests
 from requests import compat
@@ -152,7 +152,6 @@ class BaseResource(object):
             return objects[0]
         return objects
 
-
     def filters(self, **kwargs):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         filters = {}
@@ -173,7 +172,6 @@ class BaseResource(object):
             self.logger.info('Get list request with filters - {}'.format(filters))
             response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
-
 
     def create(self, obj):
         response, _ = self._api.post(json=obj)

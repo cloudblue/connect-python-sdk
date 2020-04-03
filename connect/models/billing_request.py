@@ -6,6 +6,7 @@
 from .base import BaseModel
 from .schemas import BillingRequestSchema
 
+
 class BillingRequest(BaseModel):
     """ BillingRequest object. """
 
@@ -14,17 +15,17 @@ class BillingRequest(BaseModel):
     type = None  # type: [str]
     """ (vendor|provider) Billing Request type. """
 
-    events = None  # type: obj
-    """ (obj) Billing Request Events. """
+    events = None  # type: object
+    """ (object) Billing Request Events. """
 
-    asset = None  # type: obj
-    """ (obj) Billing Request Asset. """
+    asset = None  # type: object
+    """ (object) Billing Request Asset. """
 
-    item = None  # type: obj
-    """ (obj) Billing Request Item. """
+    item = None  # type: object
+    """ (object) Billing Request Item. """
 
-    asset = None  # type: obj
-    """ (obj) Billing Request Asset. """
+    asset = None  # type: object
+    """ (object) Billing Request Asset. """
 
-    period = None  # type: obj
-    """ (obj) Billing Request Period. """
+    period = None  # type: object
+    """ (object) Billing Request Period. """

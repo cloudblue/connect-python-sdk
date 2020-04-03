@@ -3,9 +3,6 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2020 Ingram Micro. All Rights Reserved.
 
-import datetime
-from typing import Optional
-
 from .base import BaseModel
 from .schemas import StatSchema
 
@@ -15,8 +12,8 @@ class Stat(BaseModel):
 
     _schema = StatSchema()
 
-    count = None # type: Int
+    count = None  # type: int
     """ (Int) Count. """
 
-    last_request = None # type: last_request
+    last_request = None  # type: last_request
     """ (:py:class:`.LastRequest`) Last Request. """

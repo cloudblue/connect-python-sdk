@@ -8,6 +8,7 @@ from connect.resources.tier_account_request_automation import (
 )
 from connect.config import Config
 
+
 class MyExampleTARAutomation(TierAccountRequestAutomation):
     def process_request(self, request):
         if request.account.contact_info.country == 'AR':

@@ -14,11 +14,12 @@ class TierConfigResource(BaseResource):
     resource = 'tier/configs'
     model_class = TierConfig
 
+
 class TierConfigRequestResource(BaseResource):
     """ Tier Config Request Resource. """
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
-    
+
     def pend(self, id_tcr):
         """ Set a Tier Configuration Request to pend status.
         :param str id_tar: Primary key of the tier configuration request to set.
@@ -96,4 +97,3 @@ class TierConfigRequestResource(BaseResource):
             raise ValueError('Tier Configuration Request not exist')
         response = self._api.post(path='{}/unassign'.format(id_tcr))
         return response
-        

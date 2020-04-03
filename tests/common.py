@@ -19,6 +19,7 @@ def load_str(filename):
     except IOError:
         return None
 
+
 def load_json(filename):
     try:
         with open(filename) as file_handle:

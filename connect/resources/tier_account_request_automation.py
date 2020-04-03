@@ -12,10 +12,9 @@ from connect.resources.fulfillment import Fulfillment
 class TierAccountRequestAction:
     """ This is the automation engine for the Tier Account Request API.  If you want to process
     Tier Account requests, subclass this and implement the ``process_request`` method,
-    which receives a :py:class:`connect.models.TierAccountRequest` request as argument and returns 
-    a collection of Tier Account Request Object, this is processed calling to method dispatch and 
+    which receives a :py:class:`connect.models.TierAccountRequest` request as argument and returns
+    a collection of Tier Account Request Object, this is processed calling to method dispatch and
     redirect to proccess_request.
-    
     Create an instance of your subclass and call its ``process`` method to begin processing.
 
     For an example on how to use this class, see :ref:`tier_account_example`.
@@ -38,6 +37,7 @@ class TierAccountRequestAction:
     def data(self):
         return self._data
 
+
 class TierAccountRequestAutomation:
     logger = logging.getLogger(__name__)
 
@@ -45,7 +45,6 @@ class TierAccountRequestAutomation:
         self.config = config
         self.fulfillment = Fulfillment(config=self.config)
 
-    
     def process(self, filters=None):
         for request in self.fulfillment.search_tier_account_requests(
                 filters or dict(status='pending')

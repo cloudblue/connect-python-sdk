@@ -6,19 +6,20 @@
 from .base import BaseModel
 from .schemas import BillingSchema
 
+
 class Billing(BaseModel):
     """ Billing object. """
 
     _schema = BillingSchema()
 
-    stats = None  # type: Stats
+    stats = None  # type: object
     """ (:py:class:`.Stats`) Stats of companySchema. """
 
-    period = None  # type: Period
+    period = None  # type: object
     """ (:py:class:`.Period`) Period of the billing. """
 
     next_date = None  # type: str
     """ (str) Next date of the billing. """
 
-    aniversary = None  # type: Aniversary
+    aniversary = None  # type: object
     """ (:py:class:`.Aniversary`) Aniversary. """

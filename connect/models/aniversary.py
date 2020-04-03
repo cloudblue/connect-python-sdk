@@ -6,6 +6,7 @@
 from .base import BaseModel
 from .schemas import AniversarySchema
 
+
 class Aniversary(BaseModel):
     """ An Aniversary object. """
 

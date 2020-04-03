@@ -6,6 +6,7 @@
 from .base import BaseModel
 from .schemas import TierAccountRequestSchema
 
+
 class TierAccountRequest(BaseModel):
     """ Tier account request. """
     _schema = TierAccountRequestSchema()

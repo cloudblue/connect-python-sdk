@@ -7,6 +7,7 @@ from connect.config import Config
 from connect.resources.fulfillment import Fulfillment
 from connect.resources.directory import Directory
 
+
 class TierAccountRequest():
     configuration = Config(file='examples/config.json')
 
@@ -37,11 +38,14 @@ class TierAccountRequest():
         response = tier.create_tier_account_request(data)
         print(response)
 
+
 def main():
     tier_account_example = TierAccountRequest()
     with open('./tests/data/tier_configuration_request.json') as json_file:
         data = json.load(json_file)
-    # tier_account_example.create_tier_account_request(data)
+    tier_account_example.create_tier_account_request(data)
     print(tier_account_example.get_tier_account())
+
+
 if __name__ == '__main__':
     main()

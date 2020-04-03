@@ -6,16 +6,17 @@
 from .base import BaseModel
 from .schemas import RecurringAssetSchema
 
+
 class RecurringAsset(BaseModel):
     """ RecurringAsset object. """
 
     _schema = RecurringAssetSchema()
 
-    status = None  # type: ([)str)
+    status = None  # type: (str)
     """ (vendor|provider) Billing Request status. """
 
-    events = None  # type: obj
-    """ (obj) Billing Request Events. """
+    events = None  # type: (object)
+    """ (object) Billing Request Events. """
 
     external_id = None  # type: (str)
     """ (str) External Id. """
@@ -23,26 +24,26 @@ class RecurringAsset(BaseModel):
     external_uuid = None  # type: (str)
     """ (str) External uuId. """
 
-    product = None  # type: obj
-    """ (obj) product. """
+    product = None  # type: (object)
+    """ (object) product. """
 
-    connection = None  # type: obj
-    """ (obj) Billing Request connection. """
+    connection = None  # type: (object)
+    """ (object) Billing Request connection. """
 
-    items = None  # type: obj
-    """ (obj) Billing Request Item. """
+    items = None  # type: (object)
+    """ (object) Billing Request Item. """
 
-    params = None  # type: obj
-    """ (obj) Billing Request Params. """
+    params = None  # type: (object)
+    """ (object) Billing Request Params. """
 
-    tiers = None  # type: obj
-    """ (obj) Billing Request tiers. """
+    tiers = None  # type: (object)
+    """ (object) Billing Request tiers. """
 
-    marketplace = None  # type: obj
-    """ (obj) Billing Request marketplace. """  
-    
-    contract = None  # type: obj
-    """ (obj) Billing Request Contract. """
+    marketplace = None  # type: (object)
+    """ (object) Billing Request marketplace. """
 
-    billing = None  # type: obj
-    """ (obj) Billing Request billing. """
+    contract = None  # type: (object)
+    """ (object) Billing Request Contract. """
+
+    billing = None  # type: (object)
+    """ (object) Billing Request billing. """
