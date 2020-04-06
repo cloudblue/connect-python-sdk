@@ -53,7 +53,6 @@ class ApiClient(object):
     def get_url(self, path=''):
         # type: (str) -> str
         url = self.urljoin(self.config.api_url, self.base_path, path)
-        print(url)
         return url
 
     @staticmethod
@@ -182,13 +181,12 @@ class BaseResource(object):
         """ Update Object
         :param str id_item: Primary key of the object request to update.
         :param str body: Object to update.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: Object updated.
         """
         if not id_obj:
-            raise ValueError('Object Request not exist')
+            raise ValueError('ID not valid')
         response = self._api.put(
-            path='{}/attributes'.format(id_obj),
+            path='{}'.format(id_obj),
             json=body
             )
         return response

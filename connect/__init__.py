@@ -37,13 +37,6 @@ name = 'connect'
 
 
 __all__ = [
-    'config',
-    'exceptions',
-    'logger',
-    'models',
-    'resources',
-    'rql',
     'FulfillmentAutomation',
-    'TierConfigAutomation',
-    'TierRequestAutomation',
+    'TierConfigAutomation'
 ]

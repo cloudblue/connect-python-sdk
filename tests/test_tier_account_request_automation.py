@@ -36,9 +36,6 @@ def _get_response_get():
 
 class MyExampleTARAutomation(TierAccountRequestAutomation):
     def process_request(self, request):
-        print('====================================')
-        print(request.id, request.account.contact_info.country)
-        print('====================================')
         if request.account.contact_info.country == 'ES':
             return TierAccountRequestAction(TierAccountRequestAction.ACCEPT)
         elif request.account.contact_info.country == 'IT':

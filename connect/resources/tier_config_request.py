@@ -23,22 +23,20 @@ class TierConfigRequestResource(BaseResource):
     def pend(self, id_tcr):
         """ Set a Tier Configuration Request to pend status.
         :param str id_tar: Primary key of the tier configuration request to set.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: 204, Empty response
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(path='{}/pend'.format(id_tcr))
         return response
 
     def inquire(self, id_tcr):
         """ Set a Tier Configuration Request to inquire status.
         :param str id_tar: Primary key of the tier configuration request to set.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: 204, Empty response
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(path='{}/inquire'.format(id_tcr))
         return response
 
@@ -46,11 +44,10 @@ class TierConfigRequestResource(BaseResource):
         """ Approve a Tier Configuration Request
         :param str id_tcr: Primary key of the tier configuration request to approve.
         :param str id_template: Primary key of the template.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: Template object.
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(
             path='{}/approve'.format(id_tcr),
             json={
@@ -64,11 +61,10 @@ class TierConfigRequestResource(BaseResource):
         """ Set fail a Tier Configuration Request
         :param str id_tar: Primary key of the tier configuration request to ignore.
         :param str reason: Reason of the fail.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: 204, Empty response
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(
             path='{}/fail'.format(id_tcr),
             json={
@@ -79,21 +75,19 @@ class TierConfigRequestResource(BaseResource):
     def assign(self, id_tcr):
         """ Assign a Tier Configuration Request.
         :param str id_tar: Primary key of the tier configuration request to set.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: 204, Empty response
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(path='{}/assign'.format(id_tcr))
         return response
 
     def unassign(self, id_tcr):
         """ Unassign a Tier Configuration Request.
         :param str id_tar: Primary key of the tier configuration request to set.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: 204, Empty response
         """
         if not id_tcr:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.post(path='{}/unassign'.format(id_tcr))
         return response

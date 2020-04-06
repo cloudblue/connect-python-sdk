@@ -18,25 +18,22 @@ class TierAccountRequest():
     def get_tier_account(self):
         tier = Directory(config=self.configuration)
         t_account = tier.get_tier_account('TA-6458-9737-0065')
-        print(t_account.id)
-        print(t_account.external_id)
-        print(t_account.external_uid)
-        print(t_account.contact_info.address_line1)
+        return t_account.id
 
     def accept_tier_account_request(self, id_tar):
         tier = Fulfillment(config=self.configuration)
         response = tier.accept_tier_account_request(id_tar)
-        print(response)
+        return response
 
     def ignore_tier_account_request(self, id_tar, reason):
         tier = Fulfillment(config=self.configuration)
         response = tier.ignore_tier_account_request(id_tar, reason)
-        print(response)
+        return response
 
     def create_tier_account_request(self, data):
         tier = Fulfillment(config=self.configuration)
         response = tier.create_tier_account_request(data)
-        print(response)
+        return response
 
 
 def main():

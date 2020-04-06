@@ -16,11 +16,10 @@ class BillingRequestResource(BaseResource):
         """ Update Billing Request Attribute
         :param str id_billing_request: Primary key of the billing request to update.
         :param str body: Obj to update.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: Billing Request Attributes Object.
         """
         if not id_billing_request:
-            raise ValueError('Billing Request not exist')
+            raise ValueError('Invalid ID')
         response = self._api.put(
             path='{}/attributes'.format(id_billing_request),
             json=body

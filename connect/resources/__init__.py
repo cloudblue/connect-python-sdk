@@ -24,5 +24,4 @@ __all__ = [
     'Subscription',
     'BillingRequest',
     'RecurringAsset'
-    # 'DirectoryExample',
 ]

@@ -24,22 +24,20 @@ class TierAccountRequestResource(BaseResource):
     def accept(self, id_tar):
         """ Accept a Tier Configuration Request.
         :param str id_tar: Primary key of the tier configuration request to accept.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: Tier Account Request object.
         """
         if not id_tar:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response, _ = self._api.post(path='{}/accept'.format(id_tar))
         return self.model_class.deserialize(response)
 
     def ignore(self, id_tar, reason):
         """ Ignore a Tier Configuration Request
         :param str id_tar: Primary key of the tier configuration request to ignore.
-        :return: ActivationTileResponse object with tile contents.
-        :rtype: ActivationTileResponse
+        :return: Tier Account Request object.
         """
         if not id_tar:
-            raise ValueError('Tier Configuration Request not exist')
+            raise ValueError('Invalid ID')
         response, _ = self._api.post(
             path='{}/ignore'.format(id_tar),
             json={

@@ -16,7 +16,9 @@ class TierAccountRequestAction:
     a collection of Tier Account Request Object, this is processed calling to method dispatch and
     redirect to proccess_request.
     Create an instance of your subclass and call its ``process`` method to begin processing.
-
+    The method process_request implements the business logic and depending of the evaluation, 
+    will invoque the methods ACCEPT, IGNORE or SKIP for each TAR. 
+ 
     For an example on how to use this class, see :ref:`tier_account_example`.
     """
     ACCEPT = 'accept'
