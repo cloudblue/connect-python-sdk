@@ -13,7 +13,7 @@ class Billing(BaseModel):
     _schema = BillingSchema()
 
     stats = None  # type: object
-    """ (:py:class:`.Stats`) Stats of companySchema. """
+    """ (:py:class:`.Stats`) BillingStats of companySchema. """
 
     period = None  # type: object
     """ (:py:class:`.Period`) Period of the billing. """

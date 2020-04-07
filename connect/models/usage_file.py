@@ -10,6 +10,7 @@ from .events import Events
 from .marketplace import Marketplace
 from .product import Product
 from .usage_records import UsageRecords
+from .usage_stats import UsageStats
 from .schemas import UsageFileSchema
 
 
@@ -34,13 +35,25 @@ class UsageFile(BaseModel):
     pending, accepted, closed.
     """
 
+    period_from = None  # type: str
+    """ (str) Date & time from which usage records are considered in this usage file. """
+
+    period_to = None  # type: str
+    """ (str) Date & time from which usage records are considered in this usage file. """
+
+    currency = None  # type: str
+    """ (str) Currency of the amount included in usage file. """
+
+    schema = None  # type: str
+    """ (str)Usage Scheme used for the usage file. """
+
     created_by = None  # type: str
     """ (str) User ID who have created this UsageFile. """
 
     created_at = None  # type: str
     """ (str) Date of the creation of the UsageFile. """
 
-    upload_file_uri = None  # type: str
+    usage_file_uri = None  # type: str
     """ (str) Google Storage shared location of the upload file. Only available in GET API
     and not included in list API (sharing timeout 600 sec).
     """
@@ -75,8 +88,17 @@ class UsageFile(BaseModel):
     """ (str) In case of invalid file, this field will contain errors related to the file. """
     # TODO: In the docs it is error_details, on PHP SDK it appears as error_detail
 
+    external_id = None  # type: str
+    """ (str) External ID of the file. """
+
+    stats = None  # type: UsageStats
+    """ (:py:class:`.UsageStats`) UsageStats Object. """
+
     records = None  # type: UsageRecords
     """ (:py:class:`.UsageRecords`) UsageRecords Object. """
 
     events = None  # type: Events
     """ (:py:class:`.Events`) Events occured on file. """
+
+    environment = None  # type: str
+    """ (str) Environment. """

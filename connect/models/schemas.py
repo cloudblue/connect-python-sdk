@@ -693,6 +693,7 @@ class TierConfigRequestSchema(BaseSchema):
 class UsageRecordsSchema(BaseSchema):
     valid = fields.Int()
     invalid = fields.Int()
+    closed = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -700,14 +701,32 @@ class UsageRecordsSchema(BaseSchema):
         return UsageRecords(**data)
 
 
+class UsageStatsSchema(BaseSchema):
+    uploaded = fields.Str()
+    validated = fields.Str()
+    pending = fields.Str()
+    accepted = fields.Str()
+    closed = fields.Str()
+    invalid = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import UsageStats
+        return UsageStats(**data)
+
+
 class UsageFileSchema(BaseSchema):
     name = fields.Str()
     description = fields.Str()
     note = fields.Str()
     status = fields.Str()
+    period_from = fields.Str()
+    period_to = fields.Str()
+    currency = fields.Str()
+    schema = fields.Str()
     created_by = fields.Str()
     created_at = fields.Str()
-    upload_file_uri = fields.Str()
+    usage_file_uri = fields.Str()
     processed_file_uri = fields.Str()
     product = fields.Nested(ProductSchema)
     contract = fields.Nested(ContractSchema)
@@ -717,6 +736,8 @@ class UsageFileSchema(BaseSchema):
     acceptance_note = fields.Str()
     rejection_note = fields.Str()
     error_details = fields.Str()
+    external_id = fields.Str()
+    stats = fields.Nested(UsageStatsSchema)
     records = fields.Nested(UsageRecordsSchema)
     events = fields.Nested(EventsSchema)
 
@@ -744,13 +765,22 @@ class UsageListingSchema(BaseSchema):
 
 class UsageRecordSchema(BaseSchema):
     usage_record_id = fields.Str()
+    usage_record_note = fields.Str()
     item_search_criteria = fields.Str()
     item_search_value = fields.Str()
-    quantity = fields.Int()
+    amount = fields.Str()
+    quantity = fields.Str()
     start_time_utc = fields.Str()
     end_time_utc = fields.Str()
     asset_search_criteria = fields.Str()
     asset_search_value = fields.Str()
+    item_name = fields.Str()
+    item_npm = fields.Str()
+    item_unit = fields.Str()
+    item_precision = fields.Str()
+    category_id = fields.Str()
+    asset_recon_id = fields.Str()
+    tier = fields.Str()
 
     @post_load
     def make_object(self, data):

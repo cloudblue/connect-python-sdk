@@ -58,6 +58,7 @@ from .usage_file import UsageFile
 from .usage_listing import UsageListing
 from .usage_record import UsageRecord
 from .usage_records import UsageRecords
+from .usage_stats import UsageStats
 from .user import User
 from .value_choice import ValueChoice
 from .billing_request import BillingRequest
@@ -126,6 +127,7 @@ __all__ = [
     'UsageListing',
     'UsageRecord',
     'UsageRecords',
+    'UsageStats',
     'User',
     'ValueChoice',
 ]

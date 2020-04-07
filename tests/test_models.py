@@ -224,8 +224,8 @@ def test_get_tier_config(get_mock):
         timeout=300,
         params={
             'status': 'approved',
-            'configuration__product__id': 'product_id',
-            'configuration__account__id': 'account_id'})
+            'configuration.product.id': 'product_id',
+            'configuration.account.id': 'account_id'})
 
 
 @patch('requests.get', MagicMock(return_value=Response(ok=True, text='[]', status_code=200)))

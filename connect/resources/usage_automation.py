@@ -154,23 +154,39 @@ class UsageAutomation(AutomationEngine):
         sheet = book.active
         sheet.title = 'usage_records'
         sheet['A1'] = 'record_id'
-        sheet['B1'] = 'item_search_criteria'
-        sheet['C1'] = 'item_search_value'
-        sheet['D1'] = 'quantity'
-        sheet['E1'] = 'start_time_utc'
-        sheet['F1'] = 'end_time_utc'
-        sheet['G1'] = 'asset_search_criteria'
-        sheet['H1'] = 'asset_search_value'
+        sheet['B1'] = 'record_note'
+        sheet['C1'] = 'item_search_criteria'
+        sheet['D1'] = 'item_search_value'
+        sheet['E1'] = 'amount'
+        sheet['F1'] = 'quantity'
+        sheet['G1'] = 'start_time_utc'
+        sheet['H1'] = 'end_time_utc'
+        sheet['I1'] = 'asset_search_criteria'
+        sheet['J1'] = 'asset_search_value'
+        sheet['K1'] = 'item_name'
+        sheet['L1'] = 'item_mpn'
+        sheet['M1'] = 'item_precision'
+        sheet['N1'] = 'category_id'
+        sheet['O1'] = 'asset_recon_id'
+        sheet['P1'] = 'tier'
         for index, record in enumerate(usage_records):
             row = str(index + 2)
             sheet['A' + row] = record.usage_record_id
-            sheet['B' + row] = record.item_search_criteria
-            sheet['C' + row] = record.item_search_value
-            sheet['D' + row] = record.quantity
-            sheet['E' + row] = record.start_time_utc
-            sheet['F' + row] = record.end_time_utc
-            sheet['G' + row] = record.asset_search_criteria
-            sheet['H' + row] = record.asset_search_value
+            sheet['B' + row] = record.usage_record_note
+            sheet['C' + row] = record.item_search_criteria
+            sheet['D' + row] = record.item_search_value
+            sheet['E' + row] = record.amount
+            sheet['F' + row] = record.quantity
+            sheet['G' + row] = record.start_time_utc
+            sheet['H' + row] = record.end_time_utc
+            sheet['I' + row] = record.asset_search_criteria
+            sheet['J' + row] = record.asset_search_value
+            sheet['K' + row] = record.item_name
+            sheet['L' + row] = record.item_npm
+            sheet['M' + row] = record.item_precision
+            sheet['N' + row] = record.category_id
+            sheet['O' + row] = record.asset_recon_id
+            sheet['P' + row] = record.tier
         return book
 
     def _upload_spreadsheet(self, usage_file, spreadsheet):

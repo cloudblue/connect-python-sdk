@@ -159,8 +159,8 @@ class FulfillmentAutomation(AutomationEngine):
         url = self._api.urljoin(self.config.api_url, 'tier/config-requests')
         params = {
             'status': 'approved',
-            'configuration__product__id': product_id,
-            'configuration__account__id': tier_id,
+            'configuration.product.id': product_id,
+            'configuration.account.id': tier_id,
         }
         response, _ = self._api.get(url=url, params=params)
         objects = TierConfigRequest.deserialize(response)
