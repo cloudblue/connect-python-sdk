@@ -8,7 +8,7 @@ from .activation_template_response import ActivationTemplateResponse
 from .activation_tile_response import ActivationTileResponse
 from .agreement import Agreement
 from .agreement_stats import AgreementStats
-from .aniversary import Aniversary
+from .anniversary import Anniversary
 from .asset import Asset
 from .base import BaseModel
 from .billing import Billing
@@ -73,7 +73,7 @@ __all__ = [
     'ActivationTileResponse',
     'Agreement',
     'AgreementStats',
-    'Aniversary',
+    'Anniversary',
     'Asset',
     'Attributes',
     'BaseModel',

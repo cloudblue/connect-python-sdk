@@ -21,5 +21,5 @@ class Billing(BaseModel):
     next_date = None  # type: str
     """ (str) Next date of the billing. """
 
-    aniversary = None  # type: object
-    """ (:py:class:`.Aniversary`) Aniversary. """
+    anniversary = None  # type: object
+    """ (:py:class:`.Anniversary`) Anniversary. """

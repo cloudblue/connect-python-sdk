@@ -823,14 +823,14 @@ class AttributesSchema(BaseSchema):
         return Attributes(**data)
 
 
-class AniversarySchema(BaseSchema):
+class AnniversarySchema(BaseSchema):
     day = fields.Integer()
     month = fields.Integer()
 
     @post_load
     def make_object(self, data):
-        from connect.models import Aniversary
-        return Aniversary(**data)
+        from connect.models import Anniversary
+        return Anniversary(**data)
 
 
 class StatSchema(BaseSchema):
@@ -857,7 +857,7 @@ class BillingSchema(BaseSchema):
     stats = fields.Nested(StatsSchema)
     period = fields.Nested(PeriodSchema)
     next_date = fields.DateTime()
-    aniversary = fields.Nested(AniversarySchema)
+    anniversary = fields.Nested(AnniversarySchema)
 
     @post_load
     def make_object(self, data):
