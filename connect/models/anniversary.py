@@ -4,16 +4,16 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from .base import BaseModel
-from .schemas import AniversarySchema
+from .schemas import AnniversarySchema
 
 
-class Aniversary(BaseModel):
-    """ An Aniversary object. """
+class Anniversary(BaseModel):
+    """ An Anniversary object. """
 
-    _schema = AniversarySchema()
+    _schema = AnniversarySchema()
 
     day = None  # type: str
-    """ (str) Day of the aniversay. """
+    """ (str) Day of the anniversay. """
 
     month = None  # type: str
-    """ (str) Month of the aniversary. """
+    """ (str) Month of the anniversary. """
