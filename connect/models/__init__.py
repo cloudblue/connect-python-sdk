@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from .activation import Activation
 from .activation_template_response import ActivationTemplateResponse
 from .activation_tile_response import ActivationTileResponse
 from .agreement import Agreement
 from .agreement_stats import AgreementStats
+from .anniversary import Anniversary
 from .asset import Asset
 from .base import BaseModel
+from .billing import Billing
 from .company import Company
 from .configuration import Configuration
 from .connection import Connection
@@ -31,6 +33,7 @@ from .hub import Hub
 from .hub_instance import HubInstance
 from .hub_stats import HubStats
 from .item import Item
+from .last_request import LastRequest
 from .marketplace import Marketplace
 from .param import Param
 from .phone_number import PhoneNumber
@@ -43,17 +46,26 @@ from .product_stats import ProductStats
 from .product_stats_info import ProductStatsInfo
 from .renewal import Renewal
 from .server_error_response import ServerErrorResponse
+from .stat import Stat
+from .stats import Stats
 from .template import Template
 from .tier_account import TierAccount
 from .tier_accounts import TierAccounts
+from .tier_account_request import TierAccountRequest
 from .tier_config import TierConfig
 from .tier_config_request import TierConfigRequest
 from .usage_file import UsageFile
 from .usage_listing import UsageListing
 from .usage_record import UsageRecord
 from .usage_records import UsageRecords
+from .usage_stats import UsageStats
 from .user import User
 from .value_choice import ValueChoice
+from .billing_request import BillingRequest
+from .period import Period
+from .attributes import Attributes
+from .recurring_asset import RecurringAsset
+
 
 __all__ = [
     'Activation',
@@ -61,8 +73,12 @@ __all__ = [
     'ActivationTileResponse',
     'Agreement',
     'AgreementStats',
+    'Anniversary',
     'Asset',
+    'Attributes',
     'BaseModel',
+    'Billing',
+    'BillingRequest',
     'Company',
     'Configuration',
     'Connection',
@@ -84,8 +100,10 @@ __all__ = [
     'HubInstance',
     'HubStats',
     'Item',
+    'LastRequest',
     'Marketplace',
     'Param',
+    'Period',
     'PhoneNumber',
     'Product',
     'ProductCategory',
@@ -94,10 +112,14 @@ __all__ = [
     'ProductFamily',
     'ProductStats',
     'ProductStatsInfo',
+    'RecurringAsset',
     'Renewal',
     'ServerErrorResponse',
+    'Stat',
+    'Stats',
     'Template',
     'TierAccount',
+    'TierAccountRequest',
     'TierAccounts',
     'TierConfig',
     'TierConfigRequest',
@@ -105,6 +127,7 @@ __all__ = [
     'UsageListing',
     'UsageRecord',
     'UsageRecords',
+    'UsageStats',
     'User',
     'ValueChoice',
 ]

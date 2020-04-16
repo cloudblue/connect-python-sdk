@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
 import logging
@@ -17,7 +17,7 @@ from connect.models.param import Param
 from connect.models.fulfillment import Fulfillment
 from connect.models.tier_config_request import TierConfigRequest
 from connect.models.conversation import Conversation
-from .automation_engine import AutomationEngine
+from connect.resources.automation_engine import AutomationEngine
 
 
 class FulfillmentAutomation(AutomationEngine):
@@ -159,8 +159,8 @@ class FulfillmentAutomation(AutomationEngine):
         url = self._api.urljoin(self.config.api_url, 'tier/config-requests')
         params = {
             'status': 'approved',
-            'configuration__product__id': product_id,
-            'configuration__account__id': tier_id,
+            'configuration.product.id': product_id,
+            'configuration.account.id': tier_id,
         }
         response, _ = self._api.get(url=url, params=params)
         objects = TierConfigRequest.deserialize(response)

@@ -1,5 +1,5 @@
 {
     "apiEndpoint": "http://localhost:8080/api/public/v1/",
     "apiKey": "ApiKey XXXX:YYYYY",
-    "products": "CN-631-322-000"
+    "products": "CN-631-322-000" 
 }

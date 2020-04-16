@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
 import logging
@@ -45,13 +45,13 @@ class TierConfigAutomation(AutomationEngine):
         - type
         - status
         - id
-        - configuration__id
-        - configuration__tier_level
-        - configuration__account__id
-        - configuration__product__id
-        - assignee__id
+        - configuration.id
+        - configuration.tier_level
+        - configuration.account.id
+        - configuration.product.id
+        - assignee.id
         - unassigned (bool)
-        - configuration__account__external_uid
+        - configuration.account.external_uid
 
         :param str status: Status of the requests. Default: ``'pending'``.
         :param dict[str,Any] kwargs: Additional filters to add to the default ones.
@@ -60,7 +60,7 @@ class TierConfigAutomation(AutomationEngine):
         """
         filters = super(TierConfigAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
-            filters['configuration__product__id'] = ','.join(self.config.products)
+            filters['configuration.product.id'] = ','.join(self.config.products)
         return filters
 
     @function_log(custom_logger=logger)

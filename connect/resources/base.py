@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 import functools
 import logging
-from typing import Any, List, Dict, Tuple, Union
+from typing import Any, List, Dict, Tuple
 
 import requests
 from requests import compat
@@ -52,7 +52,8 @@ class ApiClient(object):
 
     def get_url(self, path=''):
         # type: (str) -> str
-        return self.urljoin(self.config.api_url, self.base_path, path)
+        url = self.urljoin(self.config.api_url, self.base_path, path)
+        return url
 
     @staticmethod
     def urljoin(*args):
@@ -148,6 +149,7 @@ class BaseResource(object):
         objects = self.model_class.deserialize(response)
         if isinstance(objects, list) and len(objects) > 0:
             return objects[0]
+        return objects
 
     def filters(self, **kwargs):
         # type: (Dict[str, Any]) -> Dict[str, Any]
@@ -158,8 +160,8 @@ class BaseResource(object):
             filters[key] = val
         return filters
 
-    def list(self, filters=None):
-        # type: (Union[Query, Dict[str, Any]]) -> List[Any]
+    def search(self, filters=None):
+        # type: (Dict[str, Any]) -> List[Any]
         filters = filters or self.filters()
         if isinstance(filters, Query):
             compiled = filters.compile()
@@ -169,3 +171,25 @@ class BaseResource(object):
             self.logger.info('Get list request with filters - {}'.format(filters))
             response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
+
+    def create(self, obj):
+        response, _ = self._api.post(json=obj)
+        objects = self.model_class.deserialize(response)
+        return objects
+
+    def update(self, id_obj, body):
+        """ Update Object
+        :param str id_item: Primary key of the object request to update.
+        :param str body: Object to update.
+        :return: Object updated.
+        """
+        if not id_obj:
+            raise ValueError('ID not valid')
+        response = self._api.put(
+            path='{}'.format(id_obj),
+            json=body
+            )
+        return response
+
+    def list(self, filters=None):
+        return self.search(filters)

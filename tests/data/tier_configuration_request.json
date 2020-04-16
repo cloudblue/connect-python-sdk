@@ -1,0 +1,28 @@
+{
+    "type": "update",
+    "account": {
+        "id": "TA-6458-9737-0065",
+        "external_id": "13110",
+        "external_uid" : "80ff5f75-c1a9-4b50-9110-9d80ee217471",
+        "name": "string",
+        "contact_info": {
+            "address_line1": "Yalı Mahallesi",
+            "address_line2": "",
+            "city": "Erdek",
+            "state": "string",
+            "postal_code": "10500",
+            "country": "tr",
+            "contact": {
+                "first_name": "Pirulo",
+                "last_name": "Long Running Operation",
+                "email": "qlro@softcom.com",
+                "phone_number": {
+                    "country_code": "+90",
+                    "area_code": "546",
+                    "phone_number": "6317546",
+                    "extension": ""
+                }
+            }
+        }
+    }
+}

@@ -29,14 +29,15 @@
       "id": "PA-587-127",
       "name": "ABC Corp"
     },
-    "upload_file_uri": "<File Location for uploaded file>",
+    "usage_file_uri": "<File Location for uploaded file>",
     "processed_file_uri": "<File Location for generated file>",
     "acceptance_note": "All usage data is correct",
     "rejection_note": "Rejected due to wrong usage for item 56",
     "error_details": "Error details in case of usage file is marked as invalid",
     "records": {
       "valid": 56,
-      "invalid": 0
+      "invalid": 0,
+      "closed": 0
     },
     "events": {
       "uploaded": {

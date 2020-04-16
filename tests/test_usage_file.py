@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 import os
 from datetime import datetime
@@ -70,7 +70,7 @@ def test_create_resource():
     assert provider.id == 'PA-587-127'
     assert provider.name == 'ABC Corp'
 
-    assert request.upload_file_uri == '<File Location for uploaded file>'
+    assert request.usage_file_uri == '<File Location for uploaded file>'
     assert request.processed_file_uri == '<File Location for generated file>'
     assert request.acceptance_note == 'All usage data is correct'
     assert request.rejection_note == 'Rejected due to wrong usage for item 56'

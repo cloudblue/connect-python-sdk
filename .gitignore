@@ -106,3 +106,7 @@ venv.bak/
 # idea
 .vscode/
 .idea/
+.devcontainer/
+.notes.txt
+notes.txt
+postcreate.sh

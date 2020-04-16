@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from marshmallow import Schema, fields, post_load
 import six
@@ -42,8 +42,31 @@ class AgreementStatsSchema(BaseSchema):
         return AgreementStats(**data)
 
 
+class PeriodSchema(BaseSchema):
+    period_from = fields.DateTime(data_key='from')
+    period_to = fields.DateTime(data_key='to')
+    delta = fields.Decimal()
+    uom = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Period
+        return Period(**data)
+
+
+class LastRequestSchema(BaseSchema):
+    type = fields.String()
+    period = fields.Nested(PeriodSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import LastRequest
+        return LastRequest(**data)
+
+
 class CompanySchema(BaseSchema):
     name = fields.Str()
+    count = fields.Integer()
 
     @post_load
     def make_object(self, data):
@@ -206,7 +229,7 @@ class HubSchema(BaseSchema):
 
 
 class ExternalIdField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         if isinstance(value, six.string_types):
             return value
         elif isinstance(value, int):
@@ -238,7 +261,7 @@ class RenewalSchema(BaseSchema):
 
 
 class QuantityField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         if isinstance(value, six.string_types):
             if value == 'unlimited':
                 return -1
@@ -327,9 +350,9 @@ class ItemSchema(BaseSchema):
 
 
 class AgreementSchema(BaseSchema):
-    type = fields.Str()
+    type = fields.String()
     title = fields.Str()
-    description = fields.Str()
+    description = fields.String()
     created = fields.DateTime()
     updated = fields.DateTime()
     owner = fields.Nested(CompanySchema)
@@ -508,6 +531,13 @@ class TierAccountSchema(BaseSchema):
     contact_info = fields.Nested(ContactInfoSchema)
     external_id = ExternalIdField()
     external_uid = fields.Str()
+    environment = fields.Str()
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
+    hub = fields.Nested(HubSchema, only=('id', 'name'))
+    version = fields.Int()
+
+    events = fields.Nested(EventsSchema)
+    scopes = fields.List(fields.Str())
 
     @post_load
     def make_object(self, data):
@@ -524,6 +554,25 @@ class TierAccountsSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import TierAccounts
         return TierAccounts(**data)
+
+
+class TierAccountRequestSchema(BaseSchema):
+    type = fields.Str()
+    status = fields.Str()
+    account = fields.Nested(TierAccountSchema)
+    provider = fields.Nested(CompanySchema, only=('id', 'name'))
+    vendor = fields.Nested(CompanySchema, only=('id', 'name'))
+    product = fields.Nested(ProductSchema, only=('id', 'icon', 'name', 'status'))
+    reason = fields.Str()
+    contact_info = fields.Nested(ContactInfoSchema)
+    external_id = ExternalIdField()
+    external_uid = fields.Str()
+    events = fields.Nested(EventsSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import TierAccountRequest
+        return TierAccountRequest(**data)
 
 
 class ConnectionSchema(BaseSchema):
@@ -563,7 +612,7 @@ class AssetSchema(BaseSchema):
 
 
 class AssigneeField(fields.Field):
-    def _deserialize(self, value, attr, obj, **kwargs):
+    def _deserialize(self, value, attr=None, data=None):
         from connect.models.user import User
         if isinstance(value, six.string_types):
             return value
@@ -641,6 +690,7 @@ class TierConfigRequestSchema(BaseSchema):
 class UsageRecordsSchema(BaseSchema):
     valid = fields.Int()
     invalid = fields.Int()
+    closed = fields.Int()
 
     @post_load
     def make_object(self, data):
@@ -648,14 +698,32 @@ class UsageRecordsSchema(BaseSchema):
         return UsageRecords(**data)
 
 
+class UsageStatsSchema(BaseSchema):
+    uploaded = fields.Str()
+    validated = fields.Str()
+    pending = fields.Str()
+    accepted = fields.Str()
+    closed = fields.Str()
+    invalid = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import UsageStats
+        return UsageStats(**data)
+
+
 class UsageFileSchema(BaseSchema):
     name = fields.Str()
     description = fields.Str()
     note = fields.Str()
     status = fields.Str()
+    period_from = fields.Str()
+    period_to = fields.Str()
+    currency = fields.Str()
+    schema = fields.Str()
     created_by = fields.Str()
     created_at = fields.Str()
-    upload_file_uri = fields.Str()
+    usage_file_uri = fields.Str()
     processed_file_uri = fields.Str()
     product = fields.Nested(ProductSchema)
     contract = fields.Nested(ContractSchema)
@@ -665,6 +733,8 @@ class UsageFileSchema(BaseSchema):
     acceptance_note = fields.Str()
     rejection_note = fields.Str()
     error_details = fields.Str()
+    external_id = fields.Str()
+    stats = fields.Nested(UsageStatsSchema)
     records = fields.Nested(UsageRecordsSchema)
     events = fields.Nested(EventsSchema)
 
@@ -692,13 +762,22 @@ class UsageListingSchema(BaseSchema):
 
 class UsageRecordSchema(BaseSchema):
     usage_record_id = fields.Str()
+    usage_record_note = fields.Str()
     item_search_criteria = fields.Str()
     item_search_value = fields.Str()
+    amount = fields.Int()
     quantity = fields.Int()
     start_time_utc = fields.Str()
     end_time_utc = fields.Str()
     asset_search_criteria = fields.Str()
     asset_search_value = fields.Str()
+    item_name = fields.Str()
+    item_npm = fields.Str()
+    item_unit = fields.Str()
+    item_precision = fields.Str()
+    category_id = fields.Str()
+    asset_recon_id = fields.Str()
+    tier = fields.Str()
 
     @post_load
     def make_object(self, data):
@@ -729,3 +808,90 @@ class ConversationSchema(BaseSchema):
     def make_object(self, data):
         from connect.models import Conversation
         return Conversation(**data)
+
+
+class AttributesSchema(BaseSchema):
+    provider = fields.Nested(CompanySchema, only=('external_id'))
+    vendor = fields.Nested(CompanySchema, only=('external_id'))
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Attributes
+        return Attributes(**data)
+
+
+class AnniversarySchema(BaseSchema):
+    day = fields.Integer()
+    month = fields.Integer()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Anniversary
+        return Anniversary(**data)
+
+
+class StatSchema(BaseSchema):
+    count = fields.Integer()
+    last_request = fields.Nested(LastRequestSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Stat
+        return Stat(**data)
+
+
+class StatsSchema(BaseSchema):
+    provider = fields.Nested(StatSchema)
+    vendor = fields.Nested(StatSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Stats
+        return Stats(**data)
+
+
+class BillingSchema(BaseSchema):
+    stats = fields.Nested(StatsSchema)
+    period = fields.Nested(PeriodSchema)
+    next_date = fields.DateTime()
+    anniversary = fields.Nested(AnniversarySchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Billing
+        return Billing(**data)
+
+
+class BillingRequestSchema(BaseSchema):
+    type = fields.String()
+    events = fields.Nested(EventsSchema, only=('created', 'updated'))
+    asset = fields.Nested(AssetSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    attributes = fields.Nested(AttributesSchema)
+    period = fields.Nested(PeriodSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import BillingRequest
+        return BillingRequest(**data)
+
+
+class RecurringAssetSchema(BaseSchema):
+    id = fields.String()
+    status = fields.String()
+    events = fields.Nested(EventsSchema, only=('created', 'updated'))
+    external_id = fields.String()
+    external_uuid = fields.String()
+    product = fields.Nested(ProductSchema, only=('id', 'name', 'status', 'icon'))
+    connection = fields.Nested(ConnectionSchema)
+    items = fields.Nested(ItemSchema, many=True)
+    params = fields.Nested(ParamSchema, many=True)
+    tiers = fields.Nested(TierAccountSchema)
+    marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
+    contract = fields.Nested(ContractSchema, only=('id', 'name'))
+    billing = fields.Nested(BillingSchema)
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import RecurringAsset
+        return RecurringAsset(**data)

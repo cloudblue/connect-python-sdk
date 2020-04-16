@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from copy import copy
 
@@ -10,6 +10,7 @@ from connect.models.asset import Asset
 from connect.models.product import Product
 from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient
+from connect.resources.tier_account import TierAccountResource
 from connect.rql import Query
 
 
@@ -23,6 +24,7 @@ class Directory(object):
 
     def __init__(self, config=None):
         self._config = config or Config.get_instance()
+        self._tier_accounts = TierAccountResource(config=self._config)
 
     def list_assets(self, filters=None):
         """ List the assets.
@@ -98,3 +100,9 @@ class Directory(object):
         if add_product and self._config.products:
             query.in_('product.id', self._config.products)
         return query
+
+    def search_tier_accounts(self, filters):
+        return self._tier_accounts.search(filters)
+
+    def get_tier_account(self, pk):
+        return self._tier_accounts.get(pk)

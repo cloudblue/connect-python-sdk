@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 # NOTE: This example development is in progress. This is just a skeleton.
 
@@ -20,10 +20,11 @@ warnings.simplefilter('default')
 logger.setLevel('DEBUG')
 
 # If we remove this line, it is done implicitly
-Config(file='config.json')
+Config(file='./examples/config.json')
 
 
 class TierConfigExample(TierConfigAutomation):
+
     def process_request(self, request):
         # type: (TierConfigRequest) -> Union[ActivationTemplateResponse, ActivationTileResponse]
         pass

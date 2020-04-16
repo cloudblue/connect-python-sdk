@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from typing import Optional, List
 
@@ -90,8 +90,8 @@ class TierConfig(BaseModel):
         response, _ = ApiClient(config, base_path='tier/config-requests').get(
             params={
                 'status': 'approved',
-                'configuration__product__id': product_id,
-                'configuration__account__id': account_id,
+                'configuration.product.id': product_id,
+                'configuration.account.id': account_id,
             }
         )
         objects = TierConfigRequest.deserialize(response)

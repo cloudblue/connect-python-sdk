@@ -1,5 +1,5 @@
 {
-    "apiEndpoint": "http://localhost:8080/api/public/v1/",
-    "apiKey": "ApiKey XXXX:YYYYY",
-    "products": "CN-631-322-000"
+    "apiEndpoint": "https://api.cnct.tech/public/v1",
+    "apiKey": "ApiKey SU-000-000-000:0000000000000000000000000000000000000000",
+    "products": "PRD-000-000-000"     
 }
