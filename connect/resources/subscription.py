@@ -4,8 +4,7 @@ from connect.resources.recurring_asset import RecurringAssetResource
 
 
 class Subscription(object):
-    """ Allows listing and obtaining several types of objects.
-
+    """ This class allows manage billing request and recurring asset,
     :param Config config: Config object or ``None`` to use environment config (default).
     """
 

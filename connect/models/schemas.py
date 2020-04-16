@@ -66,7 +66,6 @@ class LastRequestSchema(BaseSchema):
 
 class CompanySchema(BaseSchema):
     name = fields.Str()
-    last_request = fields.Nested(LastRequestSchema, many=True)
     count = fields.Integer()
 
     @post_load
@@ -376,7 +375,7 @@ class AgreementSchema(BaseSchema):
 
 
 class ContractSchema(BaseSchema):
-    name = fields.String()
+    name = fields.Str()
     version = fields.Int()
     type = fields.Str()
     status = fields.Str()

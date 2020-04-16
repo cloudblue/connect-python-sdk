@@ -24,7 +24,6 @@ class AutomationEngine(BaseResource):
 
     @function_log(custom_logger=logger)
     def process(self, filters=None):
-        self.logger.info('We are here!!!!')
         '''
         # type: (Dict[str, Any]) -> None
         '''

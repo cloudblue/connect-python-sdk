@@ -24,8 +24,8 @@ class BillingRequest(BaseModel):
     item = None  # type: object
     """ (object) Billing Request Item. """
 
-    asset = None  # type: object
-    """ (object) Billing Request Asset. """
+    attrubutes = None  # type: object
+    """ (object) Billing Request Attributes. """
 
     period = None  # type: object
     """ (object) Billing Request Period. """
