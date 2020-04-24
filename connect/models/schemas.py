@@ -699,12 +699,12 @@ class UsageRecordsSchema(BaseSchema):
 
 
 class UsageStatsSchema(BaseSchema):
-    uploaded = fields.Str()
-    validated = fields.Str()
-    pending = fields.Str()
-    accepted = fields.Str()
-    closed = fields.Str()
-    invalid = fields.Str()
+    uploaded = fields.Int()
+    validated = fields.Int()
+    pending = fields.Int()
+    accepted = fields.Int()
+    closed = fields.Int()
+    invalid = fields.Int()
 
     @post_load
     def make_object(self, data):
