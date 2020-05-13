@@ -36,8 +36,6 @@ class Param(BaseModel):
     value_choice = None  # type: Optional[List[str]]
     """ (List[str]|None) Available choices for parameter. """
 
-    # Undocumented fields (they appear in PHP SDK)
-
     title = None  # type: Optional[str]
     """ (str|None) Title for parameter. """
 
@@ -58,3 +56,6 @@ class Param(BaseModel):
 
     marketplace = None  # type: Optional[Marketplace]
     """ (:py:class:`.Marketplace` | None) Marketplace. """
+
+    reconciliation = None # type: Optional[bool]
+    """ (bool|None) Is Parameter used as reconciliation one from vendor invoices """
