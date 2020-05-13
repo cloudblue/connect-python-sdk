@@ -314,12 +314,12 @@ class ParamSchema(BaseSchema):
     value_error = fields.Str()
     value_choice = fields.Str(many=True)
 
-    # Undocumented fields (they appear in PHP SDK)
     title = fields.Str()
     scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema)
     value_choices = fields.Nested(ValueChoiceSchema, many=True)
     phase = fields.Str()
+    reconciliation = fields.Bool()
     events = fields.Nested(EventsSchema)
     marketplace = fields.Nested(MarketplaceSchema)
     countries = fields.Nested(CountrySchema, many=True)

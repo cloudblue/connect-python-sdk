@@ -57,5 +57,5 @@ class Param(BaseModel):
     marketplace = None  # type: Optional[Marketplace]
     """ (:py:class:`.Marketplace` | None) Marketplace. """
 
-    reconciliation = None # type: Optional[bool]
+    reconciliation = None   # type: Optional[bool]
     """ (bool|None) Is Parameter used as reconciliation one from vendor invoices """
