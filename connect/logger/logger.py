@@ -34,7 +34,7 @@ def function_log(custom_logger=None):
             custom_logger.debug('Function params: {} {}'.format(args, kwargs))
             result = func(self, *args, **kwargs)
             custom_logger.debug(
-                'Function `{}.{}` return: {}'.format(
+                u'Function `{}.{}` return: {}'.format(
                     self.__class__.__name__, func.__name__, result))
             return result
 
