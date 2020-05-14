@@ -20,6 +20,7 @@ matrix:
     sudo: true
 
 install:
+- pip install --upgrade pip==19.1
 - pip install -r requirements/test.txt
 - pip install -r requirements/sdk.txt
 - pip install pytest-cov
