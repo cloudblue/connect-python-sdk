@@ -20,6 +20,9 @@ from connect.logger import logger
 from connect.models import Fulfillment
 from connect.resources.automation_engine import AutomationEngine
 
+# URL of the Vendor API, in this case the apiary.io scenario
+VENDOR_API_URL = 'https://private-368580-vendorexample.apiary-mock.com/'
+
 # Enable processing of deprecation warnings
 warnings.simplefilter('default')
 
@@ -48,7 +51,7 @@ class AssetRequest(AutomationEngine):
         firstName = request.asset.tiers.customer.contact_info.contact.first_name
         lastName = request.asset.tiers.customer.contact_info.contact.last_name
         accountPhone = request.asset.tiers.customer.contact_info.contact.phone_number.phone_number
-        url = "https://private-368580-vendorexample.apiary-mock.com/tenant"
+        url = VENDOR_API_URL+"tenant"
 
         payload = {
                 'Attributes': {

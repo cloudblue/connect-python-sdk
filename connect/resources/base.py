@@ -62,7 +62,7 @@ class ApiClient(object):
             lambda a, b: compat.urljoin(a + ('' if a.endswith('/') else '/'), b) if b else a,
             args)
 
-    # @function_log()
+    @function_log()
     def get(self, path='', **kwargs):
         # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
@@ -171,7 +171,6 @@ class BaseResource(object):
         else:
             self.logger.info('Get list request with filters - {}'.format(filters))
             response, _ = self._api.get(params=filters)
-            self.logger.info(response)
         return self.model_class.deserialize(response)
 
     def create(self, obj):

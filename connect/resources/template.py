@@ -19,6 +19,9 @@ class TemplateResource(BaseResource):
         :param str product_id: Primary key of the product to search for.
         :return: response object with templates contents.
         """
+        """
+        # type: (Dict[str, Any]) -> List[Any]
+        """
         if not product_id:
             raise ValueError('Invalid product Id for list template')
         response, _ = self._api.get(
