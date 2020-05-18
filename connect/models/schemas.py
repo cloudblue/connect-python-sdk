@@ -128,6 +128,7 @@ class ConstraintsSchema(BaseSchema):
     required = fields.Bool()
     choices = fields.Nested(ValueChoiceSchema, many=True)
     unique = fields.Bool()
+    reconciliation = fields.Bool()
 
     @post_load
     def make_object(self, data):
