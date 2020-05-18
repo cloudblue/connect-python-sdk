@@ -22,7 +22,7 @@ from connect.resources.automation_engine import AutomationEngine
 from connect.resources.template import TemplateResource
 
 # URL of the Vendor API, in this case the apiary.io scenario
-VENDOR_API_URL = 'https://private-368580-vendorexample.apiary-mock.com/'
+VENDOR_API_URL = 'https://SET_YOUR_OWN_SAMPLE.apiary-mock.com/'
 
 # Enable processing of deprecation warnings
 warnings.simplefilter('default')
@@ -50,7 +50,7 @@ class AssetAccept(AutomationEngine):
             purchasRequestId = request.id
             productId = request.asset.product.id
             npm = item.mpn
-        url = VENDOR_API_URL+"tenant?externalId="+npm
+        url = VENDOR_API_URL + "tenant?externalId=" + npm
 
         response = requests.get(url, data='').json()
         if response['status'] == 'ready':
