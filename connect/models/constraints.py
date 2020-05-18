@@ -26,3 +26,6 @@ class Constraints(BaseModel):
 
     unique = None  # type: bool
     """ (bool) Is the constraint unique? """
+
+    reconciliation = None  # type: bool
+    """ (bool) True if vendor has marked parameters as for reconciliation purposes """
