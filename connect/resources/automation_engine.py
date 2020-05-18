@@ -24,9 +24,6 @@ class AutomationEngine(BaseResource):
 
     @function_log(custom_logger=logger)
     def process(self, filters=None):
-        '''
-        # type: (Dict[str, Any]) -> None
-        '''
         for request in self.list(filters):
             self.dispatch(request)
 

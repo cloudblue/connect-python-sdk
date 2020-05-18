@@ -4,7 +4,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
-from os.path import abspath, dirname, exists, join
+from os.path import exists
 from setuptools import find_packages, setup
 
 import pathlib
