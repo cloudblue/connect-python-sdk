@@ -48,32 +48,37 @@ class AssetRequest(AutomationEngine):
             npm = item.mpn
             quantity = item.quantity
             break
+
+        url = VENDOR_API_URL + "tenant?externalId=" + npm
+        response = requests.get(url, data='').json()
         firstName = request.asset.tiers.customer.contact_info.contact.first_name
         lastName = request.asset.tiers.customer.contact_info.contact.last_name
+        address = request.asset.tiers.customer.contact_info.address_line1
+        postalCode = request.asset.tiers.customer.contact_info.postal_code
         accountPhone = request.asset.tiers.customer.contact_info.contact.phone_number.phone_number
-        url = VENDOR_API_URL + "tenant"
-
-        payload = {
-                'Attributes': {
-                    'product': {
-                        'item': npm,
-                        'quantity': quantity
-                    },
-                    'account': {
-                        'accountFirstName': firstName,
-                        'accountLastName': lastName,
-                        'accountCompany': request.asset.tiers.customer.name,
-                        'accountAddress': request.asset.tiers.customer.contact_info.address_line1,
-                        'accountCity': request.asset.tiers.customer.contact_info.city,
-                        'accountState': request.asset.tiers.customer.contact_info.state,
-                        'accountPostalCode': request.asset.tiers.customer.contact_info.postal_code,
-                        'accountCountry': request.asset.tiers.customer.contact_info.country,
-                        'accountEmail': request.asset.tiers.customer.contact_info.contact.email,
-                        'accountPhone': accountPhone
+        if response['externalId'] != request.asset.id:
+            url = VENDOR_API_URL + "tenant"
+            payload = {
+                    'Attributes': {
+                        'product': {
+                            'item': npm,
+                            'quantity': quantity
+                        },
+                        'account': {
+                            'accountFirstName': firstName,
+                            'accountLastName': lastName,
+                            'accountCompany': request.asset.tiers.customer.name,
+                            'accountAddress': address,
+                            'accountCity': request.asset.tiers.customer.contact_info.city,
+                            'accountState': request.asset.tiers.customer.contact_info.state,
+                            'accountPostalCode': postalCode,
+                            'accountCountry': request.asset.tiers.customer.contact_info.country,
+                            'accountEmail': request.asset.tiers.customer.contact_info.contact.email,
+                            'accountPhone': accountPhone
+                        }
                     }
                 }
-            }
-        response = requests.post(url, data=payload).json()
+            response = requests.post(url, data=payload).json()
         return response
 
 
