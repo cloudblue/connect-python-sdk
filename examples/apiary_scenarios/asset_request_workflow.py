@@ -45,36 +45,36 @@ class AssetRequest(AutomationEngine):
 
     def process_request(self, request):
         for item in request.asset.items:
-            npm = item.mpn
+            mpn = item.mpn
             quantity = item.quantity
             break
 
-        url = VENDOR_API_URL + "tenant?externalId=" + npm
+        url = VENDOR_API_URL + "tenant?externalId=" + mpn
         response = requests.get(url, data='').json()
-        firstName = request.asset.tiers.customer.contact_info.contact.first_name
-        lastName = request.asset.tiers.customer.contact_info.contact.last_name
+        first_name = request.asset.tiers.customer.contact_info.contact.first_name
+        last_name = request.asset.tiers.customer.contact_info.contact.last_name
         address = request.asset.tiers.customer.contact_info.address_line1
-        postalCode = request.asset.tiers.customer.contact_info.postal_code
-        accountPhone = request.asset.tiers.customer.contact_info.contact.phone_number.phone_number
+        postal_code = request.asset.tiers.customer.contact_info.postal_code
+        account_phone = request.asset.tiers.customer.contact_info.contact.phone_number.phone_number
         if response['externalId'] != request.asset.id:
-            url = VENDOR_API_URL + "tenant"
+            url = VENDOR_API_URL + 'tenant'
             payload = {
                     'Attributes': {
                         'product': {
-                            'item': npm,
+                            'item': mpn,
                             'quantity': quantity
                         },
                         'account': {
-                            'accountFirstName': firstName,
-                            'accountLastName': lastName,
+                            'accountFirstName': first_name,
+                            'accountLastName': last_nName,
                             'accountCompany': request.asset.tiers.customer.name,
                             'accountAddress': address,
                             'accountCity': request.asset.tiers.customer.contact_info.city,
                             'accountState': request.asset.tiers.customer.contact_info.state,
-                            'accountPostalCode': postalCode,
+                            'accountPostalCode': postal_code,
                             'accountCountry': request.asset.tiers.customer.contact_info.country,
                             'accountEmail': request.asset.tiers.customer.contact_info.contact.email,
-                            'accountPhone': accountPhone
+                            'accountPhone': account_phone
                         }
                     }
                 }

@@ -47,19 +47,19 @@ class AssetAccept(AutomationEngine):
     def process_request(self, request):
         template_resource = TemplateResource()
         for item in request.asset.items:
-            purchasRequestId = request.id
-            productId = request.asset.product.id
-            npm = item.mpn
-        url = VENDOR_API_URL + "tenant?externalId=" + npm
+            purchase_request_id = request.id
+            product_id = request.asset.product.id
+            mpn = item.mpn
+        url = VENDOR_API_URL + 'tenant?externalId=' + mpn
 
         response = requests.get(url, data='').json()
         if response['status'] == 'ready':
-            templates = template_resource.list(productId)
+            templates = template_resource.list(product_id)
             for template in templates:
-                templateId = template['id']
+                template_id = template['id']
                 break
-            body = {"activation_tile": templateId}
-            self.approve(purchasRequestId, body)
+            body = {"activation_tile": template_id}
+            self.approve(purchase_request_id, body)
         return response
 
 
