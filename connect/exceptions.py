@@ -132,7 +132,7 @@ class RejectUsageFile(UsageFileAction):
 class SubmitUsageFile(UsageFileAction):
     def __init__(self):
         # type: () -> None
-        super(SubmitUsageFile, self).__init__('Usage File Submitted', 'submit')
+        super(SubmitUsageFile, self).__init__('Usage File Submitted', 'submit', {})
 
 
 class FileCreationError(Message):
