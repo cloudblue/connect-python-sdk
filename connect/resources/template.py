@@ -3,8 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
-from typing import List, Any, Dict
-
+import json
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from .base import BaseResource
@@ -15,9 +14,22 @@ class TemplateResource(BaseResource):
 
     resource = 'templates'
 
-    def list(self, filters=None):
+    def list(self, product_id):
+        """ List an activation template.
+        :param str product_id: Primary key of the product to search for.
+        :return: response object with templates contents.
+        """
+        """
         # type: (Dict[str, Any]) -> List[Any]
-        raise AttributeError('This resource do not have method `list`')
+        """
+        if not product_id:
+            raise ValueError('Invalid product Id for list template')
+        response, _ = self._api.get(
+            '/public/v1/products/' + product_id + '/templates/',
+            params={'scope': 'asset', 'type': 'fulfillment'},
+        )
+        response = json.loads(response)
+        return response
 
     def render(self, pk, request_id):
         """ Get an activation tile.

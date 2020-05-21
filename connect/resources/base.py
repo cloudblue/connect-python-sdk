@@ -160,6 +160,7 @@ class BaseResource(object):
             filters[key] = val
         return filters
 
+    @function_log()
     def search(self, filters=None):
         # type: (Dict[str, Any]) -> List[Any]
         filters = filters or self.filters()
