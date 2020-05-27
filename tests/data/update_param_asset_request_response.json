@@ -1,0 +1,176 @@
+{
+    "activation_key": "",
+    "answered": false,
+    "asset": {
+        "configuration": {
+            "params": [
+                {
+                    "constraints": {
+                        "hidden": false,
+                        "required": false,
+                        "shared": "",
+                        "unique": false
+                    },
+                    "description": "templateId",
+                    "events": {
+                        "created": {
+                            "at": "2020-05-26T07:36:33+00:00",
+                            "by": {
+                                "id": "UR-216-020-887",
+                                "name": "Martin Constante"
+                            }
+                        },
+                        "updated": {
+                            "at": "2020-05-26T07:36:33+00:00"
+                        }
+                    },
+                    "id": "templateId",
+                    "phase": "configuration",
+                    "scope": "product",
+                    "title": "templateId",
+                    "type": "text",
+                    "value": "TL-313-655-502"
+                }
+            ]
+        },
+        "connection": {
+            "hub": {
+                "id": "HB-0000-0000",
+                "name": "ACME Hub"
+            },
+            "id": "CT-0000-0000-0000",
+            "provider": {
+                "id": "PA-844-274",
+                "name": "Zapier Certification Provider"
+            },
+            "type": "preview",
+            "vendor": {
+                "id": "VA-980-277",
+                "name": "Zapier Certification Vendor "
+            }
+        },
+        "contract": {
+            "id": "CRD-00000-00000-00000",
+            "name": "ACME Distribution Contract"
+        },
+        "events": {
+            "created": {
+                "at": "2020-05-27T15:00:29+00:00"
+            },
+            "updated": {
+                "at": "2020-05-27T15:00:53+00:00"
+            }
+        },
+        "external_id": "TVFOLH6A00",
+        "external_uid": "538df9ed-bc64-401e-8551-ae5d96aa6fd0",
+        "id": "AS-4405-9454-9305",
+        "items": [
+            {
+                "display_name": "Free",
+                "global_id": "PRD-845-746-468-0002",
+                "id": "FREE",
+                "item_type": "Reservation",
+                "mpn": "Free",
+                "old_quantity": "0",
+                "params": [],
+                "period": "Monthly",
+                "quantity": "15",
+                "type": "Units"
+            }
+        ],
+        "marketplace": {
+            "icon": "/media/PA-844-274/marketplaces/MP-34186/icon.png",
+            "id": "MP-34186",
+            "name": "Zapier Marketplace"
+        },
+        "params": [
+            {
+                "description": "tenantId",
+                "id": "tenantId",
+                "name": "tenantId",
+                "title": "tenantId",
+                "type": "text",
+                "value": "12345",
+                "value_choices": [],
+                "value_error": ""
+            }
+        ],
+        "product": {
+            "icon": "/media/VA-980-277/PRD-845-746-468/media/PRD-845-746-468-logo_VzNjZDQ.png",
+            "id": "PRD-845-746-468",
+            "name": "Zapier",
+            "status": "published"
+        },
+        "status": "processing",
+        "tiers": {
+            "customer": {
+                "contact_info": {
+                    "address_line1": "Edmund Springs",
+                    "address_line2": "Kristina Lakes",
+                    "city": "Baldwin",
+                    "contact": {
+                        "email": "martin.constante+Geovany_Fadel@ingrammicro.com",
+                        "first_name": "Geovany",
+                        "last_name": "Fadel",
+                        "phone_number": {
+                            "area_code": "555",
+                            "country_code": "+1",
+                            "extension": "",
+                            "phone_number": "8677089"
+                        }
+                    },
+                    "country": "US",
+                    "postal_code": "36507",
+                    "state": "Alabama"
+                },
+                "external_id": "10936",
+                "external_uid": "97362804-6e67-4cfb-8136-2de9f78db91b",
+                "id": "TA-4498-4177-8354",
+                "name": "Hintz - Grady"
+            },
+            "tier1": {
+                "contact_info": {
+                    "address_line1": "Sanford Summit",
+                    "address_line2": "Fabiola Knoll",
+                    "city": "Baldwin",
+                    "contact": {
+                        "email": "martin.constante+Enrique_Barrows@ingrammicro.com",
+                        "first_name": "Enrique",
+                        "last_name": "Barrows",
+                        "phone_number": {
+                            "area_code": "555",
+                            "country_code": "+1",
+                            "extension": "",
+                            "phone_number": "8677089"
+                        }
+                    },
+                    "country": "US",
+                    "postal_code": "36507",
+                    "state": "Alabama"
+                },
+                "external_id": "43167",
+                "external_uid": "52837073-a7ba-4181-9f6a-0018b1dea545",
+                "id": "TA-4403-4060-9893",
+                "name": "McLaughlin - Koepp"
+            },
+            "tier2": {}
+        }
+    },
+    "assignee": "",
+    "contract": {
+        "id": "CRD-00000-00000-00000",
+        "name": "ACME Distribution Contract"
+    },
+    "created": "2020-05-27T15:00:29+00:00",
+    "id": "PR-4405-9454-9305-001",
+    "marketplace": {
+        "icon": "/media/PA-844-274/marketplaces/MP-34186/icon.png",
+        "id": "MP-34186",
+        "name": "Zapier Marketplace"
+    },
+    "note": "test_text",
+    "reason": "",
+    "status": "pending",
+    "type": "purchase",
+    "updated": "2020-05-27T15:00:53+00:00"
+}
