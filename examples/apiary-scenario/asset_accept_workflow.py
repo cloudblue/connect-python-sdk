@@ -55,10 +55,10 @@ class AssetAccept(AutomationEngine):
         if (request.type == 'purchase'):
             for param in request.asset.params:
                 if (param.name == 'tenantId'):
-                    tenantIdParam = param.value
+                    tenant_param_id = param.value
             url = VENDOR_API_URL + 'tenant/' + request.id
             response = requests.get(url, data='').json()
-            if (tenantIdParam != '' and response['status'] == 'ready'):
+            if (tenant_param_id != '' and response['status'] == 'ready'):
                 self.approve_request(request)
             else:
                 logger.info('Skip process')

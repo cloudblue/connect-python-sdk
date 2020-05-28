@@ -46,11 +46,11 @@ class AssetRequest(AutomationEngine):
     def process_request(self, request):
         if (request.type == 'purchase'):
             if (len(request.asset.items) == 1):
-                tenantIdParam = ''
+                tenant_param_id = ''
                 for param in request.asset.params:
                     if (param.name == 'tenantId'):
-                        tenantIdParam = param.value
-                if (tenantIdParam == ''):
+                        tenant_param_id = param.value
+                if (tenant_param_id == ''):
                     self.create_request(request)
                 else:
                     logger.info('Skip process')
