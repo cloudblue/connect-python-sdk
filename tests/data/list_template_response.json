@@ -1,0 +1,72 @@
+[
+    {
+        "id": "TL-313-655-502",
+        "title": "Default Activation Template",
+        "name": "Default Activation Template",
+        "body": "# Sample Activation Template\n\nActivation template is used to share details of the **successful** asset creation with the user. Once purchase request is approved, this template is used to generate user-visible notification.\n\nThis template uses **[Markdown](https://en.wikipedia.org/wiki/Markdown)** syntax and allows to use Parameters of the product which has scope 'Asset'.\n\n### Formatting\n\nMarkdown allows you to control various aspects of the document:\n\n1. Text formatting like **bold** or *italic*\n2. Images embedding\n3. Lists\n4. and more\n\n### Parameters\n\nYou can refer to the Parameters using their ID, like in the following example:\n\n\nYou can also embed pictures like the one below:\n\n![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ringworld_Waiting.jpg/270px-Ringworld_Waiting.jpg)",
+        "scope": "asset",
+        "type": "fulfillment",
+        "position": 10000,
+        "events": {
+            "created": {
+                "at": "2020-01-07T09:11:25+00:00"
+            },
+            "updated": {
+                "at": "2020-05-02T22:04:38+00:00",
+                "by": {
+                    "id": "UR-216-020-887",
+                    "name": "Martin Constante"
+                }
+            }
+        }
+    },
+    {
+        "id": "TL-362-270-671",
+        "title": "Default Activation Template",
+        "name": "Default Activation Template",
+        "body": "# Sample Template For Setup of Tier 1\n\nThis template is used to share details of the **successful** setup configuration of reseller of 1st level.\n\nThis template uses **[Markdown](https://en.wikipedia.org/wiki/Markdown)** syntax and allows to use Parameters of the product which have scope 'Tier 1'.\n\n### Formatting\n\nMarkdown allows you to control various aspects of the document:\n\n1. Text formatting like **bold** or *italic*\n2. Images embedding\n3. Lists\n4. and more\n\n### Parameters\n\nYou can refer to the Parameters using their ID, like in the following example:\n\n* The value of **param_a** is **{{ param_a }}**\n* The value of **param_b** is **{{ param_b }}**\n\nYou can also embed pictures like the one below:\n\n![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ringworld_Waiting.jpg/270px-Ringworld_Waiting.jpg)",
+        "scope": "tier1",
+        "position": 20000,
+        "events": {
+            "created": {
+                "at": "2020-01-07T09:11:25+00:00"
+            },
+            "updated": {
+                "at": "2020-01-07T09:11:25+00:00"
+            }
+        }
+    },
+    {
+        "id": "TL-064-379-743",
+        "title": "Default Activation Template",
+        "name": "Default Activation Template",
+        "body": "# Sample Template For Setup of Tier 2\n\nThis template is used to share details of the **successful** setup configuration of reseller of 2nd level.\n\nThis template uses **[Markdown](https://en.wikipedia.org/wiki/Markdown)** syntax and allows to use Parameters of the product which have scope 'Tier 2'.\n\n### Formatting\n\nMarkdown allows you to control various aspects of the document:\n\n1. Text formatting like **bold** or *italic*\n2. Images embedding\n3. Lists\n4. and more\n\n### Parameters\n\nYou can refer to the Parameters using their ID, like in the following example:\n\n* The value of **param_a** is **{{ param_a }}**\n* The value of **param_b** is **{{ param_b }}**\n\nYou can also embed pictures like the one below:\n\n![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ringworld_Waiting.jpg/270px-Ringworld_Waiting.jpg)",
+        "scope": "tier2",
+        "position": 30000,
+        "events": {
+            "created": {
+                "at": "2020-01-07T09:11:25+00:00"
+            },
+            "updated": {
+                "at": "2020-01-07T09:11:25+00:00"
+            }
+        }
+    },
+    {
+        "id": "TL-416-019-529",
+        "title": "Additional information is required to process your request",
+        "name": "Additional information is required to process your request",
+        "body": "Please complete our **[Activation Form]({{ activation_form_url }})** to resume processing of your request",
+        "scope": "asset",
+        "type": "inquire",
+        "position": 40000,
+        "events": {
+            "created": {
+                "at": "2020-01-07T09:11:25+00:00"
+            },
+            "updated": {
+                "at": "2020-01-07T09:11:25+00:00"
+            }
+        }
+    }
+]

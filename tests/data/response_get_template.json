@@ -1,0 +1,21 @@
+{
+    "id": "TL-313-655-502",
+    "title": "Default Activation Template",
+    "name": "Default Activation Template",
+    "body": "# Sample Activation Template\n\nActivation template is used to share details of the **successful** asset creation with the user. Once purchase request is approved, this template is used to generate user-visible notification.\n\nThis template uses **[Markdown](https://en.wikipedia.org/wiki/Markdown)** syntax and allows to use Parameters of the product which has scope 'Asset'.\n\n### Formatting\n\nMarkdown allows you to control various aspects of the document:\n\n1. Text formatting like **bold** or *italic*\n2. Images embedding\n3. Lists\n4. and more\n\n### Parameters\n\nYou can refer to the Parameters using their ID, like in the following example:\n\n\nYou can also embed pictures like the one below:\n\n![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ringworld_Waiting.jpg/270px-Ringworld_Waiting.jpg)",
+    "scope": "asset",
+    "type": "fulfillment",
+    "position": 10000,
+    "events": {
+        "created": {
+            "at": "2020-01-07T09:11:25+00:00"
+        },
+        "updated": {
+            "at": "2020-05-02T22:04:38+00:00",
+            "by": {
+                "id": "UR-216-020-887",
+                "name": "Martin Constante"
+            }
+        }
+    }
+}
