@@ -8,6 +8,7 @@ import os
 import pytest
 
 from connect.exceptions import ServerError
+from connect.models.activation_tile_response import ActivationTileResponse
 from connect.resources import TemplateResource
 from .common import Response, load_str
 
@@ -70,3 +71,28 @@ def test_get_template(get_mock):
     template = TemplateResource().get('TL-313-655-502')
     assert template.template_id == 'TL-313-655-502'
 
+
+def test_render_bad():
+    template_resource = TemplateResource()
+    with pytest.raises(ValueError) as e:
+        template_resource.render(None, None)
+        assert str(e.value) == 'Invalid ids for render template'
+
+
+@patch('requests.get')
+def test_renders(get_mock):
+    get_mock.return_value = Response(
+        ok=True,
+        text='# Sample Activation Template',
+        status_code=200,
+    )
+    template_resource = TemplateResource()
+    response = template_resource.render('TL-313-655-502', 'PR-845-746-468')
+    assert isinstance(response, ActivationTileResponse)
+    assert response.tile == '# Sample Activation Template'
+
+    get_mock.assert_called_with(
+        url='http://localhost:8080/api/public/v1/templates/TL-313-655-502/render',
+        params={'request_id': 'PR-845-746-468'},
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
