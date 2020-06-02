@@ -11,7 +11,7 @@ import os
 import pytest
 
 from connect.exceptions import ServerError
-from connect.models import Asset, Product, TierConfig, TierAccount
+from connect.models import Asset, Product, TierConfig
 from connect.resources import Directory
 from .common import Response, load_str
 

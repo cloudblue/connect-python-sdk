@@ -204,5 +204,6 @@ class TestTierConfigRequest(unittest.TestCase):
             request.unassign(None)
         assert str(e.value) == 'Invalid ID'
 
+
 if __name__ == "__main__":
     unittest.main()
