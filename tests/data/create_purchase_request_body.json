@@ -1,0 +1,87 @@
+{
+    "type": "purchase",
+    "asset": {
+        "connection": {
+            "id": "CT-0000-0000-0000"
+        },
+        "product": {
+            "id": "PRD-845-746-468-0002"
+        },
+        "external_id": "1212132321", 
+        "external_uid": "123456789",
+        "items": [
+            {
+                "global_id": "PRD-845-746-468-0002",
+                "quantity": "1"
+            }
+        ],
+        "params": [
+            {
+                "id": "param_a",
+                "value": "pepe"
+            }
+        ],
+        "external_attributes": [
+            {
+                "id":"<Parameter ID Or key>",
+                "value": "<Parameter value>"
+            }
+        ],
+        "tiers": {
+            "customer": {
+                "id": "TA-4230-9406-8994",
+                "external_id": "66550",
+                "external_uid": "6b4bea23-de09-4d28-8246-b67d53a11170",
+                "name": "Hansen, Boehm and Reichert",
+                "contact_info": {
+                    "address_line1": "Queen Fall",
+                    "address_line2": "Sheldon River",
+                    "city": "Baldwin",
+                    "state": "Alabama",
+                    "postal_code": "36507",
+                    "country": "US",
+                    "contact": {
+                        "first_name": "Meagan",
+                        "last_name": "Larson",
+                        "email": "martin.constante+Meagan_Larson@ingrammicro.com",
+                        "phone_number": {
+                            "country_code": "+1",
+                            "area_code": "555",
+                            "phone_number": "8677089",
+                            "extension": ""
+                        }
+                    }
+                }
+            },
+            "tier1": {
+                "id": "TA-4403-4060-9893",
+                "external_id": "43167",
+                "external_uid": "52837073-a7ba-4181-9f6a-0018b1dea545",
+                "name": "McLaughlin - Koepp",
+                "contact_info": {
+                    "address_line1": "Sanford Summit",
+                    "address_line2": "Fabiola Knoll",
+                    "city": "Baldwin",
+                    "state": "Alabama",
+                    "postal_code": "36507",
+                    "country": "US",
+                    "contact": {
+                        "first_name": "Enrique",
+                        "last_name": "Barrows",
+                        "email": "martin.constante+Enrique_Barrows@ingrammicro.com",
+                        "phone_number": {
+                            "country_code": "+1",
+                            "area_code": "555",
+                            "phone_number": "8677089",
+                            "extension": ""
+                        }
+                    }
+                }
+            },
+            "tier2": {}
+        }
+    },
+    "marketplace": {
+       "id": "MP-34186"
+    }    
+}

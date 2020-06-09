@@ -4,7 +4,7 @@ from connect.resources.tier_config_request import TierConfigRequestResource
 from connect.resources.asset_request import AssetRequestResource
 
 
-class Fulfillment(object):
+class FulfillmentResource(object):
     """ Allows listing and obtaining several types of objects.
         :param Config config: Config object or ``None`` to use environment config (default).
     """
@@ -36,4 +36,4 @@ class Fulfillment(object):
         return self._asset_requests.update_param_asset_request(request_id, data, note)
 
     def create_purchase_request(self, obj):
-        pass
+        return self._asset_requests.create(obj)

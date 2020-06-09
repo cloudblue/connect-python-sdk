@@ -1,0 +1,9 @@
+{
+    "id": "PR-9301-9893-8624-001",
+    "type": "purchase",
+    "status": "pending",
+    "asset": {
+        "id": "AS-9301-9893-8624",
+        "external_uid": "fa86ca75-4738-4fc1-9883-e79236d941f6"
+    }
+}

@@ -11,7 +11,8 @@ from mock import patch, MagicMock
 
 from connect.exceptions import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, RejectUsageFile, \
     SkipRequest, SubmitUsageFile
-from connect.models import Company, Contract, Marketplace, Product, UsageRecords, UsageFile
+from connect.models import Company, Contract, Marketplace, Product, UsageRecords, UsageFile, \
+    UsageStats, UsageRecord
 from connect.resources import UsageFileAutomation
 from .common import Response, load_str
 
@@ -78,6 +79,8 @@ def test_create_resource():
 
     records = request.records
     assert isinstance(records, UsageRecords)
+    stats = request.stats
+    assert isinstance(stats, UsageStats)
     assert records.valid == 56
     assert records.invalid == 0
 
