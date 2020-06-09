@@ -19,7 +19,6 @@ from connect.config import Config
 from connect.logger import logger
 from connect.models import Fulfillment
 from connect.resources.automation_engine import AutomationEngine
-from connect.resources.template import TemplateResource
 
 # URL of the Vendor API, in this case the apiary.io scenario
 VENDOR_API_URL = 'https://SET_YOUR_OWN_SAMPLE.apiary-mock.com/'
@@ -31,7 +30,7 @@ warnings.simplefilter('default')
 logger.setLevel('DEBUG')
 
 # If we remove this line, it is done implicitly
-Config(file='config.json')
+Config(file='examples/apiary-scenario/config.json')
 
 
 class AssetAccept(AutomationEngine):
@@ -44,23 +43,28 @@ class AssetAccept(AutomationEngine):
     def dispatch(self, request):
         return self.process_request(request)
 
-    def process_request(self, request):
-        template_resource = TemplateResource()
-        for item in request.asset.items:
-            purchase_request_id = request.id
-            product_id = request.asset.product.id
-            mpn = item.mpn
-        url = VENDOR_API_URL + 'tenant?externalId=' + mpn
-
-        response = requests.get(url, data='').json()
-        if response['status'] == 'ready':
-            templates = template_resource.list(product_id)
-            for template in templates:
-                template_id = template['id']
-                break
-            body = {"activation_tile": template_id}
-            self.approve(purchase_request_id, body)
+    def approve_request(self, request):
+        for param in request.asset.configuration.params:
+            if (param.id == 'templateId'):
+                template_id = param.value
+        body = {"activation_tile": template_id}
+        response = self.approve(request.id, body)
         return response
+
+    def process_request(self, request):
+        if (request.type == 'purchase'):
+            for param in request.asset.params:
+                if (param.name == 'tenantId'):
+                    tenant_param_id = param.value
+            url = VENDOR_API_URL + 'tenant/' + request.id
+            response = requests.get(url, data='').json()
+            if (tenant_param_id != '' and response['status'] == 'ready'):
+                self.approve_request(request)
+            else:
+                logger.info('Skip process')
+        else:
+            logger.info('This processor not handle this type of request')
+        return False
 
 
 if __name__ == '__main__':

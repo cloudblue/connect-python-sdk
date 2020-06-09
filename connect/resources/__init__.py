@@ -12,6 +12,7 @@ from .usage_file_automation import UsageFileAutomation
 from .tier_account_request_automation import TierAccountRequestAutomation
 from .billing_request import BillingRequest
 from .recurring_asset import RecurringAsset
+from .asset_request import AssetRequestResource
 
 __all__ = [
     'Directory',
@@ -23,5 +24,6 @@ __all__ = [
     'TierAccountRequestAutomation',
     'Subscription',
     'BillingRequest',
-    'RecurringAsset'
+    'RecurringAsset',
+    'AssetRequestResource'
 ]

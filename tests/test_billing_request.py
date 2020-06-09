@@ -5,12 +5,13 @@
 
 import os
 import unittest
+import pytest
 
 from mock import Mock, call, patch
 
 from connect.config import Config
 from connect.models import BillingRequest
-from connect.resources.subscription import BillingRequestResource
+from connect.resources.billing_request import BillingRequestResource
 
 from .common import Response, load_json, load_str
 
@@ -103,7 +104,6 @@ class testBillingRequest(unittest.TestCase):
             json=body,
             timeout=300,
             url='http://localhost:8080/api/public/v1/subscriptions/requests')
-
         assert isinstance(billing_request, BillingRequest)
         assert billing_request.id == 'BRP-6750-9514-7931-0001'
 
@@ -115,7 +115,6 @@ class testBillingRequest(unittest.TestCase):
         pk = 'BRP-6750-9514-7931-0001'
         request = BillingRequestResource(config=self.config)
         billing_request = request.update_billing_request(pk, body)
-        print(billing_request)
         url = ('http://localhost:8080/api/public/v1'
                '/subscriptions/requests/BRP-6750-9514-7931-0001/attributes')
         put_mock.assert_called_with(
@@ -123,8 +122,13 @@ class testBillingRequest(unittest.TestCase):
             json=body,
             timeout=300,
             url=url)
-
         assert billing_request == ({'provider': {'external_id': '321-123'}}, 200)
+
+    def test_update_billing_request_bad(self):
+        request = BillingRequestResource(config=self.config)
+        with pytest.raises(ValueError) as e:
+            request.update_billing_request(None, None)
+        assert str(e.value) == 'Invalid ID'
 
 
 if __name__ == "__main__":

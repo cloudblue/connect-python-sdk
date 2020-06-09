@@ -3,6 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
+from deprecation import deprecated
 from marshmallow import Schema, fields, post_load
 import six
 
@@ -621,7 +622,7 @@ class AssigneeField(fields.Field):
             return User.deserialize_json(value)
 
 
-class FulfillmentSchema(BaseSchema):
+class AssetRequestSchema(BaseSchema):
     type = fields.Str()
     created = fields.DateTime()
     updated = fields.DateTime()
@@ -634,6 +635,18 @@ class FulfillmentSchema(BaseSchema):
     contract = fields.Nested(ContractSchema)
     marketplace = fields.Nested(MarketplaceSchema)
     assignee = AssigneeField()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import AssetRequest
+        return AssetRequest(**data)
+
+
+class FulfillmentSchema(AssetRequestSchema):
+    @deprecated(deprecated_in='19.2',
+                details='Use `connect.models.schemas.AssetRequestSchema` instead.')
+    def __init__(self, *args, **kwargs):
+        super(FulfillmentSchema, self).__init__(*args, **kwargs)
 
     @post_load
     def make_object(self, data):

@@ -34,6 +34,14 @@
     "acceptance_note": "All usage data is correct",
     "rejection_note": "Rejected due to wrong usage for item 56",
     "error_details": "Error details in case of usage file is marked as invalid",
+    "stats": { 
+      "uploaded": 100,
+      "validated": 100,
+      "pending": 0,
+      "accepted": 0,
+      "closed": 0
+  },
+  
     "records": {
       "valid": 56,
       "invalid": 0,

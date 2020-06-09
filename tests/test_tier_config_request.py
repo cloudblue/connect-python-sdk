@@ -5,6 +5,7 @@
 
 import os
 import unittest
+import pytest
 
 from mock import call, patch
 
@@ -166,6 +167,42 @@ class TestTierConfigRequest(unittest.TestCase):
             url=('http://localhost:8080/api/public/v1/'
                  'tier/config-requests/TAR-6458-9737-0065-004-001/fail'))
         assert tier_config_request == ('', 204)
+
+    def test_fail_tar_pend(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.pend(None)
+        assert str(e.value) == 'Invalid ID'
+
+    def test_fail_tar_inquire(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.inquire(None)
+        assert str(e.value) == 'Invalid ID'
+
+    def test_fail_tar_approve(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.approve(None, None)
+        assert str(e.value) == 'Invalid ID'
+
+    def test_fail_tar_fail(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.fail(None, None)
+        assert str(e.value) == 'Invalid ID'
+
+    def test_fail_tar_assign(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.assign(None)
+        assert str(e.value) == 'Invalid ID'
+
+    def test_fail_tar_unassign(self):
+        request = TierConfigRequestResource()
+        with pytest.raises(ValueError) as e:
+            request.unassign(None)
+        assert str(e.value) == 'Invalid ID'
 
 
 if __name__ == "__main__":

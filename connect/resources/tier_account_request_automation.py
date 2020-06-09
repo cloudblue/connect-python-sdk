@@ -6,7 +6,7 @@
 import logging
 
 from connect.logger import function_log
-from connect.resources.fulfillment import Fulfillment
+from connect.resources.fulfillment import FulfillmentResource
 
 
 class TierAccountRequestAction:
@@ -44,7 +44,7 @@ class TierAccountRequestAutomation:
 
     def __init__(self, config):
         self.config = config
-        self.fulfillment = Fulfillment(config=self.config)
+        self.fulfillment = FulfillmentResource(config=self.config)
 
     def process(self, filters=None):
         for request in self.fulfillment.search_tier_account_requests(

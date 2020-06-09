@@ -11,7 +11,7 @@ import os
 import pytest
 
 from connect.exceptions import ServerError
-from connect.models import Asset, Product, TierConfig
+from connect.models import Asset, Product, TierConfig, ProductConfiguration
 from connect.resources import Directory
 from .common import Response, load_str
 
@@ -105,7 +105,10 @@ def test_list_products(get_mock):
 def test_get_product(get_mock):
     get_mock.return_value = _get_product_response()
     product = Directory().get_product('CN-783-317-575')
+    product_configuration = product.configurations
     assert isinstance(product, Product)
+    assert isinstance(product_configuration, ProductConfiguration)
+
     assert product.id == 'CN-783-317-575'
 
     get_mock.assert_called_with(
@@ -152,3 +155,16 @@ def test_get_tier_config(get_mock):
 def test_get_tier_config_bad():
     with pytest.raises(ServerError):
         Directory().get_tier_config('TC-000-000-000')
+
+
+@patch('requests.get', MagicMock(return_value=_get_bad_response()))
+def test_search_tier_account_bad():
+    with pytest.raises(ServerError):
+        Directory().search_tier_accounts(None)
+
+
+@patch('requests.get', MagicMock(return_value=_get_bad_response()))
+def test_get_tier_account_bad():
+    with pytest.raises(ServerError):
+        Directory().get_tier_account('TAR-0000-0000-0000-000-000')
+

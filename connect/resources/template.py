@@ -22,8 +22,6 @@ class TemplateResource(BaseResource):
         """
         # type: (Dict[str, Any]) -> List[Any]
         """
-        if not product_id:
-            raise ValueError('Invalid product Id for list template')
         response, _ = self._api.get(
             '/public/v1/products/' + product_id + '/templates/',
             params={'scope': 'asset', 'type': 'fulfillment'},

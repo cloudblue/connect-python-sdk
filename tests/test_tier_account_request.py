@@ -6,7 +6,7 @@ import os
 import unittest
 from mock import patch, call
 from connect.models import TierAccountRequest
-from connect.resources.fulfillment import TierAccountRequestResource
+from connect.resources.tier_account import TierAccountRequestResource
 from connect.config import Config
 from .common import Response, load_str
 
