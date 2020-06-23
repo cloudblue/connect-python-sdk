@@ -1,0 +1,28 @@
+{
+    "name": "magic_param_c",
+    "title": "Title of the Magic Parameter C",
+    "description": "This is a backup email for emergency",
+    "type": "checkbox",
+    "scope": "asset",
+    "phase": "ordering",
+    "constraints": {
+        "required": false,
+        "hidden": false,
+        "unique": false,
+        "choices": [
+            {
+                "label": "val1",
+                "value": "test1",
+                "default": true
+            },
+            {
+                "label": "val2",
+                "value": "test2"
+            },
+            {
+                "label": "val3",
+                "value": "test3"
+            }
+        ]
+    }
+}

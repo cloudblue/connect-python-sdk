@@ -40,21 +40,24 @@ class TierConfigRequestResource(BaseResource):
         response = self._api.post(path='{}/inquire'.format(id_tcr))
         return response
 
-    def approve(self, id_tcr, id_template):
+    def approve(self, tcr_id, template_id=None):
         """ Approve a Tier Configuration Request
-        :param str id_tcr: Primary key of the tier configuration request to approve.
-        :param str id_template: Primary key of the template.
+        :param str tcr_id: Primary key of the tier configuration request to approve.
+        :param str template_id: Primary key of the template.
         :return: Template object.
         """
-        if not id_tcr:
+        if not tcr_id:
             raise ValueError('Invalid ID')
-        response = self._api.post(
-            path='{}/approve'.format(id_tcr),
-            json={
+        request_kwargs = {
+            'path': '{}/approve'.format(tcr_id)
+        }
+        if template_id:
+            request_kwargs['json'] = {
                 'template': {
-                    'id': id_template,
+                    'id': template_id
                 }
-            })
+            }
+        response = self._api.post(**request_kwargs)
         return response
 
     def fail(self, id_tcr, reason):

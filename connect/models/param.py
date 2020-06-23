@@ -48,6 +48,9 @@ class Param(BaseModel):
     value_choices = None  # type: Optional[List[ValueChoice]]
     """ (List[str]|None) Available dropdown choices for parameter. """
 
+    structured_value = None  # type: Optional[str]
+    """ (List[str]|None) List of structured values for a value. """
+
     phase = None  # type: Optional[str]
     """ (str|None) Param phase. """
 

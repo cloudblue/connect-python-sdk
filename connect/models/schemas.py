@@ -130,6 +130,8 @@ class ConstraintsSchema(BaseSchema):
     choices = fields.Nested(ValueChoiceSchema, many=True)
     unique = fields.Bool()
     reconciliation = fields.Bool()
+    min_length = fields.Integer()
+    max_length = fields.Integer()
 
     @post_load
     def make_object(self, data):
@@ -315,11 +317,11 @@ class ParamSchema(BaseSchema):
     value = fields.Str()
     value_error = fields.Str()
     value_choice = fields.Str(many=True)
-
     title = fields.Str()
     scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema)
     value_choices = fields.Nested(ValueChoiceSchema, many=True)
+    structured_values = fields.Str()
     phase = fields.Str()
     reconciliation = fields.Bool()
     events = fields.Nested(EventsSchema)

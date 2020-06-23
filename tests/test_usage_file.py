@@ -12,7 +12,7 @@ from mock import patch, MagicMock
 from connect.exceptions import AcceptUsageFile, CloseUsageFile, DeleteUsageFile, RejectUsageFile, \
     SkipRequest, SubmitUsageFile
 from connect.models import Company, Contract, Marketplace, Product, UsageRecords, UsageFile, \
-    UsageStats, UsageRecord
+    UsageStats
 from connect.resources import UsageFileAutomation
 from .common import Response, load_str
 

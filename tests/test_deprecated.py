@@ -5,7 +5,10 @@
 
 import pytest
 
+from mock import patch
 from connect.exceptions import Message
+from connect.resources.base import BaseResource
+from .common import Response
 
 
 def test_deprecated_message():
@@ -13,3 +16,19 @@ def test_deprecated_message():
     with pytest.deprecated_call():
         # noinspection PyStatementEffect
         Message('Hello').message
+
+
+@patch('requests.get')
+def test_deprecation_filter_in(get_mock):
+    get_mock.return_value = Response(True, '[]', 200)
+
+    class TestResource(BaseResource):
+        resource = 'test'
+
+    test_resouce = TestResource()
+    filters = {
+        'deprecated__in': (1, 2)
+    }
+    with pytest.deprecated_call() as warning:
+        test_resouce.search(filters)
+    assert str(warning[0].message) == 'deprecated__in: __in operator is deprecated, Use RQL syntax'
