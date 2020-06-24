@@ -11,13 +11,17 @@ import os
 import pytest
 
 from connect.exceptions import ServerError
-from connect.models import Asset, Product, TierConfig, ProductConfiguration
+from connect.models import Asset, Marketplace, Product, TierConfig, ProductConfiguration
 from connect.resources import Directory
 from .common import Response, load_str
 
 
 def _get_asset_response():
     return _get_response_from_file('response_asset.json')
+
+
+def _get_marketplace_response():
+    return _get_response_from_file('response_marketplace.json')
 
 
 def _get_product_response():
@@ -84,6 +88,40 @@ def test_get_asset(get_mock):
 def test_get_asset_bad():
     with pytest.raises(ServerError):
         Directory().get_asset('AS-9861-7949-8492')
+
+
+@patch('requests.get')
+def test_list_marketplaces(get_mock):
+    get_mock.return_value = _get_array_response(_get_marketplace_response())
+    marketplaces = Directory().list_marketplaces()
+    assert isinstance(marketplaces, list)
+    assert len(marketplaces) == 1
+    assert isinstance(marketplaces[0], Marketplace)
+    assert marketplaces[0].id == 'MP-12345'
+
+    get_mock.assert_called_with(
+        url='http://localhost:8080/api/public/v1/marketplaces',
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
+
+
+@patch('requests.get')
+def test_get_marketplace(get_mock):
+    get_mock.return_value = _get_marketplace_response()
+    marketplace = Directory().get_marketplace('MP-12345')
+    assert isinstance(marketplace, Marketplace)
+    assert marketplace.id == 'MP-12345'
+
+    get_mock.assert_called_with(
+        url='http://localhost:8080/api/public/v1/marketplaces/MP-12345',
+        headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
+        timeout=300)
+
+
+@patch('requests.get', MagicMock(return_value=_get_bad_response()))
+def test_get_marketplace_bad():
+    with pytest.raises(ServerError):
+        Directory().get_marketplace('MP-00000')
 
 
 @patch('requests.get')
@@ -167,4 +205,3 @@ def test_search_tier_account_bad():
 def test_get_tier_account_bad():
     with pytest.raises(ServerError):
         Directory().get_tier_account('TAR-0000-0000-0000-000-000')
-
