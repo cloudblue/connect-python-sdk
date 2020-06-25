@@ -321,7 +321,7 @@ class ParamSchema(BaseSchema):
     scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema)
     value_choices = fields.Nested(ValueChoiceSchema, many=True)
-    structured_values = fields.Str()
+    structured_value = fields.Dict()
     phase = fields.Str()
     reconciliation = fields.Bool()
     events = fields.Nested(EventsSchema)

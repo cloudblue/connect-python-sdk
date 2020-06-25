@@ -22,7 +22,7 @@ create_parameter_response = load_json(
     os.path.join(os.path.dirname(__file__), 'data', 'response_create_parameter.json'))
 
 
-class testParameters(unittest.TestCase):
+class TestParameters(unittest.TestCase):
 
     def setUp(self):
         self.config = Config(file='tests/config.json')

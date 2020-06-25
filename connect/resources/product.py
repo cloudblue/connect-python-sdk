@@ -37,7 +37,7 @@ class ProductsResource(BaseResource):
         response = self._api.post(
             path=path,
             json=body
-            )
+        )
         return response
 
     def update_parameter(self, product_id, parameter_id, body):
@@ -56,7 +56,7 @@ class ProductsResource(BaseResource):
         response = self._api.put(
             path=path,
             json=body
-            )
+        )
         return response
 
     def delete_parameter(self, product_id, parameter_id):
@@ -73,5 +73,5 @@ class ProductsResource(BaseResource):
         path = '/public/v1/products/' + product_id + '/parameters/' + parameter_id
         response = self._api.delete(
             path=path
-            )
+        )
         return response

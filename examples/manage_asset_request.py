@@ -12,7 +12,7 @@ class AssetRequest():
 
     def list_asset_request(self):
         asset_request = FulfillmentResource(config=self.configuration)
-        return asset_request._asset_requests.search()
+        return asset_request.search_asset_request()
 
     def create_asset_request(self, body):
         asset_request = FulfillmentResource(config=self.configuration)
