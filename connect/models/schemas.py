@@ -539,6 +539,7 @@ class TierAccountSchema(BaseSchema):
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
     hub = fields.Nested(HubSchema, only=('id', 'name'))
     version = fields.Int()
+    tax_id = fields.Str()
 
     events = fields.Nested(EventsSchema)
     scopes = fields.List(fields.Str())
