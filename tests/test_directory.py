@@ -167,4 +167,3 @@ def test_search_tier_account_bad():
 def test_get_tier_account_bad():
     with pytest.raises(ServerError):
         Directory().get_tier_account('TAR-0000-0000-0000-000-000')
-

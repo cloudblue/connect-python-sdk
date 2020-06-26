@@ -5,6 +5,7 @@
 
 import functools
 import logging
+import warnings
 from typing import Any, List, Dict, Tuple
 
 import requests
@@ -81,6 +82,13 @@ class ApiClient(object):
         # type: (str, Any) -> Tuple[str, int]
         kwargs = self._fix_request_kwargs(path, kwargs)
         response = requests.put(**kwargs)
+        return self._check_and_pack_response(response)
+
+    @function_log()
+    def delete(self, path='', **kwargs):
+        # type: (str, Any) -> Tuple[str, int]
+        kwargs = self._fix_request_kwargs(path, kwargs)
+        response = requests.delete(**kwargs)
         return self._check_and_pack_response(response)
 
     def _fix_request_kwargs(self, path, prev_kwargs, **kwargs):
@@ -170,6 +178,12 @@ class BaseResource(object):
             response, _ = ApiClient(self._api.config, self._api.base_path + compiled).get()
         else:
             self.logger.info('Get list request with filters - {}'.format(filters))
+            for k, v in filters.items():
+                if k.endswith('__in') and isinstance(v, (tuple, list)):
+                    warnings.warn(
+                        '{}: __in operator is deprecated, Use RQL syntax'.format(k),
+                        DeprecationWarning,
+                    )
             response, _ = self._api.get(params=filters)
         return self.model_class.deserialize(response)
 
