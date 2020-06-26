@@ -53,7 +53,7 @@ class Directory(object):
 
         :param dict|Query filters: Filters to pass to the request.
         :return: A list with the marketplaces that match the given filters.
-        :rtype: list[Asset]
+        :rtype: list[Marketplace]
         """
         query = self._get_filters_query(filters, False)
         text, code = ApiClient(self._config, 'marketplaces' + query.compile()).get()
@@ -64,7 +64,7 @@ class Directory(object):
 
         :param str marketplace_id: The id of the marketplace.
         :return: The asset with the given id, or ``None`` if such asset does not exist.
-        :rtype: Asset|None
+        :rtype: Marketplace|None
         """
         text, code = ApiClient(self._config, 'marketplaces/' + marketplace_id).get()
         return Marketplace.deserialize(text)
