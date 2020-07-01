@@ -52,7 +52,7 @@ class Directory(object):
         """ List the marketplaces.
 
         :param dict|Query filters: Filters to pass to the request.
-        :return: A list with the marketplaces that match the given filters.
+        :return: List of marketplaces matching given filters.
         :rtype: list[Marketplace]
         """
         query = self._get_filters_query(filters, False)
@@ -60,10 +60,10 @@ class Directory(object):
         return Marketplace.deserialize(text)
 
     def get_marketplace(self, marketplace_id):
-        """ Returns the marketplace with the given id.
+        """ Obtains Marketplace object given its ID.
 
         :param str marketplace_id: The id of the marketplace.
-        :return: The asset with the given id, or ``None`` if such asset does not exist.
+        :return: The marketplace with the given id, or ``None`` if such marketplace does not exist.
         :rtype: Marketplace|None
         """
         text, code = ApiClient(self._config, 'marketplaces/' + marketplace_id).get()
