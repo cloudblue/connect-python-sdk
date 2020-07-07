@@ -29,3 +29,9 @@ class Constraints(BaseModel):
 
     reconciliation = None  # type: bool
     """ (bool) True if vendor has marked parameters as for reconciliation purposes """
+
+    min_length = None  # type: int
+    """ (integer) Only for password type """
+
+    max_length = None  # type: int
+    """ (integer) Only for password type """

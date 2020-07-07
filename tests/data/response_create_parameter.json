@@ -1,0 +1,42 @@
+{
+    "id": "PRM-075-401-854-0004",
+    "name": "magic_param_b",
+    "title": "Title of the Magic Parameter b",
+    "description": "This is a backup email for emergency",
+    "type": "checkbox",
+    "scope": "asset",
+    "phase": "ordering",
+    "constraints": {
+        "required": false,
+        "hidden": false,
+        "unique": false,
+        "choices": [
+            {
+                "label": "val1",
+                "value": "test1",
+                "default": true
+            },
+            {
+                "label": "val2",
+                "value": "test2"
+            },
+            {
+                "label": "val3",
+                "value": "test3"
+            }
+        ]
+    },
+    "position": 40000,
+    "events": {
+        "created": {
+            "at": "2020-06-23T12:03:14+00:00",
+            "by": {
+                "id": "SU-543-256-428",
+                "name": "Test_mconstante"
+            }
+        },
+        "updated": {
+            "at": "2020-06-23T12:03:14+00:00"
+        }
+    }
+}

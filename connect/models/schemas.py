@@ -130,6 +130,8 @@ class ConstraintsSchema(BaseSchema):
     choices = fields.Nested(ValueChoiceSchema, many=True)
     unique = fields.Bool()
     reconciliation = fields.Bool()
+    min_length = fields.Integer()
+    max_length = fields.Integer()
 
     @post_load
     def make_object(self, data):
@@ -315,11 +317,11 @@ class ParamSchema(BaseSchema):
     value = fields.Str()
     value_error = fields.Str()
     value_choice = fields.Str(many=True)
-
     title = fields.Str()
     scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema)
     value_choices = fields.Nested(ValueChoiceSchema, many=True)
+    structured_value = fields.Dict()
     phase = fields.Str()
     reconciliation = fields.Bool()
     events = fields.Nested(EventsSchema)
@@ -537,6 +539,7 @@ class TierAccountSchema(BaseSchema):
     marketplace = fields.Nested(MarketplaceSchema, only=('id', 'name', 'icon'))
     hub = fields.Nested(HubSchema, only=('id', 'name'))
     version = fields.Int()
+    tax_id = fields.Str()
 
     events = fields.Nested(EventsSchema)
     scopes = fields.List(fields.Str())

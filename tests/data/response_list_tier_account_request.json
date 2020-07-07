@@ -38,6 +38,7 @@
                 "name": "ACME Hub"
             },
             "version": 5,
+            "tax_id": "UMU2IDBVDD",
             "contact_info": {
                 "address_line1": "Yalı Mahallesi",
                 "address_line2": "",
@@ -124,6 +125,7 @@
                 "name": "ACME Hub"
             },
             "version": 6,
+            "tax_id": "UMU2IDBVQWQW",            
             "contact_info": {
                 "address_line1": "Yaaalı Mahallesi",
                 "address_line2": "",
@@ -210,6 +212,7 @@
                 "name": "ACME Hub"
             },
             "version": 7,
+            "tax_id": "UMU2IDAAA",            
             "contact_info": {
                 "address_line1": "Yaaalı Mahallesi",
                 "address_line2": "",

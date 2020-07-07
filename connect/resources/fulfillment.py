@@ -37,3 +37,6 @@ class FulfillmentResource(object):
 
     def create_purchase_request(self, obj):
         return self._asset_requests.create(obj)
+
+    def search_asset_request(self, obj):
+        return self._asset_requests.search(obj)
