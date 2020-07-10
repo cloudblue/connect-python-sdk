@@ -119,11 +119,8 @@ class TierConfigAutomation(AutomationEngine):
         :return: The server response.
         :rtype: str
         """
-        list_dict = []
-        for _ in params:
-            list_dict.append(_.__dict__ if isinstance(_, Param) else _)
-
+        mapped_params = [p.json for p in params if isinstance(p, Param)]
         return self._api.put(
             path=pk,
-            json={'params': list_dict},
+            json={'params': mapped_params},
         )[0]
