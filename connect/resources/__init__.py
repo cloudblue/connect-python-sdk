@@ -5,6 +5,7 @@
 
 from .directory import Directory
 from .fulfillment_automation import FulfillmentAutomation
+from .marketplace import MarketplaceResource
 from .template import TemplateResource
 from .tier_config_automation import TierConfigAutomation
 from .usage_automation import UsageAutomation
@@ -17,6 +18,7 @@ from .asset_request import AssetRequestResource
 __all__ = [
     'Directory',
     'FulfillmentAutomation',
+    'MarketplaceResource',
     'TemplateResource',
     'TierConfigAutomation',
     'UsageAutomation',

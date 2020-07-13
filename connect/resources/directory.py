@@ -11,6 +11,7 @@ from connect.models.marketplace import Marketplace
 from connect.models.product import Product
 from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient
+from connect.resources.marketplace import MarketplaceResource
 from connect.resources.tier_account import TierAccountResource
 from connect.rql import Query
 
@@ -55,9 +56,7 @@ class Directory(object):
         :return: List of marketplaces matching given filters.
         :rtype: list[Marketplace]
         """
-        query = self._get_filters_query(filters, False)
-        text, code = ApiClient(self._config, 'marketplaces' + query.compile()).get()
-        return Marketplace.deserialize(text)
+        return MarketplaceResource(self._config).list(filters)
 
     def get_marketplace(self, marketplace_id):
         """ Obtains Marketplace object given its ID.
@@ -66,8 +65,7 @@ class Directory(object):
         :return: The marketplace with the given id, or ``None`` if such marketplace does not exist.
         :rtype: Marketplace|None
         """
-        text, code = ApiClient(self._config, 'marketplaces/' + marketplace_id).get()
-        return Marketplace.deserialize(text)
+        return MarketplaceResource(self._config).get(marketplace_id)
 
     def list_products(self, filters=None):
         """ List the products.
