@@ -7,7 +7,6 @@ from copy import copy
 
 from connect.config import Config
 from connect.models.asset import Asset
-from connect.models.marketplace import Marketplace
 from connect.models.product import Product
 from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient

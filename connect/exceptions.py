@@ -155,5 +155,5 @@ class UpdateResourceError(Message):
 
 class DeleteResourceError(Message):
     def __init__(self, message):
-        # type: (str) -> None:
+        # type: (str) -> None
         super(DeleteResourceError, self).__init__(message, 'deleteresource')
