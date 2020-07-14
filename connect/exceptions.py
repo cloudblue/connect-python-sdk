@@ -145,15 +145,3 @@ class FileRetrievalError(Message):
     def __init__(self, message):
         # type: (str) -> None
         super(FileRetrievalError, self).__init__(message, 'fileretrieval')
-
-
-class UpdateResourceError(Message):
-    def __init__(self, message):
-        # type: (str) -> None
-        super(UpdateResourceError, self).__init__(message, 'updateresource')
-
-
-class DeleteResourceError(Message):
-    def __init__(self, message):
-        # type: (str) -> None
-        super(DeleteResourceError, self).__init__(message, 'deleteresource')
