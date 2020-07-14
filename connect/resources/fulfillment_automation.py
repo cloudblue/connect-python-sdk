@@ -179,12 +179,10 @@ class FulfillmentAutomation(AutomationEngine):
         :return: The server response.
         :rtype: str
         """
-        list_dict = []
-        for _ in params:
-            list_dict.append(_.__dict__ if isinstance(_, Param) else _)
+        mapped_params = [p.json for p in params if isinstance(p, Param)]
         return self._api.put(
             path=pk,
-            json={'asset': {'params': list_dict}},
+            json={'asset': {'params': mapped_params}},
         )[0]
 
     def _update_conversation_if_exists(self, conversation, request_id, obj):
