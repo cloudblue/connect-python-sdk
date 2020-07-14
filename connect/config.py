@@ -35,7 +35,7 @@ class Config(object):
         # Load config from file name
         if file:
             if not os.path.exists(file):
-                raise IOError('No file `{}` on directory'.format(file))
+                raise IOError('No file `{}` on directory `{}`'.format(file, os.getcwd()))
 
             with open(file) as config_file:
                 configs = config_file.read()

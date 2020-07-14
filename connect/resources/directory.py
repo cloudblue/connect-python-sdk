@@ -10,6 +10,7 @@ from connect.models.asset import Asset
 from connect.models.product import Product
 from connect.models.tier_config import TierConfig
 from connect.resources.base import ApiClient
+from connect.resources.marketplace import MarketplaceResource
 from connect.resources.tier_account import TierAccountResource
 from connect.rql import Query
 
@@ -46,6 +47,24 @@ class Directory(object):
         """
         text, code = ApiClient(self._config, 'assets/' + asset_id).get()
         return Asset.deserialize(text)
+
+    def list_marketplaces(self, filters=None):
+        """ List the marketplaces.
+
+        :param dict|Query filters: Filters to pass to the request.
+        :return: List of marketplaces matching given filters.
+        :rtype: list[Marketplace]
+        """
+        return MarketplaceResource(self._config).list(filters)
+
+    def get_marketplace(self, marketplace_id):
+        """ Obtains Marketplace object given its ID.
+
+        :param str marketplace_id: The id of the marketplace.
+        :return: The marketplace with the given id, or ``None`` if such marketplace does not exist.
+        :rtype: Marketplace|None
+        """
+        return MarketplaceResource(self._config).get(marketplace_id)
 
     def list_products(self, filters=None):
         """ List the products.

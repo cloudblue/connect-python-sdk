@@ -1,0 +1,35 @@
+{
+  "id": "MP-12345",
+  "name": "France and territories",
+  "description": "Use the marketplace to distribute services in France and it's territories.",
+  "active_contracts": 34,
+  "icon": "/media/PA-123-123/marketplaces/MP-12345/image.png",
+  "owner": {
+    "id": "PA-123-123",
+    "name": "Awesome Provider"
+  },
+  "hubs": [
+    {
+      "hub": {
+        "id": "HB-1234-1234",
+        "name": "Staging OA 7.4"
+      },
+      "external_id": "20190101"
+    },
+    {
+      "hub": {
+        "id": "HB-4321-4321",
+        "name": "Staging OA 7.3"
+      },
+      "external_id": "70190121"
+    }
+  ],
+  "countries": [
+    {
+      "id": "IN",
+      "name": "India",
+      "icon": "/media/countries/india.png",
+      "zone": "Asia"
+    }
+  ]
+}
