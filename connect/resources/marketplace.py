@@ -28,8 +28,6 @@ class MarketplaceResource(BaseResource):
 
         :param str id_: Id of the Marketplace.
         :param str path: Path to the icon file that will be sent to Connect.
-        :return: Whether the icon was successfully uploaded.
-        :rtype: bool
         """
         icon = self._load_icon(id_, path)
         request_path, headers, multipart = self._setup_icon_request(id_, path, icon)
