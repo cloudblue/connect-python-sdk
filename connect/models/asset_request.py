@@ -6,7 +6,7 @@
 import datetime
 from typing import Union
 
-from requests.exceptions import ConnectionError
+from requests.exceptions import RequestException
 
 from .asset import Asset
 from .base import BaseModel
@@ -135,7 +135,7 @@ class AssetRequest(BaseModel):
         client = ApiClient(config, base_path='conversations')
         try:
             response, _ = client.get(params={'instance_id': self.id})
-        except ConnectionError:
+        except RequestException:
             return None
         try:
             conversations = Conversation.deserialize(response)
