@@ -28,6 +28,9 @@ class LoggerAdapter(logging.LoggerAdapter):
             kwargs
         )
 
+    def setLevel(self, level):
+        self.logger.setLevel(level)
+
 
 def function_log(custom_logger=None):
     if not custom_logger:
