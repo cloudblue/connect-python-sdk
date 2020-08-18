@@ -17,6 +17,18 @@ dictConfig(config['logging'])
 logger = logging.getLogger()
 
 
+class LoggerAdapter(logging.LoggerAdapter):
+    def __init__(self, logger_):
+        super(LoggerAdapter, self).__init__(logger_, {})
+        self.prefix = None
+
+    def process(self, msg, kwargs):
+        return (
+            '[%s] %s' % (self.prefix, msg) if self.prefix else msg,
+            kwargs
+        )
+
+
 def function_log(custom_logger=None):
     if not custom_logger:
         custom_logger = logging.getLogger()

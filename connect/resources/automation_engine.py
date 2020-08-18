@@ -62,11 +62,11 @@ class AutomationEngine(BaseResource):
     def _set_custom_logger(self, *args):
         handlers = [copy.copy(hdlr) for hdlr in global_logger.handlers]
         log_level = global_logger.level
-        self.__class__.logger.setLevel(log_level)
-        self.__class__.logger.propagate = False
-        self.__class__.logger.handlers = handlers
-        base = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
-               "-%(lineno)d: %(message)s"
-        sformat = " ".join(args) + base
-        [handler.setFormatter(logging.Formatter(sformat))
-         for handler in self.__class__.logger.handlers]
+        logger = self.__class__.logger
+        logger.setLevel(log_level)
+        logger.propagate = False
+        logger.handlers = handlers
+        logger.prefix = ' - '.join(args)
+        fmt = ' %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s'
+        for handler in logger.handlers:
+            handler.setFormatter(logging.Formatter(fmt))

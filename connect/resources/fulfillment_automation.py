@@ -10,7 +10,7 @@ from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import function_log
+from connect.logger import function_log, LoggerAdapter
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.param import Param
@@ -41,7 +41,7 @@ class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     model_class = Fulfillment
-    logger = logging.getLogger('Fullfilment.logger')
+    logger = LoggerAdapter(logging.getLogger('Fulfillment.logger'))
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Fulfillment request, plus any others that you
@@ -131,6 +131,9 @@ class FulfillmentAutomation(AutomationEngine):
             self.logger.warning('Skipping request {} because an exception was raised: {}'
                                 .format(request.id, ex))
             return ''
+
+        finally:
+            self._set_custom_logger()
 
     def create_request(self, request):
         """ Creates a new request. Using this method requires a provider token used as api_key

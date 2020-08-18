@@ -13,6 +13,7 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
+from connect.logger import LoggerAdapter
 from connect.models.usage_listing import UsageListing
 from connect.models.usage_file import UsageFile
 from connect.models.usage_record import UsageRecord
@@ -28,7 +29,7 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'listings'
     model_class = UsageFile
-    logger = logging.getLogger('Usage.logger')
+    logger = LoggerAdapter(logging.getLogger('Usage.logger'))
 
     def filters(self, status='listed', **kwargs):
         """
@@ -72,6 +73,8 @@ class UsageAutomation(AutomationEngine):
                 'on Contract {} '.format(request.contract.id) +
                 'and provider {}({})'.format(request.provider.id, request.provider.name))
             return 'failure'
+        finally:
+            self._set_custom_logger()
 
         self.logger.info('Processing result for usage on listing {}: {}'
                          .format(request.product.id, result))

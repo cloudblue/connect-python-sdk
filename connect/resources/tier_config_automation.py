@@ -7,7 +7,7 @@ from abc import ABCMeta
 import logging
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import function_log
+from connect.logger import function_log, LoggerAdapter
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.param import Param
@@ -36,7 +36,7 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
-    logger = logging.getLogger('Tier.logger')
+    logger = LoggerAdapter(logging.getLogger('Tier.logger'))
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Tier Config request, plus any others that you
@@ -107,6 +107,9 @@ class TierConfigAutomation(AutomationEngine):
             self.logger.warning('Skipping request {} because an exception was raised: {}'
                                 .format(request.id, ex))
             return ''
+
+        finally:
+            self._set_custom_logger()
 
         return ''
 

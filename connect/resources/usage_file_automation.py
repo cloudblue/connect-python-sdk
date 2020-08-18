@@ -72,6 +72,9 @@ class UsageFileAutomation(AutomationEngine):
         except SkipRequest:
             processing_result = 'skip'
 
+        finally:
+            self._set_custom_logger()
+
         self.logger.info('Finished processing of usage file with ID {} with result {}'
                          .format(request.id, processing_result))
         return processing_result
