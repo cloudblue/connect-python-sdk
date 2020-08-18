@@ -67,6 +67,7 @@ class AutomationEngine(BaseResource):
         logger.propagate = False
         logger.handlers = handlers
         logger.prefix = ' - '.join(args)
-        fmt = ' %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line-%(lineno)d: %(message)s'
+        fmt = ' %(levelname)-6s; %(asctime)s; %(name)-6s; ' \
+              '%(module)s:%(funcName)s:line-%(lineno)d: %(message)s'
         for handler in logger.handlers:
             handler.setFormatter(logging.Formatter(fmt))
