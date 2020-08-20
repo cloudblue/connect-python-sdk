@@ -32,27 +32,14 @@ class LoggerAdapter(logging.LoggerAdapter):
         self.logger.setLevel(level)
 
 
-def function_log(custom_logger=None):
-    if not custom_logger:
-        custom_logger = logging.getLogger()
-        sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
-                  "-%(lineno)d: %(message)s"
-        for handler in custom_logger.handlers:
-            handler.setFormatter(logging.Formatter(sformat))
-
-    # noinspection PyUnusedLocal
-    def decorator(func, **kwargs):
-        # noinspection PyShadowingNames
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            custom_logger.info('Entering: %s', func.__name__)
-            custom_logger.debug('Function params: {} {}'.format(args, kwargs))
-            result = func(self, *args, **kwargs)
-            custom_logger.debug(
-                u'Function `{}.{}` return: {}'.format(
-                    self.__class__.__name__, func.__name__, result))
-            return result
-
-        return wrapper
-
-    return decorator
+def function_log(func):
+    # noinspection PyShadowingNames
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        logger.info('Entering: %s', func.__name__)
+        logger.debug('Function params: {} {}'.format(args, kwargs))
+        result = func(self, *args, **kwargs)
+        logger.debug(u'Function `{}.{}` return: {}'
+                     .format(self.__class__.__name__, func.__name__, result))
+        return result
+    return wrapper

@@ -29,7 +29,6 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'listings'
     model_class = UsageFile
-    logger = LoggerAdapter(logging.getLogger('Usage.logger'))
 
     def filters(self, status='listed', **kwargs):
         """
@@ -45,9 +44,6 @@ class UsageAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageListing) -> str
-
-        self._set_custom_logger(request.id, request.contract.marketplace.id)
-
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
@@ -64,6 +60,7 @@ class UsageAutomation(AutomationEngine):
                 provider_name=request.provider.name,
             )
         )
+
         try:
             result = self.process_request(request)
         except FileCreationError:
@@ -73,8 +70,6 @@ class UsageAutomation(AutomationEngine):
                 'on Contract {} '.format(request.contract.id) +
                 'and provider {}({})'.format(request.provider.id, request.provider.name))
             return 'failure'
-        finally:
-            self._set_custom_logger()
 
         self.logger.info('Processing result for usage on listing {}: {}'
                          .format(request.product.id, result))
@@ -222,3 +217,10 @@ class UsageAutomation(AutomationEngine):
             msg = 'Unexpected server response, returned code {}'.format(status)
             self.logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
+
+    def _set_logger_prefix(self, request):
+        # type: (Optional[UsageListing]) -> None
+        if request:
+            self.logger.prefix = request.id + ' - ' + request.contract.marketplace.id
+        else:
+            self.logger.prefix = ''

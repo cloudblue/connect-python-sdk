@@ -13,6 +13,7 @@ from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log, LoggerAdapter
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
+from connect.models.asset_request import AssetRequest
 from connect.models.param import Param
 from connect.models.fulfillment import Fulfillment
 from connect.models.tier_config_request import TierConfigRequest
@@ -41,7 +42,6 @@ class FulfillmentAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'requests'
     model_class = Fulfillment
-    logger = LoggerAdapter(logging.getLogger('Fulfillment.logger'))
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Fulfillment request, plus any others that you
@@ -74,11 +74,9 @@ class FulfillmentAutomation(AutomationEngine):
             filters['asset.product.id__in'] = ','.join(self.config.products)
         return filters
 
-    @function_log(custom_logger=logger)
+    @function_log
     def dispatch(self, request):
         # type: (Fulfillment) -> str
-        self._set_custom_logger(request.asset.id, request.id)
-
         conversation = request.get_conversation(self.config)
 
         try:
@@ -132,9 +130,6 @@ class FulfillmentAutomation(AutomationEngine):
                                 .format(request.id, ex))
             return ''
 
-        finally:
-            self._set_custom_logger()
-
     def create_request(self, request):
         """ Creates a new request. Using this method requires a provider token used as api_key
         in the Config.
@@ -173,7 +168,7 @@ class FulfillmentAutomation(AutomationEngine):
         else:
             return None
 
-    @function_log(custom_logger=logger)
+    @function_log
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 
@@ -196,3 +191,10 @@ class FulfillmentAutomation(AutomationEngine):
             except TypeError as ex:
                 self.logger.error('Error updating conversation for request {}: {}'
                                   .format(request_id, ex))
+
+    def _set_logger_prefix(self, request):
+        # type: (Optional[AssetRequest]) -> None
+        if request:
+            self.logger.prefix = request.asset.id + ' - ' + request.id
+        else:
+            self.logger.prefix = ''

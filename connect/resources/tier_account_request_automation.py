@@ -52,7 +52,7 @@ class TierAccountRequestAutomation:
         ):
             self.dispatch(request)
 
-    @function_log(custom_logger=logger)
+    @function_log
     def dispatch(self, request):
         result = self.process_request(request)
         if result.action == TierAccountRequestAction.ACCEPT:
