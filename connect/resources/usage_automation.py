@@ -4,7 +4,6 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 import json
-import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
@@ -13,7 +12,6 @@ import requests
 from typing import List, Optional
 
 from connect.exceptions import FileCreationError, FileRetrievalError
-from connect.logger import LoggerAdapter
 from connect.models.usage_listing import UsageListing
 from connect.models.usage_file import UsageFile
 from connect.models.usage_record import UsageRecord

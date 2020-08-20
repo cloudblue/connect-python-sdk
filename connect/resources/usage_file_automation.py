@@ -5,7 +5,6 @@
 
 from abc import ABCMeta
 import json
-import logging
 from typing import Optional
 
 from connect.exceptions import SkipRequest, UsageFileAction

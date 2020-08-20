@@ -4,13 +4,12 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
-import logging
 
 from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import function_log, LoggerAdapter
+from connect.logger import function_log
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.asset_request import AssetRequest
