@@ -21,8 +21,15 @@ class LoggerAdapter(logging.LoggerAdapter):
     def __init__(self, logger_):
         super(LoggerAdapter, self).__init__(logger_, {})
         self.prefix = None
+        self.replace_handler = None
 
     def process(self, msg, kwargs):
+        if self.replace_handler:
+            handlers_copy = self.logger.handlers[:]
+            for handler in handlers_copy:
+                if isinstance(handler, type(self.replace_handler)):
+                    self.logger.removeHandler(handler)
+                    self.logger.addHandler(self.replace_handler)
         return (
             '[%s] %s' % (self.prefix, msg) if self.prefix else msg,
             kwargs
