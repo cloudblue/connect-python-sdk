@@ -124,7 +124,6 @@ class TierConfigAutomation(AutomationEngine):
     def _set_logger_prefix(self, request):
         # type: (Optional[TierConfigRequest]) -> None
         if request:
-            self.logger.prefix = request.id + ' - ' + request.configuration.id \
-                                 + ' - ' + request.configuration.account.id
+            self.logger.prefix = request.id + ' - ' + request.configuration.account.id
         else:
             self.logger.prefix = ''

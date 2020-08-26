@@ -194,6 +194,6 @@ class FulfillmentAutomation(AutomationEngine):
     def _set_logger_prefix(self, request):
         # type: (Optional[AssetRequest]) -> None
         if request:
-            self.logger.prefix = request.asset.id + ' - ' + request.id
+            self.logger.prefix = request.id
         else:
             self.logger.prefix = ''
