@@ -43,7 +43,7 @@ def function_log(func):
     # noinspection PyShadowingNames
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        logger.info('Entering: %s', func.__name__)
+        logger.debug('Entering: %s', func.__name__)
         logger.debug('Function params: {} {}'.format(args, kwargs))
         result = func(self, *args, **kwargs)
         logger.debug(u'Function `{}.{}` return: {}'
