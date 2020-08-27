@@ -18,12 +18,13 @@ logger = logging.getLogger()
 
 
 class LoggerAdapter(logging.LoggerAdapter):
-    def __init__(self, logger_):
-        super(LoggerAdapter, self).__init__(logger_, {})
+    def __init__(self, logger_, extra=None):
+        super(LoggerAdapter, self).__init__(logger_, extra or {})
         self.prefix = None
         self.replace_handler = None
 
     def process(self, msg, kwargs):
+        msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
         if self.replace_handler:
             handlers_copy = self.logger.handlers[:]
             for handler in handlers_copy:
