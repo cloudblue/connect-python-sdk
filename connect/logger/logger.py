@@ -32,7 +32,7 @@ class LoggerAdapter(logging.LoggerAdapter):
                     self.logger.removeHandler(handler)
                     self.logger.addHandler(self.replace_handler)
         return (
-            '[%s] %s' % (self.prefix, msg) if self.prefix else msg,
+            '%s %s' % (self.prefix, msg) if self.prefix else msg,
             kwargs
         )
 
