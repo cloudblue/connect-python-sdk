@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from abc import ABCMeta
-import logging
+from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
 from connect.logger import function_log
@@ -36,7 +36,6 @@ class TierConfigAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'tier/config-requests'
     model_class = TierConfigRequest
-    logger = logging.getLogger('Tier.logger')
 
     def filters(self, status='pending', **kwargs):
         """ Returns the default set of filters for Tier Config request, plus any others that you
@@ -63,13 +62,10 @@ class TierConfigAutomation(AutomationEngine):
             filters['configuration.product.id'] = ','.join(self.config.products)
         return filters
 
-    @function_log(custom_logger=logger)
+    @function_log
     def dispatch(self, request):
         # type: (TierConfigRequest) -> str
         try:
-            self._set_custom_logger(request.id, request.configuration.id,
-                                    request.configuration.account.id)
-
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'
@@ -110,7 +106,7 @@ class TierConfigAutomation(AutomationEngine):
 
         return ''
 
-    @function_log(custom_logger=logger)
+    @function_log
     def update_parameters(self, pk, params):
         """ Sends a list of Param objects to Connect for updating.
 
@@ -124,3 +120,10 @@ class TierConfigAutomation(AutomationEngine):
             path=pk,
             json={'params': mapped_params},
         )[0]
+
+    def _set_logger_prefix(self, request):
+        # type: (Optional[TierConfigRequest]) -> None
+        if request:
+            self.logger.prefix = request.id + ' - ' + request.configuration.account.id
+        else:
+            self.logger.prefix = ''

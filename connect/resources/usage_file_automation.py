@@ -3,9 +3,9 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
-import json
-import logging
 from abc import ABCMeta
+import json
+from typing import Optional
 
 from connect.exceptions import SkipRequest, UsageFileAction
 from connect.models.base import BaseModel
@@ -22,7 +22,6 @@ class UsageFileAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'usage/files'
     model_class = UsageFile
-    logger = logging.getLogger('UsageFile.logger')
 
     def filters(self, status='ready', **kwargs):
         """
@@ -38,9 +37,6 @@ class UsageFileAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageFile) -> str
-
-        self._set_custom_logger(request.id, request.name)
-
         try:
             # Validate product
             if self.config.products \
@@ -75,3 +71,10 @@ class UsageFileAutomation(AutomationEngine):
         self.logger.info('Finished processing of usage file with ID {} with result {}'
                          .format(request.id, processing_result))
         return processing_result
+
+    def _set_logger_prefix(self, request):
+        # type: (Optional[UsageFile]) -> None
+        if request:
+            self.logger.prefix = request.id + ' - ' + request.name
+        else:
+            self.logger.prefix = ''

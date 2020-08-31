@@ -4,7 +4,6 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 import json
-import logging
 from abc import ABCMeta
 from tempfile import NamedTemporaryFile
 
@@ -28,7 +27,6 @@ class UsageAutomation(AutomationEngine):
     __metaclass__ = ABCMeta
     resource = 'listings'
     model_class = UsageFile
-    logger = logging.getLogger('Usage.logger')
 
     def filters(self, status='listed', **kwargs):
         """
@@ -44,9 +42,6 @@ class UsageAutomation(AutomationEngine):
 
     def dispatch(self, request):
         # type: (UsageListing) -> str
-
-        self._set_custom_logger(request.id, request.contract.marketplace.id)
-
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
@@ -63,6 +58,7 @@ class UsageAutomation(AutomationEngine):
                 provider_name=request.provider.name,
             )
         )
+
         try:
             result = self.process_request(request)
         except FileCreationError:
@@ -219,3 +215,10 @@ class UsageAutomation(AutomationEngine):
             msg = 'Unexpected server response, returned code {}'.format(status)
             self.logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
+
+    def _set_logger_prefix(self, request):
+        # type: (Optional[UsageListing]) -> None
+        if request:
+            self.logger.prefix = request.id + ' - ' + request.contract.marketplace.id
+        else:
+            self.logger.prefix = ''

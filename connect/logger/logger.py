@@ -17,27 +17,37 @@ dictConfig(config['logging'])
 logger = logging.getLogger()
 
 
-def function_log(custom_logger=None):
-    if not custom_logger:
-        custom_logger = logging.getLogger()
-        sformat = " %(levelname)-6s; %(asctime)s; %(name)-6s; %(module)s:%(funcName)s:line" \
-                  "-%(lineno)d: %(message)s"
-        for handler in custom_logger.handlers:
-            handler.setFormatter(logging.Formatter(sformat))
+class LoggerAdapter(logging.LoggerAdapter):
+    def __init__(self, logger_, extra=None):
+        super(LoggerAdapter, self).__init__(logger_, extra or {})
+        self.prefix = None
+        self.replace_handler = None
 
-    # noinspection PyUnusedLocal
-    def decorator(func, **kwargs):
-        # noinspection PyShadowingNames
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            custom_logger.info('Entering: %s', func.__name__)
-            custom_logger.debug('Function params: {} {}'.format(args, kwargs))
-            result = func(self, *args, **kwargs)
-            custom_logger.debug(
-                u'Function `{}.{}` return: {}'.format(
-                    self.__class__.__name__, func.__name__, result))
-            return result
+    def process(self, msg, kwargs):
+        msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
+        if self.replace_handler:
+            handlers_copy = self.logger.handlers[:]
+            for handler in handlers_copy:
+                if isinstance(handler, type(self.replace_handler)):
+                    self.logger.removeHandler(handler)
+                    self.logger.addHandler(self.replace_handler)
+        return (
+            '%s %s' % (self.prefix, msg) if self.prefix else msg,
+            kwargs
+        )
 
-        return wrapper
+    def setLevel(self, level):
+        self.logger.setLevel(level)
 
-    return decorator
+
+def function_log(func):
+    # noinspection PyShadowingNames
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        logger.debug('Entering: %s', func.__name__)
+        logger.debug('Function params: {} {}'.format(args, kwargs))
+        result = func(self, *args, **kwargs)
+        logger.debug(u'Function `{}.{}` return: {}'
+                     .format(self.__class__.__name__, func.__name__, result))
+        return result
+    return wrapper
