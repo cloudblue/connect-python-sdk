@@ -57,10 +57,10 @@ class TierConfigAutomation(AutomationEngine):
         :return: The set of filters for this resource.
         :rtype: dict[str,Any]
         """
-        filters = super(TierConfigAutomation, self).filters(status=status, **kwargs)
+        query = super(TierConfigAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
-            filters['configuration.product.id'] = ','.join(self.config.products)
-        return filters
+            query.in_('configuration.product.id', self.config.products)
+        return query
 
     @function_log
     def dispatch(self, request):

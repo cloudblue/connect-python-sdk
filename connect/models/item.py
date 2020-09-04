@@ -6,9 +6,12 @@
 from typing import List, Optional, Union
 
 from .base import BaseModel
+from .commitment import Commitment
 from .param import Param
 from .renewal import Renewal
 from .schemas import ItemSchema
+from .ui import UI
+from .unit import Unit
 
 
 class Item(BaseModel):
@@ -54,6 +57,15 @@ class Item(BaseModel):
 
     name = None  # type: str
     """ (str) Name. """
+
+    unit = None  # type: Unit
+    """ (Unit) Measure unit. """
+
+    commitment = None  # type: Optional[Commitment]
+    """ (Commitment) item billing commitment. """
+
+    ui = None  # type: UI
+    """ (UI) UI visibility. """
 
     def get_param_by_id(self, param_id):
         """ Get a parameter of the item.

@@ -35,10 +35,10 @@ class UsageAutomation(AutomationEngine):
         :return: The set of filters for this resource.
         :rtype: dict[str,Any]
         """
-        filters = super(UsageAutomation, self).filters(status, **kwargs)
+        query = super(UsageAutomation, self).filters(status, **kwargs)
         if self.config.products:
-            filters['product__id'] = ','.join(self.config.products)
-        return filters
+            query.in_('product.id', self.config.products)
+        return query
 
     def dispatch(self, request):
         # type: (UsageListing) -> str

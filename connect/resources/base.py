@@ -140,11 +140,11 @@ class BaseResource(object):
 
     def __init__(self, config=None):
         # Set client
-        if not self.__class__.resource:
+        if not self.resource:
             raise AttributeError('Resource name not specified in class {}. '
                                  'Add an attribute `resource` with the name of the resource'
                                  .format(self.__class__.__name__))
-        self._api = ApiClient(config, self.__class__.resource)
+        self._api = ApiClient(config, self.resource)
 
     @property
     def config(self):
@@ -161,12 +161,15 @@ class BaseResource(object):
 
     def filters(self, **kwargs):
         # type: (Dict[str, Any]) -> Dict[str, Any]
-        filters = {}
+        query = Query()
         if self.limit:
-            filters['limit'] = self.limit
+            query = query.limit(self.limit)
         for key, val in kwargs.items():
-            filters[key] = val
-        return filters
+            if isinstance(val, (list, tuple)):
+                query = query.in_(key, val)
+            else:
+                query = query.equal(key, val)
+        return query
 
     @function_log
     def search(self, filters=None):
@@ -208,3 +211,14 @@ class BaseResource(object):
 
     def list(self, filters=None):
         return self.search(filters)
+
+
+class NestedResource(BaseResource):
+    """Base class for all nested resources"""
+
+    def __init__(self, config=None, parent_path=''):
+        self.resource = '{}/{}'.format(
+            parent_path,
+            self.__class__.resource,
+        )
+        super(NestedResource, self).__init__(config)

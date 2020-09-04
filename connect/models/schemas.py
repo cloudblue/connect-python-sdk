@@ -9,6 +9,11 @@ import six
 
 
 class BaseSchema(Schema):
+
+    def __init__(self, *args, **kwargs):
+        # kwargs['strict'] = True
+        super(BaseSchema, self).__init__(*args, **kwargs)
+
     id = fields.Str()
 
     # Set allow_none to True in all fields
@@ -334,18 +339,50 @@ class ParamSchema(BaseSchema):
         return Param(**data)
 
 
+class UISchema(BaseSchema):
+    visibility = fields.Bool()
+    @post_load
+    def make_object(self, data):
+        from connect.models import UI
+        return UI(**data)
+
+
+class UnitSchema(BaseSchema):
+    title = fields.Str()
+    unit = fields.Str()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Unit
+        return Unit(**data)
+
+
+class CommitmentSchema(BaseSchema):
+    multiplier = fields.Str()
+    count = fields.Int()
+
+    @post_load
+    def make_object(self, data):
+        from connect.models import Commitment
+        return Commitment(**data)
+
+
 class ItemSchema(BaseSchema):
     mpn = fields.Str()
     quantity = QuantityField()
     old_quantity = QuantityField()
     renewal = fields.Nested(RenewalSchema)
+    unit = fields.Nested(UnitSchema)
+    commitment = fields.Nested(CommitmentSchema)
     params = fields.Nested(ParamSchema, many=True)
     display_name = fields.Str()
     global_id = fields.Str()
     item_type = fields.Str()
+    description = fields.Str()
     period = fields.Str()
     type = fields.Str()
     name = fields.Str()
+    ui = fields.Nested(UISchema)
 
     @post_load
     def make_object(self, data):
@@ -828,8 +865,8 @@ class ConversationSchema(BaseSchema):
 
 
 class AttributesSchema(BaseSchema):
-    provider = fields.Nested(CompanySchema, only=('external_id'))
-    vendor = fields.Nested(CompanySchema, only=('external_id'))
+    provider = fields.Nested(CompanySchema, only=('external_id',))
+    vendor = fields.Nested(CompanySchema, only=('external_id',))
 
     @post_load
     def make_object(self, data):

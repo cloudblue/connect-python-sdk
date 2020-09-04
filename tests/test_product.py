@@ -10,6 +10,7 @@ import pytest
 from mock import Mock, call, patch
 
 from connect.config import Config
+from connect.models import Item
 from connect.resources.product import ProductsResource
 
 from .common import Response, load_json, load_str
@@ -124,6 +125,21 @@ class TestParameters(unittest.TestCase):
         with pytest.raises(ValueError) as e:
             request.delete_parameter(None, None)
         assert str(e.value) == 'Invalid ID'
+
+
+class TestItems(unittest.TestCase):
+
+    def setUp(self):
+        self.config = Config(file='tests/config.json')
+
+    def test_items(self):
+        product_resource = ProductsResource(config=self.config)
+        item_resource = product_resource.items('PRD-000')
+        assert item_resource.resource == 'products/PRD-000/items'
+        assert item_resource.model_class == Item
+
+        item_resource = product_resource.items('PRD-001')
+        assert item_resource.resource == 'products/PRD-001/items'
 
 
 if __name__ == "__main__":

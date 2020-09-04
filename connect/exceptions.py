@@ -84,6 +84,7 @@ class ServerError(Exception):
     """
 
     def __init__(self, error):
+        self.error = error
         super(ServerError, self).__init__(str(error), error.error_code)
 
 
