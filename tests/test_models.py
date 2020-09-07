@@ -9,6 +9,7 @@ import os
 import six
 from mock import MagicMock, patch
 
+from connect.config import Config
 from connect.models import Asset, Param, Fulfillment, Item, TierConfig, Configuration, User
 from connect.resources import FulfillmentAutomation
 from .common import Response, load_str
@@ -259,3 +260,27 @@ def test_needs_migration():
     request = requests[0]
     assert isinstance(request, Fulfillment)
     assert request.needs_migration()
+
+
+@patch('requests.get')
+def test_filter_by_products(get_mock):
+    get_mock.return_value = Response(
+        ok=True,
+        text='[]',
+        status_code=200,
+    )
+    config = Config(
+        'http://localhost:8080/api/public/v1',
+        'ApiKey XXXX:YYYY',
+        products=['PRD-000', 'PRD-001'],
+    )
+    FulfillmentAutomation(config=config).list()
+    expected_url = 'http://localhost:8080/api/public/v1/requests?' \
+        'in(asset.product.id,(PRD-000,PRD-001))&eq(status,pending)&limit=1000'
+    get_mock.assert_called_with(
+        url=expected_url,
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'ApiKey XXXX:YYYY'},
+        timeout=300,
+    )

@@ -74,9 +74,8 @@ class TestRecurringAsset(unittest.TestCase):
         get_mock.assert_has_calls([
             call(
                 headers={'Authorization': 'ApiKey XXXX:YYYYY', 'Content-Type': 'application/json'},
-                params={'limit': 100},
                 timeout=300,
-                url='http://localhost:8080/api/public/v1/subscriptions/assets')
+                url='http://localhost:8080/api/public/v1/subscriptions/assets?limit=100')
         ])
         self.assertEqual(len(recurring_asset), 2, msg=None)
 

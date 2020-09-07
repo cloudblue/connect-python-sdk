@@ -60,9 +60,8 @@ class TestTierConfigRequest(unittest.TestCase):
         get_mock.assert_has_calls([
             call(
                 headers={'Authorization': 'ApiKey XXXX:YYYYY', 'Content-Type': 'application/json'},
-                params={'limit': 100},
                 timeout=300,
-                url='http://localhost:8080/api/public/v1/tier/config-requests')
+                url='http://localhost:8080/api/public/v1/tier/config-requests?limit=100')
         ])
         self.assertEqual(len(tier_config_request), 2, msg=None)
 

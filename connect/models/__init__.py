@@ -13,6 +13,7 @@ from .asset_request import AssetRequest
 from .asset import Asset
 from .base import BaseModel
 from .billing import Billing
+from .commitment import Commitment
 from .company import Company
 from .configuration import Configuration
 from .connection import Connection
@@ -55,6 +56,8 @@ from .tier_accounts import TierAccounts
 from .tier_account_request import TierAccountRequest
 from .tier_config import TierConfig
 from .tier_config_request import TierConfigRequest
+from .ui import UI
+from .unit import Unit
 from .usage_file import UsageFile
 from .usage_listing import UsageListing
 from .usage_record import UsageRecord
@@ -83,6 +86,7 @@ __all__ = [
     'BillingRequest',
     'Company',
     'Configuration',
+    'Commitment',
     'Connection',
     'Constraints',
     'Contact',
@@ -125,6 +129,8 @@ __all__ = [
     'TierAccounts',
     'TierConfig',
     'TierConfigRequest',
+    'UI',
+    'Unit',
     'UsageFile',
     'UsageListing',
     'UsageRecord',

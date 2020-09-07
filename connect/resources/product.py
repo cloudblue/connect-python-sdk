@@ -1,5 +1,12 @@
 import json
-from .base import BaseResource
+
+from .base import BaseResource, NestedResource
+from ..models import Product, Item
+
+
+class ProductItemResource(NestedResource):
+    resource = 'items'
+    model_class = Item
 
 
 class ProductsResource(BaseResource):
@@ -7,6 +14,7 @@ class ProductsResource(BaseResource):
         :param Config config: Config object or ``None`` to use environment config (default).
     """
     resource = 'products'
+    model_class = Product
 
     def list_parameters(self, product_id):
         """ List parameters for a product.
@@ -75,3 +83,7 @@ class ProductsResource(BaseResource):
             path=path
         )
         return response
+
+    def items(self, product_id):
+        """Returns the ProductItemResource resource"""
+        return ProductItemResource(self.config, 'products/{}'.format(product_id))

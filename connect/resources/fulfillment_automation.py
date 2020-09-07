@@ -68,10 +68,10 @@ class FulfillmentAutomation(AutomationEngine):
         :return: The set of filters for this resource.
         :rtype: dict[str,Any]
         """
-        filters = super(FulfillmentAutomation, self).filters(status=status, **kwargs)
+        query = super(FulfillmentAutomation, self).filters(status=status, **kwargs)
         if self.config.products:
-            filters['asset.product.id__in'] = ','.join(self.config.products)
-        return filters
+            query.in_('asset.product.id', self.config.products)
+        return query
 
     @function_log
     def dispatch(self, request):

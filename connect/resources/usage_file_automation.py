@@ -30,10 +30,10 @@ class UsageFileAutomation(AutomationEngine):
         :return: The set of filters for this resource.
         :rtype: dict[str,Any]
         """
-        filters = super(UsageFileAutomation, self).filters(status, **kwargs)
+        query = super(UsageFileAutomation, self).filters(status, **kwargs)
         if self.config.products:
-            filters['product_id'] = ','.join(self.config.products)
-        return filters
+            query.in_('product_id', self.config.products)
+        return query
 
     def dispatch(self, request):
         # type: (UsageFile) -> str

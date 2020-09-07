@@ -100,9 +100,8 @@ def test_list_marketplaces(get_mock):
     assert marketplaces[0].id == 'MP-12345'
 
     get_mock.assert_called_with(
-        url='http://localhost:8080/api/public/v1/marketplaces',
+        url='http://localhost:8080/api/public/v1/marketplaces?limit=100',
         headers={'Content-Type': 'application/json', 'Authorization': 'ApiKey XXXX:YYYYY'},
-        params={'limit': 100},
         timeout=300)
 
 
