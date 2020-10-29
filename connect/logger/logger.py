@@ -24,13 +24,13 @@ class LoggerAdapter(logging.LoggerAdapter):
         self.replace_handler = None
 
     def process(self, msg, kwargs):
-        msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
         if self.replace_handler:
             handlers_copy = self.logger.handlers[:]
             for handler in handlers_copy:
-                if isinstance(handler, type(self.replace_handler)):
+                if isinstance(self.replace_handler, type(handler)):
                     self.logger.removeHandler(handler)
                     self.logger.addHandler(self.replace_handler)
+        msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
         return (
             '%s %s' % (self.prefix, msg) if self.prefix else msg,
             kwargs
