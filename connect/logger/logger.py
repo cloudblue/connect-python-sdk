@@ -17,13 +17,23 @@ dictConfig(config['logging'])
 logger = logging.getLogger()
 
 
+class LoggerAdapterObserver(object):
+    def on_begin_process(self, msg, kwargs):
+        pass
+
+    def on_end_process(self, msg, kwargs):
+        pass
+
+
 class LoggerAdapter(logging.LoggerAdapter):
-    def __init__(self, logger_, extra=None):
+    def __init__(self, logger_, extra=None, observer=None):
         super(LoggerAdapter, self).__init__(logger_, extra or {})
         self.prefix = None
         self.replace_handler = None
+        self.observer = observer or LoggerAdapterObserver()
 
     def process(self, msg, kwargs):
+        self.observer.on_begin_process(msg, kwargs)
         if self.replace_handler:
             handlers_copy = self.logger.handlers[:]
             for handler in handlers_copy:
@@ -31,6 +41,7 @@ class LoggerAdapter(logging.LoggerAdapter):
                     self.logger.removeHandler(handler)
                     self.logger.addHandler(self.replace_handler)
         msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
+        self.observer.on_end_process(msg, kwargs)
         return (
             '%s %s' % (self.prefix, msg) if self.prefix else msg,
             kwargs
