@@ -72,14 +72,15 @@ class UsageAutomation(AutomationEngine):
             return 'failure'
 
         logger.info('Processing result for usage on listing {}: {}'
-                         .format(request.product.id, result))
+                    .format(request.product.id, result))
         return 'success'
 
     def get_usage_template(self, product, logger=None):
         """ Returns the template file contents for a specified product.
 
         :param Product product: Specific product.
-        :param Union[Logger,LoggerAdapter] logger: The logger to use, or `None` to use this UsageAutomation's logger.
+        :param Union[Logger,LoggerAdapter] logger: The logger to use,
+        or `None` to use this UsageAutomation's logger.
         :return: The template file contents.
         :rtype: bytes
         :raises FileRetrievalError: Raised if the file contents could not be retrieved.
@@ -103,7 +104,8 @@ class UsageAutomation(AutomationEngine):
 
         :param UsageFile usage_file: Usage file.
         :param list[UsageRecord] usage_records: Records.
-        :param Union[Logger,LoggerAdapter] logger: The logger to use, or `None` to use this UsageAutomation's logger.
+        :param Union[Logger,LoggerAdapter] logger: The logger to use,
+        or `None` to use this UsageAutomation's logger.
         :return: Usage file.
         :rtype: UsageFile
         :raises FileCreationError: Raised if creation or uploading of the file fails.

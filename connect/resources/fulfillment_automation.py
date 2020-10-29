@@ -126,7 +126,7 @@ class FulfillmentAutomation(AutomationEngine):
 
         except Exception as ex:
             logger.warning('Skipping request {} because an exception was raised: {}'
-                                .format(request.id, ex))
+                           .format(request.id, ex))
             return ''
 
     def create_request(self, request):
@@ -190,7 +190,7 @@ class FulfillmentAutomation(AutomationEngine):
                 conversation.add_message(str(obj))
             except TypeError as ex:
                 logger.error('Error updating conversation for request {}: {}'
-                                  .format(request_id, ex))
+                             .format(request_id, ex))
 
     def _set_logger_prefix(self, request):
         # type: (Optional[AssetRequest]) -> None

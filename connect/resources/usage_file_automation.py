@@ -70,7 +70,7 @@ class UsageFileAutomation(AutomationEngine):
             processing_result = 'skip'
 
         logger.info('Finished processing of usage file with ID {} with result {}'
-                         .format(request.id, processing_result))
+                    .format(request.id, processing_result))
         return processing_result
 
     def _set_logger_prefix(self, request):
