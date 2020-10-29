@@ -90,15 +90,6 @@ class LoggerAdapter(logging.LoggerAdapter):
             if self.observer:
                 self.observer.on_end_log(logging.CRITICAL, msg, *args, **kwargs)
 
-    def log(self, level, msg, *args, **kwargs):
-        if self.observer:
-            self.observer.on_begin_log(level, msg, *args, **kwargs)
-        try:
-            super(LoggerAdapter, self).log(level, msg, *args, **kwargs)
-        finally:
-            if self.observer:
-                self.observer.on_end_log(level, msg, *args, **kwargs)
-
     def setLevel(self, level):
         self.logger.setLevel(level)
 
