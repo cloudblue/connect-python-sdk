@@ -8,6 +8,7 @@ import json
 from typing import Optional
 
 from connect.exceptions import SkipRequest, UsageFileAction
+from connect.logger import LoggerAdapter
 from connect.models.base import BaseModel
 from connect.models.usage_file import UsageFile
 from .automation_engine import AutomationEngine
@@ -35,8 +36,8 @@ class UsageFileAutomation(AutomationEngine):
             query.in_('product_id', self.config.products)
         return query
 
-    def dispatch(self, request):
-        # type: (UsageFile) -> str
+    def dispatch(self, request, logger):
+        # type: (UsageFile, LoggerAdapter) -> str
         try:
             # Validate product
             if self.config.products \
@@ -44,7 +45,7 @@ class UsageFileAutomation(AutomationEngine):
                 return 'Invalid product'
 
             # Process request
-            self.logger.info(
+            logger.info(
                 'Start usage file request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
@@ -52,7 +53,7 @@ class UsageFileAutomation(AutomationEngine):
             processing_result = 'UsageFileAutomation.process_request returned {} while ' \
                                 'is expected to raise UsageFileAction or SkipRequest exception' \
                 .format(str(result))
-            self.logger.warning(processing_result)
+            logger.warning(processing_result)
             raise UserWarning(processing_result)
 
         # Catch action
@@ -68,7 +69,7 @@ class UsageFileAutomation(AutomationEngine):
         except SkipRequest:
             processing_result = 'skip'
 
-        self.logger.info('Finished processing of usage file with ID {} with result {}'
+        logger.info('Finished processing of usage file with ID {} with result {}'
                          .format(request.id, processing_result))
         return processing_result
 

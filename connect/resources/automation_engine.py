@@ -29,12 +29,12 @@ class AutomationEngine(BaseResource):
     def process(self, filters=None):
         # # type: (Dict[str, Any]) -> None
         for request in self.list(filters):
-            self._set_current_request(request)
-            self.dispatch(request)
-            self._set_current_request(None)
+            logger = self._set_current_request(request)
+            self.dispatch(request, logger)
+        self._set_current_request(None)
 
-    def dispatch(self, request):
-        # type: (BaseModel) -> str
+    def dispatch(self, request, logger):
+        # type: (BaseModel, LoggerAdapter) -> str
         raise NotImplementedError('Please implement `{}.dispatch` method'
                                   .format(self.__class__.__name__))
 
@@ -72,9 +72,10 @@ class AutomationEngine(BaseResource):
         return self._logger_adapter
 
     def _set_current_request(self, request):
-        # type: (Optional[BaseModel]) -> None
+        # type: (Optional[BaseModel]) -> logging.LoggerAdapter
         self._current_request = request
         self._set_logger_prefix(request)
+        return self.logger
 
     def _set_logger_prefix(self, request):
         # type: (Optional[BaseModel]) -> None

@@ -9,7 +9,7 @@ from deprecation import deprecated
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import function_log
+from connect.logger import function_log, LoggerAdapter
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.asset_request import AssetRequest
@@ -74,8 +74,8 @@ class FulfillmentAutomation(AutomationEngine):
         return query
 
     @function_log
-    def dispatch(self, request):
-        # type: (Fulfillment) -> str
+    def dispatch(self, request, logger):
+        # type: (Fulfillment, LoggerAdapter) -> str
         conversation = request.get_conversation(self.config)
 
         try:
@@ -83,11 +83,11 @@ class FulfillmentAutomation(AutomationEngine):
                     and request.asset.product.id not in self.config.products:
                 return 'Invalid product'
 
-            self.logger.info('Start request process / ID request - {}'.format(request.id))
+            logger.info('Start request process / ID request - {}'.format(request.id))
             process_result = self.process_request(request)
 
             if not process_result:
-                self.logger.info('Method `process_request` did not return result')
+                logger.info('Method `process_request` did not return result')
                 return ''
 
             if isinstance(process_result, ActivationTileResponse):
@@ -101,31 +101,31 @@ class FulfillmentAutomation(AutomationEngine):
                 message = ''
                 approved = ''
 
-            self._update_conversation_if_exists(conversation, request.id, message)
+            self._update_conversation_if_exists(conversation, request.id, message, logger)
             return approved
 
         except InquireRequest as inquire:
             self.update_parameters(request.id, inquire.params)
             inquired = self.inquire(request.id)
-            self._update_conversation_if_exists(conversation, request.id, inquire)
+            self._update_conversation_if_exists(conversation, request.id, inquire, logger)
             return inquired
 
         except FailRequest as fail:
             # PyCharm incorrectly detects unreachable code here, so disable
             # noinspection PyUnreachableCode
             failed = self.fail(request.id, reason=str(fail))
-            self._update_conversation_if_exists(conversation, request.id, fail)
+            self._update_conversation_if_exists(conversation, request.id, fail, logger)
             return failed
 
         except SkipRequest as skip:
-            self._update_conversation_if_exists(conversation, request.id, skip)
+            self._update_conversation_if_exists(conversation, request.id, skip, logger)
             return skip.code
 
         except NotImplementedError:
             raise
 
         except Exception as ex:
-            self.logger.warning('Skipping request {} because an exception was raised: {}'
+            logger.warning('Skipping request {} because an exception was raised: {}'
                                 .format(request.id, ex))
             return ''
 
@@ -182,13 +182,14 @@ class FulfillmentAutomation(AutomationEngine):
             json={'asset': {'params': mapped_params}},
         )[0]
 
-    def _update_conversation_if_exists(self, conversation, request_id, obj):
-        # type: (Optional[Conversation], str, object) -> None
+    @staticmethod
+    def _update_conversation_if_exists(conversation, request_id, obj, logger):
+        # type: (Optional[Conversation], str, object, LoggerAdapter) -> None
         if conversation:
             try:
                 conversation.add_message(str(obj))
             except TypeError as ex:
-                self.logger.error('Error updating conversation for request {}: {}'
+                logger.error('Error updating conversation for request {}: {}'
                                   .format(request_id, ex))
 
     def _set_logger_prefix(self, request):

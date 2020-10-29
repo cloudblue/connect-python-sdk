@@ -5,13 +5,15 @@
 
 import json
 from abc import ABCMeta
+from logging import Logger
 from tempfile import NamedTemporaryFile
 
 import openpyxl
 import requests
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from connect.exceptions import FileCreationError, FileRetrievalError
+from connect.logger import LoggerAdapter
 from connect.models.usage_listing import UsageListing
 from connect.models.usage_file import UsageFile
 from connect.models.usage_record import UsageRecord
@@ -40,14 +42,14 @@ class UsageAutomation(AutomationEngine):
             query.in_('product.id', self.config.products)
         return query
 
-    def dispatch(self, request):
-        # type: (UsageListing) -> str
+    def dispatch(self, request, logger):
+        # type: (UsageListing, LoggerAdapter) -> str
         # TODO Shouldn't this raise an exception on ALL automation classes?
         if self.config.products \
                 and request.product.id not in self.config.products:
             return 'Listing not handled by this processor'
 
-        self.logger.info((
+        logger.info((
             'Processing Usage for Product {product_id} ({product_name}) '
             'on Contract {contract_id} '
             'and provider {provider_id}({provider_name})').format(
@@ -62,49 +64,53 @@ class UsageAutomation(AutomationEngine):
         try:
             result = self.process_request(request)
         except FileCreationError:
-            self.logger.info(
+            logger.info(
                 'Error processing Usage for Product {} ({}) '.format(request.product.id,
                                                                      request.product.name) +
                 'on Contract {} '.format(request.contract.id) +
                 'and provider {}({})'.format(request.provider.id, request.provider.name))
             return 'failure'
 
-        self.logger.info('Processing result for usage on listing {}: {}'
+        logger.info('Processing result for usage on listing {}: {}'
                          .format(request.product.id, result))
         return 'success'
 
-    def get_usage_template(self, product):
+    def get_usage_template(self, product, logger=None):
         """ Returns the template file contents for a specified product.
 
         :param Product product: Specific product.
+        :param Union[Logger,LoggerAdapter] logger: The logger to use, or `None` to use this UsageAutomation's logger.
         :return: The template file contents.
         :rtype: bytes
         :raises FileRetrievalError: Raised if the file contents could not be retrieved.
         """
+        logger = logger or self.logger
         location = self._get_usage_template_download_location(product.id)
         if not location:
             msg = 'Error obtaining template usage file location'
-            self.logger.error(msg)
+            logger.error(msg)
             raise FileRetrievalError(msg)
 
         contents = self._retrieve_usage_template(location) if location else None
         if not contents:
             msg = 'Error obtaining template usage file from `{}`'.format(location)
-            self.logger.error(msg)
+            logger.error(msg)
             raise FileRetrievalError(msg)
         return contents
 
-    def submit_usage(self, usage_file, usage_records):
+    def submit_usage(self, usage_file, usage_records, logger=None):
         """ Submit a usage file.
 
         :param UsageFile usage_file: Usage file.
         :param list[UsageRecord] usage_records: Records.
+        :param Union[Logger,LoggerAdapter] logger: The logger to use, or `None` to use this UsageAutomation's logger.
         :return: Usage file.
         :rtype: UsageFile
         :raises FileCreationError: Raised if creation or uploading of the file fails.
         """
+        logger = logger or self.logger
         usage_file = self._create_usage_file(usage_file)
-        self._upload_usage_records(usage_file, usage_records)
+        self._upload_usage_records(usage_file, usage_records, logger)
         return usage_file
 
     def _get_usage_template_download_location(self, product_id):
@@ -137,11 +143,11 @@ class UsageAutomation(AutomationEngine):
                                      .format(self.config.api_url), json=usage_file.json)
         return self.model_class.deserialize(response)
 
-    def _upload_usage_records(self, usage_file, usage_records):
-        # type: (UsageFile, List[UsageRecord]) -> None
+    def _upload_usage_records(self, usage_file, usage_records, logger):
+        # type: (UsageFile, List[UsageRecord], Union[Logger,LoggerAdapter]) -> None
         # TODO: Using xslx mechanism till usage records json api is available
         book = self._create_spreadsheet(usage_records)
-        self._upload_spreadsheet(usage_file, book)
+        self._upload_spreadsheet(usage_file, book, logger)
 
     @staticmethod
     def _create_spreadsheet(usage_records):
@@ -185,8 +191,8 @@ class UsageAutomation(AutomationEngine):
             sheet['P' + row] = record.tier
         return book
 
-    def _upload_spreadsheet(self, usage_file, spreadsheet):
-        # type: (UsageFile, openpyxl.Workbook) -> None
+    def _upload_spreadsheet(self, usage_file, spreadsheet, logger):
+        # type: (UsageFile, openpyxl.Workbook, Union[Logger,LoggerAdapter]) -> None
 
         # Generate spreadsheet file
         with NamedTemporaryFile() as tmp:
@@ -200,7 +206,7 @@ class UsageAutomation(AutomationEngine):
         headers['Accept'] = 'application/json'
         del headers['Content-Type']  # This must NOT be set for multipart post requests
         multipart = {'usage_file': ('usage_file.xlsx', file_contents)}
-        self.logger.info('HTTP Request: {} - {} - {}'.format(url, headers, multipart))
+        logger.info('HTTP Request: {} - {} - {}'.format(url, headers, multipart))
 
         # Post request
         try:
@@ -210,10 +216,10 @@ class UsageAutomation(AutomationEngine):
                 files=multipart)
         except requests.RequestException as ex:
             raise FileCreationError('Error uploading file: {}'.format(ex))
-        self.logger.info('HTTP Code: {}'.format(status))
+        logger.info('HTTP Code: {}'.format(status))
         if status != 201:
             msg = 'Unexpected server response, returned code {}'.format(status)
-            self.logger.error('{} -- Raw response: {}'.format(msg, content))
+            logger.error('{} -- Raw response: {}'.format(msg, content))
             raise FileCreationError(msg)
 
     def _set_logger_prefix(self, request):

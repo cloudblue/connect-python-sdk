@@ -7,7 +7,7 @@ from abc import ABCMeta
 from typing import Optional
 
 from connect.exceptions import FailRequest, InquireRequest, SkipRequest
-from connect.logger import function_log
+from connect.logger import function_log, LoggerAdapter
 from connect.models.activation_template_response import ActivationTemplateResponse
 from connect.models.activation_tile_response import ActivationTileResponse
 from connect.models.param import Param
@@ -63,19 +63,19 @@ class TierConfigAutomation(AutomationEngine):
         return query
 
     @function_log
-    def dispatch(self, request):
-        # type: (TierConfigRequest) -> str
+    def dispatch(self, request, logger):
+        # type: (TierConfigRequest, LoggerAdapter) -> str
         try:
             if self.config.products \
                     and request.configuration.product.id not in self.config.products:
                 return 'Invalid product'
 
-            self.logger.info(
+            logger.info(
                 'Start tier config request process / ID request - {}'.format(request.id))
             result = self.process_request(request)
 
             if not result:
-                self.logger.info('Method `process_request` did not return result')
+                logger.info('Method `process_request` did not return result')
                 return ''
 
             params = {}
@@ -100,8 +100,8 @@ class TierConfigAutomation(AutomationEngine):
             raise
 
         except Exception as ex:
-            self.logger.warning('Skipping request {} because an exception was raised: {}'
-                                .format(request.id, ex))
+            logger.warning('Skipping request {} because an exception was raised: {}'
+                           .format(request.id, ex))
             return ''
 
         return ''
