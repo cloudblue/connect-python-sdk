@@ -18,10 +18,10 @@ logger = logging.getLogger()
 
 
 class LoggerAdapterObserver(object):
-    def on_begin_process(self, msg, kwargs):
+    def on_begin_log(self, level, msg, *args, **kwargs):
         pass
 
-    def on_end_process(self, msg, kwargs):
+    def on_end_log(self, level, msg, *args, **kwargs):
         pass
 
 
@@ -33,23 +33,71 @@ class LoggerAdapter(logging.LoggerAdapter):
         self.observer = observer
 
     def process(self, msg, kwargs):
-        if self.observer:
-            self.observer.on_begin_process(msg, kwargs)
-        try:
-            if self.replace_handler:
-                handlers_copy = self.logger.handlers[:]
-                for handler in handlers_copy:
-                    if isinstance(self.replace_handler, type(handler)):
-                        self.logger.removeHandler(handler)
-                        self.logger.addHandler(self.replace_handler)
-            msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
-        finally:
-            if self.observer:
-                self.observer.on_end_process(msg, kwargs)
+        if self.replace_handler:
+            handlers_copy = self.logger.handlers[:]
+            for handler in handlers_copy:
+                if isinstance(handler, type(self.replace_handler)):
+                    self.logger.removeHandler(handler)
+                    self.logger.addHandler(self.replace_handler)
+        msg, kwargs = super(LoggerAdapter, self).process(msg, kwargs)
         return (
             '%s %s' % (self.prefix, msg) if self.prefix else msg,
             kwargs
         )
+
+    def debug(self, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(logging.DEBUG, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).debug(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(logging.DEBUG, msg, *args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(logging.INFO, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).info(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(logging.INFO, msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(logging.ERROR, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).error(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(logging.ERROR, msg, *args, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(logging.ERROR, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).exception(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(logging.ERROR, msg, *args, **kwargs)
+
+    def critical(self, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(logging.CRITICAL, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).critical(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(logging.CRITICAL, msg, *args, **kwargs)
+
+    def log(self, level, msg, *args, **kwargs):
+        if self.observer:
+            self.observer.on_begin_log(level, msg, *args, **kwargs)
+        try:
+            super(LoggerAdapter, self).log(msg, *args, **kwargs)
+        finally:
+            if self.observer:
+                self.observer.on_end_log(level, msg, *args, **kwargs)
 
     def setLevel(self, level):
         self.logger.setLevel(level)
