@@ -20,6 +20,7 @@ jobs:
         pip install -r requirements/test.txt
         pip install -r requirements/sdk.txt
         pip install pytest-cov
+        pip install twine
     - name: Linting
       run: |
         flake8 connect
