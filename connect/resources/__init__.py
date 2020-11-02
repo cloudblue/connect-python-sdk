@@ -24,7 +24,6 @@ __all__ = [
     'UsageAutomation',
     'UsageFileAutomation',
     'TierAccountRequestAutomation',
-    'Subscription',
     'BillingRequest',
     'RecurringAsset',
     'AssetRequestResource'
