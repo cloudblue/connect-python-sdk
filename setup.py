@@ -26,8 +26,7 @@ if exists('README.md'):
 
 setup(
     name='connect-sdk',
-    author='Ingram Micro',
-    version='0.0.0',
+    author='CloudBlue Connect',
     keywords='sdk connect connect automation',
     packages=PACKAGES,
     description='Connect Python SDK',
@@ -37,7 +36,8 @@ setup(
     license='Apache Software License',
     include_package_data=True,
     install_requires=install_reqs,
-
+    setup_requires=['setuptools_scm', 'pytest-runner', 'wheel'],
+    use_scm_version=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
 
