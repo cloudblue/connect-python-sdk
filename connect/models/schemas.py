@@ -503,6 +503,7 @@ class ProductStatsSchema(BaseSchema):
 
 class ProductConfigurationParameterSchema(BaseSchema):
     value = fields.Str()
+    structured_value = fields.Dict()
     parameter = fields.Nested(ParamSchema)
     marketplace = fields.Nested(MarketplaceSchema)
     item = fields.Nested(ItemSchema)
