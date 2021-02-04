@@ -20,6 +20,9 @@ class ProductConfigurationParameter(BaseModel):
     value = None  # type: str
     """ (str|None) Configuration parameter value. """
 
+    structured_value = None  # type: dict
+    """ (dict|None) Configuration parameter structured value. """
+
     parameter = None  # type: Param
     """ (:py:class:`.Param`) Full representation of parameter. """
 
