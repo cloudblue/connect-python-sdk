@@ -186,7 +186,7 @@ class FulfillmentAutomation(AutomationEngine):
         # type: (Optional[Conversation], str, object) -> None
         if conversation:
             try:
-                conversation.add_message(str(obj))
+                conversation.add_message(str(obj)[:540])
             except TypeError as ex:
                 self.logger.error('Error updating conversation for request {}: {}'
                                   .format(request_id, ex))
