@@ -284,3 +284,17 @@ def test_filter_by_products(get_mock):
             'Authorization': 'ApiKey XXXX:YYYY'},
         timeout=300,
     )
+
+
+def test_deserialize_param_with_dict_structured_value():
+    param = Param.deserialize('{"structured_value": {"msg": "Hello, world"}}')
+    assert isinstance(param.structured_value, dict)
+    assert param.structured_value['msg'] == 'Hello, world'
+
+
+def test_deserialize_param_with_list_structured_value():
+    param = Param.deserialize('{"structured_value": ["a", "b"]}')
+    assert isinstance(param.structured_value, list)
+    assert len(param.structured_value) == 2
+    assert param.structured_value[0] == 'a'
+    assert param.structured_value[1] == 'b'

@@ -4,7 +4,7 @@
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
 from deprecation import deprecated
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields, post_load, ValidationError
 import six
 
 
@@ -315,6 +315,14 @@ class CountrySchema(BaseSchema):
         return Country(**data)
 
 
+class StructuredValueField(fields.Field):
+    def _deserialize(self, value, attr=None, data=None):
+        if isinstance(value, (dict, list)):
+            return value
+        else:
+            raise ValidationError('Field should be dict or list')
+
+
 class ParamSchema(BaseSchema):
     name = fields.Str()
     description = fields.Str()
@@ -326,7 +334,7 @@ class ParamSchema(BaseSchema):
     scope = fields.Str()
     constraints = fields.Nested(ConstraintsSchema)
     value_choices = fields.Nested(ValueChoiceSchema, many=True)
-    structured_value = fields.Dict()
+    structured_value = StructuredValueField()
     phase = fields.Str()
     reconciliation = fields.Bool()
     events = fields.Nested(EventsSchema)

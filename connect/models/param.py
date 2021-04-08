@@ -3,7 +3,7 @@
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
 # Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
 
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from .base import BaseModel
 from .constraints import Constraints
@@ -48,7 +48,7 @@ class Param(BaseModel):
     value_choices = None  # type: Optional[List[ValueChoice]]
     """ (List[str]|None) Available dropdown choices for parameter. """
 
-    structured_value = None  # type: Optional[dict]
+    structured_value = None  # type: Optional[Union[dict,list]]
 
     phase = None  # type: Optional[str]
     """ (str|None) Param phase. """
