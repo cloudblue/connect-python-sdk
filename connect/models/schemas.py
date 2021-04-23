@@ -792,6 +792,7 @@ class UsageFileSchema(BaseSchema):
     stats = fields.Nested(UsageStatsSchema)
     records = fields.Nested(UsageRecordsSchema)
     events = fields.Nested(EventsSchema)
+    environment = fields.Str()
 
     @post_load
     def make_object(self, data):
