@@ -113,9 +113,7 @@ class FulfillmentAutomation(AutomationEngine):
         except FailRequest as fail:
             # PyCharm incorrectly detects unreachable code here, so disable
             # noinspection PyUnreachableCode
-            failed = self.fail(request.id, reason=str(fail))
-            self._update_conversation_if_exists(conversation, request.id, fail)
-            return failed
+            return self.fail(request.id, reason=str(fail))
 
         except SkipRequest as skip:
             self._update_conversation_if_exists(conversation, request.id, skip)
