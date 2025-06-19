@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # This file is part of the Ingram Micro Cloud Blue Connect SDK.
-# Copyright (c) 2019-2020 Ingram Micro. All Rights Reserved.
+# Copyright (c) 2019-2025 CloudBlue. All Rights Reserved.
 
 from os.path import exists
 from setuptools import find_packages, setup
