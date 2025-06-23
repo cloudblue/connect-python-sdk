@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = u'Connect SDK'
-copyright = u'2019, Ingram Micro'
-author = u'Ingram Micro'
+copyright = u'2025, CloudBlue'
+author = u'CloudBlue'
 
 # The short X.Y version
 version = u''
